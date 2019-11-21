@@ -7,3 +7,5 @@ build/**
 
 # Editor settings
 .idea/**
+out/production/classes/HelloWorld.class
+out/production/classes/Student.class
