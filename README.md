@@ -79,10 +79,10 @@ There is a Gitlabs CI pipeline that contains 3 stages:
 ## Developers
 
 * Sanjay Rachwani
-* Roman, Širokov
-* Mirijam, Zhang
-* Mihai, Plotean
-* Gabriele, Barteškaitė
+* Roman Širokov
+* Mirijam Zhang
+* Mihai Plotean
+* Gabriele Barteškaitė
 
 
 ## License
