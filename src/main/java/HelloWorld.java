@@ -28,7 +28,7 @@ public class HelloWorld implements ApplicationListener {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
-        font.draw(batch, "Hello World", 200, 200);
+        font.draw(batch, "Hello World", 300, 200);
         batch.end();
     }
 
@@ -47,9 +47,11 @@ public class HelloWorld implements ApplicationListener {
     public void setBatch(SpriteBatch batch) {
         this.batch = batch;
     }
+
     public void setFont(BitmapFont font) {
         this.font = font;
     }
+
     public SpriteBatch getBatch() {
         return batch;
     }
@@ -57,4 +59,5 @@ public class HelloWorld implements ApplicationListener {
     public BitmapFont getFont() {
         return font;
     }
+
 }

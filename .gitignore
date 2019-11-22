@@ -8,3 +8,5 @@ build/**
 # Editor settings
 .idea/**
 out/
+project/
+target/
