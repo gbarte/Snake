@@ -43,4 +43,18 @@ public class HelloWorld implements ApplicationListener {
     @Override
     public void resume() {
     }
+
+    public void setBatch(SpriteBatch batch) {
+        this.batch = batch;
+    }
+    public void setFont(BitmapFont font) {
+        this.font = font;
+    }
+    public SpriteBatch getBatch() {
+        return batch;
+    }
+
+    public BitmapFont getFont() {
+        return font;
+    }
 }
