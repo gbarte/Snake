@@ -13,15 +13,37 @@ public class MenuState extends State {
 
     @Override
     public void handleInput() {
-
     }
 
     @Override
     public void update(float dt) {
+
     }
 
     @Override
     public void render(SpriteBatch batch) {
 
+    }
+
+    @Override
+    public void dispose() {
+        background.dispose();
+        playButton.dispose();
+    }
+
+    public Texture getBackground() {
+        return background;
+    }
+
+    public void setBackground(Texture background) {
+        this.background = background;
+    }
+
+    public Texture getPlayButton() {
+        return playButton;
+    }
+
+    public void setPlayButton(Texture playButton) {
+        this.playButton = playButton;
     }
 }

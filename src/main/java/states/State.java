@@ -9,7 +9,12 @@ public abstract class State {
     protected Vector3 mouse;
     protected GameStateManager gameManager;
 
-    protected State(GameStateManager gameManager) {
+    /**
+     * Constructor which creates a new state within the game.
+     * E.g. Play/Pause/Menu.
+     * @param gameManager which keeps track of the state of the game.
+     */
+    public State(GameStateManager gameManager) {
         this.gameManager = gameManager;
         camera = new OrthographicCamera();
         mouse = new Vector3();
@@ -20,6 +25,8 @@ public abstract class State {
     public abstract void update(float dt);
 
     public abstract void render(SpriteBatch batch);
+
+    public abstract void dispose();
 
     public OrthographicCamera getCamera() {
         return camera;
