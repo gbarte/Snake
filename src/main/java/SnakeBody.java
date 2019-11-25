@@ -1,13 +1,6 @@
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
-
-import java.util.Arrays;
-import java.util.LinkedList;
 
 public class SnakeBody {
     private int headX;
@@ -15,7 +8,7 @@ public class SnakeBody {
     //head image or separate head rectangle or add to the array.
     private ShapeRenderer sr;
     private Array<BodyPart> bodyParts;
-    private Direction snakeDirection;
+    private Direction currDir;
 
     public enum Direction {LEFT, RIGHT, UP, DOWN};
 
@@ -32,6 +25,22 @@ public class SnakeBody {
 //    public void setSize(int size) {
 //        this.size = size;
 //    }
+
+    public ShapeRenderer getSr() {
+        return sr;
+    }
+
+    public void setSr(ShapeRenderer sr) {
+        this.sr = sr;
+    }
+
+    public Direction getCurrDir() {
+        return currDir;
+    }
+
+    public void setCurrDir(Direction currDir) {
+        this.currDir = currDir;
+    }
 
     public int getHeadX() {
         return headX;

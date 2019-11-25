@@ -11,7 +11,7 @@ public class SnakeGame {
     private Sprite sprite;
     private SnakeBody snake;
     private STATE currState;
-    private SnakeBody.Direction currDir;
+//    private SnakeBody.Direction currDir;
 
     private enum STATE {
         PLAYING, GAME_OVER;
@@ -23,7 +23,7 @@ public class SnakeGame {
                 //checks for updated direction after a keypress
                 queryInput();
                 //
-                snake.moveSnake(currDir);
+                snake.moveSnake(snake.getCurrDir());
                 checkOutOfMap(); // maybe move this to snakebody???
             }
             break;
@@ -58,7 +58,7 @@ public class SnakeGame {
     }
 
     public void updateDirection(SnakeBody.Direction direction) {
-        if (!direction.equals(currDir)) {
+        if (!direction.equals(snake.getCurrDir())) {
             switch (direction) {
                 case UP: {
                     updateIfNotOpposite(SnakeBody.Direction.UP, SnakeBody.Direction.DOWN);
@@ -78,7 +78,7 @@ public class SnakeGame {
 
     private void updateIfNotOpposite(SnakeBody.Direction newDir, SnakeBody.Direction oppositeDirection) {
         if (!newDir.equals(oppositeDirection)) {
-            currDir = newDir;
+            snake.setCurrDir(newDir);
         } else {
             currState = STATE.GAME_OVER;
         }
