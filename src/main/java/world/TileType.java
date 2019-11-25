@@ -4,10 +4,11 @@ import java.util.HashMap;
 
 public enum TileType {
 
-    BLACKTILE(1, "blackTile", false),
+    BLACKTILE(1, "blackTile", true),
     GRAYTILE(2, "grayTile", false),
     DARKBLUEWALL(3, "darkBlueWall", true),
-    BLUEWALL(4, "blueWall", true);
+    BLUEWALL(4, "blueWall", true),
+    WHITETILE(5, "whiteTile", false);
 
     public static final int TILE_SIZE = 16;
 

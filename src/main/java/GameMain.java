@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import world.GameMap;
+import world.TileType;
 import world.TiledGameMap;
 
 public class GameMain extends ApplicationAdapter {
@@ -33,10 +34,11 @@ public class GameMain extends ApplicationAdapter {
         Gdx.gl.glClearColor(1, 0, 0, 1); //this changes the background color, number between 0-1
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if (Gdx.input.isTouched()) {
+        //uncomment to be able to move the map
+        /*if (Gdx.input.isTouched()) {
             orthographicCamera.translate(-Gdx.input.getDeltaX(), Gdx.input.getDeltaY());
             orthographicCamera.update();
-        }
+        } */
         gameMap.render(orthographicCamera);
     }
 
