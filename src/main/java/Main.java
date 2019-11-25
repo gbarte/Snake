@@ -10,9 +10,10 @@ public class Main {
      */
     public static void main(String[] args) {
         Lwjgl3ApplicationConfiguration cfg = new Lwjgl3ApplicationConfiguration();
-        cfg.setTitle("hello-world");
-        cfg.setWindowSizeLimits(480, 320, 960, 640);
+        cfg.setTitle("Snake");
 
+        cfg.setWindowSizeLimits(480, 320, 1920, 1080);
+//        cfg.height
         new Lwjgl3Application(new HelloWorld(), cfg);
     }
 }
