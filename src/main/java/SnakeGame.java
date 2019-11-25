@@ -41,4 +41,21 @@ public class SnakeGame {
         batch.end();
     }
 
+//    private void moveSnake(float delta) {
+//
+//    }
+
+    private void queryInput() {
+        boolean upPressed = Gdx.input.isKeyPressed(Input.Keys.W);
+        boolean downPressed = Gdx.input.isKeyPressed(Input.Keys.S);
+        boolean leftPressed = Gdx.input.isKeyPressed(Input.Keys.A);
+        boolean rightPressed = Gdx.input.isKeyPressed(Input.Keys.D);
+
+        if (upPressed) updateDirection(SnakeBody.Direction.UP);
+        if (downPressed) updateDirection(SnakeBody.Direction.DOWN);
+        if (leftPressed) updateDirection(SnakeBody.Direction.LEFT);
+        if (rightPressed) updateDirection(SnakeBody.Direction.RIGHT);
+    }
+
+
 }
