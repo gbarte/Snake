@@ -17,5 +17,28 @@ public class SnakeGame {
         PLAYING, GAME_OVER;
     }
 
+    public void render(float delta) {
+        switch(currState) {
+            case PLAYING: {
+                //checks for updated direction after a keypress
+                queryInput();
+                //
+                snake.moveSnake(currDir);
+                checkOutOfMap(); // maybe move this to snakebody???
+            }
+            break;
+            case GAME_OVER: {
+                //present gameover screen
+            }
+            break;
+        }
+//        clearScreen();
+        batch.setProjectionMatrix(camera.projection);
+        batch.setTransformMatrix(camera.view);
+        batch.begin();
+        sprite.draw(batch);
+        snake.renderSnake(batch);
+        batch.end();
+    }
 
 }
