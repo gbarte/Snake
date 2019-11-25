@@ -57,5 +57,33 @@ public class SnakeGame {
         if (rightPressed) updateDirection(SnakeBody.Direction.RIGHT);
     }
 
+    public void updateDirection(SnakeBody.Direction direction) {
+        if (!direction.equals(currDir)) {
+            switch (direction) {
+                case UP: {
+                    updateIfNotOpposite(SnakeBody.Direction.UP, SnakeBody.Direction.DOWN);
+                }
+                case DOWN: {
+                    updateIfNotOpposite(SnakeBody.Direction.DOWN, SnakeBody.Direction.UP);
+                }
+                case LEFT: {
+                    updateIfNotOpposite(SnakeBody.Direction.LEFT, SnakeBody.Direction.RIGHT);
+                }
+                case RIGHT: {
+                    updateIfNotOpposite(SnakeBody.Direction.RIGHT, SnakeBody.Direction.LEFT);
+                }
+            }
+        }
+    }
+
+    private void updateIfNotOpposite(SnakeBody.Direction newDir, SnakeBody.Direction oppositeDirection) {
+        if (!newDir.equals(oppositeDirection)) {
+            currDir = newDir;
+        } else {
+            currState = STATE.GAME_OVER;
+        }
+    }
+
+
 
 }
