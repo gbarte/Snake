@@ -85,5 +85,29 @@ public class SnakeGame {
     }
 
 
+    private void checkOutOfMap() {
+        if (snake.getHeadX() >= getMapWidth()) {
+            currState = STATE.GAME_OVER;
+        }
+        if (snake.getHeadX() <= 0) {
+            currState = STATE.GAME_OVER;
+        }
+        if (snake.getHeadY() >= getMapHeight()) {
+            currState = STATE.GAME_OVER;
+        }
+        if (snake.getHeadY() <= 0) {
+            currState = STATE.GAME_OVER;
+        }
+     }
+
+    private int getMapWidth() {
+//        change void to int or float
+//        return mapwidth
+        return 0;
+    }
+
+    private int getMapHeight() {
+        return 0;
+    }
 
 }
