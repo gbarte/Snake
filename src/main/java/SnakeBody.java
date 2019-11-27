@@ -1,37 +1,64 @@
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.utils.Array;
+import org.w3c.dom.Text;
+
+import java.awt.*;
+import java.util.LinkedList;
 
 public class SnakeBody {
-    private int headX;
-    private int headY;
+    private float headX;
+    private float headY;
     //head image or separate head rectangle or add to the array.
-    private ShapeRenderer sr;
-    private Array<BodyPart> bodyParts;
+    private LinkedList<BodyPart> bodyParts;
+//    private Texture headTexture;
     private Direction currDir;
 
     public enum Direction {LEFT, RIGHT, UP, DOWN};
 
     public SnakeBody() {
-//        headX = insert starting pos
-//        headY = insert starting pos
-        bodyParts = new Array<BodyPart>();
+        this.headX = Gdx.graphics.getWidth()/2;
+        this.headY = Gdx.graphics.getHeight()/2;
+        this.currDir = Direction.DOWN;
+        this.bodyParts = new LinkedList<BodyPart>();
     }
-
-//    public int getSize() {
-//        return size;
+//
+//    public Texture getHeadTexture() {
+//        return headTexture;
 //    }
 //
-//    public void setSize(int size) {
-//        this.size = size;
+//    public void setHeadTexture(Texture headTexture) {
+//        this.headTexture = headTexture;
 //    }
 
-    public ShapeRenderer getSr() {
-        return sr;
+
+    public float getHeadX() {
+        return headX;
     }
 
-    public void setSr(ShapeRenderer sr) {
-        this.sr = sr;
+    public void setHeadX(float headX) {
+        this.headX = headX;
+    }
+
+    public float getHeadY() {
+        return headY;
+    }
+
+    public void setHeadY(float headY) {
+        this.headY = headY;
+    }
+
+    public LinkedList<BodyPart> getBodyParts() {
+        return bodyParts;
+    }
+
+    public void setBodyParts(LinkedList<BodyPart> bodyParts) {
+        this.bodyParts = bodyParts;
     }
 
     public Direction getCurrDir() {
@@ -42,69 +69,16 @@ public class SnakeBody {
         this.currDir = currDir;
     }
 
-    public int getHeadX() {
-        return headX;
-    }
-
-    public void setHeadX(int headX) {
-        this.headX = headX;
-    }
-
-    public int getHeadY() {
-        return headY;
-    }
-
-    public void setHeadY(int headY) {
-        this.headY = headY;
-    }
-
-    public Array<BodyPart> getBodyParts() {
-        return bodyParts;
-    }
-
-    public void setBodyParts(Array<BodyPart> bodyParts) {
-        this.bodyParts = bodyParts;
-    }
-
-    public void moveSnake(Direction snakeDirection) {
-        switch (snakeDirection) {
-            case RIGHT: {
-                updateBodyPartsPosition();
-                headX += 1;
-            }
-            case LEFT: {
-                updateBodyPartsPosition();
-                headX -= 1;
-            }
-            case UP: {
-                updateBodyPartsPosition();
-                headY += 1;
-            }
-            case DOWN: {
-                updateBodyPartsPosition();
-                headX += 1;
-            }
-        }
-    }
-
-    public void updateBodyPartsPosition() {
-        int x = getHeadX();
-        int y = getHeadY();
-        if(bodyParts.size > 0) {
-            for (BodyPart bp : bodyParts) {
-                int currX = bp.getX();
-                int currY = bp.getY();
-                bp.updateBodyPartPos(x, y);
-                x = currX;
-                y = currY;
-            }
-        }
-    }
-
-    public void renderSnake(SpriteBatch batch) {
+    public void renderSnake(OrthographicCamera camera, ShapeRenderer shapeRenderer) {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(new Color(Color.GREEN));
+        shapeRenderer.rect(this.headX, this.getHeadY(), 16, 16);
         for (BodyPart bp : bodyParts) {
-            bp.drawBody(batch);
+            System.out.println("lichaamsdeel");
+            shapeRenderer.rect(bp.getX(), bp.getHeadY(), 16, 16);
         }
+        shapeRenderer.end();
+
     }
 
 }
