@@ -10,20 +10,13 @@ import world.TiledGameMap;
 
 public class GameMain extends ApplicationAdapter {
 
-    SpriteBatch batch;
-    Texture img;
     GameMap gameMap;
     OrthographicCamera orthographicCamera;
 
     @Override
     public void create() {
-        batch = new SpriteBatch();
-        img = new Texture("assets/pkm.jpg");
-
         orthographicCamera = new OrthographicCamera();
         //false cz u wanna draw from bottom left ipv top left
-        System.out.println("width is " + Gdx.graphics.getWidth());
-        System.out.println("height is " + Gdx.graphics.getHeight());
         orthographicCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         orthographicCamera.update();
         gameMap = new TiledGameMap();
@@ -44,25 +37,9 @@ public class GameMain extends ApplicationAdapter {
 
     @Override
     public void dispose() {
-        batch.dispose();
-        img.dispose();
+        gameMap.dispose(orthographicCamera);
     }
 
-    public SpriteBatch getBatch() {
-        return batch;
-    }
-
-    public void setBatch(SpriteBatch batch) {
-        this.batch = batch;
-    }
-
-    public Texture getImg() {
-        return img;
-    }
-
-    public void setImg(Texture img) {
-        this.img = img;
-    }
 
     public GameMap getGameMap() {
         return gameMap;

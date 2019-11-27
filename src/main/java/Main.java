@@ -10,10 +10,7 @@ public class Main {
      */
     public static void main(String[] args) {
         Lwjgl3ApplicationConfiguration cfg = new Lwjgl3ApplicationConfiguration();
-        //cfg.setTitle("hello-world");
-        //cfg.setWindowSizeLimits(480, 320, 960, 640);
 
-        //new Lwjgl3Application(new HelloWorld(), cfg);
         cfg.setTitle("snek");
         cfg.setWindowSizeLimits(640, 480, 1600, 1600);
         cfg.setWindowedMode(800, 800);
