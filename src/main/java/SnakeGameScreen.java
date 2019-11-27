@@ -1,7 +1,6 @@
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -108,7 +107,6 @@ public class SnakeGameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-//        camera.update();
         Gdx.gl.glClearColor(0, 0, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
@@ -122,6 +120,10 @@ public class SnakeGameScreen implements Screen {
         batch.dispose();
     }
 
+    /**
+     * Changes direction of the snake of which the snake will move during rendering.
+     * TODO:
+     */
     private void queryInput() {
 
     }

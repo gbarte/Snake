@@ -1,20 +1,11 @@
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.utils.Array;
-import org.w3c.dom.Text;
-
-import java.awt.*;
 import java.util.LinkedList;
 
 public class SnakeBody {
     private float headX;
     private float headY;
-    //head image or separate head rectangle or add to the array.
     private LinkedList<BodyPart> bodyParts;
 //    private Texture headTexture;
     private Direction currDir;
@@ -35,7 +26,6 @@ public class SnakeBody {
 //    public void setHeadTexture(Texture headTexture) {
 //        this.headTexture = headTexture;
 //    }
-
 
     public float getHeadX() {
         return headX;
@@ -69,6 +59,12 @@ public class SnakeBody {
         this.currDir = currDir;
     }
 
+    /**
+     * First renders the head of the snake as a rectangle,
+     * then loops through the bodyparts and renders those.
+     *
+     * @param shapeRenderer
+     */
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     public void renderSnake(ShapeRenderer shapeRenderer){
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
