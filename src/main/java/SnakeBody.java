@@ -80,4 +80,63 @@ public class SnakeBody {
 
     }
 
+    /**
+     * Updates currDir to the given direction
+     * @param snakeDirection - Updates currDir to this direction
+     */
+    public void moveSnake(Direction snakeDirection) {
+        switch (snakeDirection) {
+            case RIGHT:
+                updateBodyPartsPosition();
+                headX += 1;
+                break;
+            case LEFT:
+                updateBodyPartsPosition();
+                headX -= 1;
+                break;
+            case UP:
+                updateBodyPartsPosition();
+                headY += 1;
+                break;
+            case DOWN:
+                updateBodyPartsPosition();
+                headY -= 1;
+                break;
+        }
+    }
+
+//    private SnakeGameScreen.STATE checkOutOfMap() {
+//        if (headX >= Gdx.graphics.getWidth()) {
+//            return SnakeGameScreen.STATE.GAME_OVER;
+//        }
+//        if (headX <= 0) {
+//            return SnakeGameScreen.STATE.GAME_OVER;
+//        }
+//        if (headY >= Gdx.graphics.getHeight()) {
+//            return SnakeGameScreen.STATE.GAME_OVER;
+//        }
+//        if (headY <= 0) {
+//            return SnakeGameScreen.STATE.GAME_OVER;
+//        }
+//        return null;
+//    }
+
+    /**
+     * Updates the position of each body part
+     */
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+    public void updateBodyPartsPosition() {
+        float x = getHeadX();
+        float y = getHeadY();
+        if(bodyParts.size() > 0) {
+            for (BodyPart bp : bodyParts) {
+                float currX = bp.getX();
+                float currY = bp.getY();
+                bp.updateBodyPartPos(x, y);
+                x = currX;
+                y = currY;
+            }
+        }
+    }
+
 }

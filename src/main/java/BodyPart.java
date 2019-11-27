@@ -1,15 +1,3 @@
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g3d.utils.shapebuilders.BoxShapeBuilder;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Shape;
-import org.lwjgl.util.Rectangle;
-import org.w3c.dom.Text;
-
-import java.util.LinkedList;
-
 public class BodyPart {
     private float headX, headY;
     private float x, y;
@@ -54,4 +42,13 @@ public class BodyPart {
         this.y = y;
     }
 
+    /**
+     * Moves body part to new coordinates
+     * @param x - New x coordinate of position of bodypart.
+     * @param y - New y coordinate of position of bodypart.
+     */
+    public void updateBodyPartPos(float x, float y) {
+        this.x = x;
+        this.y = y;
+    }
 }

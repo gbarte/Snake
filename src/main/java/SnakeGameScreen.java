@@ -113,6 +113,27 @@ public class SnakeGameScreen implements Screen {
         snake.renderSnake(shapeRenderer);
         batch.end();
 
+        switch(currState) {
+            case GAME_READY: {
+                System.out.println("game is ready");
+                if(Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) {
+                    queryInput();
+                    this.currState = STATE.GAME_PLAYING;
+                }
+            } break;
+            case GAME_PLAYING: {
+                //checks for updated direction after a keypress
+                queryInput();
+                snake.moveSnake(snake.getCurrDir());
+            }
+            break;
+            case GAME_OVER: {
+                //present gameover screen
+                System.out.println("GAME OVER");
+            }
+            break;
+        }
+//        clearScreen();
     }
 
     @Override
@@ -121,11 +142,60 @@ public class SnakeGameScreen implements Screen {
     }
 
     /**
-     * Changes direction of the snake of which the snake will move during rendering.
-     * TODO:
+     * Listens to which key is pressed and
+     * calls the updateDirection method to update the direction.
      */
     private void queryInput() {
+        boolean upPressed = Gdx.input.isKeyPressed(Input.Keys.W);
+        boolean downPressed = Gdx.input.isKeyPressed(Input.Keys.S);
+        boolean leftPressed = Gdx.input.isKeyPressed(Input.Keys.A);
+        boolean rightPressed = Gdx.input.isKeyPressed(Input.Keys.D);
 
+        if (upPressed) updateDirection(SnakeBody.Direction.UP);
+        if (downPressed) updateDirection(SnakeBody.Direction.DOWN);
+        if (leftPressed) updateDirection(SnakeBody.Direction.LEFT);
+        if (rightPressed) updateDirection(SnakeBody.Direction.RIGHT);
+    }
+
+    /**
+     * Updates the direction by calling updateIfNotOpposite.
+     * @param direction
+     */
+    public void updateDirection(SnakeBody.Direction direction) {
+        if (!direction.equals(snake.getCurrDir())) {
+            switch (direction) {
+                case UP: {
+                    updateIfNotOpposite(SnakeBody.Direction.UP, SnakeBody.Direction.DOWN);
+                }
+                break;
+                case DOWN: {
+                    updateIfNotOpposite(SnakeBody.Direction.DOWN, SnakeBody.Direction.UP);
+                }
+                break;
+                case LEFT: {
+                    updateIfNotOpposite(SnakeBody.Direction.LEFT, SnakeBody.Direction.RIGHT);
+                }
+                break;
+                case RIGHT: {
+                    updateIfNotOpposite(SnakeBody.Direction.RIGHT, SnakeBody.Direction.LEFT);
+                }
+                break;
+            }
+        }
+    }
+
+    /**
+     * Updates the position if newDir does not equal opposite direction,
+     * this would mean that the snakes moves to itself.
+     * @param newDir - Direction the snake wants to move to.
+     * @param oppositeDirection - Direction snake comes from.
+     */
+    private void updateIfNotOpposite(SnakeBody.Direction newDir, SnakeBody.Direction oppositeDirection) {
+        if (!newDir.equals(oppositeDirection)) {
+            snake.setCurrDir(newDir);
+        } else {
+            currState = STATE.GAME_OVER;
+        }
     }
 
 }
