@@ -69,13 +69,16 @@ public class SnakeBody {
         this.currDir = currDir;
     }
 
-    public void renderSnake(OrthographicCamera camera, ShapeRenderer shapeRenderer) {
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+    public void renderSnake(ShapeRenderer shapeRenderer){
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(new Color(Color.GREEN));
         shapeRenderer.rect(this.headX, this.getHeadY(), 16, 16);
-        for (BodyPart bp : bodyParts) {
-            System.out.println("lichaamsdeel");
-            shapeRenderer.rect(bp.getX(), bp.getHeadY(), 16, 16);
+        if (bodyParts.size() > 0) {
+            for (BodyPart bp : bodyParts) {
+                System.out.println("lichaamsdeel");
+                shapeRenderer.rect(bp.getX(), bp.getHeadY(), 16, 16);
+            }
         }
         shapeRenderer.end();
 
