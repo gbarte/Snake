@@ -43,7 +43,8 @@ public class GameMain extends ApplicationAdapter {
 
             if (type != null) {
                 System.out.println("Id is " + type.getId() + " name is " + type.getName());
-                System.out.println("tile coordinate is x=" + position.x + " and y=" + position.y);
+                System.out.println("tile coordinate is x=" + (int) position.x / TileType.TILE_SIZE
+                        + " & y=" + (gameMap.getHeight() - (int) position.y / TileType.TILE_SIZE));
             }
         }
         gameMap.render(orthographicCamera);

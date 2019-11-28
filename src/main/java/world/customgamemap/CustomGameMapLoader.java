@@ -5,6 +5,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import world.TileType;
 
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class CustomGameMapLoader {
 
     private static Json json = new Json();
@@ -34,15 +35,12 @@ public class CustomGameMapLoader {
         CustomGameMapData mapData = new CustomGameMapData();
         mapData.id = id;
         mapData.name = name;
-        mapData.map = new int[1][maxEdge][maxEdge]; //change the dimensions of the layer!!! if needed
+        mapData.map = new int[1][maxEdge][maxEdge]; //change the dimensions of the layer!!!if needed
 
         for (int row = 0; row < maxEdge; row++) {
-//            boolean wall = false;
-//            if (row <= 1 || row > mapData.map[0].length-3) {
-//                wall = true;
-//            }
             for (int col = 0; col < maxEdge; col++) {
-                if ((col <=1 || col > mapData.map[0][row].length-3) || (row <= 1 || row > mapData.map[0].length-3)) {
+                if ((col <= 1 || col > mapData.map[0][row].length - 3)
+                        || (row <= 1 || row > mapData.map[0].length - 3)) {
                     mapData.map[0][row][col] = TileType.DARKBLUEWALL.getId();
                 } else {
                     mapData.map[0][row][col] = TileType.WHITETILE.getId();
@@ -53,6 +51,14 @@ public class CustomGameMapLoader {
         return mapData;
     }
 
+    /**
+     * Use this to load in a map.
+     * If the map already exists then it'll be loaded from the existing files in the maps folder.
+     * Otherwise it'll be created and saved.
+     * @param id The id of the map.
+     * @param name The name of the map.
+     * @return A custom game map's data.
+     */
     public static CustomGameMapData loadMap(String id, String name) {
         Gdx.files.local("maps/").file().mkdirs();
         FileHandle file = Gdx.files.local("maps/" + id + ".map");

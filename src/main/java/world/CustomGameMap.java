@@ -16,8 +16,12 @@ public class CustomGameMap extends GameMap {
     private SpriteBatch spriteBatch;
     private TextureRegion[][] tiles;
 
+    /**
+     * Constructor for the custom game map.
+     */
     public CustomGameMap() {
-        CustomGameMapData customGameMapData = CustomGameMapLoader.loadMap("defaultID", "defaultName");
+        CustomGameMapData customGameMapData =
+                CustomGameMapLoader.loadMap("defaultID", "defaultName");
         this.id = customGameMapData.id;
         this.name = customGameMapData.name;
         this.map = customGameMapData.map;
@@ -37,7 +41,7 @@ public class CustomGameMap extends GameMap {
             for (int row = 0; row < getHeight(); row++) {
                 for (int col = 0; col < getWidth(); col++) {
                     TileType type = this.getTileTypeByCoordinate(layer, col, row);
-                    if(type != null) {
+                    if (type != null) {
                         spriteBatch.draw(tiles[0][type.getId() - 1], (col * TileType.TILE_SIZE),
                                 (row * TileType.TILE_SIZE));
                     }
@@ -87,5 +91,45 @@ public class CustomGameMap extends GameMap {
     @Override
     public int getLayers() {
         return map.length;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int[][][] getMap() {
+        return map;
+    }
+
+    public void setMap(int[][][] map) {
+        this.map = map;
+    }
+
+    public SpriteBatch getSpriteBatch() {
+        return spriteBatch;
+    }
+
+    public void setSpriteBatch(SpriteBatch spriteBatch) {
+        this.spriteBatch = spriteBatch;
+    }
+
+    public TextureRegion[][] getTiles() {
+        return tiles;
+    }
+
+    public void setTiles(TextureRegion[][] tiles) {
+        this.tiles = tiles;
     }
 }
