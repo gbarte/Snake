@@ -124,16 +124,13 @@ public class SnakeGameScreen implements Screen {
             case GAME_PLAYING:
                 System.out.println("playing");
                 //checks for updated direction after a keypress
-                System.out.println(snake.getCurrDir());
                 queryInput();
-
+                checkOutOfMap();
                 snake.moveSnake(snake.getCurrDir());
-                System.out.println(snake.getCurrDir());
                 break;
             case GAME_OVER:
                 //present gameover screen
                 System.out.println("GAME OVER");
-                dispose();
                 break;
         }
 //        clearScreen();
@@ -198,6 +195,20 @@ public class SnakeGameScreen implements Screen {
         }
     }
 
+    public void checkOutOfMap() {
+        if (snake.getHeadX() >= Gdx.graphics.getWidth()-16) {
+            currState = SnakeGameScreen.STATE.GAME_OVER;
+        }
+        if (snake.getHeadX() <= 0) {
+            currState = SnakeGameScreen.STATE.GAME_OVER;
+        }
+        if (snake.getHeadY() >= Gdx.graphics.getHeight()-16) {
+            currState = SnakeGameScreen.STATE.GAME_OVER;
+        }
+        if (snake.getHeadY() <= 0) {
+            currState = SnakeGameScreen.STATE.GAME_OVER;
+        }
+    }
 }
 
 

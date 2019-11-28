@@ -89,41 +89,21 @@ public class SnakeBody {
             case RIGHT:
                 headX += 1;
                 updateBodyPartsPosition();
-
                 break;
             case LEFT:
                 headX -= 1;
                 updateBodyPartsPosition();
-
                 break;
             case UP:
                 headY += 1;
                 updateBodyPartsPosition();
-
                 break;
             case DOWN:
                 headY -= 1;
                 updateBodyPartsPosition();
-
                 break;
         }
     }
-
-//    private SnakeGameScreen.STATE checkOutOfMap() {
-//        if (headX >= Gdx.graphics.getWidth()) {
-//            return SnakeGameScreen.STATE.GAME_OVER;
-//        }
-//        if (headX <= 0) {
-//            return SnakeGameScreen.STATE.GAME_OVER;
-//        }
-//        if (headY >= Gdx.graphics.getHeight()) {
-//            return SnakeGameScreen.STATE.GAME_OVER;
-//        }
-//        if (headY <= 0) {
-//            return SnakeGameScreen.STATE.GAME_OVER;
-//        }
-//        return null;
-//    }
 
     /**
      * Updates the position of each body part
