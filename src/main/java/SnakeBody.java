@@ -4,21 +4,22 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.util.LinkedList;
 
 public class SnakeBody {
+    private final float edgeSize = 50;
     private float headX;
     private float headY;
     private LinkedList<BodyPart> bodyParts;
 //    private Texture headTexture;
     private Direction currDir;
-    private float edgeSize;
 
     public enum Direction {LEFT, RIGHT, UP, DOWN};
 
-    public SnakeBody() {
-        this.headX = Gdx.graphics.getWidth()/2;
-        this.headY = Gdx.graphics.getHeight()/2;
+    public SnakeBody(float headX, float headY) {
+        this.headX = headX/2;
+        this.headY = headY/2;
         this.currDir = Direction.UP;
         this.bodyParts = new LinkedList<BodyPart>();
-        this.edgeSize = Gdx.graphics.getHeight()/20;
+        bodyParts.add(new BodyPart(this.headX - edgeSize, this.headY));
+        bodyParts.add(new BodyPart(this.headX - (2 * edgeSize), this.headY));
     }
 //
 //    public Texture getHeadTexture() {
@@ -65,9 +66,6 @@ public class SnakeBody {
         return edgeSize;
     }
 
-    public void setEdgeSize(float size) {
-        this.edgeSize = size;
-    }
 
     /**
      * First renders the head of the snake as a rectangle,
@@ -84,7 +82,7 @@ public class SnakeBody {
         if (bodyParts.size() > 0) {
             for (BodyPart bp : bodyParts) {
                 System.out.println("lichaamsdeel");
-                shapeRenderer.rect(bp.getX(), bp.getHeadY(), edgeSize, edgeSize);
+                shapeRenderer.rect(bp.getX(), bp.getY(), edgeSize, edgeSize);
             }
         }
         shapeRenderer.end();
@@ -96,22 +94,24 @@ public class SnakeBody {
      * @param snakeDirection - Updates currDir to this direction
      */
     public void moveSnake(Direction snakeDirection) {
+//        float oldHeadX = this.headX;
+//        float oldHeadY = this.headY;
         switch (snakeDirection) {
             case RIGHT:
+                updateBodyPartsPosition(headX, headY, true);
                 headX += edgeSize;
-                updateBodyPartsPosition();
                 break;
             case LEFT:
+                updateBodyPartsPosition(headX, headY, true);
                 headX -= edgeSize;
-                updateBodyPartsPosition();
                 break;
             case UP:
+                updateBodyPartsPosition(headX, headY, false);
                 headY += edgeSize;
-                updateBodyPartsPosition();
                 break;
             case DOWN:
+                updateBodyPartsPosition(headX, headY, false);
                 headY -= edgeSize;
-                updateBodyPartsPosition();
                 break;
         }
     }
@@ -120,18 +120,16 @@ public class SnakeBody {
      * Updates the position of each body part
      */
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-    public void updateBodyPartsPosition() {
-        float x = getHeadX();
-        float y = getHeadY();
-        if(bodyParts.size() > 0) {
-            for (BodyPart bp : bodyParts) {
-                float currX = bp.getX();
-                float currY = bp.getY();
-                bp.updateBodyPartPos(x, y);
-                x = currX;
-                y = currY;
+    public void updateBodyPartsPosition(float x, float y, boolean moveXDirection) {
+        if (bodyParts.size() > 0) {
+                for (BodyPart bp : bodyParts) {
+                    float currX = bp.getX();
+                    float currY = bp.getY();
+                    bp.updateBodyPartPos(x, y);
+                    x = currX;
+                    y = currY;
+                }
             }
-        }
     }
 
 }
