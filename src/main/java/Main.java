@@ -18,6 +18,6 @@ public class Main {
         cfg.setWindowSizeLimits(640, 480, 1600, 1600);
         cfg.setWindowedMode(800, 800);
 
-        new Lwjgl3Application(new GameMain(), cfg);
+        new Lwjgl3Application(new HelloWorld(), cfg);
     }
 }
