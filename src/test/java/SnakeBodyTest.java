@@ -1,4 +1,3 @@
-import com.badlogic.gdx.Gdx;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -7,7 +6,7 @@ import java.util.LinkedList;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SnakeBodyTest {
-private transient SnakeBody snakeBody;
+    private transient SnakeBody snakeBody;
 
     @BeforeEach
     public void setUp() {
@@ -36,14 +35,16 @@ private transient SnakeBody snakeBody;
         assertEquals(5, snakeBody.getHeadY());
     }
 
-//    @Test
-//    void getBodyPartsTest() {
-//        LinkedList<BodyPart> ll = new LinkedList<BodyPart>();
-//        ll.add(new BodyPart(350, 400));
-//        ll.add(new BodyPart(300, 400));
-//
-//        assertIterableEquals(snakeBody.getBodyParts(), ll);
-//    }
+    @Test
+    void getBodyPartsTest() {
+        LinkedList<BodyPart> ll = new LinkedList<>();
+        ll.add(new BodyPart(350, 400));
+        ll.add(new BodyPart(300, 400));
+
+        snakeBody.setBodyParts(ll);
+
+        assertIterableEquals(snakeBody.getBodyParts(), ll);
+    }
 
     @Test
     void setBodyPartsTest() {
@@ -78,10 +79,16 @@ private transient SnakeBody snakeBody;
 
     }
 
-//    @Test
-//    void updateBodyPartsPositionTest() {
-//        LinkedList<BodyPart> ll = new LinkedList<BodyPart>();
-//        snakeBody.updateBodyPartsPosition();
-//        assertEquals(snakeBody.getHeadY(), Gdx.graphics.getWidth() + snakeBody.getEdgeSize());
-//    }
+    @Test
+    void updateBodyPartsPositionTest() {
+        LinkedList<BodyPart> ll = new LinkedList<>();
+        ll.add(new BodyPart(350, 400));
+        ll.add(new BodyPart(300, 400));
+
+        snakeBody.setBodyParts(ll);
+        snakeBody.moveSnake(SnakeBody.Direction.UP);
+        snakeBody.updateBodyPartsPosition(snakeBody.getHeadX(), snakeBody.getHeadY());
+
+        assertEquals(snakeBody.getBodyParts().get(1).getY(), snakeBody.getBodyParts().get(0).getY() - snakeBody.getEdgeSize());
+    }
 }

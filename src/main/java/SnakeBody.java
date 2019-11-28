@@ -86,19 +86,19 @@ public class SnakeBody {
     public void moveSnake(Direction snakeDirection) {
         switch (snakeDirection) {
             case RIGHT:
-                updateBodyPartsPosition(headX, headY, true);
+                updateBodyPartsPosition(headX, headY);
                 headX += edgeSize;
                 break;
             case LEFT:
-                updateBodyPartsPosition(headX, headY, true);
+                updateBodyPartsPosition(headX, headY);
                 headX -= edgeSize;
                 break;
             case UP:
-                updateBodyPartsPosition(headX, headY, false);
+                updateBodyPartsPosition(headX, headY);
                 headY += edgeSize;
                 break;
             case DOWN:
-                updateBodyPartsPosition(headX, headY, false);
+                updateBodyPartsPosition(headX, headY);
                 headY -= edgeSize;
                 break;
         }
@@ -108,7 +108,7 @@ public class SnakeBody {
      * Updates the position of each body part
      */
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-    public void updateBodyPartsPosition(float x, float y, boolean moveXDirection) {
+    public void updateBodyPartsPosition(float x, float y) {
         if (bodyParts.size() > 0) {
                 for (BodyPart bp : bodyParts) {
                     float currX = bp.getX();
