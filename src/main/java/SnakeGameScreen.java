@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class SnakeGameScreen implements Screen {
+    private final float MOVE_TIME = 0.25f;
+    private float timer = MOVE_TIME;
     private OrthographicCamera camera;
     private FitViewport viewport;
     private SpriteBatch batch;
@@ -112,12 +114,6 @@ public class SnakeGameScreen implements Screen {
      */
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 1, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.begin();
-        snake.renderSnake(shapeRenderer);
-        batch.end();
-
         switch(currState) {
             case GAME_READY:
                 System.out.println("ready");
@@ -131,14 +127,30 @@ public class SnakeGameScreen implements Screen {
                 //checks for updated direction after a keypress
                 queryInput();
                 checkOutOfMap();
-                snake.moveSnake(snake.getCurrDir());
+                updateSnake(delta);
                 break;
             case GAME_OVER:
                 //present gameover screen
                 System.out.println("GAME OVER");
                 break;
         }
-//        clearScreen();
+        Gdx.gl.glClearColor(0, 0, 1, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.begin();
+        snake.renderSnake(shapeRenderer);
+        batch.end();
+    }
+
+    /**
+     * Moves the snake every MOVE_TIME.
+     * @param delta
+     */
+    private void updateSnake(float delta) {
+        timer -= delta;
+        if (timer <= 0) {
+            timer = MOVE_TIME;
+            snake.moveSnake(snake.getCurrDir());
+        }
     }
 
     @Override
@@ -195,8 +207,6 @@ public class SnakeGameScreen implements Screen {
     private void updateIfNotOpposite(SnakeBody.Direction newDir, SnakeBody.Direction oppositeDirection) {
         if (!newDir.equals(oppositeDirection)) {
             snake.setCurrDir(newDir);
-        } else {
-            currState = STATE.GAME_OVER;
         }
     }
 
@@ -205,13 +215,13 @@ public class SnakeGameScreen implements Screen {
      * if it hits then the state changes to GAME_OVER.
      */
     public void checkOutOfMap() {
-        if (snake.getHeadX() >= Gdx.graphics.getWidth()-16) {
+        if (snake.getHeadX() >= Gdx.graphics.getWidth() - snake.getEdgeSize()) {
             currState = SnakeGameScreen.STATE.GAME_OVER;
         }
         if (snake.getHeadX() <= 0) {
             currState = SnakeGameScreen.STATE.GAME_OVER;
         }
-        if (snake.getHeadY() >= Gdx.graphics.getHeight()-16) {
+        if (snake.getHeadY() >= Gdx.graphics.getHeight() - snake.getEdgeSize()) {
             currState = SnakeGameScreen.STATE.GAME_OVER;
         }
         if (snake.getHeadY() <= 0) {

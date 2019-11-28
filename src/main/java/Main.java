@@ -11,9 +11,7 @@ public class Main {
     public static void main(String[] args) {
         Lwjgl3ApplicationConfiguration cfg = new Lwjgl3ApplicationConfiguration();
         cfg.setTitle("Snake");
-
         cfg.setWindowSizeLimits(800, 800, 1920, 1080);
-//        cfg.height
         new Lwjgl3Application(new SnakeGame(), cfg);
     }
 }
