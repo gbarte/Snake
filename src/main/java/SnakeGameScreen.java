@@ -130,14 +130,12 @@ public class SnakeGameScreen implements Screen {
     public void render(float delta) {
         switch(currState) {
             case GAME_READY:
-                System.out.println("ready");
                 if(Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) {
 //                    queryInput();
                     this.currState = STATE.GAME_PLAYING;
                 }
                 break;
             case GAME_PLAYING:
-                System.out.println("playing");
                 //checks for updated direction after a keypress
                 queryInput();
                 checkOutOfMap();
@@ -145,7 +143,7 @@ public class SnakeGameScreen implements Screen {
                 break;
             case GAME_OVER:
                 //present gameover screen
-                System.out.println("GAME OVER");
+                //System.out.println("GAME OVER");
                 break;
         }
         Gdx.gl.glClearColor(0, 0, 1, 1);

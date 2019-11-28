@@ -1,30 +1,12 @@
 public class BodyPart {
-//    private float headX, headY;
     private float x, y;
-    //add body part image or rectangle
-//    Texture texture;
 
     public BodyPart(float x, float y) {
-//        this.texture = texture;
         this.x = x;
         this.y = y;
     }
 
-//    public float getHeadX() {
-//        return headX;
-//    }
-//
-//    public void setHeadX(float headX) {
-//        this.headX = headX;
-//    }
-//
-//    public float getHeadY() {
-//        return headY;
-//    }
-//
-//    public void setHeadY(float headY) {
-//        this.headY = headY;
-//    }
+
 
     public float getX() {
         return x;
