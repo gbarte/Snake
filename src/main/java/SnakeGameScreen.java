@@ -105,6 +105,11 @@ public class SnakeGameScreen implements Screen {
 
     }
 
+    /**
+     * Clears the background, renders the batch and snake.
+     * Checks what the state is and changes state and updates snake.
+     * @param delta - Renders again every delta amount of time.
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 1, 1);
@@ -195,6 +200,10 @@ public class SnakeGameScreen implements Screen {
         }
     }
 
+    /**
+     * Checks whether the snake (head) hits the border,
+     * if it hits then the state changes to GAME_OVER.
+     */
     public void checkOutOfMap() {
         if (snake.getHeadX() >= Gdx.graphics.getWidth()-16) {
             currState = SnakeGameScreen.STATE.GAME_OVER;
