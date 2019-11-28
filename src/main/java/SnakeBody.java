@@ -21,14 +21,6 @@ public class SnakeBody {
         bodyParts.add(new BodyPart(this.headX - edgeSize, this.headY));
         bodyParts.add(new BodyPart(this.headX - (2 * edgeSize), this.headY));
     }
-//
-//    public Texture getHeadTexture() {
-//        return headTexture;
-//    }
-//
-//    public void setHeadTexture(Texture headTexture) {
-//        this.headTexture = headTexture;
-//    }
 
     public float getHeadX() {
         return headX;
@@ -77,11 +69,9 @@ public class SnakeBody {
     public void renderSnake(ShapeRenderer shapeRenderer){
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(new Color(Color.GREEN));
-//        shapeRenderer.rect(this.headX, this.getHeadY(), 16, 16);
         shapeRenderer.rect(this.headX, this.getHeadY(), edgeSize, edgeSize);
         if (bodyParts.size() > 0) {
             for (BodyPart bp : bodyParts) {
-                System.out.println("lichaamsdeel");
                 shapeRenderer.rect(bp.getX(), bp.getY(), edgeSize, edgeSize);
             }
         }
@@ -94,8 +84,6 @@ public class SnakeBody {
      * @param snakeDirection - Updates currDir to this direction
      */
     public void moveSnake(Direction snakeDirection) {
-//        float oldHeadX = this.headX;
-//        float oldHeadY = this.headY;
         switch (snakeDirection) {
             case RIGHT:
                 updateBodyPartsPosition(headX, headY, true);
