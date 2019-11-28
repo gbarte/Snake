@@ -66,7 +66,7 @@ private transient SnakeBody snakeBody;
 
     @Test
     void getEdgeSizeTest() {
-       assertEquals(snakeBody.getEdgeSize(), 50);
+       assertEquals(snakeBody.getCELL_SIZE(), 50);
     }
 
     @Test
