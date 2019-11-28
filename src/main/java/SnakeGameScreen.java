@@ -114,24 +114,27 @@ public class SnakeGameScreen implements Screen {
         batch.end();
 
         switch(currState) {
-            case GAME_READY: {
-                System.out.println("game is ready");
+            case GAME_READY:
+                System.out.println("ready");
                 if(Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) {
-                    queryInput();
+//                    queryInput();
                     this.currState = STATE.GAME_PLAYING;
                 }
-            } break;
-            case GAME_PLAYING: {
+                break;
+            case GAME_PLAYING:
+                System.out.println("playing");
                 //checks for updated direction after a keypress
+                System.out.println(snake.getCurrDir());
                 queryInput();
+
                 snake.moveSnake(snake.getCurrDir());
-            }
-            break;
-            case GAME_OVER: {
+                System.out.println(snake.getCurrDir());
+                break;
+            case GAME_OVER:
                 //present gameover screen
                 System.out.println("GAME OVER");
-            }
-            break;
+                dispose();
+                break;
         }
 //        clearScreen();
     }
@@ -151,10 +154,11 @@ public class SnakeGameScreen implements Screen {
         boolean leftPressed = Gdx.input.isKeyPressed(Input.Keys.A);
         boolean rightPressed = Gdx.input.isKeyPressed(Input.Keys.D);
 
-        if (upPressed) updateDirection(SnakeBody.Direction.UP);
-        if (downPressed) updateDirection(SnakeBody.Direction.DOWN);
+        if (upPressed) {updateDirection(SnakeBody.Direction.UP);}
+        if (downPressed) {updateDirection(SnakeBody.Direction.DOWN);}
         if (leftPressed) updateDirection(SnakeBody.Direction.LEFT);
         if (rightPressed) updateDirection(SnakeBody.Direction.RIGHT);
+
     }
 
     /**
@@ -164,22 +168,18 @@ public class SnakeGameScreen implements Screen {
     public void updateDirection(SnakeBody.Direction direction) {
         if (!direction.equals(snake.getCurrDir())) {
             switch (direction) {
-                case UP: {
+                case UP:
                     updateIfNotOpposite(SnakeBody.Direction.UP, SnakeBody.Direction.DOWN);
-                }
-                break;
-                case DOWN: {
+                    break;
+                case DOWN:
                     updateIfNotOpposite(SnakeBody.Direction.DOWN, SnakeBody.Direction.UP);
-                }
-                break;
-                case LEFT: {
+                    break;
+                case LEFT:
                     updateIfNotOpposite(SnakeBody.Direction.LEFT, SnakeBody.Direction.RIGHT);
-                }
-                break;
-                case RIGHT: {
+                    break;
+                case RIGHT:
                     updateIfNotOpposite(SnakeBody.Direction.RIGHT, SnakeBody.Direction.LEFT);
-                }
-                break;
+                    break;
             }
         }
     }

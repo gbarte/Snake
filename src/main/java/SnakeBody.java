@@ -15,7 +15,7 @@ public class SnakeBody {
     public SnakeBody() {
         this.headX = Gdx.graphics.getWidth()/2;
         this.headY = Gdx.graphics.getHeight()/2;
-        this.currDir = Direction.DOWN;
+        this.currDir = Direction.UP;
         this.bodyParts = new LinkedList<BodyPart>();
     }
 //
@@ -87,20 +87,24 @@ public class SnakeBody {
     public void moveSnake(Direction snakeDirection) {
         switch (snakeDirection) {
             case RIGHT:
-                updateBodyPartsPosition();
                 headX += 1;
+                updateBodyPartsPosition();
+
                 break;
             case LEFT:
-                updateBodyPartsPosition();
                 headX -= 1;
+                updateBodyPartsPosition();
+
                 break;
             case UP:
-                updateBodyPartsPosition();
                 headY += 1;
+                updateBodyPartsPosition();
+
                 break;
             case DOWN:
-                updateBodyPartsPosition();
                 headY -= 1;
+                updateBodyPartsPosition();
+
                 break;
         }
     }
