@@ -77,11 +77,25 @@ public class SnakeGameScreen implements Screen {
         this.shapeRenderer = shapeRenderer;
     }
 
+
+    public float getMOVE_TIME() {
+        return MOVE_TIME;
+    }
+
+    public float getTimer() {
+        return timer;
+    }
+
+    public void setTimer(float timer) {
+        this.timer = timer;
+    }
+
+
     @Override
     public void show() {
         currState = STATE.GAME_READY;
         shapeRenderer = new ShapeRenderer();
-        snake = new SnakeBody();
+        snake = new SnakeBody(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch = new SpriteBatch();
