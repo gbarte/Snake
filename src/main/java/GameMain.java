@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import world.GameMap;
 import world.TileType;
 import world.TiledGameMap;
@@ -32,6 +33,17 @@ public class GameMain extends ApplicationAdapter {
             orthographicCamera.translate(-Gdx.input.getDeltaX(), Gdx.input.getDeltaY());
             orthographicCamera.update();
         } */
+
+        if (Gdx.input.justTouched()) {
+            Vector3 position = orthographicCamera.unproject(
+                    new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+            //might have to change the layer to 1!!!
+            TileType type = getGameMap().getTileTypeByLocation(0, position.x, position.y);
+
+            if (type != null) {
+                System.out.println("Id is " + type.getId() + " name is " + type.getName());
+            }
+        }
         gameMap.render(orthographicCamera);
     }
 
