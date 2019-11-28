@@ -9,6 +9,7 @@ public class SnakeBody {
     private LinkedList<BodyPart> bodyParts;
 //    private Texture headTexture;
     private Direction currDir;
+    private float edgeSize;
 
     public enum Direction {LEFT, RIGHT, UP, DOWN};
 
@@ -17,6 +18,7 @@ public class SnakeBody {
         this.headY = Gdx.graphics.getHeight()/2;
         this.currDir = Direction.UP;
         this.bodyParts = new LinkedList<BodyPart>();
+        this.edgeSize = Gdx.graphics.getHeight()/20;
     }
 //
 //    public Texture getHeadTexture() {
@@ -59,6 +61,14 @@ public class SnakeBody {
         this.currDir = currDir;
     }
 
+    public float getEdgeSize() {
+        return edgeSize;
+    }
+
+    public void setEdgeSize(float size) {
+        this.edgeSize = size;
+    }
+
     /**
      * First renders the head of the snake as a rectangle,
      * then loops through the bodyparts and renders those.
@@ -69,11 +79,12 @@ public class SnakeBody {
     public void renderSnake(ShapeRenderer shapeRenderer){
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(new Color(Color.GREEN));
-        shapeRenderer.rect(this.headX, this.getHeadY(), 16, 16);
+//        shapeRenderer.rect(this.headX, this.getHeadY(), 16, 16);
+        shapeRenderer.rect(this.headX, this.getHeadY(), edgeSize, edgeSize);
         if (bodyParts.size() > 0) {
             for (BodyPart bp : bodyParts) {
                 System.out.println("lichaamsdeel");
-                shapeRenderer.rect(bp.getX(), bp.getHeadY(), 16, 16);
+                shapeRenderer.rect(bp.getX(), bp.getHeadY(), edgeSize, edgeSize);
             }
         }
         shapeRenderer.end();
