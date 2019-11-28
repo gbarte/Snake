@@ -229,13 +229,13 @@ public class SnakeGameScreen implements Screen {
      * if it hits then the state changes to GAME_OVER.
      */
     public void checkOutOfMap() {
-        if (snake.getHeadX() >= Gdx.graphics.getWidth() - snake.getEdgeSize()) {
+        if (snake.getHeadX() >= Gdx.graphics.getWidth() - snake.getCELL_SIZE()) {
             currState = SnakeGameScreen.STATE.GAME_OVER;
         }
         if (snake.getHeadX() <= 0) {
             currState = SnakeGameScreen.STATE.GAME_OVER;
         }
-        if (snake.getHeadY() >= Gdx.graphics.getHeight() - snake.getEdgeSize()) {
+        if (snake.getHeadY() >= Gdx.graphics.getHeight() - snake.getCELL_SIZE()) {
             currState = SnakeGameScreen.STATE.GAME_OVER;
         }
         if (snake.getHeadY() <= 0) {
