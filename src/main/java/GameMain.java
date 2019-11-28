@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import world.CustomGameMap;
 import world.GameMap;
 import world.TileType;
 import world.TiledGameMap;
@@ -20,7 +21,7 @@ public class GameMain extends ApplicationAdapter {
         //false cz u wanna draw from bottom left ipv top left
         orthographicCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         orthographicCamera.update();
-        gameMap = new TiledGameMap();
+        gameMap = new CustomGameMap();
     }
 
     @Override
@@ -42,6 +43,7 @@ public class GameMain extends ApplicationAdapter {
 
             if (type != null) {
                 System.out.println("Id is " + type.getId() + " name is " + type.getName());
+                System.out.println("tile coordinate is x=" + position.x + " and y=" + position.y);
             }
         }
         gameMap.render(orthographicCamera);
