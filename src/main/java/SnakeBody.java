@@ -21,14 +21,6 @@ public class SnakeBody {
         bodyParts.add(new BodyPart(this.headX - edgeSize, this.headY));
         bodyParts.add(new BodyPart(this.headX - (2 * edgeSize), this.headY));
     }
-//
-//    public Texture getHeadTexture() {
-//        return headTexture;
-//    }
-//
-//    public void setHeadTexture(Texture headTexture) {
-//        this.headTexture = headTexture;
-//    }
 
     public float getHeadX() {
         return headX;
@@ -92,8 +84,6 @@ public class SnakeBody {
      * @param snakeDirection - Updates currDir to this direction
      */
     public void moveSnake(Direction snakeDirection) {
-//        float oldHeadX = this.headX;
-//        float oldHeadY = this.headY;
         switch (snakeDirection) {
             case RIGHT:
                 updateBodyPartsPosition(headX, headY, true);
