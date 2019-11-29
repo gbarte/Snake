@@ -34,7 +34,6 @@ sourceCompatibility = 12
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 test {
@@ -62,8 +61,6 @@ dependencies {
     compile "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"
     compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
     compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
-
-    testCompile "org.mockito:mockito-core:2.+"
 }
 
 jacocoTestCoverageVerification {

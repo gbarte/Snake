@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class SnakeGameScreen implements Screen {
-    private final float MOVE_TIME = 0.25f;
+    protected final float MOVE_TIME = 0.25f;
     private float timer = MOVE_TIME;
     private OrthographicCamera camera;
     private FitViewport viewport;
@@ -21,6 +21,9 @@ public class SnakeGameScreen implements Screen {
         GAME_READY, GAME_PAUSED, GAME_PLAYING, GAME_OVER;
     }
 
+    public float getMOVE_TIME() {
+        return MOVE_TIME;
+    }
     public OrthographicCamera getCamera() {
         return camera;
     }
@@ -77,11 +80,6 @@ public class SnakeGameScreen implements Screen {
         this.shapeRenderer = shapeRenderer;
     }
 
-
-    public float getMOVE_TIME() {
-        return MOVE_TIME;
-    }
-
     public float getTimer() {
         return timer;
     }
@@ -89,7 +87,6 @@ public class SnakeGameScreen implements Screen {
     public void setTimer(float timer) {
         this.timer = timer;
     }
-
 
     @Override
     public void show() {
@@ -131,7 +128,6 @@ public class SnakeGameScreen implements Screen {
         switch(currState) {
             case GAME_READY:
                 if(Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) {
-//                    queryInput();
                     this.currState = STATE.GAME_PLAYING;
                 }
                 break;
@@ -143,7 +139,6 @@ public class SnakeGameScreen implements Screen {
                 break;
             case GAME_OVER:
                 //present gameover screen
-                //System.out.println("GAME OVER");
                 break;
         }
         Gdx.gl.glClearColor(0, 0, 1, 1);
@@ -227,13 +222,13 @@ public class SnakeGameScreen implements Screen {
      * if it hits then the state changes to GAME_OVER.
      */
     public void checkOutOfMap() {
-        if (snake.getHeadX() >= Gdx.graphics.getWidth() - snake.getCELL_SIZE()) {
+        if (snake.getHeadX() >= Gdx.graphics.getWidth() - snake.CELL_SIZE) {
             currState = SnakeGameScreen.STATE.GAME_OVER;
         }
         if (snake.getHeadX() <= 0) {
             currState = SnakeGameScreen.STATE.GAME_OVER;
         }
-        if (snake.getHeadY() >= Gdx.graphics.getHeight() - snake.getCELL_SIZE()) {
+        if (snake.getHeadY() >= Gdx.graphics.getHeight() - snake.CELL_SIZE) {
             currState = SnakeGameScreen.STATE.GAME_OVER;
         }
         if (snake.getHeadY() <= 0) {
