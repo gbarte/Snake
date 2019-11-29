@@ -16,6 +16,12 @@ class SnakeBodyTest {
         snakeBody = new SnakeBody(800, 800);
     }
 
+//    @Test
+//    public void constructorTest(){
+//        snakeBody = new SnakeBody(800, 800);
+//        assertEquals(2, snakeBody.bodyParts.size());
+//    }
+
     @Test
     void getHeadXTest() {
         assertEquals(snakeBody.getHeadX(),400);
@@ -68,10 +74,13 @@ class SnakeBodyTest {
         assertEquals(snakeBody.getCurrDir(), SnakeBody.Direction.DOWN);
     }
 
-    @Test
-    void getEdgeSizeTest() {
-       assertEquals(snakeBody.CELL_SIZE, 50);
-    }
+//    @Test
+//    void growSnakeTest() {
+//        LinkedList<BodyPart> ll = snakeBody.getBodyParts();
+//        int init_length = snakeBody.getBodyParts().size();
+//        ll.add(new BodyPart(450 - (snakeSize * CELL_SIZE), this.headY))
+//        snakeBody.bodyParts;
+//    }
 
     @Test
     void moveSnakeTest() {
@@ -92,7 +101,7 @@ class SnakeBodyTest {
         snakeBody.moveSnake(SnakeBody.Direction.UP);
         snakeBody.updateBodyPartsPosition(snakeBody.getHeadX(), snakeBody.getHeadY());
 
-        assertEquals(snakeBody.getBodyParts().get(1).getY(), snakeBody.getBodyParts().get(0).getY() - snakeBody.CELL_SIZE);
+        assertEquals(snakeBody.getBodyParts().get(1).getY(), snakeBody.getBodyParts().get(0).getY() - SnakeBody.CELL_SIZE);
     }
 
 //    @Test
