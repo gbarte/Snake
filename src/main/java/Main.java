@@ -1,5 +1,3 @@
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 
@@ -13,7 +11,7 @@ public class Main {
         cfg.setTitle(SnakeGame.TITLE);
         cfg.setWindowSizeLimits(SnakeGame.WIDTH, SnakeGame.HEIGHT,
                 SnakeGame.WIDTH, SnakeGame.HEIGHT);
-
+        cfg.setWindowedMode(SnakeGame.WIDTH, SnakeGame.HEIGHT);
         new Lwjgl3Application(new SnakeGame(), cfg);
     }
 }
