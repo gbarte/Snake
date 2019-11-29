@@ -57,3 +57,6 @@ test:
   stage: test
   script:
     gradle check
+  after_script:
+    - gradle jacocoTestReport
+    - cat build/reports/jacoco/test/html/index.html
