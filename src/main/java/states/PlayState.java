@@ -24,6 +24,11 @@ public class PlayState extends State {
         snake = new SnakeBody(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(false, Gdx.graphics.getWidth() , Gdx.graphics.getHeight());
     }
+    public PlayState(GameStateManager gameManager, SnakeBody snake, ShapeRenderer renderer) {
+        super(gameManager);
+        this.snake = snake;
+        this.shapeRenderer = renderer;
+    }
 
     public OrthographicCamera getCamera() {
         return camera;

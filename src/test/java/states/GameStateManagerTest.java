@@ -8,9 +8,10 @@ import org.mockito.Mockito;
 import java.util.Stack;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 
 class GameStateManagerTest {
-    private GameStateManager stateManager;
+    transient GameStateManager stateManager;
 
     @BeforeEach
     void setUp() {
@@ -54,10 +55,15 @@ class GameStateManagerTest {
 
     @Test
     void update() {
-    }
+        MenuState menu = new MenuState(stateManager);
+        PlayState play = Mockito.mock(PlayState.class);
+        Stack<State> states = new Stack<>();
+        states.push(menu);
+        states.push(play);
+        stateManager.setStates(states);
+        stateManager.update(10);
 
-    @Test
-    void render() {
+        Mockito.verify(play).update(10);
     }
 
     @Test
