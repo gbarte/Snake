@@ -70,7 +70,7 @@ class SnakeBodyTest {
 
     @Test
     void getEdgeSizeTest() {
-       assertEquals(snakeBody.getCELL_SIZE(), 50);
+       assertEquals(snakeBody.CELL_SIZE, 50);
     }
 
     @Test
