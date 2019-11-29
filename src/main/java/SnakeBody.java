@@ -130,7 +130,7 @@ public class SnakeBody {
      * Updates the position of each body part
      */
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-    public void updateBodyPartsPosition(float x, float y, boolean moveXDirection) {
+    public void updateBodyPartsPosition(float x, float y) {
         if (bodyParts.size() > 0) {
                 for (BodyPart bp : bodyParts) {
                     float currX = bp.getX();
