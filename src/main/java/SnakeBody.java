@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 public class SnakeBody {
     protected static final float CELL_SIZE = 50;
-    private static final int INITIAL_LENGTH = 3;
+    private static final int INITIAL_LENGTH = 2;
     private float headX;
     private float headY;
     private LinkedList<BodyPart> bodyParts;

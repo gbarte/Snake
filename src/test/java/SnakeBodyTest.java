@@ -16,11 +16,11 @@ class SnakeBodyTest {
         snakeBody = new SnakeBody(800, 800);
     }
 
-//    @Test
-//    public void constructorTest(){
-//        snakeBody = new SnakeBody(800, 800);
-//        assertEquals(2, snakeBody.bodyParts.size());
-//    }
+    @Test
+    public void constructorTest(){
+        snakeBody = new SnakeBody(800, 800);
+        assertEquals(2, snakeBody.getBodyParts().size());
+    }
 
     @Test
     void getHeadXTest() {
@@ -74,13 +74,22 @@ class SnakeBodyTest {
         assertEquals(snakeBody.getCurrDir(), SnakeBody.Direction.DOWN);
     }
 
-//    @Test
-//    void growSnakeTest() {
-//        LinkedList<BodyPart> ll = snakeBody.getBodyParts();
-//        int init_length = snakeBody.getBodyParts().size();
-//        ll.add(new BodyPart(450 - (snakeSize * CELL_SIZE), this.headY))
-//        snakeBody.bodyParts;
-//    }
+    @Test
+    void growSnakeTest() {
+        LinkedList<BodyPart> ll = snakeBody.getBodyParts();
+        int length = ll.size();
+
+        // test for growing by one cell
+        ll.add(new BodyPart(450 - (length * SnakeBody.CELL_SIZE), 400));
+        snakeBody.growSnake();
+        assertEquals(ll, snakeBody.getBodyParts());
+
+        //test for growing by multiple cells
+        int oldLength = snakeBody.getBodyParts().size();
+        snakeBody.growSnake(2);
+        int newLength = snakeBody.getBodyParts().size();
+        assertEquals(oldLength + 2, newLength);
+    }
 
     @Test
     void moveSnakeTest() {
