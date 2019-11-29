@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class SnakeGameScreen implements Screen {
-    protected final float MOVE_TIME = 0.25f;
+    protected static final float MOVE_TIME = 0.25f;
     private float timer = MOVE_TIME;
     private OrthographicCamera camera;
     private FitViewport viewport;
@@ -21,9 +21,6 @@ public class SnakeGameScreen implements Screen {
         GAME_READY, GAME_PAUSED, GAME_PLAYING, GAME_OVER;
     }
 
-    public float getMOVE_TIME() {
-        return MOVE_TIME;
-    }
     public OrthographicCamera getCamera() {
         return camera;
     }
