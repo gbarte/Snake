@@ -108,19 +108,19 @@ public class SnakeBody {
     public void moveSnake(Direction snakeDirection) {
         switch (snakeDirection) {
             case RIGHT:
-                updateBodyPartsPosition(headX, headY, true);
+                updateBodyPartsPosition(headX, headY);
                 headX += CELL_SIZE;
                 break;
             case LEFT:
-                updateBodyPartsPosition(headX, headY, true);
+                updateBodyPartsPosition(headX, headY);
                 headX -= CELL_SIZE;
                 break;
             case UP:
-                updateBodyPartsPosition(headX, headY, false);
+                updateBodyPartsPosition(headX, headY);
                 headY += CELL_SIZE;
                 break;
             case DOWN:
-                updateBodyPartsPosition(headX, headY, false);
+                updateBodyPartsPosition(headX, headY);
                 headY -= CELL_SIZE;
                 break;
         }
