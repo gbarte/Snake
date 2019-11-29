@@ -8,8 +8,6 @@ public class BodyPart {
         this.y = y;
     }
 
-
-
     public float getX() {
         return x;
     }
@@ -34,10 +32,5 @@ public class BodyPart {
     public void updateBodyPartPos(float x, float y) {
         this.x = x;
         this.y = y;
-    }
-
-    @Override
-    public String toString() {
-        return "X = " + x + ", " + "Y = " + y;
     }
 }

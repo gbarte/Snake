@@ -2,10 +2,12 @@ package snake;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
 import java.util.LinkedList;
 
 public class SnakeBody {
-    private final float edgeSize = 50;
+    public static final float CELL_SIZE = 50;
+    private static final int INITIAL_LENGTH = 2;
     private float headX;
     private float headY;
     private LinkedList<BodyPart> bodyParts;
@@ -19,9 +21,23 @@ public class SnakeBody {
         this.headY = headY/2;
         this.currDir = Direction.UP;
         this.bodyParts = new LinkedList<BodyPart>();
-        bodyParts.add(new BodyPart(this.headX - edgeSize, this.headY));
-        bodyParts.add(new BodyPart(this.headX - (2 * edgeSize), this.headY));
+        growSnake(INITIAL_LENGTH);
     }
+//
+//    public Texture getHeadTexture() {
+//        return headTexture;
+//    }
+//
+//    public void setHeadTexture(Texture headTexture) {
+//        this.headTexture = headTexture;
+//    }
+//    public float getCELL_SIZE() {
+//        return CELL_SIZE;
+//    }
+//
+//    public int getINITIAL_LENGTH() {
+//        return INITIAL_LENGTH;
+//    }
 
     public float getHeadX() {
         return headX;
@@ -55,10 +71,22 @@ public class SnakeBody {
         this.currDir = currDir;
     }
 
-    public float getEdgeSize() {
-        return edgeSize;
+    /**
+     * Grows the snake body by one body part
+     */
+    public void growSnake() {
+        int snakeSize = bodyParts.size() + 1;
+        bodyParts.add(new BodyPart(this.headX - (snakeSize * CELL_SIZE), this.headY));
     }
 
+    /**
+     * Grows the snake body by a specified number of body parts
+     * @param length - by how many body parts the snake will be grown
+     */
+    public void growSnake(int length) {
+        for(int i = 0; i < length; i++)
+            this.growSnake();
+    }
 
     /**
      * First renders the head of the snake as a rectangle,
@@ -69,11 +97,13 @@ public class SnakeBody {
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     public void renderSnake(ShapeRenderer shapeRenderer){
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(new Color(Color.RED));
-        shapeRenderer.rect(this.headX, this.getHeadY(), edgeSize, edgeSize);
+        shapeRenderer.setColor(new Color(Color.GREEN));
+//        shapeRenderer.rect(this.headX, this.getHeadY(), 16, 16);
+        shapeRenderer.rect(this.headX, this.getHeadY(), CELL_SIZE, CELL_SIZE);
+//        growSnake();
         if (bodyParts.size() > 0) {
             for (BodyPart bp : bodyParts) {
-                shapeRenderer.rect(bp.getX(), bp.getY(), edgeSize, edgeSize);
+                shapeRenderer.rect(bp.getX(), bp.getY(), CELL_SIZE, CELL_SIZE);
             }
         }
         shapeRenderer.end();
@@ -88,19 +118,19 @@ public class SnakeBody {
         switch (snakeDirection) {
             case RIGHT:
                 updateBodyPartsPosition(headX, headY);
-                headX += edgeSize;
+                headX += CELL_SIZE;
                 break;
             case LEFT:
                 updateBodyPartsPosition(headX, headY);
-                headX -= edgeSize;
+                headX -= CELL_SIZE;
                 break;
             case UP:
                 updateBodyPartsPosition(headX, headY);
-                headY += edgeSize;
+                headY += CELL_SIZE;
                 break;
             case DOWN:
                 updateBodyPartsPosition(headX, headY);
-                headY -= edgeSize;
+                headY -= CELL_SIZE;
                 break;
         }
     }

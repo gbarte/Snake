@@ -66,8 +66,6 @@ public class PlayState extends State {
         this.timer = timer;
     }
 
-
-
     @Override
     public void handleInput() {
         boolean upPressed = Gdx.input.isKeyPressed(Input.Keys.W);
@@ -159,13 +157,13 @@ public class PlayState extends State {
      * if it hits then the state changes to GAME_OVER.
      */
     public void checkOutOfMap() {
-        if (snake.getHeadX() >= Gdx.graphics.getWidth() - snake.getEdgeSize()) {
+        if (snake.getHeadX() >= Gdx.graphics.getWidth() - snake.CELL_SIZE) {
             System.out.println("Game oveeer");
         }
         if (snake.getHeadX() <= 0) {
             System.out.println("Game oveer");
         }
-        if (snake.getHeadY() >= Gdx.graphics.getHeight() - snake.getEdgeSize()) {
+        if (snake.getHeadY() >= Gdx.graphics.getHeight() -  snake.CELL_SIZE) {
             System.out.println("Game over");
         }
         if (snake.getHeadY() <= 0) {
@@ -173,11 +171,11 @@ public class PlayState extends State {
         }
     }
 
-    private void drawGrid(){
+    private void drawGrid() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        for(int x=0;x<Gdx.graphics.getWidth() ;x+=snake.getEdgeSize()){
-            for(int y=0;y<Gdx.graphics.getHeight();y+=snake.getEdgeSize()){
-                shapeRenderer.rect(x, y, snake.getEdgeSize(), snake.getEdgeSize());
+        for(int x=0;x<Gdx.graphics.getWidth() ;x+=snake.CELL_SIZE){
+            for(int y=0;y<Gdx.graphics.getHeight();y+=snake.CELL_SIZE){
+                shapeRenderer.rect(x, y, snake.CELL_SIZE, snake.CELL_SIZE);
             }
         }
         shapeRenderer.end();

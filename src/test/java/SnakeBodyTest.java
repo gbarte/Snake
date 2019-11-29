@@ -20,6 +20,12 @@ class SnakeBodyTest {
     }
 
     @Test
+    public void constructorTest(){
+        snakeBody = new SnakeBody(800, 800);
+        assertEquals(2, snakeBody.getBodyParts().size());
+    }
+
+    @Test
     void getHeadXTest() {
         assertEquals(snakeBody.getHeadX(),400);
     }
@@ -72,8 +78,20 @@ class SnakeBodyTest {
     }
 
     @Test
-    void getEdgeSizeTest() {
-       assertEquals(snakeBody.getEdgeSize(), 50);
+    void growSnakeTest() {
+        LinkedList<BodyPart> ll = snakeBody.getBodyParts();
+        int length = ll.size();
+
+        // test for growing by one cell
+        ll.add(new BodyPart(450 - (length * SnakeBody.CELL_SIZE), 400));
+        snakeBody.growSnake();
+        assertEquals(ll, snakeBody.getBodyParts());
+
+        //test for growing by multiple cells
+        int oldLength = snakeBody.getBodyParts().size();
+        snakeBody.growSnake(2);
+        int newLength = snakeBody.getBodyParts().size();
+        assertEquals(oldLength + 2, newLength);
     }
 
     @Test
@@ -95,7 +113,7 @@ class SnakeBodyTest {
         snakeBody.moveSnake(SnakeBody.Direction.UP);
         snakeBody.updateBodyPartsPosition(snakeBody.getHeadX(), snakeBody.getHeadY());
 
-        assertEquals(snakeBody.getBodyParts().get(1).getY(), snakeBody.getBodyParts().get(0).getY() - snakeBody.getEdgeSize());
+        assertEquals(snakeBody.getBodyParts().get(1).getY(), snakeBody.getBodyParts().get(0).getY() - SnakeBody.CELL_SIZE);
     }
 
     @Test
@@ -106,4 +124,5 @@ class SnakeBodyTest {
         Mockito.verify(shapeRenderer).setColor(any(Color.class));
         Mockito.verify(shapeRenderer).end();
     }
+
 }
