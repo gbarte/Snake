@@ -39,7 +39,9 @@ $ https://gitlab.ewi.tudelft.nl/cse2115/2019-2020/SN/sem-group-10/template.git
 
 ### Run
 
-// TODO
+1) Run `Main.java`;
+2) If there is an error, use `-XstartOnFirstThread` VM option for the configuration;
+2) Use WASD to control the snake.
 
 ## Reports
 
