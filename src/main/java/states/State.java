@@ -6,7 +6,6 @@ import com.badlogic.gdx.math.Vector3;
 
 public abstract class State {
     protected OrthographicCamera camera;
-    protected Vector3 mouse;
     protected GameStateManager gameManager;
 
     /**
@@ -17,7 +16,6 @@ public abstract class State {
     public State(GameStateManager gameManager) {
         this.gameManager = gameManager;
         camera = new OrthographicCamera();
-        mouse = new Vector3();
     }
 
     public abstract void handleInput();
@@ -32,20 +30,12 @@ public abstract class State {
         return camera;
     }
 
-    public Vector3 getMouse() {
-        return mouse;
-    }
-
     public GameStateManager getGameManager() {
         return gameManager;
     }
 
     public void setCamera(OrthographicCamera camera) {
         this.camera = camera;
-    }
-
-    public void setMouse(Vector3 mouse) {
-        this.mouse = mouse;
     }
 
     public void setGameManager(GameStateManager gameManager) {
