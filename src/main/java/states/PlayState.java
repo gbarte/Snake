@@ -207,11 +207,8 @@ public class PlayState extends State {
     private void checkAppleEaten() {
         if(snake.getHeadX() == apple.getCoordinates().getX() && snake.getHeadY() == apple.getCoordinates().getY()) {
             apple = createApple();
-            System.out.println("apple coord X" + apple.getCoordinates().getX());
-            System.out.println("apple coord Y" + apple.getCoordinates().getY());
+            snake.growSnake();
         }
-        System.out.println("snake coord x" + snake.getHeadX());
-        System.out.println("snake coord y" + snake.getHeadY());
     }
 
 }
