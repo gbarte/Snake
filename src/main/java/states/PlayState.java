@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import game.SnakeGame;
 import objects.base.Apple;
+import snake.BodyPart;
 import snake.SnakeBody;
 
 import java.util.Random;
@@ -92,6 +93,7 @@ public class PlayState extends State {
         checkOutOfMap();
         updateSnake(dt);
         checkAppleEaten();
+        checkAppleOnSnake();
     }
 
     /**
@@ -103,9 +105,9 @@ public class PlayState extends State {
     public void render(SpriteBatch batch) {
         snake.renderSnake(shapeRenderer);
         batch.begin();
-        //Comment out next line if you don't want the grid
         batch.draw(apple.getTexture(), apple.getCoordinates().getX(), apple.getCoordinates().getY());
         batch.end();
+        //Comment out next line if you don't want the grid
         drawGrid();
     }
 
@@ -199,6 +201,7 @@ public class PlayState extends State {
 
         int x = r.nextInt(max_x - min_x) + min_x;
         int y = r.nextInt(max_y - min_y) + min_y;
+
         Apple apple = new Apple(x, y);
 
         return apple;
@@ -210,7 +213,13 @@ public class PlayState extends State {
             snake.growSnake();
         }
     }
-
+    private void checkAppleOnSnake() {
+        for (BodyPart bp : snake.getBodyParts()) {
+            if(bp.getX() == apple.getCoordinates().getX() && bp.getY() == apple.getCoordinates().getY()) {
+                apple = createApple();
+            }
+        }
+    }
 }
 
 
