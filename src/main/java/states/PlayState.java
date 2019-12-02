@@ -4,13 +4,18 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import game.SnakeGame;
+import objects.base.Apple;
 import snake.SnakeBody;
+
+import java.util.Random;
 
 public class PlayState extends State {
     private final float MOVE_TIME = 0.25f;
     private float timer = MOVE_TIME;
     private SnakeBody snake;
     private ShapeRenderer shapeRenderer;
+    private Apple apple;
 
     /**
      * Constructor which creates a new state within the game.
@@ -23,11 +28,13 @@ public class PlayState extends State {
         shapeRenderer = new ShapeRenderer();
         snake = new SnakeBody(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(false, Gdx.graphics.getWidth() , Gdx.graphics.getHeight());
+        apple = createApple();
     }
     public PlayState(GameStateManager gameManager, SnakeBody snake, ShapeRenderer renderer) {
         super(gameManager);
         this.snake = snake;
         this.shapeRenderer = renderer;
+        apple = createApple();
     }
 
     public OrthographicCamera getCamera() {
@@ -84,6 +91,7 @@ public class PlayState extends State {
         handleInput();
         checkOutOfMap();
         updateSnake(dt);
+        checkAppleEaten();
     }
 
     /**
@@ -93,11 +101,12 @@ public class PlayState extends State {
      */
     @Override
     public void render(SpriteBatch batch) {
-        batch.begin();
         snake.renderSnake(shapeRenderer);
+        batch.begin();
         //Comment out next line if you don't want the grid
-        drawGrid();
+        batch.draw(apple.getTexture(), apple.getCoordinates().getX(), apple.getCoordinates().getY());
         batch.end();
+        drawGrid();
     }
 
     /**
@@ -157,13 +166,13 @@ public class PlayState extends State {
      * if it hits then the state changes to GAME_OVER.
      */
     public void checkOutOfMap() {
-        if (snake.getHeadX() >= Gdx.graphics.getWidth() - snake.CELL_SIZE) {
+        if (snake.getHeadX() >= Gdx.graphics.getWidth() - SnakeBody.CELL_SIZE) {
             System.out.println("Game oveeer");
         }
         if (snake.getHeadX() <= 0) {
             System.out.println("Game oveer");
         }
-        if (snake.getHeadY() >= Gdx.graphics.getHeight() -  snake.CELL_SIZE) {
+        if (snake.getHeadY() >= Gdx.graphics.getHeight() - SnakeBody.CELL_SIZE) {
             System.out.println("Game over");
         }
         if (snake.getHeadY() <= 0) {
@@ -173,12 +182,36 @@ public class PlayState extends State {
 
     private void drawGrid() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        for(int x=0;x<Gdx.graphics.getWidth() ;x+=snake.CELL_SIZE){
-            for(int y=0;y<Gdx.graphics.getHeight();y+=snake.CELL_SIZE){
-                shapeRenderer.rect(x, y, snake.CELL_SIZE, snake.CELL_SIZE);
+        for(int x=0;x<Gdx.graphics.getWidth() ;x+= SnakeBody.CELL_SIZE){
+            for(int y=0;y<Gdx.graphics.getHeight();y+= SnakeBody.CELL_SIZE){
+                shapeRenderer.rect(x, y, SnakeBody.CELL_SIZE, SnakeBody.CELL_SIZE);
             }
         }
         shapeRenderer.end();
+    }
+
+    private Apple createApple() {
+        Random r = new Random();
+        int min_x = 0;
+        int min_y = 0;
+        int max_x = (int) (SnakeGame.WIDTH / SnakeBody.CELL_SIZE);
+        int max_y = (int) (SnakeGame.HEIGHT / SnakeBody.CELL_SIZE);
+
+        int x = r.nextInt(max_x - min_x) + min_x;
+        int y = r.nextInt(max_y - min_y) + min_y;
+        Apple apple = new Apple(x, y);
+
+        return apple;
+    }
+
+    private void checkAppleEaten() {
+        if(snake.getHeadX() == apple.getCoordinates().getX() && snake.getHeadY() == apple.getCoordinates().getY()) {
+            apple = createApple();
+            System.out.println("apple coord X" + apple.getCoordinates().getX());
+            System.out.println("apple coord Y" + apple.getCoordinates().getY());
+        }
+        System.out.println("snake coord x" + snake.getHeadX());
+        System.out.println("snake coord y" + snake.getHeadY());
     }
 
 }

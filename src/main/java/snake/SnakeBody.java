@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.util.LinkedList;
 
 public class SnakeBody {
-    public static final float CELL_SIZE = 50;
+    public static final int CELL_SIZE = 50;
     private static final int INITIAL_LENGTH = 2;
     private float headX;
     private float headY;
@@ -23,21 +23,6 @@ public class SnakeBody {
         this.bodyParts = new LinkedList<BodyPart>();
         growSnake(INITIAL_LENGTH);
     }
-//
-//    public Texture getHeadTexture() {
-//        return headTexture;
-//    }
-//
-//    public void setHeadTexture(Texture headTexture) {
-//        this.headTexture = headTexture;
-//    }
-//    public float getCELL_SIZE() {
-//        return CELL_SIZE;
-//    }
-//
-//    public int getINITIAL_LENGTH() {
-//        return INITIAL_LENGTH;
-//    }
 
     public float getHeadX() {
         return headX;

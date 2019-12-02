@@ -2,6 +2,7 @@ package states;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import objects.base.Apple;
 
 public class MenuState extends State {
     private Texture background;
@@ -22,7 +23,6 @@ public class MenuState extends State {
 
     @Override
     public void render(SpriteBatch batch) {
-
     }
 
     @Override
