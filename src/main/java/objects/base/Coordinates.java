@@ -1,5 +1,7 @@
 package objects.base;
 
+import java.util.Objects;
+
 public class Coordinates {
     private int x;
     private int y;
@@ -35,5 +37,15 @@ public class Coordinates {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
+    }
+
+    @Override
+    public String toString() {
+        return "Coordinates are: X = " + x + ", " + "Y = " + y;
     }
 }

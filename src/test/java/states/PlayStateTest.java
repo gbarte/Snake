@@ -1,5 +1,7 @@
 package states;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -99,5 +101,21 @@ class PlayStateTest {
         play.updateDirection(SnakeBody.Direction.RIGHT);
 
         assertEquals(snake.getCurrDir(), SnakeBody.Direction.RIGHT);
+    }
+
+    @Test
+    void handleInput() {
+        ShapeRenderer shapeRenderer = Mockito.mock(ShapeRenderer.class);
+        SnakeBody snake = new SnakeBody(100, 100);
+        PlayState play = new PlayState(stateManager, snake, shapeRenderer);
+
+
+        Gdx.input = Mockito.mock(Input.class);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.W)).thenReturn(true);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.A)).thenReturn(false);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.S)).thenReturn(false);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.D)).thenReturn(false);
+
+        assertEquals(SnakeBody.Direction.UP, play.getSnake().getCurrDir());
     }
 }

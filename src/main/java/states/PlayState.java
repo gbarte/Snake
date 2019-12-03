@@ -35,7 +35,7 @@ public class PlayState extends State {
         super(gameManager);
         this.snake = snake;
         this.shapeRenderer = renderer;
-        apple = createApple();
+        //Since this method is more for testing purposes, we do not create an apple there.
     }
 
     public OrthographicCamera getCamera() {
@@ -72,6 +72,14 @@ public class PlayState extends State {
 
     public void setTimer(float timer) {
         this.timer = timer;
+    }
+
+    public Apple getApple() {
+        return apple;
+    }
+
+    public void setApple(Apple apple) {
+        this.apple = apple;
     }
 
     @Override
@@ -196,8 +204,8 @@ public class PlayState extends State {
         Random r = new Random();
         int min_x = 0;
         int min_y = 0;
-        int max_x = (int) (SnakeGame.WIDTH / SnakeBody.CELL_SIZE);
-        int max_y = (int) (SnakeGame.HEIGHT / SnakeBody.CELL_SIZE);
+        int max_x = SnakeGame.WIDTH / SnakeBody.CELL_SIZE;
+        int max_y = SnakeGame.HEIGHT / SnakeBody.CELL_SIZE;
 
         int x = r.nextInt(max_x - min_x) + min_x;
         int y = r.nextInt(max_y - min_y) + min_y;
@@ -213,6 +221,8 @@ public class PlayState extends State {
             snake.growSnake();
         }
     }
+
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     private void checkAppleOnSnake() {
         for (BodyPart bp : snake.getBodyParts()) {
             if(bp.getX() == apple.getCoordinates().getX() && bp.getY() == apple.getCoordinates().getY()) {
