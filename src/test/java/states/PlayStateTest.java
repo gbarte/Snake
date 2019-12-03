@@ -111,11 +111,12 @@ class PlayStateTest {
 
 
         Gdx.input = Mockito.mock(Input.class);
-        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.W)).thenReturn(true);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.W)).thenReturn(false);
         Mockito.when(Gdx.input.isKeyPressed(Input.Keys.A)).thenReturn(false);
-        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.S)).thenReturn(false);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.S)).thenReturn(true);
         Mockito.when(Gdx.input.isKeyPressed(Input.Keys.D)).thenReturn(false);
 
-        assertEquals(SnakeBody.Direction.UP, play.getSnake().getCurrDir());
+        play.handleInput();
+        assertEquals(SnakeBody.Direction.DOWN, play.getSnake().getCurrDir());
     }
 }
