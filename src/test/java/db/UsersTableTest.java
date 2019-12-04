@@ -1,32 +1,31 @@
 package db;
 
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.sql.SQLException;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 
 public class UsersTableTest {
 
-    UsersTable table;
+    private transient UsersTable table;
 
-    @BeforeEach
-    void setup() {
-        table = new UsersTable();
-    }
-
-    void dropCustomTable() {
+    private void dropCustomTable() {
         try {
             File file = new File("data/test_table.db");
             Files.deleteIfExists(file.toPath());
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @BeforeEach
+    void setUp() {
+        table = new UsersTable();
     }
 
     @Test
@@ -57,7 +56,8 @@ public class UsersTableTest {
         Assertions.assertNotNull(table.getConnection());
 
         // Verify that schema is initialized.
-        Assertions.assertTrue(table.getConnection().getMetaData().getTables(null, null, "users", null).next());
+        Assertions.assertTrue(table.getConnection().getMetaData()
+                .getTables(null, null, "users", null).next());
 
         dropCustomTable();
 

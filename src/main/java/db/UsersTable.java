@@ -1,7 +1,11 @@
 package db;
 
 import java.io.File;
-import java.sql.*;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 // TODO: decouple logics; make abstract class to handle abstract table interaction.
 
@@ -11,6 +15,10 @@ public class UsersTable {
     private static final String TABLE_NAME = "users";
 
     private Connection connection;
+
+    private void setConnection(Connection connection) {
+        this.connection = connection;
+    }
 
     public Connection getConnection() {
         return this.connection;
