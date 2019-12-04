@@ -1,12 +1,13 @@
 package objects.base;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.badlogic.gdx.graphics.Texture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import snake.SnakeBody;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 class AppleTest {
     Texture texture;
@@ -19,8 +20,8 @@ class AppleTest {
     @Test
     void getCoordinates() {
         Apple apple = new Apple(10, 15, 100, texture);
-        assertEquals(10 * SnakeBody.CELL_SIZE, apple.getCoordinates().getX());
-        assertEquals(15 * SnakeBody.CELL_SIZE, apple.getCoordinates().getY());
+        assertEquals(10 * SnakeBody.CELL_SIZE, apple.getCoordinates().getCoordinateX());
+        assertEquals(15 * SnakeBody.CELL_SIZE, apple.getCoordinates().getCoordinateY());
     }
 
     @Test

@@ -1,36 +1,37 @@
 package snake;
 
 public class BodyPart {
-    private float x, y;
+    private float coordinateX;
+    private float coordinateY;
 
-    public BodyPart(float x, float y) {
-        this.x = x;
-        this.y = y;
+    public BodyPart(float coordinateX, float coordinateY) {
+        this.coordinateX = coordinateX;
+        this.coordinateY = coordinateY;
     }
 
-    public float getX() {
-        return x;
+    public float getCoordinateX() {
+        return coordinateX;
     }
 
-    public void setX(float x) {
-        this.x = x;
+    public void setCoordinateX(float coordinateX) {
+        this.coordinateX = coordinateX;
     }
 
-    public float getY() {
-        return y;
+    public float getCoordinateY() {
+        return coordinateY;
     }
 
-    public void setY(float y) {
-        this.y = y;
+    public void setCoordinateY(float coordinateY) {
+        this.coordinateY = coordinateY;
     }
 
     /**
-     * Moves body part to new coordinates
+     * Moves body part to new coordinates.
      * @param x - New x coordinate of position of bodypart.
      * @param y - New y coordinate of position of bodypart.
      */
-    public void updateBodyPartPos(float x, float y) {
-        this.x = x;
-        this.y = y;
+    void updateBodyPartPos(float x, float y) {
+        this.coordinateX = x;
+        this.coordinateY = y;
     }
 }

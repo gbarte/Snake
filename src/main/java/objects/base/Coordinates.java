@@ -3,37 +3,37 @@ package objects.base;
 import java.util.Objects;
 
 public class Coordinates {
-    private int x;
-    private int y;
+    private int coordinateX;
+    private int coordinateY;
 
-    public Coordinates(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public Coordinates(int coordinateX, int coordinateY) {
+        this.coordinateX = coordinateX;
+        this.coordinateY = coordinateY;
     }
 
-    public int getX() {
-        return x;
+    public int getCoordinateX() {
+        return coordinateX;
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public void setCoordinateX(int coordinateX) {
+        this.coordinateX = coordinateX;
     }
 
-    public int getY() {
-        return y;
+    public int getCoordinateY() {
+        return coordinateY;
     }
 
-    public void setY(int y) {
-        this.y = y;
+    public void setCoordinateY(int coordinateY) {
+        this.coordinateY = coordinateY;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if(this == obj) {
+        if (this == obj) {
             return true;
         }
         Coordinates that = (Coordinates) obj;
-        if(this.x == that.x && this.y == that.y) {
+        if (this.coordinateX == that.coordinateX && this.coordinateY == that.coordinateY) {
             return true;
         }
         return false;
@@ -41,11 +41,11 @@ public class Coordinates {
 
     @Override
     public int hashCode() {
-        return Objects.hash(x, y);
+        return Objects.hash(coordinateX, coordinateY);
     }
 
     @Override
     public String toString() {
-        return "Coordinates are: X = " + x + ", " + "Y = " + y;
+        return "Coordinates are: X = " + coordinateX + ", " + "Y = " + coordinateY;
     }
 }
