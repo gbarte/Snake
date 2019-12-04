@@ -1,13 +1,14 @@
 package states;
 
-import com.badlogic.gdx.*;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import snake.SnakeBody;
 
 public class PlayState extends State {
-    private final float MOVE_TIME = 0.25f;
+    protected static final float MOVE_TIME = 0.25f;
     private float timer = MOVE_TIME;
     private SnakeBody snake;
     private ShapeRenderer shapeRenderer;
@@ -22,8 +23,12 @@ public class PlayState extends State {
         super(gameManager);
         shapeRenderer = new ShapeRenderer();
         snake = new SnakeBody(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.setToOrtho(false, Gdx.graphics.getWidth() , Gdx.graphics.getHeight());
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
+
+    /**
+     * Play Screen of the game.
+     */
     public PlayState(GameStateManager gameManager, SnakeBody snake, ShapeRenderer renderer) {
         super(gameManager);
         this.snake = snake;
@@ -54,10 +59,6 @@ public class PlayState extends State {
         this.shapeRenderer = shapeRenderer;
     }
 
-    public float getMOVE_TIME() {
-        return MOVE_TIME;
-    }
-
     public float getTimer() {
         return timer;
     }
@@ -69,14 +70,21 @@ public class PlayState extends State {
     @Override
     public void handleInput() {
         boolean upPressed = Gdx.input.isKeyPressed(Input.Keys.W);
+        if (upPressed) {
+            updateDirection(SnakeBody.Direction.UP);
+        }
         boolean downPressed = Gdx.input.isKeyPressed(Input.Keys.S);
+        if (downPressed) {
+            updateDirection(SnakeBody.Direction.DOWN);
+        }
         boolean leftPressed = Gdx.input.isKeyPressed(Input.Keys.A);
+        if (leftPressed) {
+            updateDirection(SnakeBody.Direction.LEFT);
+        }
         boolean rightPressed = Gdx.input.isKeyPressed(Input.Keys.D);
-
-        if (upPressed) {updateDirection(SnakeBody.Direction.UP);}
-        if (downPressed) {updateDirection(SnakeBody.Direction.DOWN);}
-        if (leftPressed) updateDirection(SnakeBody.Direction.LEFT);
-        if (rightPressed) updateDirection(SnakeBody.Direction.RIGHT);
+        if (rightPressed) {
+            updateDirection(SnakeBody.Direction.RIGHT);
+        }
     }
 
     @Override
@@ -102,7 +110,7 @@ public class PlayState extends State {
 
     /**
      * Moves the snake every MOVE_TIME.
-     * @param delta
+     * @param delta - time interval between each step
      */
     private void updateSnake(float delta) {
         timer -= delta;
@@ -119,7 +127,7 @@ public class PlayState extends State {
 
     /**
      * Updates the direction by calling updateIfNotOpposite.
-     * @param direction
+     * @param direction - direction in which the user wants to move the snake
      */
     public void updateDirection(SnakeBody.Direction direction) {
         if (!direction.equals(snake.getCurrDir())) {
@@ -136,6 +144,8 @@ public class PlayState extends State {
                 case RIGHT:
                     updateIfNotOpposite(SnakeBody.Direction.RIGHT, SnakeBody.Direction.LEFT);
                     break;
+                default:
+                    // nothing happens
             }
         }
     }
@@ -146,7 +156,8 @@ public class PlayState extends State {
      * @param newDir - Direction the snake wants to move to.
      * @param oppositeDirection - Direction snake comes from.
      */
-    private void updateIfNotOpposite(SnakeBody.Direction newDir, SnakeBody.Direction oppositeDirection) {
+    private void updateIfNotOpposite(SnakeBody.Direction newDir,
+                                     SnakeBody.Direction oppositeDirection) {
         if (!newDir.equals(oppositeDirection)) {
             snake.setCurrDir(newDir);
         }
@@ -157,13 +168,13 @@ public class PlayState extends State {
      * if it hits then the state changes to GAME_OVER.
      */
     public void checkOutOfMap() {
-        if (snake.getHeadX() >= Gdx.graphics.getWidth() - snake.CELL_SIZE) {
+        if (snake.getHeadX() >= Gdx.graphics.getWidth() - SnakeBody.CELL_SIZE) {
             System.out.println("Game oveeer");
         }
         if (snake.getHeadX() <= 0) {
             System.out.println("Game oveer");
         }
-        if (snake.getHeadY() >= Gdx.graphics.getHeight() -  snake.CELL_SIZE) {
+        if (snake.getHeadY() >= Gdx.graphics.getHeight() - SnakeBody.CELL_SIZE) {
             System.out.println("Game over");
         }
         if (snake.getHeadY() <= 0) {
@@ -173,14 +184,13 @@ public class PlayState extends State {
 
     private void drawGrid() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        for(int x=0;x<Gdx.graphics.getWidth() ;x+=snake.CELL_SIZE){
-            for(int y=0;y<Gdx.graphics.getHeight();y+=snake.CELL_SIZE){
-                shapeRenderer.rect(x, y, snake.CELL_SIZE, snake.CELL_SIZE);
+        for (int x = 0; x < Gdx.graphics.getWidth(); x += SnakeBody.CELL_SIZE) {
+            for (int y = 0; y < Gdx.graphics.getHeight(); y += SnakeBody.CELL_SIZE) {
+                shapeRenderer.rect(x, y, SnakeBody.CELL_SIZE, SnakeBody.CELL_SIZE);
             }
         }
         shapeRenderer.end();
     }
-
 }
 
 

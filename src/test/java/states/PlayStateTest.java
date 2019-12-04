@@ -1,5 +1,7 @@
 package states;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -7,8 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import snake.SnakeBody;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class PlayStateTest {
     transient GameStateManager stateManager;
@@ -73,21 +73,12 @@ class PlayStateTest {
     }
 
     @Test
-    void getMOVE_TIME() {
-        ShapeRenderer shapeRenderer = Mockito.mock(ShapeRenderer.class);
-        SnakeBody snake = new SnakeBody(100, 100);
-        PlayState play = new PlayState(stateManager, snake, shapeRenderer);
-
-        assertEquals(play.getMOVE_TIME(), 0.25f);
-    }
-
-    @Test
     void getTimer() {
         ShapeRenderer shapeRenderer = Mockito.mock(ShapeRenderer.class);
         SnakeBody snake = new SnakeBody(100, 100);
         PlayState play = new PlayState(stateManager, snake, shapeRenderer);
 
-        assertEquals(play.getMOVE_TIME(), play.getTimer());
+        assertEquals(PlayState.MOVE_TIME, play.getTimer());
     }
 
     @Test

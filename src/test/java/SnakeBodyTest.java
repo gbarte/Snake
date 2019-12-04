@@ -1,15 +1,15 @@
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import java.util.LinkedList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
 import snake.BodyPart;
 import snake.SnakeBody;
-
-import java.util.LinkedList;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 
 class SnakeBodyTest {
     private transient SnakeBody snakeBody;
@@ -20,20 +20,20 @@ class SnakeBodyTest {
     }
 
     @Test
-    public void constructorTest(){
+    public void constructorTest() {
         snakeBody = new SnakeBody(800, 800);
         assertEquals(2, snakeBody.getBodyParts().size());
     }
 
     @Test
     void getHeadXTest() {
-        assertEquals(snakeBody.getHeadX(),400);
+        assertEquals(snakeBody.getHeadX(), 400);
     }
 
     @Test
     void setHeadXTest() {
         snakeBody.setHeadX(5);
-        assertEquals(5 , snakeBody.getHeadX());
+        assertEquals(5, snakeBody.getHeadX());
     }
 
     @Test
@@ -113,7 +113,8 @@ class SnakeBodyTest {
         snakeBody.moveSnake(SnakeBody.Direction.UP);
         snakeBody.updateBodyPartsPosition(snakeBody.getHeadX(), snakeBody.getHeadY());
 
-        assertEquals(snakeBody.getBodyParts().get(1).getY(), snakeBody.getBodyParts().get(0).getY() - SnakeBody.CELL_SIZE);
+        assertEquals(snakeBody.getBodyParts().get(1).getCoordinateY(),
+                snakeBody.getBodyParts().get(0).getCoordinateY() - SnakeBody.CELL_SIZE);
     }
 
     @Test
@@ -121,7 +122,7 @@ class SnakeBodyTest {
         ShapeRenderer shapeRenderer = Mockito.mock(ShapeRenderer.class);
         snakeBody.renderSnake(shapeRenderer);
 
-        Mockito.verify(shapeRenderer).setColor(any(Color.class));
+        Mockito.verify(shapeRenderer).setColor(Mockito.any(Color.class));
         Mockito.verify(shapeRenderer).end();
     }
 
