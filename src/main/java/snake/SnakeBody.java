@@ -10,7 +10,7 @@ public class SnakeBody {
     public static final int CELL_SIZE = 50;
     private static final int INITIAL_LENGTH = 2;
 
-    private Coordinates headCoordinates;
+    private Coordinates headCoord;
     private LinkedList<BodyPart> bodyParts;
     private Direction currDir;
 
@@ -18,11 +18,12 @@ public class SnakeBody {
 
     /**
      * Constructs a snake with INITIAL_LENGTH amount of bodyparts.
+     *
      * @param headX - X coordinate of head
      * @param headY - Y coordinate of head
      */
     public SnakeBody(int headX, int headY) {
-        this.headCoordinates = new Coordinates(headX / 2, headY / 2);
+        this.headCoord = new Coordinates(headX / 2, headY / 2);
         this.currDir = Direction.UP;
         this.bodyParts = new LinkedList<BodyPart>();
         growSnake(INITIAL_LENGTH);
@@ -44,24 +45,31 @@ public class SnakeBody {
         this.currDir = currDir;
     }
 
-    public Coordinates getHeadCoordinates() {
-        return headCoordinates;
+    public Coordinates getHeadCoord() {
+        return headCoord;
     }
 
-    public void setHeadCoordinates(Coordinates headCoordinates) {
-        this.headCoordinates = headCoordinates;
+    public void setHeadCoord(Coordinates headCoord) {
+        this.headCoord = headCoord;
     }
 
     /**
      * Grows the snake body by one body part.
      */
     public void growSnake() {
-        int snakeSize = bodyParts.size() + 1;
-        bodyParts.add(new BodyPart(headCoordinates.getCoordinateX() - (snakeSize * CELL_SIZE), headCoordinates.getCoordinateY()));
+        if (bodyParts.size() == 0) {
+            bodyParts.add(new BodyPart(headCoord.getCoordinateX(), headCoord.getCoordinateY()));
+        } else if (bodyParts.size() > 0) {
+            int tailID = bodyParts.size() - 1;
+            BodyPart tail = bodyParts.get(tailID);
+            Coordinates tailCoord = tail.getCoordinates();
+            bodyParts.add(new BodyPart(tailCoord.getCoordinateX(), tailCoord.getCoordinateY()));
+        }
     }
 
     /**
      * Grows the snake body by a specified number of body parts.
+     *
      * @param length - by how many body parts the snake will be grown
      */
     public void growSnake(int length) {
@@ -73,16 +81,21 @@ public class SnakeBody {
     /**
      * First renders the head of the snake as a rectangle.
      * Then loops through the bodyparts and renders those.
+     *
      * @param shapeRenderer - ShapeRenderer object
      */
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     public void renderSnake(ShapeRenderer shapeRenderer) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(new Color(Color.GREEN));
-        shapeRenderer.rect(this.headCoordinates.getCoordinateX(), this.headCoordinates.getCoordinateY(), CELL_SIZE, CELL_SIZE);
+        int x = this.headCoord.getCoordinateX();
+        int y = this.headCoord.getCoordinateY();
+        shapeRenderer.rect(x, y, CELL_SIZE, CELL_SIZE);
         if (bodyParts.size() > 0) {
             for (BodyPart bp : bodyParts) {
-                shapeRenderer.rect(bp.getCoordinates().getCoordinateX(), bp.getCoordinates().getCoordinateY(), CELL_SIZE, CELL_SIZE);
+                Coordinates bodyCoord = bp.getCoordinates();
+                shapeRenderer.rect(bodyCoord.getCoordinateX(), bodyCoord.getCoordinateY(),
+                        CELL_SIZE, CELL_SIZE);
             }
         }
         shapeRenderer.end();
@@ -90,26 +103,26 @@ public class SnakeBody {
 
     /**
      * Updates currDir to the given direction.
+     *
      * @param snakeDirection - Updates currDir to this direction
      */
     public void moveSnake(Direction snakeDirection) {
         switch (snakeDirection) {
             case RIGHT:
-                updateBodyPartsPosition(headCoordinates);
-                headCoordinates.addToX(CELL_SIZE);
+                updateBodyPartsPosition(headCoord);
+                headCoord.addToX(CELL_SIZE);
                 break;
             case LEFT:
-                updateBodyPartsPosition(headCoordinates);
-
-                headCoordinates.subtractFromX(CELL_SIZE);
+                updateBodyPartsPosition(headCoord);
+                headCoord.subtractFromX(CELL_SIZE);
                 break;
             case UP:
-                updateBodyPartsPosition(headCoordinates);
-                headCoordinates.addToY(CELL_SIZE);
+                updateBodyPartsPosition(headCoord);
+                headCoord.addToY(CELL_SIZE);
                 break;
             case DOWN:
-                updateBodyPartsPosition(headCoordinates);
-                headCoordinates.subtractFromY(CELL_SIZE);
+                updateBodyPartsPosition(headCoord);
+                headCoord.subtractFromY(CELL_SIZE);
                 break;
             default:
                 // will not execute

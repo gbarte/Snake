@@ -58,9 +58,13 @@ class SnakeBodyTest {
     @Test
     void growSnakeTest() {
         LinkedList<BodyPart> ll = snakeBody.getBodyParts();
-        int length = ll.size();
+
+        //test for growing first bodyPart
+        ll.add(new BodyPart(450, 400));
+        assertEquals(ll.get(0), snakeBody.getBodyParts().get(0));
 
         // test for growing by one cell
+        int length = ll.size();
         ll.add(new BodyPart(450 - (length * SnakeBody.CELL_SIZE), 400));
         snakeBody.growSnake();
         assertEquals(ll, snakeBody.getBodyParts());
@@ -76,9 +80,8 @@ class SnakeBodyTest {
     void moveSnakeTest() {
         assertEquals(snakeBody.getCurrDir(), SnakeBody.Direction.UP);
         snakeBody.moveSnake(SnakeBody.Direction.RIGHT);
-        assertEquals(snakeBody.getHeadCoordinates().getCoordinateX(), 450);
-        assertEquals(snakeBody.getHeadCoordinates().getCoordinateY(), 400);
-
+        assertEquals(snakeBody.getHeadCoord().getCoordinateX(), 450);
+        assertEquals(snakeBody.getHeadCoord().getCoordinateY(), 400);
     }
 
     @Test
@@ -89,7 +92,7 @@ class SnakeBodyTest {
 
         snakeBody.setBodyParts(ll);
         snakeBody.moveSnake(SnakeBody.Direction.UP);
-        snakeBody.updateBodyPartsPosition(snakeBody.getHeadCoordinates());
+        snakeBody.updateBodyPartsPosition(snakeBody.getHeadCoord());
 
         LinkedList<BodyPart> bodyParts = snakeBody.getBodyParts();
 
