@@ -105,20 +105,24 @@ public class UsersTable {
      * @param username - name of the user.
      * @return Map object that contains password and username.
      */
+    @SuppressWarnings("PMD")
     public Map<String, String> getUser(String username) {
 
         assert connection != null;
 
         String query = "SELECT * FROM users WHERE username=? LIMIT 1";
 
+        ResultSet queryResult = null;
+        PreparedStatement preparedStatement = null;
+
         try {
 
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, username);
 
-            ResultSet queryResult = preparedStatement.executeQuery();
+            queryResult = preparedStatement.executeQuery();
 
-            if(queryResult.next()) {
+            if (queryResult.next()) {
                 String hash = queryResult.getString("password");
                 System.out.println(hash);
 
@@ -126,9 +130,11 @@ public class UsersTable {
                 result.put("username", username);
                 result.put("hash", hash);
 
+                queryResult.close();
                 preparedStatement.close();
                 return result;
             }
+
 
         } catch (SQLException e) {
             e.printStackTrace();

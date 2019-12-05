@@ -1,23 +1,11 @@
 package auth;
 
-
 import db.UsersTable;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
-
-enum AuthResponse {
-    SUCCESS,
-    WRONG_PASSWORD,
-}
-
-enum RegistrationResponse {
-    SUCCESS,
-    SHORT_PASSWORD,
-    OCCUPIED_NAME,
-}
 
 public class AuthService {
 
@@ -54,13 +42,14 @@ public class AuthService {
         assert username != null;
         assert password != null;
 
-        String hash = getPasswordHash(password);
         Map<String, String> user = table.getUser(username);
 
-        if(user == null)
+        if (user == null) {
             return AuthResponse.WRONG_PASSWORD;
+        }
 
-        if(user.containsKey("hash") && user.get("hash").equals(hash)) {
+        String hash = getPasswordHash(password);
+        if (user.containsKey("hash") && user.get("hash").equals(hash)) {
             return AuthResponse.SUCCESS;
         } else {
             return AuthResponse.WRONG_PASSWORD;
@@ -80,11 +69,13 @@ public class AuthService {
         assert username != null;
         assert password != null;
 
-        if (password.length() < MIN_PASS_LENGTH)
+        if (password.length() < MIN_PASS_LENGTH) {
             return RegistrationResponse.SHORT_PASSWORD;
+        }
 
-        if(table.getUser(username) != null)
+        if (table.getUser(username) != null) {
             return RegistrationResponse.OCCUPIED_NAME;
+        }
 
         String hash = getPasswordHash(password);
         table.createUser(username, hash);
@@ -92,8 +83,7 @@ public class AuthService {
     }
 
 
-    private static String getPasswordHash(String password)
-    {
+    private static String getPasswordHash(String password) {
         try {
 
             MessageDigest md = MessageDigest.getInstance("MD5");
@@ -108,8 +98,7 @@ public class AuthService {
             }
             return hashtext;
 
-        }
-        catch (NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
 
