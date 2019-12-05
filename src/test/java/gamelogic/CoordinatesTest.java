@@ -3,7 +3,6 @@ package gamelogic;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import gamelogic.Coordinates;
 import org.junit.jupiter.api.Test;
 
 class CoordinatesTest {
