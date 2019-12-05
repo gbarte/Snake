@@ -53,6 +53,70 @@ public class LoginState extends State {
         stage.addActor(title);
     }
 
+    public Stage getStage() {
+        return stage;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public Skin getSkin() {
+        return skin;
+    }
+
+    public void setSkin(Skin skin) {
+        this.skin = skin;
+    }
+
+    public Label getTitle() {
+        return title;
+    }
+
+    public void setTitle(Label title) {
+        this.title = title;
+    }
+
+    public Button getLoginButton() {
+        return loginButton;
+    }
+
+    public void setLoginButton(Button loginButton) {
+        this.loginButton = loginButton;
+    }
+
+    public Button getSignUpButton() {
+        return signUpButton;
+    }
+
+    public void setSignUpButton(Button signUpButton) {
+        this.signUpButton = signUpButton;
+    }
+
+    public TextField getUsernameField() {
+        return usernameField;
+    }
+
+    public void setUsernameField(TextField usernameField) {
+        this.usernameField = usernameField;
+    }
+
+    public TextField getPassWordField() {
+        return passWordField;
+    }
+
+    public void setPassWordField(TextField passWordField) {
+        this.passWordField = passWordField;
+    }
+
+    public Texture getBackGround() {
+        return backGround;
+    }
+
+    public void setBackGround(Texture backGround) {
+        this.backGround = backGround;
+    }
+
     private void initSignUp() {
         TextureRegionDrawable signUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("assets/sign_up_button2.png"))));
         TextureRegionDrawable signDown = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("assets/sign_up_button.png"))));
