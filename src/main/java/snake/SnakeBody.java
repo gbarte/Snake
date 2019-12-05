@@ -64,8 +64,16 @@ public class SnakeBody {
      * Grows the snake body by one body part.
      */
     public void growSnake() {
-        int snakeSize = bodyParts.size() + 1;
-        bodyParts.add(new BodyPart(this.headX - (snakeSize * CELL_SIZE), this.headY));
+        if (bodyParts.size() == 0) {
+            int snakeSize = bodyParts.size() + 1;
+            bodyParts.add(new BodyPart(this.headX, this.headY));
+        }
+        // making sure nothing happens if snake size is negative
+        else if (bodyParts.size() > 0){
+            int tailID = bodyParts.size() - 1;
+            BodyPart tail = bodyParts.get(tailID);
+            bodyParts.add(new BodyPart(tail.getCoordinateX(), tail.getCoordinateY()));
+        }
     }
 
     /**

@@ -80,9 +80,13 @@ class SnakeBodyTest {
     @Test
     void growSnakeTest() {
         LinkedList<BodyPart> ll = snakeBody.getBodyParts();
-        int length = ll.size();
+
+        //test for growing first bodyPart
+        ll.add(new BodyPart(450, 400));
+        assertEquals(ll.get(0), snakeBody.getBodyParts().get(0));
 
         // test for growing by one cell
+        int length = ll.size();
         ll.add(new BodyPart(450 - (length * SnakeBody.CELL_SIZE), 400));
         snakeBody.growSnake();
         assertEquals(ll, snakeBody.getBodyParts());
@@ -100,7 +104,6 @@ class SnakeBodyTest {
         snakeBody.moveSnake(SnakeBody.Direction.RIGHT);
         assertEquals(snakeBody.getHeadX(), 450);
         assertEquals(snakeBody.getHeadY(), 400);
-
     }
 
     @Test
