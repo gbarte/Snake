@@ -49,6 +49,13 @@ public class UsersTableTest {
     }
 
     @Test
+    void createAndRetrieveUserTest() {
+        table.connect("test_table");
+        table.createUser("username", "password1");
+        Assertions.assertNotNull(table.getUser("username"));
+    }
+
+    @Test
     void connectionCustomTest() throws SQLException {
 
         table.connect("test_table");

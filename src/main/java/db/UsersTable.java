@@ -5,7 +5,10 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 // TODO: decouple logics; make abstract class to handle abstract table interaction.
 
@@ -43,7 +46,7 @@ public class UsersTable {
 
             Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection(url);
-            if (!connection.getMetaData().getTables(null, null, tableName, null).next()) {
+            if (!connection.getMetaData().getTables(null, null, TABLE_NAME, null).next()) {
                 configureSchema();
             }
 
@@ -95,6 +98,43 @@ public class UsersTable {
             e.printStackTrace();
         }
 
+    }
+
+    /**
+     * Retrieve user by username from the table.
+     * @param username - name of the user.
+     * @return Map object that contains password and username.
+     */
+    public Map<String, String> getUser(String username) {
+
+        assert connection != null;
+
+        String query = "SELECT * FROM users WHERE username=? LIMIT 1";
+
+        try {
+
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, username);
+
+            ResultSet queryResult = preparedStatement.executeQuery();
+
+            if(queryResult.next()) {
+                String hash = queryResult.getString("password");
+                System.out.println(hash);
+
+                Map<String, String> result = new HashMap<>();
+                result.put("username", username);
+                result.put("hash", hash);
+
+                preparedStatement.close();
+                return result;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     /**
