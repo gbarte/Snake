@@ -1,7 +1,6 @@
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import game.SnakeGame;
 
 public class Main {
     /**
@@ -10,9 +9,10 @@ public class Main {
      */
     public static void main(String[] args) {
         Lwjgl3ApplicationConfiguration cfg = new Lwjgl3ApplicationConfiguration();
-        cfg.setTitle("hello-world");
-        cfg.setWindowSizeLimits(480, 320, 960, 640);
-
-        new Lwjgl3Application(new HelloWorld(), cfg);
+        cfg.setTitle(SnakeGame.TITLE);
+        cfg.setWindowSizeLimits(SnakeGame.WIDTH, SnakeGame.HEIGHT,
+                SnakeGame.WIDTH, SnakeGame.HEIGHT);
+        cfg.setWindowedMode(SnakeGame.WIDTH, SnakeGame.HEIGHT);
+        new Lwjgl3Application(new SnakeGame(), cfg);
     }
 }
