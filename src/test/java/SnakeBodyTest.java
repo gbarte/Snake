@@ -85,6 +85,17 @@ class SnakeBodyTest {
     }
 
     @Test
+    void moveSnakeTest2() {
+        snakeBody.moveSnake(SnakeBody.Direction.LEFT);
+        assertEquals(snakeBody.getHeadCoord().getCoordinateX(), 350);
+        assertEquals(snakeBody.getHeadCoord().getCoordinateY(), 400);
+
+        snakeBody.moveSnake(SnakeBody.Direction.DOWN);
+        assertEquals(snakeBody.getHeadCoord().getCoordinateX(), 350);
+        assertEquals(snakeBody.getHeadCoord().getCoordinateY(), 350);
+    }
+
+    @Test
     void updateBodyPartsPositionTest() {
         LinkedList<BodyPart> ll = new LinkedList<>();
         ll.add(new BodyPart(350, 400));

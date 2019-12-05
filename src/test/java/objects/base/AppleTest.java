@@ -11,7 +11,7 @@ import snake.SnakeBody;
 
 
 class AppleTest {
-    Texture texture;
+    private transient Texture texture;
 
     @BeforeEach
     void setUp() {
@@ -19,14 +19,14 @@ class AppleTest {
     }
 
     @Test
-    void getCoordinates() {
+    void getCoordinatesTest() {
         Apple apple = new Apple(10, 15, 100, texture);
         assertEquals(10 * SnakeBody.CELL_SIZE, apple.getCoordinates().getCoordinateX());
         assertEquals(15 * SnakeBody.CELL_SIZE, apple.getCoordinates().getCoordinateY());
     }
 
     @Test
-    void setCoordinates() {
+    void setCoordinatesTest() {
         Apple apple = new Apple(10, 15, 100, texture);
         Coordinates coordinates = new Coordinates(20, 25);
         apple.setCoordinates(coordinates);
@@ -34,26 +34,26 @@ class AppleTest {
     }
 
     @Test
-    void getScore() {
+    void getScoreTest() {
         Apple apple = new Apple(10, 15, 100, texture);
         assertEquals(100, apple.getScore());
     }
 
     @Test
-    void setScore() {
+    void setScoreTest() {
         Apple apple = new Apple(10, 15, 100, texture);
         apple.setScore(20);
         assertEquals(20, apple.getScore());
     }
 
     @Test
-    void getTexture() {
+    void getTextureTest() {
         Apple apple = new Apple(10, 15, 100, texture);
         assertEquals(texture, apple.getTexture());
     }
 
     @Test
-    void setTexture() {
+    void setTextureTest() {
         Apple apple = new Apple(10, 15, 100, texture);
         Texture texture2 = Mockito.mock(Texture.class);
         apple.setTexture(texture2);

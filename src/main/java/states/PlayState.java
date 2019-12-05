@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import game.SnakeGame;
 import gamelogic.Coordinates;
 import gamelogic.ScoreCalculator;
-import java.util.Random;
 
 import objects.base.Apple;
 import snake.BodyPart;
@@ -36,19 +35,20 @@ public class PlayState extends State {
         shapeRenderer = new ShapeRenderer();
         snake = new SnakeBody(SnakeGame.WIDTH, SnakeGame.HEIGHT);
         camera.setToOrtho(false, SnakeGame.WIDTH, SnakeGame.HEIGHT);
-        apple = createApple();
+        apple = new Apple();
         score = new ScoreCalculator();
     }
 
     /**
-     * Play Screen of the game.
+     * Constructor which creates a new state within the game.
+     * Method was made just to make testing easier!
      */
     public PlayState(GameStateManager gameManager, SnakeBody snake, ShapeRenderer renderer) {
         super(gameManager);
         this.snake = snake;
         this.shapeRenderer = renderer;
         this.score = new ScoreCalculator();
-        //Since this method is more for testing purposes, we do not create an apple there.
+        this.apple = new Apple(0, 0, 10);
     }
 
     public OrthographicCamera getCamera() {
@@ -242,24 +242,10 @@ public class PlayState extends State {
         shapeRenderer.end();
     }
 
-    private Apple createApple() {
-        Random r = new Random();
-        int minX = 0;
-        int minY = 0;
-        int maxX = SnakeGame.WIDTH / SnakeBody.CELL_SIZE;
-        int maxY = SnakeGame.HEIGHT / SnakeBody.CELL_SIZE;
-
-        int x = r.nextInt(maxX - minX) + minX;
-        int y = r.nextInt(maxY - minY) + minY;
-
-        Apple apple = new Apple(x, y);
-        return apple;
-    }
-
     private void checkAppleEaten() {
         if (snake.getHeadCoord().equals(apple.getCoordinates())) {
             score.add(apple.getScore());
-            apple = createApple();
+            apple = new Apple();
             checkAppleOnSnake();
             snake.growSnake();
         }
@@ -269,7 +255,7 @@ public class PlayState extends State {
     private void checkAppleOnSnake() {
         for (BodyPart bp : snake.getBodyParts()) {
             if (bp.getCoordinates().equals(apple.getCoordinates())) {
-                apple = createApple();
+                apple = new Apple();
             }
         }
     }

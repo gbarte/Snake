@@ -1,7 +1,6 @@
 package states;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -13,29 +12,29 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import snake.SnakeBody;
 
+
 class PlayStateTest {
-    transient GameStateManager stateManager;
+    private transient GameStateManager stateManager;
+    private transient ShapeRenderer shapeRenderer;
+    private transient SnakeBody snake;
+    private transient PlayState play;
+
 
     @BeforeEach
     void setUp() {
         stateManager = new GameStateManager();
+        shapeRenderer = Mockito.mock(ShapeRenderer.class);
+        snake = new SnakeBody(100, 100);
+        play = new PlayState(stateManager, snake, shapeRenderer);
     }
 
     @Test
-    void getShapeRenderer() {
-        ShapeRenderer shapeRenderer = Mockito.mock(ShapeRenderer.class);
-        SnakeBody snake = new SnakeBody(100, 100);
-        PlayState play = new PlayState(stateManager, snake, shapeRenderer);
-
+    void getShapeRendererTest() {
         assertEquals(play.getShapeRenderer(), shapeRenderer);
     }
 
     @Test
-    void setShapeRenderer() {
-        ShapeRenderer shapeRenderer = Mockito.mock(ShapeRenderer.class);
-        SnakeBody snake = new SnakeBody(100, 100);
-        PlayState play = new PlayState(stateManager, snake, shapeRenderer);
-
+    void setShapeRendererTest() {
         ShapeRenderer shapeRenderer2 = Mockito.mock(ShapeRenderer.class);
         play.setShapeRenderer(shapeRenderer2);
 
@@ -43,11 +42,7 @@ class PlayStateTest {
     }
 
     @Test
-    void getCamera() {
-        ShapeRenderer shapeRenderer = Mockito.mock(ShapeRenderer.class);
-        SnakeBody snake = new SnakeBody(100, 100);
-        PlayState play = new PlayState(stateManager, snake, shapeRenderer);
-
+    void getCameraTest() {
         OrthographicCamera camera = new OrthographicCamera();
         play.setCamera(camera);
 
@@ -55,20 +50,12 @@ class PlayStateTest {
     }
 
     @Test
-    void getSnake() {
-        ShapeRenderer shapeRenderer = Mockito.mock(ShapeRenderer.class);
-        SnakeBody snake = new SnakeBody(100, 100);
-        PlayState play = new PlayState(stateManager, snake, shapeRenderer);
-
+    void getSnakeTest() {
         assertEquals(play.getSnake(), snake);
     }
 
     @Test
-    void setSnake() {
-        ShapeRenderer shapeRenderer = Mockito.mock(ShapeRenderer.class);
-        SnakeBody snake = new SnakeBody(100, 100);
-        PlayState play = new PlayState(stateManager, snake, shapeRenderer);
-
+    void setSnakeTest() {
         SnakeBody snake2 = new SnakeBody(100, 100);
         play.setSnake(snake2);
 
@@ -76,36 +63,31 @@ class PlayStateTest {
     }
 
     @Test
-    void getTimer() {
-        ShapeRenderer shapeRenderer = Mockito.mock(ShapeRenderer.class);
-        SnakeBody snake = new SnakeBody(100, 100);
-        PlayState play = new PlayState(stateManager, snake, shapeRenderer);
-
+    void getTimerTest() {
         assertEquals(PlayState.MOVE_TIME, play.getTimer());
     }
 
     @Test
-    void updateDirection() {
-        ShapeRenderer shapeRenderer = Mockito.mock(ShapeRenderer.class);
-        SnakeBody snake = new SnakeBody(100, 100);
-        PlayState play = new PlayState(stateManager, snake, shapeRenderer);
-
+    void updateDirectionTest() {
         play.updateDirection(SnakeBody.Direction.RIGHT);
 
         assertEquals(snake.getCurrDir(), SnakeBody.Direction.RIGHT);
     }
 
     @Test
-    void handleInput() {
+    void updateDirectionTest2() {
+        play.updateDirection(SnakeBody.Direction.UP);
+
+        assertEquals(snake.getCurrDir(), SnakeBody.Direction.UP);
+    }
+
+    @Test
+    void handleInputTest() {
         Gdx.input = Mockito.mock(Input.class);
         Mockito.when(Gdx.input.isKeyPressed(Input.Keys.W)).thenReturn(false);
         Mockito.when(Gdx.input.isKeyPressed(Input.Keys.A)).thenReturn(false);
         Mockito.when(Gdx.input.isKeyPressed(Input.Keys.S)).thenReturn(true);
         Mockito.when(Gdx.input.isKeyPressed(Input.Keys.D)).thenReturn(false);
-
-        ShapeRenderer shapeRenderer = Mockito.mock(ShapeRenderer.class);
-        SnakeBody snake = new SnakeBody(100, 100);
-        PlayState play = new PlayState(stateManager, snake, shapeRenderer);
 
         play.handleInput();
 
@@ -113,16 +95,12 @@ class PlayStateTest {
     }
 
     @Test
-    void handleInput2() {
+    void handleInputTest2() {
         Gdx.input = Mockito.mock(Input.class);
         Mockito.when(Gdx.input.isKeyPressed(Input.Keys.W)).thenReturn(false);
         Mockito.when(Gdx.input.isKeyPressed(Input.Keys.A)).thenReturn(true);
         Mockito.when(Gdx.input.isKeyPressed(Input.Keys.S)).thenReturn(false);
         Mockito.when(Gdx.input.isKeyPressed(Input.Keys.D)).thenReturn(false);
-
-        ShapeRenderer shapeRenderer = Mockito.mock(ShapeRenderer.class);
-        SnakeBody snake = new SnakeBody(100, 100);
-        PlayState play = new PlayState(stateManager, snake, shapeRenderer);
 
         play.handleInput();
 
@@ -130,20 +108,31 @@ class PlayStateTest {
     }
 
     @Test
-    void handleInput3() {
+    void handleInputTest3() {
         Gdx.input = Mockito.mock(Input.class);
         Mockito.when(Gdx.input.isKeyPressed(Input.Keys.W)).thenReturn(true);
         Mockito.when(Gdx.input.isKeyPressed(Input.Keys.A)).thenReturn(false);
         Mockito.when(Gdx.input.isKeyPressed(Input.Keys.S)).thenReturn(false);
         Mockito.when(Gdx.input.isKeyPressed(Input.Keys.D)).thenReturn(false);
 
-        ShapeRenderer shapeRenderer = Mockito.mock(ShapeRenderer.class);
-        SnakeBody snake = new SnakeBody(100, 100);
-        PlayState play = new PlayState(stateManager, snake, shapeRenderer);
-
         play.handleInput();
-
         assertEquals(SnakeBody.Direction.UP, play.getSnake().getCurrDir());
+    }
+
+    //Flaky test bellow!
+    @Test
+    void eatAppleTest() {
+        Gdx.input = Mockito.mock(Input.class);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.W)).thenReturn(true);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.A)).thenReturn(false);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.S)).thenReturn(false);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.D)).thenReturn(false);
+
+        Apple apple = play.getApple();
+        play.update(10);
+
+        Apple apple2 = play.getApple();
+        assertEquals(apple2.getCoordinates(), apple.getCoordinates());
     }
 
 }
