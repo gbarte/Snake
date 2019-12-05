@@ -1,21 +1,19 @@
 package auth;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class AuthServiceTest {
 
-    private AuthService service;
+    private transient AuthService service;
+
+    private static final String TEST_USERNAME = "john";
 
     @BeforeEach
     void setUp() {
-
         service = new AuthService("test_table");
-
-        RegistrationResponse response = service.register("john", "12345678");
+        service.register(TEST_USERNAME, "12345678");
     }
 
     @Test
@@ -26,7 +24,7 @@ public class AuthServiceTest {
 
     @Test
     void registrationShortFailureTest() {
-        RegistrationResponse response = service.register("john", "123");
+        RegistrationResponse response = service.register(TEST_USERNAME, "123");
         Assertions.assertEquals(RegistrationResponse.SHORT_PASSWORD, response);
     }
 
@@ -38,13 +36,13 @@ public class AuthServiceTest {
 
     @Test
     void authenticationSuccessTest() {
-        AuthResponse authResponse = service.auth("john", "12345678");
+        AuthResponse authResponse = service.auth(TEST_USERNAME, "12345678");
         Assertions.assertEquals(AuthResponse.SUCCESS, authResponse);
     }
 
     @Test
     void authenticationFailureTest() {
-        AuthResponse authResponse = service.auth("john", "123");
+        AuthResponse authResponse = service.auth(TEST_USERNAME, "123");
         Assertions.assertEquals(AuthResponse.WRONG_PASSWORD, authResponse);
     }
 
