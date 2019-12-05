@@ -1,4 +1,4 @@
-package objects.base;
+package gamelogic;
 
 import java.util.Objects;
 
@@ -25,6 +25,22 @@ public class Coordinates {
 
     public void setCoordinateY(int coordinateY) {
         this.coordinateY = coordinateY;
+    }
+
+    public void addToX(int x) {
+        this.coordinateX += x;
+    }
+
+    public void addToY(int y) {
+        this.coordinateY += y;
+    }
+
+    public void subtractFromX(int x) {
+        this.coordinateX -= x;
+    }
+
+    public void subtractFromY(int y) {
+        this.coordinateY -= y;
     }
 
     @Override

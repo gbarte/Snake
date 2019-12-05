@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import game.SnakeGame;
 import java.util.Random;
+
+import gamelogic.Coordinates;
 import objects.base.Apple;
 import snake.BodyPart;
 import snake.SnakeBody;
@@ -28,8 +30,8 @@ public class PlayState extends State {
     public PlayState(GameStateManager gameManager) {
         super(gameManager);
         shapeRenderer = new ShapeRenderer();
-        snake = new SnakeBody(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        snake = new SnakeBody(SnakeGame.WIDTH, SnakeGame.HEIGHT);
+        camera.setToOrtho(false, SnakeGame.WIDTH, SnakeGame.HEIGHT);
         apple = createApple();
     }
 
@@ -109,7 +111,6 @@ public class PlayState extends State {
         checkOutOfMap();
         updateSnake(dt);
         checkAppleEaten();
-        checkAppleOnSnake();
     }
 
     /**
@@ -122,8 +123,8 @@ public class PlayState extends State {
     public void render(SpriteBatch batch) {
         snake.renderSnake(shapeRenderer);
         batch.begin();
-        batch.draw(apple.getTexture(), apple.getCoordinates().getCoordinateX(),
-                apple.getCoordinates().getCoordinateY());
+        Coordinates appleCoord = apple.getCoordinates();
+        batch.draw(apple.getTexture(), appleCoord.getCoordinateX(), appleCoord.getCoordinateY());
         batch.end();
         //Comment out next line if you don't want the grid
         drawGrid();
@@ -192,24 +193,24 @@ public class PlayState extends State {
      * if it hits then the state changes to GAME_OVER.
      */
     public void checkOutOfMap() {
-        if (snake.getHeadX() >= Gdx.graphics.getWidth() - SnakeBody.CELL_SIZE) {
+        if (snake.getHeadCoordinates().getCoordinateX() >= SnakeGame.WIDTH - SnakeBody.CELL_SIZE) {
             System.out.println("Game oveeer");
         }
-        if (snake.getHeadX() <= 0) {
+        if (snake.getHeadCoordinates().getCoordinateX() <= 0) {
             System.out.println("Game oveer");
         }
-        if (snake.getHeadY() >= Gdx.graphics.getHeight() - SnakeBody.CELL_SIZE) {
+        if (snake.getHeadCoordinates().getCoordinateY() >= SnakeGame.HEIGHT - SnakeBody.CELL_SIZE) {
             System.out.println("Game over");
         }
-        if (snake.getHeadY() <= 0) {
+        if (snake.getHeadCoordinates().getCoordinateY() <= 0) {
             System.out.println("Game oveeeeer");
         }
     }
 
     private void drawGrid() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        for (int x = 0; x < Gdx.graphics.getWidth(); x += SnakeBody.CELL_SIZE) {
-            for (int y = 0; y < Gdx.graphics.getHeight(); y += SnakeBody.CELL_SIZE) {
+        for (int x = 0; x < SnakeGame.WIDTH; x += SnakeBody.CELL_SIZE) {
+            for (int y = 0; y < SnakeGame.HEIGHT; y += SnakeBody.CELL_SIZE) {
                 shapeRenderer.rect(x, y, SnakeBody.CELL_SIZE, SnakeBody.CELL_SIZE);
             }
         }
@@ -232,9 +233,9 @@ public class PlayState extends State {
     }
 
     private void checkAppleEaten() {
-        if (snake.getHeadX() == apple.getCoordinates().getCoordinateX()
-                && snake.getHeadY() == apple.getCoordinates().getCoordinateY()) {
+        if (snake.getHeadCoordinates().equals(apple.getCoordinates())) {
             apple = createApple();
+            checkAppleOnSnake();
             snake.growSnake();
         }
     }
@@ -242,8 +243,7 @@ public class PlayState extends State {
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     private void checkAppleOnSnake() {
         for (BodyPart bp : snake.getBodyParts()) {
-            if (bp.getCoordinateX() == apple.getCoordinates().getCoordinateX()
-                    && bp.getCoordinateY() == apple.getCoordinates().getCoordinateY()) {
+            if (bp.getCoordinates().equals(apple.getCoordinates())) {
                 apple = createApple();
             }
         }

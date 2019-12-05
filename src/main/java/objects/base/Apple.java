@@ -1,13 +1,14 @@
 package objects.base;
 
 import com.badlogic.gdx.graphics.Texture;
+import gamelogic.Coordinates;
 import snake.SnakeBody;
 
 public class Apple {
     private Coordinates coordinates;
     private int score;
     private Texture texture;
-    private static final String texturePath = "assets/greenapplesmall.png";
+    private static final String texturePath = "assets/angryapplesmall.png";
 
     /**
      * Creates an apple with a predefined texture at given coordinates in the

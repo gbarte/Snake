@@ -1,28 +1,12 @@
 package snake;
 
+import gamelogic.Coordinates;
+
 public class BodyPart {
-    private float coordinateX;
-    private float coordinateY;
+    private Coordinates coordinates;
 
-    public BodyPart(float coordinateX, float coordinateY) {
-        this.coordinateX = coordinateX;
-        this.coordinateY = coordinateY;
-    }
-
-    public float getCoordinateX() {
-        return coordinateX;
-    }
-
-    public void setCoordinateX(float coordinateX) {
-        this.coordinateX = coordinateX;
-    }
-
-    public float getCoordinateY() {
-        return coordinateY;
-    }
-
-    public void setCoordinateY(float coordinateY) {
-        this.coordinateY = coordinateY;
+    public BodyPart(int coordinateX, int coordinateY) {
+        this.coordinates = new Coordinates(coordinateX, coordinateY);
     }
 
     /**
@@ -30,8 +14,23 @@ public class BodyPart {
      * @param x - New x coordinate of position of bodypart.
      * @param y - New y coordinate of position of bodypart.
      */
-    void updateBodyPartPos(float x, float y) {
-        this.coordinateX = x;
-        this.coordinateY = y;
+    void updateBodyPartPos(int x, int y) {
+        this.coordinates.setCoordinateX(x);
+        this.coordinates.setCoordinateY(y);
     }
+
+    void updateBodyPartPos(Coordinates coordinates) {
+        int x = coordinates.getCoordinateX();
+        int y = coordinates.getCoordinateY();
+        this.coordinates = new Coordinates(x, y);
+    }
+
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
+    }
+
 }

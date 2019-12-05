@@ -26,28 +26,6 @@ class SnakeBodyTest {
     }
 
     @Test
-    void getHeadXTest() {
-        assertEquals(snakeBody.getHeadX(), 400);
-    }
-
-    @Test
-    void setHeadXTest() {
-        snakeBody.setHeadX(5);
-        assertEquals(5, snakeBody.getHeadX());
-    }
-
-    @Test
-    void getHeadYTest() {
-        assertEquals(snakeBody.getHeadY(), 400);
-    }
-
-    @Test
-    void setHeadYTest() {
-        snakeBody.setHeadY(5);
-        assertEquals(5, snakeBody.getHeadY());
-    }
-
-    @Test
     void getBodyPartsTest() {
         LinkedList<BodyPart> ll = new LinkedList<>();
         ll.add(new BodyPart(350, 400));
@@ -98,8 +76,8 @@ class SnakeBodyTest {
     void moveSnakeTest() {
         assertEquals(snakeBody.getCurrDir(), SnakeBody.Direction.UP);
         snakeBody.moveSnake(SnakeBody.Direction.RIGHT);
-        assertEquals(snakeBody.getHeadX(), 450);
-        assertEquals(snakeBody.getHeadY(), 400);
+        assertEquals(snakeBody.getHeadCoordinates().getCoordinateX(), 450);
+        assertEquals(snakeBody.getHeadCoordinates().getCoordinateY(), 400);
 
     }
 
@@ -111,10 +89,10 @@ class SnakeBodyTest {
 
         snakeBody.setBodyParts(ll);
         snakeBody.moveSnake(SnakeBody.Direction.UP);
-        snakeBody.updateBodyPartsPosition(snakeBody.getHeadX(), snakeBody.getHeadY());
+        snakeBody.updateBodyPartsPosition(snakeBody.getHeadCoordinates());
 
-        assertEquals(snakeBody.getBodyParts().get(1).getCoordinateY(),
-                snakeBody.getBodyParts().get(0).getCoordinateY() - SnakeBody.CELL_SIZE);
+        assertEquals(snakeBody.getBodyParts().get(1).getCoordinates().getCoordinateY(),
+                snakeBody.getBodyParts().get(0).getCoordinates().getCoordinateY() - SnakeBody.CELL_SIZE);
     }
 
     @Test

@@ -2,14 +2,15 @@ package snake;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import gamelogic.Coordinates;
 
 import java.util.LinkedList;
 
 public class SnakeBody {
     public static final int CELL_SIZE = 50;
     private static final int INITIAL_LENGTH = 2;
-    private float headX;
-    private float headY;
+
+    private Coordinates headCoordinates;
     private LinkedList<BodyPart> bodyParts;
     private Direction currDir;
 
@@ -20,28 +21,11 @@ public class SnakeBody {
      * @param headX - X coordinate of head
      * @param headY - Y coordinate of head
      */
-    public SnakeBody(float headX, float headY) {
-        this.headX = headX / 2;
-        this.headY = headY / 2;
+    public SnakeBody(int headX, int headY) {
+        this.headCoordinates = new Coordinates(headX / 2, headY / 2);
         this.currDir = Direction.UP;
         this.bodyParts = new LinkedList<BodyPart>();
         growSnake(INITIAL_LENGTH);
-    }
-
-    public float getHeadX() {
-        return headX;
-    }
-
-    public void setHeadX(float headX) {
-        this.headX = headX;
-    }
-
-    public float getHeadY() {
-        return headY;
-    }
-
-    public void setHeadY(float headY) {
-        this.headY = headY;
     }
 
     public LinkedList<BodyPart> getBodyParts() {
@@ -60,12 +44,20 @@ public class SnakeBody {
         this.currDir = currDir;
     }
 
+    public Coordinates getHeadCoordinates() {
+        return headCoordinates;
+    }
+
+    public void setHeadCoordinates(Coordinates headCoordinates) {
+        this.headCoordinates = headCoordinates;
+    }
+
     /**
      * Grows the snake body by one body part.
      */
     public void growSnake() {
         int snakeSize = bodyParts.size() + 1;
-        bodyParts.add(new BodyPart(this.headX - (snakeSize * CELL_SIZE), this.headY));
+        bodyParts.add(new BodyPart(headCoordinates.getCoordinateX() - (snakeSize * CELL_SIZE), headCoordinates.getCoordinateY()));
     }
 
     /**
@@ -87,16 +79,13 @@ public class SnakeBody {
     public void renderSnake(ShapeRenderer shapeRenderer) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(new Color(Color.GREEN));
-        //ShapeRenderer.rect(this.headX, this.getHeadY(), 16, 16);
-        shapeRenderer.rect(this.headX, this.getHeadY(), CELL_SIZE, CELL_SIZE);
-        //growSnake();
+        shapeRenderer.rect(this.headCoordinates.getCoordinateX(), this.headCoordinates.getCoordinateY(), CELL_SIZE, CELL_SIZE);
         if (bodyParts.size() > 0) {
             for (BodyPart bp : bodyParts) {
-                shapeRenderer.rect(bp.getCoordinateX(), bp.getCoordinateY(), CELL_SIZE, CELL_SIZE);
+                shapeRenderer.rect(bp.getCoordinates().getCoordinateX(), bp.getCoordinates().getCoordinateY(), CELL_SIZE, CELL_SIZE);
             }
         }
         shapeRenderer.end();
-
     }
 
     /**
@@ -106,20 +95,21 @@ public class SnakeBody {
     public void moveSnake(Direction snakeDirection) {
         switch (snakeDirection) {
             case RIGHT:
-                updateBodyPartsPosition(headX, headY);
-                headX += CELL_SIZE;
+                updateBodyPartsPosition(headCoordinates);
+                headCoordinates.addToX(CELL_SIZE);
                 break;
             case LEFT:
-                updateBodyPartsPosition(headX, headY);
-                headX -= CELL_SIZE;
+                updateBodyPartsPosition(headCoordinates);
+
+                headCoordinates.subtractFromX(CELL_SIZE);
                 break;
             case UP:
-                updateBodyPartsPosition(headX, headY);
-                headY += CELL_SIZE;
+                updateBodyPartsPosition(headCoordinates);
+                headCoordinates.addToY(CELL_SIZE);
                 break;
             case DOWN:
-                updateBodyPartsPosition(headX, headY);
-                headY -= CELL_SIZE;
+                updateBodyPartsPosition(headCoordinates);
+                headCoordinates.subtractFromY(CELL_SIZE);
                 break;
             default:
                 // will not execute
@@ -130,14 +120,13 @@ public class SnakeBody {
      * Updates the position of each body part.
      */
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-    public void updateBodyPartsPosition(float x, float y) {
+    public void updateBodyPartsPosition(Coordinates coordinates) {
         if (bodyParts.size() > 0) {
             for (BodyPart bp : bodyParts) {
-                float currX = bp.getCoordinateX();
-                float currY = bp.getCoordinateY();
-                bp.updateBodyPartPos(x, y);
-                x = currX;
-                y = currY;
+                int currX = bp.getCoordinates().getCoordinateX();
+                int currY = bp.getCoordinates().getCoordinateY();
+                bp.updateBodyPartPos(coordinates);
+                coordinates = new Coordinates(currX, currY);
             }
         }
     }
