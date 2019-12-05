@@ -2,11 +2,14 @@ package states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import game.SnakeGame;
 import gamelogic.Coordinates;
+import gamelogic.ScoreCalculator;
 import java.util.Random;
 
 import objects.base.Apple;
@@ -20,6 +23,7 @@ public class PlayState extends State {
     private SnakeBody snake;
     private ShapeRenderer shapeRenderer;
     private Apple apple;
+    private ScoreCalculator score;
 
     /**
      * Constructor which creates a new state within the game.
@@ -33,6 +37,7 @@ public class PlayState extends State {
         snake = new SnakeBody(SnakeGame.WIDTH, SnakeGame.HEIGHT);
         camera.setToOrtho(false, SnakeGame.WIDTH, SnakeGame.HEIGHT);
         apple = createApple();
+        score = new ScoreCalculator();
     }
 
     /**
@@ -42,6 +47,7 @@ public class PlayState extends State {
         super(gameManager);
         this.snake = snake;
         this.shapeRenderer = renderer;
+        this.score = new ScoreCalculator();
         //Since this method is more for testing purposes, we do not create an apple there.
     }
 
@@ -71,6 +77,14 @@ public class PlayState extends State {
 
     public float getTimer() {
         return timer;
+    }
+
+    public ScoreCalculator getScore() {
+        return score;
+    }
+
+    public void setScore(ScoreCalculator score) {
+        this.score = score;
     }
 
     public void setTimer(float timer) {
@@ -125,9 +139,20 @@ public class PlayState extends State {
         batch.begin();
         Coordinates appleCoord = apple.getCoordinates();
         batch.draw(apple.getTexture(), appleCoord.getCoordinateX(), appleCoord.getCoordinateY());
+        renderScore(batch);
         batch.end();
         //Comment out next line if you don't want the grid
         drawGrid();
+    }
+
+    /**
+     * Renders the current score on the screen.
+     * @param batch used for drawing elements.
+     */
+    public void renderScore(SpriteBatch batch) {
+        BitmapFont bitmapFont = new BitmapFont();
+        bitmapFont.setColor(Color.RED);
+        bitmapFont.draw(batch, String.valueOf(score.getScore()), 20, 20);
     }
 
     /**
@@ -228,12 +253,12 @@ public class PlayState extends State {
         int y = r.nextInt(maxY - minY) + minY;
 
         Apple apple = new Apple(x, y);
-
         return apple;
     }
 
     private void checkAppleEaten() {
         if (snake.getHeadCoord().equals(apple.getCoordinates())) {
+            score.add(apple.getScore());
             apple = createApple();
             checkAppleOnSnake();
             snake.growSnake();

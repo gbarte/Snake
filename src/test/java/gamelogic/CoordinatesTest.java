@@ -48,6 +48,13 @@ class CoordinatesTest {
     }
 
     @Test
+    void testEquals3() {
+        Coordinates coordinates = new Coordinates(20, 25);
+        Coordinates coordinates2 = coordinates;
+        assertEquals(coordinates, coordinates2);
+    }
+
+    @Test
     void testToString() {
         Coordinates coordinates = new Coordinates(20, 25);
         assertEquals("Coordinates are: X = 20, Y = 25", coordinates.toString());

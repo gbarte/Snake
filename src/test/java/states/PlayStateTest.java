@@ -1,11 +1,13 @@
 package states;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import objects.base.Apple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -109,4 +111,39 @@ class PlayStateTest {
 
         assertEquals(SnakeBody.Direction.DOWN, play.getSnake().getCurrDir());
     }
+
+    @Test
+    void handleInput2() {
+        Gdx.input = Mockito.mock(Input.class);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.W)).thenReturn(false);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.A)).thenReturn(true);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.S)).thenReturn(false);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.D)).thenReturn(false);
+
+        ShapeRenderer shapeRenderer = Mockito.mock(ShapeRenderer.class);
+        SnakeBody snake = new SnakeBody(100, 100);
+        PlayState play = new PlayState(stateManager, snake, shapeRenderer);
+
+        play.handleInput();
+
+        assertEquals(SnakeBody.Direction.LEFT, play.getSnake().getCurrDir());
+    }
+
+    @Test
+    void handleInput3() {
+        Gdx.input = Mockito.mock(Input.class);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.W)).thenReturn(true);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.A)).thenReturn(false);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.S)).thenReturn(false);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.D)).thenReturn(false);
+
+        ShapeRenderer shapeRenderer = Mockito.mock(ShapeRenderer.class);
+        SnakeBody snake = new SnakeBody(100, 100);
+        PlayState play = new PlayState(stateManager, snake, shapeRenderer);
+
+        play.handleInput();
+
+        assertEquals(SnakeBody.Direction.UP, play.getSnake().getCurrDir());
+    }
+
 }

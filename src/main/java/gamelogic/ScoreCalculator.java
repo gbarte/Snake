@@ -1,3 +1,5 @@
+package gamelogic;
+
 public class ScoreCalculator {
     private int score;
 
@@ -17,8 +19,13 @@ public class ScoreCalculator {
         score += points;
     }
 
+    /**
+     * Subtracts points from the score if you have more points
+     * than the ones that will be subtracted.
+     * @param points to subtract.
+     */
     public void subtract(int points) {
-        if(score > points) {
+        if (score > points) {
             score -= points;
         }
     }
