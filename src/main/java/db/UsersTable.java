@@ -75,8 +75,6 @@ public class UsersTable {
      */
     public void createUser(String username, String passHash) {
 
-        // TODO: make a constraint for username uniqueness.
-
         assert connection != null;
 
         String query = "INSERT INTO users (username, password) "
@@ -179,7 +177,7 @@ public class UsersTable {
 
         String query = "CREATE TABLE users ("
                         + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                        + "username VARCHAR(50),"
+                        + "username VARCHAR(50) UNIQUE,"
                         + "password VARCHAR(50)"
                 + ")";
 
