@@ -18,8 +18,8 @@ import snake.SnakeBody;
 
 public class PlayState extends State {
     protected static final float MOVE_TIME = 0.25f;
-    private Dialog gameOver;
-    private Skin skin;
+    // private Dialog gameOver;
+    // private Skin skin;
     private float timer = MOVE_TIME;
     private SnakeBody snake;
     private ShapeRenderer shapeRenderer;
@@ -34,8 +34,8 @@ public class PlayState extends State {
      */
     public PlayState(GameStateManager gameManager) {
         super(gameManager);
-        skin = new Skin(Gdx.files.internal("assets/neon/skin/neon-ui.json"));
-        setDialogScreen();
+        // skin = new Skin(Gdx.files.internal("assets/neon/skin/neon-ui.json"));
+        // setDialogScreen();
         shapeRenderer = new ShapeRenderer();
         snake = new SnakeBody(SnakeGame.WIDTH, SnakeGame.HEIGHT);
         camera.setToOrtho(false, SnakeGame.WIDTH, SnakeGame.HEIGHT);
@@ -43,9 +43,9 @@ public class PlayState extends State {
         score = new ScoreCalculator();
     }
 
-    private void setDialogScreen() {
-        gameOver = new Dialog("Game Over", skin);
-    }
+    //    private void setDialogScreen() {
+    //        gameOver = new Dialog("Game Over", skin);
+    //    }
 
     /**
      * Constructor which creates a new state within the game.
@@ -59,21 +59,21 @@ public class PlayState extends State {
         this.apple = new Apple(0, 0, 10);
     }
 
-    public Dialog getGameOver() {
-        return gameOver;
-    }
+    //    public Dialog getGameOver() {
+    //        return gameOver;
+    //    }
+    //
+    //    public void setGameOver(Dialog gameOver) {
+    //        this.gameOver = gameOver;
+    //    }
 
-    public void setGameOver(Dialog gameOver) {
-        this.gameOver = gameOver;
-    }
-
-    public Skin getSkin() {
-        return skin;
-    }
-
-    public void setSkin(Skin skin) {
-        this.skin = skin;
-    }
+    //    public Skin getSkin() {
+    //        return skin;
+    //    }
+    //
+    //    public void setSkin(Skin skin) {
+    //        this.skin = skin;
+    //    }
 
     public OrthographicCamera getCamera() {
         return camera;
@@ -244,19 +244,19 @@ public class PlayState extends State {
     public void checkOutOfMap() {
         if (snake.getHeadCoord().getCoordinateX() >= SnakeGame.WIDTH - SnakeBody.CELL_SIZE) {
             System.out.println("Game oveeer");
-            presentGameOverDialog();
+            // presentGameOverDialog();
         }
         if (snake.getHeadCoord().getCoordinateX() <= 0) {
             System.out.println("Game oveer");
-            presentGameOverDialog();
+            // presentGameOverDialog();
         }
         if (snake.getHeadCoord().getCoordinateY() >= SnakeGame.HEIGHT - SnakeBody.CELL_SIZE) {
             System.out.println("Game over");
-            presentGameOverDialog();
+            // presentGameOverDialog();
         }
         if (snake.getHeadCoord().getCoordinateY() <= 0) {
             System.out.println("Game oveeeeer");
-            presentGameOverDialog();
+            //  resentGameOverDialog();
         }
     }
 
