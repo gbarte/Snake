@@ -1,10 +1,10 @@
 package states;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class StateTest {
     transient GameStateManager stateManager;
