@@ -19,10 +19,10 @@ public class LoginState extends State {
     private Stage stage;
     private Skin skin;
     private Label title;
-    private Button loginButton;
-    private Button signUpButton;
-    private TextField usernameField;
-    private TextField passWordField;
+//    private Button loginButton;
+//    private Button signUpButton;
+//    private TextField usernameField;
+//    private TextField passWordField;
     private Texture backGround;
     /**
      * Constructor which creates a new state within the game.
@@ -34,7 +34,7 @@ public class LoginState extends State {
         super(gameManager);
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
-        skin =  new Skin(Gdx.files.internal("assets/quantum-horizon/skin/quantum-horizon-ui.json"));
+        skin =  new Skin(Gdx.files.internal("assets/metal/skin/metal-ui.json"));
         initTitle();
         initLogin();
         initSignUp();
@@ -42,12 +42,12 @@ public class LoginState extends State {
     }
 
     private void initTitle() {
-//        BitmapFont bitmapFont = new BitmapFont();
-//        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, Color.GREEN);
-//        title = new Label("Schitzosnake", labelStyle);
-        title = new Label("Shitzosnake", skin);
+        BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal("assets/font.fnt"));
+        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, new Color(1, 0, 1, 1));
+        title = new Label("Lil' Snake", labelStyle);
+//        title = new Label("Lil' Snake", skin);
         title.setSize(600, 120);
-        title.setPosition(100 ,450);
+        title.setPosition(10 ,400);
         title.setFontScale(3);
         title.setAlignment(Align.center);
         stage.addActor(title);
@@ -77,37 +77,21 @@ public class LoginState extends State {
         this.title = title;
     }
 
-    public Button getLoginButton() {
-        return loginButton;
-    }
+//    public TextField getUsernameField() {
+//        return usernameField;
+//    }
+//
+//    public void setUsernameField(TextField usernameField) {
+//        this.usernameField = usernameField;
+//    }
+//
+//    public TextField getPassWordField() {
+//        return passWordField;
+//    }
 
-    public void setLoginButton(Button loginButton) {
-        this.loginButton = loginButton;
-    }
-
-    public Button getSignUpButton() {
-        return signUpButton;
-    }
-
-    public void setSignUpButton(Button signUpButton) {
-        this.signUpButton = signUpButton;
-    }
-
-    public TextField getUsernameField() {
-        return usernameField;
-    }
-
-    public void setUsernameField(TextField usernameField) {
-        this.usernameField = usernameField;
-    }
-
-    public TextField getPassWordField() {
-        return passWordField;
-    }
-
-    public void setPassWordField(TextField passWordField) {
-        this.passWordField = passWordField;
-    }
+//    public void setPassWordField(TextField passWordField) {
+//        this.passWordField = passWordField;
+//    }
 
     public Texture getBackGround() {
         return backGround;
@@ -118,10 +102,7 @@ public class LoginState extends State {
     }
 
     private void initSignUp() {
-        TextureRegionDrawable signUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("assets/sign_up_button2.png"))));
-        TextureRegionDrawable signDown = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("assets/sign_up_button.png"))));
-        signUpButton = new ImageButton(signUp, signDown);
-//        signUpButton = new TextButton("Sign Up", new Skin(Gdx.files.internal("assets/neon/skin/neon-ui.json")));
+        TextButton signUpButton = new TextButton("Sign up", skin);
         signUpButton.setPosition(300, 150);
         signUpButton.addListener(new InputListener(){
             @Override
@@ -135,18 +116,11 @@ public class LoginState extends State {
                 return true;
             }
         });
-        passWordField = new TextField("", new Skin(Gdx.files.internal("assets/cloud-form/skin/cloud-form-ui.json")));
-        passWordField.setSize(150, 30);
-        passWordField.setPosition(100, 150);
-        passWordField.isPasswordMode();
-        passWordField.setPasswordCharacter('*');
         stage.addActor(signUpButton);
-        stage.addActor(passWordField);
-
     }
 
     private void initLogin() {
-        loginButton = new TextButton("Login", skin);
+        TextButton loginButton = new TextButton("Login", skin);
         loginButton.setPosition(300, 200);
         loginButton.addListener(new InputListener(){
             @Override
@@ -160,11 +134,29 @@ public class LoginState extends State {
                 return true;
             }
         });
-        usernameField = new TextField("", skin);
-        usernameField.setSize(150, 30);
+        BitmapFont bitmapFont = new BitmapFont();
+        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, new Color(1, 0, 1, 1));
+        Label usernameLabel = new Label("Username", labelStyle);
+        usernameLabel.setPosition(100, 232);
+
+        TextField usernameField = new TextField("", new Skin(Gdx.files.internal("assets/metal/skin/metal-ui.json")));
+        usernameField.setSize(180, 30);
         usernameField.setPosition(100, 200);
+
+        Label passwordLabel = new Label("Password", labelStyle);
+        passwordLabel.setPosition(100, 182);
+
+        TextField passWordField = new TextField("", new Skin(Gdx.files.internal("assets/metal/skin/metal-ui.json")));
+        passWordField.setSize(180, 30);
+        passWordField.setPosition(100, 150);
+        passWordField.isPasswordMode();
+        passWordField.setPasswordCharacter('*');
+
         stage.addActor(loginButton);
+        stage.addActor(usernameLabel);
+        stage.addActor(passwordLabel);
         stage.addActor(usernameField);
+        stage.addActor(passWordField);
     }
 
     @Override

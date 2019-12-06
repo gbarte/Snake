@@ -10,7 +10,7 @@ com.badlogic.gdx.graphics.g2d.BitmapFont: {
 com.badlogic.gdx.graphics.Color: {
 	background: {
 		r: 0
-		g: 0.225
+		g: 0.5
 		b: 0
 		a: 1
 	}
@@ -22,7 +22,7 @@ com.badlogic.gdx.graphics.Color: {
 	}
 	color: {
 		r: 0
-		g: 0.225
+		g: 0.5
 		b: 0
 		a: 1
 	}
@@ -414,9 +414,9 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 	default: {
 		font: font
-		fontColor: white
-		background: textfield-c
-		cursor: white
+		fontColor: black
+		background: white
+		cursor: black
 		selection: selection
 	}
 }

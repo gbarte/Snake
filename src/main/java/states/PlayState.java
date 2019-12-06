@@ -3,12 +3,17 @@ package states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import snake.SnakeBody;
 
 public class PlayState extends State {
     protected static final float MOVE_TIME = 0.25f;
+    private Dialog gameOver;
+    private Skin skin;
     private float timer = MOVE_TIME;
     private SnakeBody snake;
     private ShapeRenderer shapeRenderer;
@@ -21,9 +26,15 @@ public class PlayState extends State {
      */
     public PlayState(GameStateManager gameManager) {
         super(gameManager);
+        skin = new Skin(Gdx.files.internal("assets/neon/skin/neon-ui.json"));
+        setDialogScreen();
         shapeRenderer = new ShapeRenderer();
         snake = new SnakeBody(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+    }
+
+    private void setDialogScreen() {
+        gameOver = new Dialog("Game Over", skin);
     }
 
     /**
@@ -33,6 +44,22 @@ public class PlayState extends State {
         super(gameManager);
         this.snake = snake;
         this.shapeRenderer = renderer;
+    }
+
+    public Dialog getGameOver() {
+        return gameOver;
+    }
+
+    public void setGameOver(Dialog gameOver) {
+        this.gameOver = gameOver;
+    }
+
+    public Skin getSkin() {
+        return skin;
+    }
+
+    public void setSkin(Skin skin) {
+        this.skin = skin;
     }
 
     public OrthographicCamera getCamera() {
@@ -170,15 +197,19 @@ public class PlayState extends State {
     public void checkOutOfMap() {
         if (snake.getHeadX() >= Gdx.graphics.getWidth() - SnakeBody.CELL_SIZE) {
             System.out.println("Game oveeer");
+            presentGameOverDialog();
         }
         if (snake.getHeadX() <= 0) {
             System.out.println("Game oveer");
+            presentGameOverDialog();
         }
         if (snake.getHeadY() >= Gdx.graphics.getHeight() - SnakeBody.CELL_SIZE) {
             System.out.println("Game over");
+            presentGameOverDialog();
         }
         if (snake.getHeadY() <= 0) {
             System.out.println("Game oveeeeer");
+            presentGameOverDialog();
         }
     }
 
@@ -190,6 +221,10 @@ public class PlayState extends State {
             }
         }
         shapeRenderer.end();
+    }
+
+    private void presentGameOverDialog() {
+//        gameOver.show(stage);
     }
 }
 
