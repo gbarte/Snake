@@ -83,6 +83,14 @@ public class AuthService {
     }
 
 
+    /**
+     * Dizposes the service. Closes connection with DB.
+     */
+    public void dizpose() {
+        table.close();
+    }
+
+
     private static String getPasswordHash(String password) {
         try {
 

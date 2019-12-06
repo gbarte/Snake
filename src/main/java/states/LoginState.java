@@ -1,5 +1,7 @@
 package states;
 
+import auth.AuthResponse;
+import auth.AuthService;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -122,19 +124,6 @@ public class LoginState extends State {
         TextButton loginButton = new TextButton("Login", skin);
         //        loginButton.setPosition(300, 200);
         loginButton.setPosition(300, 190);
-        loginButton.addListener(new InputListener() {
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                gameManager.set(new PlayState(gameManager));
-                // gameManager.set(new MenuState(gameManager));
-            }
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                System.out.println("pressed");
-                return true;
-            }
-        });
         BitmapFont bitmapFont = new BitmapFont();
         // Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, new Color(1, 0, 1, 1));
         Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
@@ -156,6 +145,30 @@ public class LoginState extends State {
         passWordField.setPosition(100, 150);
         passWordField.isPasswordMode();
         passWordField.setPasswordCharacter('*');
+
+        loginButton.addListener(new InputListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+
+                AuthService service = new AuthService();
+                AuthResponse response = service.auth(usernameField.getText(), passWordField.getText());
+                service.dizpose();
+
+                if (response == AuthResponse.SUCCESS) {
+                    gameManager.set(new PlayState(gameManager));
+                } else {
+                    // TODO: display failed authentication.
+                    System.out.println("Failed authentication");
+                }
+
+            }
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                System.out.println("pressed");
+                return true;
+            }
+        });
 
         stage.addActor(loginButton);
         stage.addActor(usernameLabel);

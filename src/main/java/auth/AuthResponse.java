@@ -1,6 +1,6 @@
 package auth;
 
-enum AuthResponse {
+public enum AuthResponse {
     SUCCESS,
     WRONG_PASSWORD,
 }
