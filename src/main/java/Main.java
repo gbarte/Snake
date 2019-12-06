@@ -1,3 +1,4 @@
+import auth.AuthService;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import game.SnakeGame;
@@ -8,6 +9,11 @@ public class Main {
      * @param args as for all main methods.
      */
     public static void main(String[] args) {
+
+        AuthService service = new AuthService();
+        service.register("john", "12345678");
+        service.dizpose();
+
         Lwjgl3ApplicationConfiguration cfg = new Lwjgl3ApplicationConfiguration();
         cfg.setTitle(SnakeGame.TITLE);
         cfg.setWindowSizeLimits(SnakeGame.WIDTH, SnakeGame.HEIGHT,
