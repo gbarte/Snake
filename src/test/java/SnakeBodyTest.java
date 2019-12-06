@@ -1,15 +1,15 @@
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import java.util.LinkedList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
 import snake.BodyPart;
 import snake.SnakeBody;
-
-import java.util.LinkedList;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 
 class SnakeBodyTest {
     private transient SnakeBody snakeBody;
@@ -20,31 +20,9 @@ class SnakeBodyTest {
     }
 
     @Test
-    public void constructorTest(){
+    public void constructorTest() {
         snakeBody = new SnakeBody(800, 800);
         assertEquals(2, snakeBody.getBodyParts().size());
-    }
-
-    @Test
-    void getHeadXTest() {
-        assertEquals(snakeBody.getHeadX(),400);
-    }
-
-    @Test
-    void setHeadXTest() {
-        snakeBody.setHeadX(5);
-        assertEquals(5 , snakeBody.getHeadX());
-    }
-
-    @Test
-    void getHeadYTest() {
-        assertEquals(snakeBody.getHeadY(), 400);
-    }
-
-    @Test
-    void setHeadYTest() {
-        snakeBody.setHeadY(5);
-        assertEquals(5, snakeBody.getHeadY());
     }
 
     @Test
@@ -80,9 +58,13 @@ class SnakeBodyTest {
     @Test
     void growSnakeTest() {
         LinkedList<BodyPart> ll = snakeBody.getBodyParts();
-        int length = ll.size();
+
+        //test for growing first bodyPart
+        ll.add(new BodyPart(450, 400));
+        assertEquals(ll.get(0), snakeBody.getBodyParts().get(0));
 
         // test for growing by one cell
+        int length = ll.size();
         ll.add(new BodyPart(450 - (length * SnakeBody.CELL_SIZE), 400));
         snakeBody.growSnake();
         assertEquals(ll, snakeBody.getBodyParts());
@@ -98,9 +80,19 @@ class SnakeBodyTest {
     void moveSnakeTest() {
         assertEquals(snakeBody.getCurrDir(), SnakeBody.Direction.UP);
         snakeBody.moveSnake(SnakeBody.Direction.RIGHT);
-        assertEquals(snakeBody.getHeadX(), 450);
-        assertEquals(snakeBody.getHeadY(), 400);
+        assertEquals(snakeBody.getHeadCoord().getCoordinateX(), 450);
+        assertEquals(snakeBody.getHeadCoord().getCoordinateY(), 400);
+    }
 
+    @Test
+    void moveSnakeTest2() {
+        snakeBody.moveSnake(SnakeBody.Direction.LEFT);
+        assertEquals(snakeBody.getHeadCoord().getCoordinateX(), 350);
+        assertEquals(snakeBody.getHeadCoord().getCoordinateY(), 400);
+
+        snakeBody.moveSnake(SnakeBody.Direction.DOWN);
+        assertEquals(snakeBody.getHeadCoord().getCoordinateX(), 350);
+        assertEquals(snakeBody.getHeadCoord().getCoordinateY(), 350);
     }
 
     @Test
@@ -111,9 +103,12 @@ class SnakeBodyTest {
 
         snakeBody.setBodyParts(ll);
         snakeBody.moveSnake(SnakeBody.Direction.UP);
-        snakeBody.updateBodyPartsPosition(snakeBody.getHeadX(), snakeBody.getHeadY());
+        snakeBody.updateBodyPartsPosition(snakeBody.getHeadCoord());
 
-        assertEquals(snakeBody.getBodyParts().get(1).getY(), snakeBody.getBodyParts().get(0).getY() - SnakeBody.CELL_SIZE);
+        LinkedList<BodyPart> bodyParts = snakeBody.getBodyParts();
+
+        assertEquals(bodyParts.get(1).getCoordinates().getCoordinateY(),
+                bodyParts.get(0).getCoordinates().getCoordinateY() - SnakeBody.CELL_SIZE);
     }
 
     @Test
@@ -121,7 +116,7 @@ class SnakeBodyTest {
         ShapeRenderer shapeRenderer = Mockito.mock(ShapeRenderer.class);
         snakeBody.renderSnake(shapeRenderer);
 
-        Mockito.verify(shapeRenderer).setColor(any(Color.class));
+        Mockito.verify(shapeRenderer).setColor(Mockito.any(Color.class));
         Mockito.verify(shapeRenderer).end();
     }
 
