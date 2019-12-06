@@ -194,6 +194,8 @@ public class LoginState extends State {
 
     @Override
     public void dispose() {
-
+        backGround.dispose();
+        skin.dispose();
+        stage.dispose();
     }
 }
