@@ -22,7 +22,6 @@ public class MenuState extends State {
 
     @Override
     public void render(SpriteBatch batch) {
-
     }
 
     @Override
