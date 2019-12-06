@@ -2,13 +2,19 @@ package states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import game.SnakeGame;
+import gamelogic.Coordinates;
+import gamelogic.ScoreCalculator;
+
+import objects.base.Apple;
+import snake.BodyPart;
 import snake.SnakeBody;
+
 
 public class PlayState extends State {
     protected static final float MOVE_TIME = 0.25f;
@@ -17,6 +23,8 @@ public class PlayState extends State {
     private float timer = MOVE_TIME;
     private SnakeBody snake;
     private ShapeRenderer shapeRenderer;
+    private Apple apple;
+    private ScoreCalculator score;
 
     /**
      * Constructor which creates a new state within the game.
@@ -29,8 +37,10 @@ public class PlayState extends State {
         skin = new Skin(Gdx.files.internal("assets/neon/skin/neon-ui.json"));
         setDialogScreen();
         shapeRenderer = new ShapeRenderer();
-        snake = new SnakeBody(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        snake = new SnakeBody(SnakeGame.WIDTH, SnakeGame.HEIGHT);
+        camera.setToOrtho(false, SnakeGame.WIDTH, SnakeGame.HEIGHT);
+        apple = new Apple();
+        score = new ScoreCalculator();
     }
 
     private void setDialogScreen() {
@@ -38,12 +48,15 @@ public class PlayState extends State {
     }
 
     /**
-     * Play Screen of the game.
+     * Constructor which creates a new state within the game.
+     * Method was made just to make testing easier!
      */
     public PlayState(GameStateManager gameManager, SnakeBody snake, ShapeRenderer renderer) {
         super(gameManager);
         this.snake = snake;
         this.shapeRenderer = renderer;
+        this.score = new ScoreCalculator();
+        this.apple = new Apple(0, 0, 10);
     }
 
     public Dialog getGameOver() {
@@ -90,8 +103,24 @@ public class PlayState extends State {
         return timer;
     }
 
+    public ScoreCalculator getScore() {
+        return score;
+    }
+
+    public void setScore(ScoreCalculator score) {
+        this.score = score;
+    }
+
     public void setTimer(float timer) {
         this.timer = timer;
+    }
+
+    public Apple getApple() {
+        return apple;
+    }
+
+    public void setApple(Apple apple) {
+        this.apple = apple;
     }
 
     @Override
@@ -119,24 +148,40 @@ public class PlayState extends State {
         handleInput();
         checkOutOfMap();
         updateSnake(dt);
+        checkAppleEaten();
     }
 
     /**
      * Clears the background, renders the batch and snake.
      * Checks what the state is and changes state and updates snake.
+     *
      * @param batch - Renders again every delta amount of time.
      */
     @Override
     public void render(SpriteBatch batch) {
-        batch.begin();
         snake.renderSnake(shapeRenderer);
+        batch.begin();
+        Coordinates appleCoord = apple.getCoordinates();
+        batch.draw(apple.getTexture(), appleCoord.getCoordinateX(), appleCoord.getCoordinateY());
+        renderScore(batch);
+        batch.end();
         //Comment out next line if you don't want the grid
         drawGrid();
-        batch.end();
+    }
+
+    /**
+     * Renders the current score on the screen.
+     * @param batch used for drawing elements.
+     */
+    public void renderScore(SpriteBatch batch) {
+        BitmapFont bitmapFont = new BitmapFont();
+        bitmapFont.setColor(Color.RED);
+        bitmapFont.draw(batch, String.valueOf(score.getScore()), 20, 20);
     }
 
     /**
      * Moves the snake every MOVE_TIME.
+     *
      * @param delta - time interval between each step
      */
     private void updateSnake(float delta) {
@@ -154,6 +199,7 @@ public class PlayState extends State {
 
     /**
      * Updates the direction by calling updateIfNotOpposite.
+     *
      * @param direction - direction in which the user wants to move the snake
      */
     public void updateDirection(SnakeBody.Direction direction) {
@@ -180,7 +226,8 @@ public class PlayState extends State {
     /**
      * Updates the position if newDir does not equal opposite direction,
      * this would mean that the snakes moves to itself.
-     * @param newDir - Direction the snake wants to move to.
+     *
+     * @param newDir            - Direction the snake wants to move to.
      * @param oppositeDirection - Direction snake comes from.
      */
     private void updateIfNotOpposite(SnakeBody.Direction newDir,
@@ -195,19 +242,19 @@ public class PlayState extends State {
      * if it hits then the state changes to GAME_OVER.
      */
     public void checkOutOfMap() {
-        if (snake.getHeadX() >= Gdx.graphics.getWidth() - SnakeBody.CELL_SIZE) {
+        if (snake.getHeadCoord().getCoordinateX() >= SnakeGame.WIDTH - SnakeBody.CELL_SIZE) {
             System.out.println("Game oveeer");
             presentGameOverDialog();
         }
-        if (snake.getHeadX() <= 0) {
+        if (snake.getHeadCoord().getCoordinateX() <= 0) {
             System.out.println("Game oveer");
             presentGameOverDialog();
         }
-        if (snake.getHeadY() >= Gdx.graphics.getHeight() - SnakeBody.CELL_SIZE) {
+        if (snake.getHeadCoord().getCoordinateY() >= SnakeGame.HEIGHT - SnakeBody.CELL_SIZE) {
             System.out.println("Game over");
             presentGameOverDialog();
         }
-        if (snake.getHeadY() <= 0) {
+        if (snake.getHeadCoord().getCoordinateY() <= 0) {
             System.out.println("Game oveeeeer");
             presentGameOverDialog();
         }
@@ -215,16 +262,30 @@ public class PlayState extends State {
 
     private void drawGrid() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        for (int x = 0; x < Gdx.graphics.getWidth(); x += SnakeBody.CELL_SIZE) {
-            for (int y = 0; y < Gdx.graphics.getHeight(); y += SnakeBody.CELL_SIZE) {
+        for (int x = 0; x < SnakeGame.WIDTH; x += SnakeBody.CELL_SIZE) {
+            for (int y = 0; y < SnakeGame.HEIGHT; y += SnakeBody.CELL_SIZE) {
                 shapeRenderer.rect(x, y, SnakeBody.CELL_SIZE, SnakeBody.CELL_SIZE);
             }
         }
         shapeRenderer.end();
     }
 
-    private void presentGameOverDialog() {
-//        gameOver.show(stage);
+    private void checkAppleEaten() {
+        if (snake.getHeadCoord().equals(apple.getCoordinates())) {
+            score.add(apple.getScore());
+            apple = new Apple();
+            checkAppleOnSnake();
+            snake.growSnake();
+        }
+    }
+
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+    private void checkAppleOnSnake() {
+        for (BodyPart bp : snake.getBodyParts()) {
+            if (bp.getCoordinates().equals(apple.getCoordinates())) {
+                apple = new Apple();
+            }
+        }
     }
 }
 

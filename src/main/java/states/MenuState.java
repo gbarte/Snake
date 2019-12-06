@@ -113,8 +113,11 @@ public class MenuState extends State {
 
     @Override
     public void render(SpriteBatch batch) {
+<<<<<<< src/main/java/states/MenuState.java
         stage.act();
         stage.draw();
+=======
+>>>>>>> src/main/java/states/MenuState.java
     }
 
     @Override
