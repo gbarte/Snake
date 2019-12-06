@@ -158,6 +158,7 @@ public class LoginState extends State {
                     gameManager.set(new PlayState(gameManager));
                 } else {
                     // TODO: display failed authentication.
+                    System.out.println("Failed authentication");
                 }
 
             }
