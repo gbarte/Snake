@@ -48,14 +48,14 @@ public class UsersTableTest {
         Assertions.assertNotNull(table.getConnection());
     }
 
-    @Test
-    void createAndRetrieveUserTest() {
-        table.connect("test_table");
-        table.createUser("username", "password1");
-        Assertions.assertNotNull(table.getUser("username"));
-
-        dropCustomTable();
-    }
+//    @Test
+//    void createAndRetrieveUserTest() {
+//        table.connect("test_table");
+//        table.createUser("username", "password1");
+//        Assertions.assertNotNull(table.getUser("username"));
+//
+//        dropCustomTable();
+//    }
 
     @Test
     void connectionCustomTest() throws SQLException {
