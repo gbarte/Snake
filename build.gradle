@@ -42,8 +42,8 @@ test {
 
     jacoco {
         enabled = true
-        includes = ['nl.tudelft.cse.sem.*']
-        excludes = []
+//        includes = ['nl.tudelft.cse.sem.*']
+//        excludes = []
     }
 }
 
