@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import game.SnakeGame;
 import gamelogic.Coordinates;
 import gamelogic.ScoreCalculator;
@@ -18,6 +20,8 @@ import snake.SnakeBody;
 
 public class PlayState extends State {
     protected static final float MOVE_TIME = 0.25f;
+    // private Dialog gameOver;
+    // private Skin skin;
     private float timer = MOVE_TIME;
     private SnakeBody snake;
     private ShapeRenderer shapeRenderer;
@@ -32,12 +36,18 @@ public class PlayState extends State {
      */
     public PlayState(GameStateManager gameManager) {
         super(gameManager);
+        // skin = new Skin(Gdx.files.internal("assets/neon/skin/neon-ui.json"));
+        // setDialogScreen();
         shapeRenderer = new ShapeRenderer();
         snake = new SnakeBody(SnakeGame.WIDTH, SnakeGame.HEIGHT);
         camera.setToOrtho(false, SnakeGame.WIDTH, SnakeGame.HEIGHT);
         apple = new Apple();
         score = new ScoreCalculator();
     }
+
+    //    private void setDialogScreen() {
+    //        gameOver = new Dialog("Game Over", skin);
+    //    }
 
     /**
      * Constructor which creates a new state within the game.
@@ -50,6 +60,22 @@ public class PlayState extends State {
         this.score = new ScoreCalculator();
         this.apple = new Apple(0, 0, 10);
     }
+
+    //    public Dialog getGameOver() {
+    //        return gameOver;
+    //    }
+    //
+    //    public void setGameOver(Dialog gameOver) {
+    //        this.gameOver = gameOver;
+    //    }
+
+    //    public Skin getSkin() {
+    //        return skin;
+    //    }
+    //
+    //    public void setSkin(Skin skin) {
+    //        this.skin = skin;
+    //    }
 
     public OrthographicCamera getCamera() {
         return camera;
