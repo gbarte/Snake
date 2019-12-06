@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import game.SnakeGame;
 import gamelogic.Coordinates;
 import gamelogic.ScoreCalculator;
@@ -244,19 +246,15 @@ public class PlayState extends State {
     public void checkOutOfMap() {
         if (snake.getHeadCoord().getCoordinateX() >= SnakeGame.WIDTH - SnakeBody.CELL_SIZE) {
             System.out.println("Game oveeer");
-            // presentGameOverDialog();
         }
         if (snake.getHeadCoord().getCoordinateX() <= 0) {
             System.out.println("Game oveer");
-            // presentGameOverDialog();
         }
         if (snake.getHeadCoord().getCoordinateY() >= SnakeGame.HEIGHT - SnakeBody.CELL_SIZE) {
             System.out.println("Game over");
-            // presentGameOverDialog();
         }
         if (snake.getHeadCoord().getCoordinateY() <= 0) {
             System.out.println("Game oveeeeer");
-            //  resentGameOverDialog();
         }
     }
 
