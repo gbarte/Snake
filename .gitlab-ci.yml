@@ -56,7 +56,7 @@ PMD:
 test:
   stage: test
   script:
-    gradle check
+    gradle check --debug
   after_script:
     - gradle jacocoTestReport
     - cat build/reports/jacoco/test/html/index.html

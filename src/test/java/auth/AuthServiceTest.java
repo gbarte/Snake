@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
+
 public class AuthServiceTest {
 
     private transient AuthService service;
@@ -14,6 +16,12 @@ public class AuthServiceTest {
     void setUp() {
         service = new AuthService("test_table");
         service.register(TEST_USERNAME, "12345678");
+    }
+
+    @Test
+    void defaultConnectTest() throws SQLException {
+        service = new AuthService();
+        Assertions.assertFalse(service.getTable().getConnection().isClosed());
     }
 
     @Test
