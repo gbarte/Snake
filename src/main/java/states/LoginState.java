@@ -21,8 +21,9 @@ public class LoginState extends State {
     private Label title;
 //    private Button loginButton;
 //    private Button signUpButton;
-//    private TextField usernameField;
-//    private TextField passWordField;
+    private TextField usernameField;
+    private TextField passWordField;
+
     private Texture backGround;
     /**
      * Constructor which creates a new state within the game.
@@ -34,7 +35,8 @@ public class LoginState extends State {
         super(gameManager);
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
-        skin =  new Skin(Gdx.files.internal("assets/metal/skin/metal-ui.json"));
+//        skin =  new Skin(Gdx.files.internal("assets/metal/skin/metal-ui.json"));
+        skin =  new Skin(Gdx.files.internal("assets/quantum-horizon/skin/quantum-horizon-ui.json"));
         initTitle();
         initLogin();
         initSignUp();
@@ -43,7 +45,7 @@ public class LoginState extends State {
 
     private void initTitle() {
         BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal("assets/font.fnt"));
-        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, new Color(1, 0, 1, 1));
+        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, new Color(0, (float) 0.5, 0, 1));
         title = new Label("Lil' Snake", labelStyle);
 //        title = new Label("Lil' Snake", skin);
         title.setSize(600, 120);
@@ -103,11 +105,12 @@ public class LoginState extends State {
 
     private void initSignUp() {
         TextButton signUpButton = new TextButton("Sign up", skin);
-        signUpButton.setPosition(300, 150);
+//        signUpButton.setPosition(300, 150);
+        signUpButton.setPosition(300, 140);
         signUpButton.addListener(new InputListener(){
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                gameManager.set(new SignUpState(gameManager));
+//                gameManager.set(new SignUpState(gameManager));
             }
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -121,12 +124,13 @@ public class LoginState extends State {
 
     private void initLogin() {
         TextButton loginButton = new TextButton("Login", skin);
-        loginButton.setPosition(300, 200);
+//        loginButton.setPosition(300, 200);
+        loginButton.setPosition(300, 190);
         loginButton.addListener(new InputListener(){
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-//                gameManager.set(new MenuState(gameManager));
                 gameManager.set(new PlayState(gameManager));
+//                gameManager.set(new MenuState(gameManager));
             }
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -135,18 +139,26 @@ public class LoginState extends State {
             }
         });
         BitmapFont bitmapFont = new BitmapFont();
-        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, new Color(1, 0, 1, 1));
+//        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, new Color(1, 0, 1, 1));
+        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, new Color(0, (float) 0.5, 0, 1));
         Label usernameLabel = new Label("Username", labelStyle);
         usernameLabel.setPosition(100, 232);
 
-        TextField usernameField = new TextField("", new Skin(Gdx.files.internal("assets/metal/skin/metal-ui.json")));
+//        TextField usernameField = new TextField("", new Skin(Gdx.files.internal("assets/metal/skin/metal-ui.json")));
+//        usernameField.setSize(180, 30);
+//        usernameField.setPosition(100, 200);
+        TextField usernameField = new TextField("", new Skin(Gdx.files.internal("assets/cloud-form/skin/cloud-form-ui.json")));
         usernameField.setSize(180, 30);
         usernameField.setPosition(100, 200);
 
         Label passwordLabel = new Label("Password", labelStyle);
         passwordLabel.setPosition(100, 182);
 
-        TextField passWordField = new TextField("", new Skin(Gdx.files.internal("assets/metal/skin/metal-ui.json")));
+//        TextField passWordField = new TextField("", new Skin(Gdx.files.internal("assets/metal/skin/metal-ui.json")));
+//        passWordField.setSize(180, 30);
+//        passWordField.setPosition(100, 150);
+
+        TextField passWordField = new TextField("", new Skin(Gdx.files.internal("assets/cloud-form/skin/cloud-form-ui.json")));
         passWordField.setSize(180, 30);
         passWordField.setPosition(100, 150);
         passWordField.isPasswordMode();
