@@ -149,6 +149,7 @@ public class PlayState extends State {
     public void update(float dt) {
         handleInput();
         checkOutOfMap();
+        checkHeadHitsBody();
         updateSnake(dt);
         checkAppleEaten();
     }
@@ -255,6 +256,18 @@ public class PlayState extends State {
         }
         if (snake.getHeadCoord().getCoordinateY() <= 0) {
             System.out.println("Game oveeeeer");
+        }
+    }
+
+    /**
+     * Checks whether the snake head hits the body.
+     * If it does, then the state changes to GAME_OVER.
+     */
+    public void checkHeadHitsBody() {
+        for (BodyPart part : snake.getBodyParts()) {
+            if (part.getCoordinates().equals(snake.getHeadCoord())) {
+                System.out.println("Game over U ATE URSELF");
+            }
         }
     }
 
