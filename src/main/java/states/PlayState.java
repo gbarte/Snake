@@ -203,22 +203,23 @@ public class PlayState extends State {
     /**
      * Updates the direction by calling updateIfNotOpposite.
      *
-     * @param direction - direction in which the user wants to move the snake
+     * @param newDirection - direction in which the user wants to move the snake
      */
-    public void updateDirection(SnakeBody.Direction direction) {
-        if (!direction.equals(snake.getCurrDir())) {
-            switch (direction) {
+    public void updateDirection(SnakeBody.Direction newDirection) {
+        SnakeBody.Direction current = snake.getCurrDir();
+        if (!newDirection.equals(current)) {
+            switch (current) {
                 case UP:
-                    updateIfNotOpposite(SnakeBody.Direction.UP, SnakeBody.Direction.DOWN);
+                    updateIfNotOpposite(newDirection, SnakeBody.Direction.DOWN);
                     break;
                 case DOWN:
-                    updateIfNotOpposite(SnakeBody.Direction.DOWN, SnakeBody.Direction.UP);
+                    updateIfNotOpposite(newDirection, SnakeBody.Direction.UP);
                     break;
                 case LEFT:
-                    updateIfNotOpposite(SnakeBody.Direction.LEFT, SnakeBody.Direction.RIGHT);
+                    updateIfNotOpposite(newDirection, SnakeBody.Direction.RIGHT);
                     break;
                 case RIGHT:
-                    updateIfNotOpposite(SnakeBody.Direction.RIGHT, SnakeBody.Direction.LEFT);
+                    updateIfNotOpposite(newDirection, SnakeBody.Direction.LEFT);
                     break;
                 default:
                     // nothing happens
