@@ -264,10 +264,13 @@ public class PlayState extends State {
      * If it does, then the state changes to GAME_OVER.
      */
     public void checkHeadHitsBody() {
-        for (BodyPart part : snake.getBodyParts()) {
-            if (part.getCoordinates().equals(snake.getHeadCoord())) {
-                System.out.println("Game over U ATE URSELF");
-//                gameManager.set(new GameOverState(gameManager));
+        // snake can only eat itself if it has more than 3 body parts
+        if (snake.getBodyParts().size() > 3) {
+            for (BodyPart part : snake.getBodyParts()) {
+                if (part.getCoordinates().equals(snake.getHeadCoord())) {
+                    System.out.println("Game over U ATE URSELF");
+                    gameManager.set(new GameOverState(gameManager));
+                }
             }
         }
     }
