@@ -245,16 +245,16 @@ public class PlayState extends State {
      * if it hits then the state changes to GAME_OVER.
      */
     public void checkOutOfMap() {
-        if (snake.getHeadCoord().getCoordinateX() >= SnakeGame.WIDTH - SnakeBody.CELL_SIZE) {
+        if (snake.getHeadCoord().getCoordinateX() >= SnakeGame.WIDTH) {
             gameManager.set(new GameOverState(gameManager));
         }
-        if (snake.getHeadCoord().getCoordinateX() <= 0) {
+        if (snake.getHeadCoord().getCoordinateX() < 0) {
             gameManager.set(new GameOverState(gameManager));
         }
-        if (snake.getHeadCoord().getCoordinateY() >= SnakeGame.HEIGHT - SnakeBody.CELL_SIZE) {
+        if (snake.getHeadCoord().getCoordinateY() >= SnakeGame.HEIGHT) {
             gameManager.set(new GameOverState(gameManager));
         }
-        if (snake.getHeadCoord().getCoordinateY() <= 0) {
+        if (snake.getHeadCoord().getCoordinateY() < 0) {
             gameManager.set(new GameOverState(gameManager));
         }
     }
