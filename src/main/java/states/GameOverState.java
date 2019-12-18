@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class GameOverState extends State {
     private Stage stage;
-//    private Skin skin;
+    //    private Skin skin;
     private Label title;
     private Texture backGround;
     /**
@@ -44,6 +44,22 @@ public class GameOverState extends State {
         title.setFontScale(3);
         title.setAlignment(Align.center);
         stage.addActor(title);
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public Label getTitle() {
+        return title;
+    }
+
+    public void setTitle(Label title) {
+        this.title = title;
     }
 
     public Texture getBackGround() {
