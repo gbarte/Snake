@@ -38,7 +38,7 @@ public class GameOverState extends State {
     private void initTitle() {
         BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal("assets/font.fnt"));
         Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
-                new Color((float) 0.9,0, 0, 1));
+                new Color(0,0, 0, 1));
         title = new Label("Game Over", labelStyle);
         title.setSize(600, 120);
         title.setPosition(10,400);
