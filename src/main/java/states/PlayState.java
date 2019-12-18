@@ -246,16 +246,16 @@ public class PlayState extends State {
      */
     public void checkOutOfMap() {
         if (snake.getHeadCoord().getCoordinateX() >= SnakeGame.WIDTH - SnakeBody.CELL_SIZE) {
-            System.out.println("Game oveeer");
+            gameManager.set(new GameOverState(gameManager));
         }
         if (snake.getHeadCoord().getCoordinateX() <= 0) {
-            System.out.println("Game oveer");
+            gameManager.set(new GameOverState(gameManager));
         }
         if (snake.getHeadCoord().getCoordinateY() >= SnakeGame.HEIGHT - SnakeBody.CELL_SIZE) {
-            System.out.println("Game over");
+            gameManager.set(new GameOverState(gameManager));
         }
         if (snake.getHeadCoord().getCoordinateY() <= 0) {
-            System.out.println("Game oveeeeer");
+            gameManager.set(new GameOverState(gameManager));
         }
     }
 
@@ -267,6 +267,7 @@ public class PlayState extends State {
         for (BodyPart part : snake.getBodyParts()) {
             if (part.getCoordinates().equals(snake.getHeadCoord())) {
                 System.out.println("Game over U ATE URSELF");
+//                gameManager.set(new GameOverState(gameManager));
             }
         }
     }
