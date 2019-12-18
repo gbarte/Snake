@@ -101,7 +101,7 @@ public class LoginState extends State {
         signUpButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-            //                gameManager.set(new SignUpState(gameManager));
+                gameManager.set(new SignUpState(gameManager));
             }
 
             @Override
@@ -125,8 +125,7 @@ public class LoginState extends State {
         loginButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                gameManager.set(new PlayState(gameManager));
-                // gameManager.set(new MenuState(gameManager));
+                gameManager.set(new MenuState(gameManager));
             }
 
             @Override

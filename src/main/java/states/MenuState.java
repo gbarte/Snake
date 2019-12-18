@@ -24,13 +24,13 @@ public class MenuState extends State {
      */
     public MenuState(GameStateManager gameManager) {
         super(gameManager);
-        //        stage = new Stage(new ScreenViewport());
-        //        Gdx.input.setInputProcessor(stage);
-        //        skin = new Skin(Gdx.files.internal(
-        //        "assets/quantum-horizon/skin/quantum-horizon-ui.json"));
-        //        initPlayButton();
-        //        initLeaderBoardButton();
-        //        initSignOutButton();
+        stage = new Stage(new ScreenViewport());
+        Gdx.input.setInputProcessor(stage);
+        skin = new Skin(Gdx.files.internal(
+                "assets/quantum-horizon/skin/quantum-horizon-ui.json"));
+        initPlayButton();
+        initLeaderBoardButton();
+        initSignOutButton();
     }
 
     public Stage getStage() {
@@ -58,69 +58,69 @@ public class MenuState extends State {
         this.background = background;
     }
 
-    //    private void initSignOutButton() {
-    //        TextButton signOutButton = new TextButton("Sign Out",
-    //        new Skin(Gdx.files.internal("assets/quantum-horizon/skin/quantum-horizon-ui.json")));
-    //        signOutButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-    //        signOutButton.setPosition(400 - (signOutButton.getWidth()/2), 300);
-    //        signOutButton.addListener(new InputListener() {
-    //            @Override
-    //            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-    ////                System.out.println("leaderboard");
-    //                gameManager.set(new LoginState(gameManager));
-    //            }
-    //            @Override
-    //            public boolean touchDown(
-    //            InputEvent event, float x, float y, int pointer, int button) {
-    //                System.out.println("pressed leaderboard");
-    //                return true;
-    //            }
-    //        });
-    //        stage.addActor(signOutButton);
-    //    }
+    private void initSignOutButton() {
+        TextButton signOutButton = new TextButton("Sign Out",
+                new Skin(Gdx.files.internal("assets/quantum-horizon/skin/quantum-horizon-ui.json")));
+        signOutButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
+        signOutButton.setPosition(400 - (signOutButton.getWidth()/2), 300);
+        signOutButton.addListener(new InputListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                //                System.out.println("leaderboard");
+                gameManager.set(new LoginState(gameManager));
+            }
+            @Override
+            public boolean touchDown(
+                    InputEvent event, float x, float y, int pointer, int button) {
+                System.out.println("pressed leaderboard");
+                return true;
+            }
+        });
+        stage.addActor(signOutButton);
+    }
 
-    //    private void initLeaderBoardButton() {
-    //        TextButton leaderBoardButton = new TextButton("Leaderboard", skin);
-    //        leaderBoardButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-    //        leaderBoardButton.setPosition(400 - (leaderBoardButton.getWidth()/2), 400);
-    //        leaderBoardButton.addListener(new InputListener() {
-    //            @Override
-    //            public void touchUp(InputEvent event, float x, float y,
-    //            int pointer, int button) {
-    //                System.out.println("leaderboard");
-    ////                gameManager.set(new PlayState(gameManager));
-    //            }
-    //            @Override
-    //            public boolean touchDown(
-    //            InputEvent event, float x, float y, int pointer, int button) {
-    //                System.out.println("pressed leaderboard");
-    //                return true;
-    //            }
-    //        });
-    //        stage.addActor(leaderBoardButton);
-    //    }
+    private void initLeaderBoardButton() {
+        TextButton leaderBoardButton = new TextButton("Leaderboard", skin);
+        leaderBoardButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
+        leaderBoardButton.setPosition(400 - (leaderBoardButton.getWidth()/2), 400);
+        leaderBoardButton.addListener(new InputListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y,
+                                int pointer, int button) {
+                System.out.println("leaderboard");
+                //                gameManager.set(new PlayState(gameManager));
+            }
+            @Override
+            public boolean touchDown(
+                    InputEvent event, float x, float y, int pointer, int button) {
+                System.out.println("pressed leaderboard");
+                return true;
+            }
+        });
+        stage.addActor(leaderBoardButton);
+    }
 
-    //    private void initPlayButton() {
-    //        TextButton playButton = new TextButton("Start Game", skin);
-    //        playButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-    //        playButton.setPosition(400 - (playButton.getWidth()/2), 500);
-    //        playButton.addListener(new InputListener() {
-    //            @Override
-    //            public void touchUp(InputEvent event, float x, float y,
-    //            int pointer, int button) {
-    ////                gameManager.set(new MenuState(gameManager));
-    //                gameManager.set(new PlayState(gameManager));
-    //            }
-    //            @Override
-    //            public boolean touchDown(InputEvent event, float x, float y,
-    //            int pointer, int button) {
-    //                System.out.println("pressed");
-    //                return true;
-    //            }
-    //        });
-    //        stage.addActor(playButton);
-    //
-    //    }
+    private void initPlayButton() {
+        TextButton playButton = new TextButton("Start Game", skin);
+        playButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
+        playButton.setPosition(400 - (playButton.getWidth()/2), 500);
+        playButton.addListener(new InputListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y,
+                                int pointer, int button) {
+                //                gameManager.set(new MenuState(gameManager));
+                gameManager.set(new PlayState(gameManager));
+            }
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y,
+                                     int pointer, int button) {
+                System.out.println("pressed");
+                return true;
+            }
+        });
+        stage.addActor(playButton);
+
+    }
 
     @Override
     public void handleInput() {
