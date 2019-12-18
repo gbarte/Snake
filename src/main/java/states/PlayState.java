@@ -247,15 +247,19 @@ public class PlayState extends State {
     public void checkOutOfMap() {
         if (snake.getHeadCoord().getCoordinateX() >= SnakeGame.WIDTH) {
             gameManager.set(new GameOverState(gameManager));
+            System.out.println("Game over U HIT A WALL");
         }
         if (snake.getHeadCoord().getCoordinateX() < 0) {
             gameManager.set(new GameOverState(gameManager));
+            System.out.println("Game over U HIT A WALL");
         }
         if (snake.getHeadCoord().getCoordinateY() >= SnakeGame.HEIGHT) {
             gameManager.set(new GameOverState(gameManager));
+            System.out.println("Game over U HIT A WALL");
         }
         if (snake.getHeadCoord().getCoordinateY() < 0) {
             gameManager.set(new GameOverState(gameManager));
+            System.out.println("Game over U HIT A WALL");
         }
     }
 
