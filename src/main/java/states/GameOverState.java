@@ -23,7 +23,7 @@ public class GameOverState extends State {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 //        skin =  new Skin();
-//        backGround = new Texture("assets/...");
+        backGround = new Texture("assets/glitchy.png");
     }
 
     @Override
