@@ -60,15 +60,17 @@ public class MenuState extends State {
 
     private void initSignOutButton() {
         TextButton signOutButton = new TextButton("Sign Out",
-                new Skin(Gdx.files.internal("assets/quantum-horizon/skin/quantum-horizon-ui.json")));
+                new Skin(Gdx.files.internal(
+                        "assets/quantum-horizon/skin/quantum-horizon-ui.json")));
         signOutButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-        signOutButton.setPosition(400 - (signOutButton.getWidth()/2), 300);
+        signOutButton.setPosition(400 - (signOutButton.getWidth() / 2), 300);
         signOutButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 //                System.out.println("leaderboard");
                 gameManager.set(new LoginState(gameManager));
             }
+
             @Override
             public boolean touchDown(
                     InputEvent event, float x, float y, int pointer, int button) {
@@ -82,7 +84,7 @@ public class MenuState extends State {
     private void initLeaderBoardButton() {
         TextButton leaderBoardButton = new TextButton("Leaderboard", skin);
         leaderBoardButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-        leaderBoardButton.setPosition(400 - (leaderBoardButton.getWidth()/2), 400);
+        leaderBoardButton.setPosition(400 - (leaderBoardButton.getWidth() / 2), 400);
         leaderBoardButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y,
@@ -90,6 +92,7 @@ public class MenuState extends State {
                 System.out.println("leaderboard");
                 //                gameManager.set(new PlayState(gameManager));
             }
+
             @Override
             public boolean touchDown(
                     InputEvent event, float x, float y, int pointer, int button) {
@@ -103,7 +106,7 @@ public class MenuState extends State {
     private void initPlayButton() {
         TextButton playButton = new TextButton("Start Game", skin);
         playButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-        playButton.setPosition(400 - (playButton.getWidth()/2), 500);
+        playButton.setPosition(400 - (playButton.getWidth() / 2), 500);
         playButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y,
@@ -111,6 +114,7 @@ public class MenuState extends State {
                 //                gameManager.set(new MenuState(gameManager));
                 gameManager.set(new PlayState(gameManager));
             }
+
             @Override
             public boolean touchDown(InputEvent event, float x, float y,
                                      int pointer, int button) {
