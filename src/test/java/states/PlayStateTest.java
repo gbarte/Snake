@@ -4,9 +4,11 @@ import static game.SnakeGame.WIDTH;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import game.SnakeGame;
 import gamelogic.Coordinates;
@@ -30,6 +32,7 @@ class PlayStateTest {
         shapeRenderer = Mockito.mock(ShapeRenderer.class);
         snake = new SnakeBody(100, 100);
         play = new PlayState(stateManager, snake, shapeRenderer);
+        stateManager.push(play);
     }
 
     @Test
@@ -121,13 +124,18 @@ class PlayStateTest {
         assertNotEquals(stateManager, play.gameManager);
     }
 
-    @Test
-    void checkOutOfMapTest2() {
-        snake.setHeadCoord(new Coordinates(-1, 10));
-        play.setSnake(snake);
-        play.checkOutOfMap();
-        assertNotEquals(stateManager, play.gameManager);
-    }
+//    @Test
+//    void checkOutOfMapTest2() {
+//        GameStateManager newManager = new GameStateManager();
+//        PlayState oldCopy = new PlayState(stateManager, snake, shapeRenderer);
+//        newManager.push(oldCopy);
+//        newManager.set(new GameOverState(newManager));
+//        snake.setHeadCoord(new Coordinates(-1, 10));
+//        play.setSnake(snake);
+//        play.checkOutOfMap();
+////         gameOver = (GameOverState) stateManager.getStates().peek();
+//        assertEquals(newManager, play.gameManager);
+//    }
 
     @Test
     void checkOutOfMapTest3() {
