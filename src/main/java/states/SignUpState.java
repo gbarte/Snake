@@ -21,6 +21,10 @@ public class SignUpState extends State {
     }
 
     @Override
+    public void create() {
+    }
+
+    @Override
     public void handleInput() {
 
     }

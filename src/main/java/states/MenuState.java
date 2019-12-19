@@ -24,6 +24,10 @@ public class MenuState extends State {
      */
     public MenuState(GameStateManager gameManager) {
         super(gameManager);
+    }
+
+    @Override
+    public void create() {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         skin = new Skin(Gdx.files.internal(
