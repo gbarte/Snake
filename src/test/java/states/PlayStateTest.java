@@ -1,8 +1,7 @@
 package states;
 
 import static game.SnakeGame.WIDTH;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -121,28 +120,23 @@ class PlayStateTest {
         snake.setHeadCoord(new Coordinates(SnakeGame.WIDTH, 10));
         play.setSnake(snake);
         play.checkOutOfMap();
-        assertNotEquals(stateManager, play.gameManager);
+        assertTrue(play.gameManager.getStates().peek() instanceof GameOverState);
     }
 
-//    @Test
-//    void checkOutOfMapTest2() {
-//        GameStateManager newManager = new GameStateManager();
-//        PlayState oldCopy = new PlayState(stateManager, snake, shapeRenderer);
-//        newManager.push(oldCopy);
-//        newManager.set(new GameOverState(newManager));
-//        snake.setHeadCoord(new Coordinates(-1, 10));
-//        play.setSnake(snake);
-//        play.checkOutOfMap();
-////         gameOver = (GameOverState) stateManager.getStates().peek();
-//        assertEquals(newManager, play.gameManager);
-//    }
+    @Test
+    void checkOutOfMapTest2() {
+        snake.setHeadCoord(new Coordinates(-1, 10));
+        play.setSnake(snake);
+        play.checkOutOfMap();
+        assertTrue(play.gameManager.getStates().peek() instanceof GameOverState);
+    }
 
     @Test
     void checkOutOfMapTest3() {
         snake.setHeadCoord(new Coordinates(10, SnakeGame.HEIGHT));
         play.setSnake(snake);
         play.checkOutOfMap();
-        assertNotEquals(stateManager, play.gameManager);
+        assertTrue(play.gameManager.getStates().peek() instanceof GameOverState);
     }
 
     @Test
@@ -150,7 +144,7 @@ class PlayStateTest {
         snake.setHeadCoord(new Coordinates(10, -1));
         play.setSnake(snake);
         play.checkOutOfMap();
-        assertNotEquals(stateManager, play.gameManager);
+        assertTrue(play.gameManager.getStates().peek() instanceof GameOverState);
     }
 
     @Test
