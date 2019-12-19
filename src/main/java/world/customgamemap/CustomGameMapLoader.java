@@ -3,7 +3,7 @@ package world.customgamemap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
-import world.TileType;
+import utils.TileType;
 
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class CustomGameMapLoader {
@@ -35,7 +35,7 @@ public class CustomGameMapLoader {
         CustomGameMapData mapData = new CustomGameMapData();
         mapData.id = id;
         mapData.name = name;
-        mapData.map = new int[1][maxEdge][maxEdge]; //change the dimensions of the layer!!!if needed
+        mapData.map = new int[2][maxEdge][maxEdge]; //change the dimensions of the layer!!!if needed
 
         for (int row = 0; row < maxEdge; row++) {
             for (int col = 0; col < maxEdge; col++) {

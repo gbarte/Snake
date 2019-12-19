@@ -1,6 +1,7 @@
 package world;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import utils.TileType;
 
 public abstract class GameMap {
 

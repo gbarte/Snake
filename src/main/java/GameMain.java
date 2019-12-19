@@ -2,13 +2,10 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import world.CustomGameMap;
 import world.GameMap;
-import world.TileType;
-import world.TiledGameMap;
+import utils.TileType;
 
 public class GameMain extends ApplicationAdapter {
 
@@ -21,7 +18,7 @@ public class GameMain extends ApplicationAdapter {
         //false cz u wanna draw from bottom left ipv top left
         orthographicCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         orthographicCamera.update();
-        gameMap = new CustomGameMap();
+        gameMap = new CustomGameMap(); //CustomGameMap ipv TiledGameMap
     }
 
     @Override
