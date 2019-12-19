@@ -1,6 +1,7 @@
 package states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -9,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import org.w3c.dom.Text;
 
 public class MenuState extends State {
     private static final int BUTTON_WIDTH = 300;
@@ -24,10 +24,6 @@ public class MenuState extends State {
      */
     public MenuState(GameStateManager gameManager) {
         super(gameManager);
-    }
-
-    @Override
-    public void create() {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         skin = new Skin(Gdx.files.internal(
@@ -35,6 +31,7 @@ public class MenuState extends State {
         initPlayButton();
         initLeaderBoardButton();
         initSignOutButton();
+        background = new Texture("assets/login_screen2.png");
     }
 
     public Stage getStage() {
@@ -141,7 +138,12 @@ public class MenuState extends State {
 
     @Override
     public void render(SpriteBatch batch) {
+        Gdx.gl.glClearColor((float) 0.61, (float) 0.77, (float) 0.65, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
+        stage.getBatch().begin();
+        stage.getBatch().draw(background, 0, 0, 800, 800);
+        stage.getBatch().end();
         stage.draw();
     }
 

@@ -44,11 +44,6 @@ public class LoginState extends State {
         backGround = new Texture("assets/login_screen2.png");
     }
 
-    @Override
-    public void create() {
-
-    }
-
     /**
      * Sets title of login screen.
      */

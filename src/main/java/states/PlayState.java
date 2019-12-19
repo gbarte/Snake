@@ -45,10 +45,6 @@ public class PlayState extends State {
         score = new ScoreCalculator();
     }
 
-    @Override
-    public void create() {
-    }
-
     //    private void setDialogScreen() {
     //        gameOver = new Dialog("Game Over", skin);
     //    }

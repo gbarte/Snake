@@ -16,10 +16,7 @@ public abstract class State {
     public State(GameStateManager gameManager) {
         this.gameManager = gameManager;
         camera = new OrthographicCamera();
-        create();
     }
-
-    public abstract void create();
 
     public abstract void handleInput();
 
