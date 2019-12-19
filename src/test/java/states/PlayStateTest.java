@@ -151,8 +151,8 @@ class PlayStateTest {
     @Test
     void checkHeadHitsBodyTest1() {
         //here snake of initial length < 3
-        for (BodyPart part : snake.getBodyParts()) {
-            snake.setHeadCoord(part.getCoordinates());
+        for (int i = 0; i < snake.getBodyParts().size(); i++) {
+            snake.setHeadCoord(snake.getBodyParts().get(i).getCoordinates());
             play.setSnake(snake);
             play.checkHeadHitsBody();
             assertFalse(play.gameManager.getStates().peek() instanceof GameOverState);
@@ -163,8 +163,8 @@ class PlayStateTest {
     void checkHeadHitsBodyTest2() {
         //here snake length > 3
         snake.growSnake(2);
-        for (BodyPart part : snake.getBodyParts()) {
-            snake.setHeadCoord(part.getCoordinates());
+        for (int i = 0; i < snake.getBodyParts().size(); i++) {
+            snake.setHeadCoord(snake.getBodyParts().get(i).getCoordinates());
             play.setSnake(snake);
             play.checkHeadHitsBody();
             assertTrue(play.gameManager.getStates().peek() instanceof GameOverState);

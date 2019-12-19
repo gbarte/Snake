@@ -267,9 +267,10 @@ public class PlayState extends State {
     public void checkHeadHitsBody() {
         int minLength = 3;
         // head can touch tail only if snake has more than 3 bodyparts
-        if (snake.getBodyParts().size() > minLength) {
-            for (BodyPart part : snake.getBodyParts()) {
-                if (part.getCoordinates().equals(snake.getHeadCoord())) {
+        int size = snake.getBodyParts().size();
+        if (size > minLength) {
+            for (int i = 0; i < size; i++) {
+                if (snake.getBodyParts().get(i).getCoordinates().equals(snake.getHeadCoord())) {
                     gameManager.set(new GameOverState(gameManager));
                 }
             }
