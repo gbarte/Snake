@@ -1,6 +1,6 @@
 package auth;
 
-enum RegistrationResponse {
+public enum RegistrationResponse {
     SUCCESS,
     SHORT_PASSWORD,
     OCCUPIED_NAME,
