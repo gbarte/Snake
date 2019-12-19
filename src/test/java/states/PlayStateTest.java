@@ -1,11 +1,15 @@
 package states;
 
+import static game.SnakeGame.WIDTH;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import game.SnakeGame;
+import gamelogic.Coordinates;
 import objects.base.Apple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -82,7 +86,36 @@ class PlayStateTest {
     }
 
     @Test
+    void updateIfNotOppositeTest1() {
+        snake.setCurrDir(SnakeBody.Direction.LEFT);
+        play.updateDirection(SnakeBody.Direction.RIGHT);
+        assertEquals(SnakeBody.Direction.LEFT, snake.getCurrDir());
+    }
+
+    @Test
+    void updateIfNotOppositeTest2() {
+        snake.setCurrDir(SnakeBody.Direction.RIGHT);
+        play.updateDirection(SnakeBody.Direction.LEFT);
+        assertEquals(SnakeBody.Direction.RIGHT, snake.getCurrDir());
+    }
+
+    @Test
+    void updateIfNotOppositeTest3() {
+        snake.setCurrDir(SnakeBody.Direction.UP);
+        play.updateDirection(SnakeBody.Direction.DOWN);
+        assertEquals(SnakeBody.Direction.UP, snake.getCurrDir());
+    }
+
+    @Test
+    void updateIfNotOppositeTest4() {
+        snake.setCurrDir(SnakeBody.Direction.DOWN);
+        play.updateDirection(SnakeBody.Direction.UP);
+        assertEquals(SnakeBody.Direction.DOWN, snake.getCurrDir());
+    }
+    
+    @Test
     void handleInputTest() {
+        snake.setCurrDir(SnakeBody.Direction.RIGHT);
         Gdx.input = Mockito.mock(Input.class);
         Mockito.when(Gdx.input.isKeyPressed(Input.Keys.W)).thenReturn(false);
         Mockito.when(Gdx.input.isKeyPressed(Input.Keys.A)).thenReturn(false);
