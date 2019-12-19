@@ -3,13 +3,15 @@ package world.customgamemap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
+import utils.Maat;
+import utils.Sizes;
 import utils.TileType;
 
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class CustomGameMapLoader {
 
     private static Json json = new Json();
-    private static final int SIZE = 50;
+    private static final int SIZE = Maat.DEFAULT_MINIMUM_MAP_TILES;
 
     /**
      * Generate a custom game map using without specifying the maximum size of the map.
