@@ -1,13 +1,12 @@
 package states;
 
-import static game.SnakeGame.WIDTH;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import game.SnakeGame;
 import gamelogic.Coordinates;
@@ -15,7 +14,6 @@ import objects.base.Apple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import snake.BodyPart;
 import snake.SnakeBody;
 
 
@@ -170,7 +168,6 @@ class PlayStateTest {
             assertTrue(play.gameManager.getStates().peek() instanceof GameOverState);
         }
     }
-
 
     @Test
     void handleInputTest() {

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class GameOverState extends State {
     private Texture backGround;
     private static final String texturePath = "assets/glitchy.png";
+
     /**
      * Constructor which creates a new state within the game.
      * E.g. Play/Pause/Menu.
