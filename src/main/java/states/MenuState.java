@@ -1,12 +1,15 @@
 package states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -28,10 +31,11 @@ public class MenuState extends State {
         Gdx.input.setInputProcessor(stage);
         skin = new Skin(Gdx.files.internal(
                 "assets/quantum-horizon/skin/quantum-horizon-ui.json"));
+        initTitle();
         initPlayButton();
         initLeaderBoardButton();
         initSignOutButton();
-        background = new Texture("assets/login_screen2.png");
+        background = new Texture("assets/bg.png");
     }
 
     public Stage getStage() {
@@ -50,7 +54,6 @@ public class MenuState extends State {
         this.skin = skin;
     }
 
-
     public Texture getBackground() {
         return background;
     }
@@ -59,16 +62,26 @@ public class MenuState extends State {
         this.background = background;
     }
 
+    private void initTitle() {
+        BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal("assets/font.fnt"));
+        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
+                new Color(255, 0, 255, 1));
+        Label menuTitle = new Label("MENU", labelStyle);
+        menuTitle.setSize(600, 120);
+        menuTitle.setPosition(300,620);
+        menuTitle.setFontScale(2);
+        stage.addActor(menuTitle);
+    }
+
     private void initSignOutButton() {
         TextButton signOutButton = new TextButton("Sign Out",
                 new Skin(Gdx.files.internal(
                         "assets/quantum-horizon/skin/quantum-horizon-ui.json")));
         signOutButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-        signOutButton.setPosition(400 - (signOutButton.getWidth() / 2), 300);
+        signOutButton.setPosition(400 - (signOutButton.getWidth() / 2), 100);
         signOutButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //                System.out.println("leaderboard");
                 gameManager.set(new LoginState(gameManager));
             }
 
@@ -85,7 +98,7 @@ public class MenuState extends State {
     private void initLeaderBoardButton() {
         TextButton leaderBoardButton = new TextButton("Leaderboard", skin);
         leaderBoardButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-        leaderBoardButton.setPosition(400 - (leaderBoardButton.getWidth() / 2), 400);
+        leaderBoardButton.setPosition(400 - (leaderBoardButton.getWidth() / 2), 200);
         leaderBoardButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y,
@@ -107,7 +120,7 @@ public class MenuState extends State {
     private void initPlayButton() {
         TextButton playButton = new TextButton("Start Game", skin);
         playButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-        playButton.setPosition(400 - (playButton.getWidth() / 2), 500);
+        playButton.setPosition(400 - (playButton.getWidth() / 2), 300);
         playButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y,
