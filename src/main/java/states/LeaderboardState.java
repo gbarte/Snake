@@ -59,7 +59,8 @@ public class LeaderboardState extends State {
      * adds player according to their ranking.
      */
     public void initRank() {
-        setNumber(450, "1.");
+        setNumber(500, "1.");
+        setNumber(450, "2.");
         setNumber(400, "3.");
         setNumber(350, "4.");
         setNumber(300, "5.");
@@ -68,15 +69,15 @@ public class LeaderboardState extends State {
         setNumber(150, "8.");
         setNumber(100, "9.");
         setNumber(50, "10.");
-        setPlayerRank(450, "one");
-        setPlayerRank(400, "two");
-        setPlayerRank(300, "three");
-        setPlayerRank(350, "four");
-        setPlayerRank(300, "five");
-        setPlayerRank(250, "siz");
-        setPlayerRank(200, "sev");
-        setPlayerRank(150, "eite");
-        setPlayerRank(100, "nin");
+        setPlayerRank(500, "first");
+        setPlayerRank(450, "second");
+        setPlayerRank(400, "third");
+        setPlayerRank(350, "fourth");
+        setPlayerRank(300, "fifth");
+        setPlayerRank(250, "sixth");
+        setPlayerRank(200, "seventh");
+        setPlayerRank(150, "eigth");
+        setPlayerRank(100, "nint");
         setPlayerRank(50, "ten");
     }
 
