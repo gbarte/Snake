@@ -15,6 +15,7 @@ import objects.base.Apple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import snake.BodyPart;
 import snake.SnakeBody;
 
 
@@ -146,6 +147,30 @@ class PlayStateTest {
         play.checkOutOfMap();
         assertTrue(play.gameManager.getStates().peek() instanceof GameOverState);
     }
+
+    @Test
+    void checkHeadHitsBodyTest1() {
+        //here snake of initial length < 3
+        for (BodyPart part : snake.getBodyParts()) {
+            snake.setHeadCoord(part.getCoordinates());
+            play.setSnake(snake);
+            play.checkHeadHitsBody();
+            assertFalse(play.gameManager.getStates().peek() instanceof GameOverState);
+        }
+    }
+
+    @Test
+    void checkHeadHitsBodyTest2() {
+        //here snake length > 3
+        snake.growSnake(2);
+        for (BodyPart part : snake.getBodyParts()) {
+            snake.setHeadCoord(part.getCoordinates());
+            play.setSnake(snake);
+            play.checkHeadHitsBody();
+            assertTrue(play.gameManager.getStates().peek() instanceof GameOverState);
+        }
+    }
+
 
     @Test
     void handleInputTest() {

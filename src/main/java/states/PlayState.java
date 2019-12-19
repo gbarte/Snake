@@ -265,12 +265,11 @@ public class PlayState extends State {
      * If it does, then the state changes to GAME_OVER.
      */
     public void checkHeadHitsBody() {
-        // snake can only eat itself if it has more than 3 body parts
         int minLength = 3;
+        // head can touch tail only if snake has more than 3 bodyparts
         if (snake.getBodyParts().size() > minLength) {
             for (BodyPart part : snake.getBodyParts()) {
                 if (part.getCoordinates().equals(snake.getHeadCoord())) {
-                    System.out.println("Game over U ATE URSELF");
                     gameManager.set(new GameOverState(gameManager));
                 }
             }
