@@ -151,7 +151,8 @@ public class LoginState extends State {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 
                 AuthService service = new AuthService();
-                AuthResponse response = service.auth(usernameField.getText(), passWordField.getText());
+                AuthResponse response = service.auth(
+                        usernameField.getText(), passWordField.getText());
                 service.dizpose();
 
                 if (response == AuthResponse.SUCCESS) {

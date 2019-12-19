@@ -50,7 +50,7 @@ public class LeaderboardState extends State {
         title.setSize(400, 100);
         title.setPosition(160,600);
         title.setFontScale(2);
-//        title.setAlignment(Align.center);
+        // title.setAlignment(Align.center);
         stage.addActor(title);
     }
 
@@ -97,9 +97,9 @@ public class LeaderboardState extends State {
     }
 
     /**
-     * Puts given player name on the rank position
+     * Puts given player name on the rank position.
      * @param y y coordinate where the player will be placed.
-     * @param player player which will be shown.    
+     * @param player player which will be shown.
      */
     public void setPlayerRank(int y, String player) {
         BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal("assets/font.fnt"));
@@ -170,6 +170,6 @@ public class LeaderboardState extends State {
     public void dispose() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         gameManager.update(Gdx.graphics.getDeltaTime());
-//        gameManager.render(batch);
+        // gameManager.render(batch);
     }
 }
