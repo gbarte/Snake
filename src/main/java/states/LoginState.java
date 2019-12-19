@@ -43,7 +43,7 @@ public class LoginState extends State {
         initTitle();
         initLogin();
         initSignUp();
-        backGround = new Texture("assets/login_screen2.png");
+        backGround = new Texture("assets/bg.png");
     }
 
     /**
@@ -202,7 +202,7 @@ public class LoginState extends State {
 
     @Override
     public void render(SpriteBatch batch) {
-        Gdx.gl.glClearColor((float) 0.61, (float) 0.77, (float) 0.65, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.getBatch().begin();
