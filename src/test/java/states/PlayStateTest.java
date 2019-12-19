@@ -112,7 +112,39 @@ class PlayStateTest {
         play.updateDirection(SnakeBody.Direction.UP);
         assertEquals(SnakeBody.Direction.DOWN, snake.getCurrDir());
     }
-    
+
+    @Test
+    void checkOutOfMapTest1() {
+        snake.setHeadCoord(new Coordinates(SnakeGame.WIDTH, 10));
+        play.setSnake(snake);
+        play.checkOutOfMap();
+        assertNotEquals(stateManager, play.gameManager);
+    }
+
+    @Test
+    void checkOutOfMapTest2() {
+        snake.setHeadCoord(new Coordinates(-1, 10));
+        play.setSnake(snake);
+        play.checkOutOfMap();
+        assertNotEquals(stateManager, play.gameManager);
+    }
+
+    @Test
+    void checkOutOfMapTest3() {
+        snake.setHeadCoord(new Coordinates(10, SnakeGame.HEIGHT));
+        play.setSnake(snake);
+        play.checkOutOfMap();
+        assertNotEquals(stateManager, play.gameManager);
+    }
+
+    @Test
+    void checkOutOfMapTest4() {
+        snake.setHeadCoord(new Coordinates(10, -1));
+        play.setSnake(snake);
+        play.checkOutOfMap();
+        assertNotEquals(stateManager, play.gameManager);
+    }
+
     @Test
     void handleInputTest() {
         snake.setCurrDir(SnakeBody.Direction.RIGHT);
