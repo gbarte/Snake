@@ -52,10 +52,10 @@ public class LoginState extends State {
     private void initTitle() {
         BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal("assets/font.fnt"));
         Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
-                new Color(0, (float) 0.5, 0, 1));
+                new Color(0, 255, 0, 1));
         title = new Label("Lil' Snake", labelStyle);
         title.setSize(600, 120);
-        title.setPosition(10,400);
+        title.setPosition(100,550);
         title.setFontScale(3);
         title.setAlignment(Align.center);
         stage.addActor(title);
@@ -99,7 +99,7 @@ public class LoginState extends State {
     private void initSignUp() {
         TextButton signUpButton = new TextButton("Sign up", skin);
         //        signUpButton.setPosition(300, 150);
-        signUpButton.setPosition(300, 140);
+        signUpButton.setPosition(325, 65);
         signUpButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
@@ -123,7 +123,7 @@ public class LoginState extends State {
     private void initLogin() {
         TextButton loginButton = new TextButton("Login", skin);
         //        loginButton.setPosition(300, 200);
-        loginButton.setPosition(300, 190);
+        loginButton.setPosition(325, 125);
         loginButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
@@ -139,22 +139,22 @@ public class LoginState extends State {
         BitmapFont bitmapFont = new BitmapFont();
         // Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, new Color(1, 0, 1, 1));
         Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
-                new Color(0, (float) 0.5, 0, 1));
+                new Color(255,  0, 255, 1));
         Label usernameLabel = new Label("Username", labelStyle);
-        usernameLabel.setPosition(100, 232);
+        usernameLabel.setPosition(350, 282);
 
         TextField usernameField = new TextField("",
                 new Skin(Gdx.files.internal("assets/cloud-form/skin/cloud-form-ui.json")));
         usernameField.setSize(180, 30);
-        usernameField.setPosition(100, 200);
+        usernameField.setPosition(300, 250);
 
         Label passwordLabel = new Label("Password", labelStyle);
-        passwordLabel.setPosition(100, 182);
+        passwordLabel.setPosition(350, 232);
 
         TextField passWordField = new TextField("",
                 new Skin(Gdx.files.internal("assets/cloud-form/skin/cloud-form-ui.json")));
         passWordField.setSize(180, 30);
-        passWordField.setPosition(100, 150);
+        passWordField.setPosition(300, 200);
         passWordField.isPasswordMode();
         passWordField.setPasswordCharacter('*');
 

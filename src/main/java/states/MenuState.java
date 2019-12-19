@@ -131,7 +131,7 @@ public class MenuState extends State {
             @Override
             public boolean touchDown(InputEvent event, float x, float y,
                                      int pointer, int button) {
-                System.out.println("pressed");
+                System.out.println("to playstate");
                 return true;
             }
         });

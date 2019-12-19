@@ -100,7 +100,7 @@ public class LeaderboardState extends State {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 // TODO
-                System.out.println("pressed");
+                System.out.println("pressed return button");
                 return true;
             }
         });
