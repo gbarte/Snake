@@ -17,7 +17,9 @@ import objects.base.Apple;
 import snake.BodyPart;
 import snake.SnakeBody;
 
-
+/**
+ * In-game screen.
+ */
 public class PlayState extends State {
     protected static final float MOVE_TIME = 0.25f;
     // private Dialog gameOver;
@@ -258,6 +260,9 @@ public class PlayState extends State {
         }
     }
 
+    /**
+     * Draws the grid on the background.
+     */
     private void drawGrid() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         for (int x = 0; x < SnakeGame.WIDTH; x += SnakeBody.CELL_SIZE) {
@@ -268,6 +273,9 @@ public class PlayState extends State {
         shapeRenderer.end();
     }
 
+    /**
+     * Checks whether an apple has been eaten or not.
+     */
     private void checkAppleEaten() {
         if (snake.getHeadCoord().equals(apple.getCoordinates())) {
             score.add(apple.getScore());
@@ -277,6 +285,9 @@ public class PlayState extends State {
         }
     }
 
+    /**
+     * Checks whether the snakebody is over an apple or not.
+     */
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     private void checkAppleOnSnake() {
         for (BodyPart bp : snake.getBodyParts()) {
