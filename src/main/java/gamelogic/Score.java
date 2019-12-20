@@ -1,5 +1,8 @@
 package gamelogic;
 
+/**
+ * The class that handles score recording and operations.
+ */
 public class Score {
     private int value;
 
