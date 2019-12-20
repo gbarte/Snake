@@ -1,15 +1,18 @@
 package states;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import game.SnakeGame;
+import gamelogic.Coordinate;
 import objects.base.Apple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import snake.SnakeBody;
 
@@ -27,6 +30,7 @@ class PlayStateTest {
         shapeRenderer = Mockito.mock(ShapeRenderer.class);
         snake = new SnakeBody(100, 100);
         play = new PlayState(stateManager, snake, shapeRenderer);
+        stateManager.push(play);
     }
 
     @Test
@@ -88,7 +92,8 @@ class PlayStateTest {
     void updateDirectionTestLeft() {
         play.updateDirection(SnakeBody.Direction.LEFT);
 
-        assertEquals(snake.getCurrDir(), SnakeBody.Direction.LEFT);
+        //Default direction is Right so nothing happens when you go left
+        assertEquals(SnakeBody.Direction.RIGHT, snake.getCurrDir());
     }
 
     @Test
@@ -103,6 +108,89 @@ class PlayStateTest {
         play.updateDirection(SnakeBody.Direction.UP);
 
         assertEquals(snake.getCurrDir(), SnakeBody.Direction.UP);
+    }
+
+    @Test
+    void updateIfNotOppositeTest1() {
+        snake.setCurrDir(SnakeBody.Direction.LEFT);
+        play.updateDirection(SnakeBody.Direction.RIGHT);
+        assertEquals(SnakeBody.Direction.LEFT, snake.getCurrDir());
+    }
+
+    @Test
+    void updateIfNotOppositeTest2() {
+        snake.setCurrDir(SnakeBody.Direction.RIGHT);
+        play.updateDirection(SnakeBody.Direction.LEFT);
+        assertEquals(SnakeBody.Direction.RIGHT, snake.getCurrDir());
+    }
+
+    @Test
+    void updateIfNotOppositeTest3() {
+        snake.setCurrDir(SnakeBody.Direction.UP);
+        play.updateDirection(SnakeBody.Direction.DOWN);
+        assertEquals(SnakeBody.Direction.UP, snake.getCurrDir());
+    }
+
+    @Test
+    void updateIfNotOppositeTest4() {
+        snake.setCurrDir(SnakeBody.Direction.DOWN);
+        play.updateDirection(SnakeBody.Direction.UP);
+        assertEquals(SnakeBody.Direction.DOWN, snake.getCurrDir());
+    }
+
+    @Test
+    void checkOutOfMapTest1() {
+        snake.setHeadCoord(new Coordinate(SnakeGame.WIDTH, 10));
+        play.setSnake(snake);
+        play.checkOutOfMap();
+        assertTrue(play.gameManager.getStates().peek() instanceof GameOverState);
+    }
+
+    @Test
+    void checkOutOfMapTest2() {
+        snake.setHeadCoord(new Coordinate(-1, 10));
+        play.setSnake(snake);
+        play.checkOutOfMap();
+        assertTrue(play.gameManager.getStates().peek() instanceof GameOverState);
+    }
+
+    @Test
+    void checkOutOfMapTest3() {
+        snake.setHeadCoord(new Coordinate(10, SnakeGame.HEIGHT));
+        play.setSnake(snake);
+        play.checkOutOfMap();
+        assertTrue(play.gameManager.getStates().peek() instanceof GameOverState);
+    }
+
+    @Test
+    void checkOutOfMapTest4() {
+        snake.setHeadCoord(new Coordinate(10, -1));
+        play.setSnake(snake);
+        play.checkOutOfMap();
+        assertTrue(play.gameManager.getStates().peek() instanceof GameOverState);
+    }
+
+    @Test
+    void checkHeadHitsBodyTest1() {
+        //here snake of initial length < 3
+        for (int i = 0; i < snake.getBodyParts().size(); i++) {
+            snake.setHeadCoord(snake.getBodyParts().get(i).getCoordinate());
+            play.setSnake(snake);
+            play.checkHeadHitsBody();
+            assertFalse(play.gameManager.getStates().peek() instanceof GameOverState);
+        }
+    }
+
+    @Test
+    void checkHeadHitsBodyTest2() {
+        //here snake length > 3
+        snake.growSnake(2);
+        for (int i = 0; i < snake.getBodyParts().size(); i++) {
+            snake.setHeadCoord(snake.getBodyParts().get(i).getCoordinate());
+            play.setSnake(snake);
+            play.checkHeadHitsBody();
+            assertTrue(play.gameManager.getStates().peek() instanceof GameOverState);
+        }
     }
 
     @Test
@@ -128,7 +216,8 @@ class PlayStateTest {
 
         play.handleInput();
 
-        assertEquals(SnakeBody.Direction.LEFT, play.getSnake().getCurrDir());
+        //Default direction is Right so nothing happens when you go left
+        assertEquals(SnakeBody.Direction.RIGHT, play.getSnake().getCurrDir());
     }
 
     @Test

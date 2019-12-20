@@ -2,6 +2,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import states.GameOverState;
 import states.GameStateManager;
 import states.LeaderboardState;
 import states.PlayState;
@@ -25,6 +26,11 @@ public class SnakeGame extends ApplicationAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         gameManager.push(new LeaderboardState(gameManager));
     }
+
+//    @Override
+//    public void dispose() {
+//        gameManager.set(new GameOverState(gameManager));
+//    }
 
     @Override
     public void render() {

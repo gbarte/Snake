@@ -149,6 +149,7 @@ public class PlayState extends State {
     public void update(float dt) {
         handleInput();
         checkOutOfMap();
+        checkHeadHitsBody();
         updateSnake(dt);
         checkAppleEaten();
     }
@@ -202,22 +203,23 @@ public class PlayState extends State {
     /**
      * Updates the direction by calling updateIfNotOpposite.
      *
-     * @param direction - direction in which the user wants to move the snake
+     * @param newDirection - direction in which the user wants to move the snake
      */
-    public void updateDirection(SnakeBody.Direction direction) {
-        if (!direction.equals(snake.getCurrDir())) {
-            switch (direction) {
+    public void updateDirection(SnakeBody.Direction newDirection) {
+        SnakeBody.Direction current = snake.getCurrDir();
+        if (!newDirection.equals(current)) {
+            switch (current) {
                 case UP:
-                    updateIfNotOpposite(SnakeBody.Direction.UP, SnakeBody.Direction.DOWN);
+                    updateIfNotOpposite(newDirection, SnakeBody.Direction.DOWN);
                     break;
                 case DOWN:
-                    updateIfNotOpposite(SnakeBody.Direction.DOWN, SnakeBody.Direction.UP);
+                    updateIfNotOpposite(newDirection, SnakeBody.Direction.UP);
                     break;
                 case LEFT:
-                    updateIfNotOpposite(SnakeBody.Direction.LEFT, SnakeBody.Direction.RIGHT);
+                    updateIfNotOpposite(newDirection, SnakeBody.Direction.RIGHT);
                     break;
                 case RIGHT:
-                    updateIfNotOpposite(SnakeBody.Direction.RIGHT, SnakeBody.Direction.LEFT);
+                    updateIfNotOpposite(newDirection, SnakeBody.Direction.LEFT);
                     break;
                 default:
                     // nothing happens
@@ -244,17 +246,34 @@ public class PlayState extends State {
      * if it hits then the state changes to GAME_OVER.
      */
     public void checkOutOfMap() {
-        if (snake.getHeadCoord().getCoordinateX() >= SnakeGame.WIDTH - SnakeBody.CELL_SIZE) {
-            System.out.println("Game oveeer");
+        if (snake.getHeadCoord().getCoordinateX() >= SnakeGame.WIDTH) {
+            gameManager.set(new GameOverState(gameManager));
         }
-        if (snake.getHeadCoord().getCoordinateX() <= 0) {
-            System.out.println("Game oveer");
+        if (snake.getHeadCoord().getCoordinateX() < 0) {
+            gameManager.set(new GameOverState(gameManager));
         }
-        if (snake.getHeadCoord().getCoordinateY() >= SnakeGame.HEIGHT - SnakeBody.CELL_SIZE) {
-            System.out.println("Game over");
+        if (snake.getHeadCoord().getCoordinateY() >= SnakeGame.HEIGHT) {
+            gameManager.set(new GameOverState(gameManager));
         }
-        if (snake.getHeadCoord().getCoordinateY() <= 0) {
-            System.out.println("Game oveeeeer");
+        if (snake.getHeadCoord().getCoordinateY() < 0) {
+            gameManager.set(new GameOverState(gameManager));
+        }
+    }
+
+    /**
+     * Checks whether the snake head hits the body.
+     * If it does, then the state changes to GAME_OVER.
+     */
+    public void checkHeadHitsBody() {
+        int minLength = 3;
+        // head can touch tail only if snake has more than 3 bodyparts
+        int size = snake.getBodyParts().size();
+        if (size > minLength) {
+            for (int i = 0; i < size; i++) {
+                if (snake.getBodyParts().get(i).getCoordinate().equals(snake.getHeadCoord())) {
+                    gameManager.set(new GameOverState(gameManager));
+                }
+            }
         }
     }
 

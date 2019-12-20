@@ -45,7 +45,7 @@ class SnakeBodyTest {
 
     @Test
     void getCurrDirTest() {
-        assertEquals(snakeBody.getCurrDir(), SnakeBody.Direction.UP);
+        assertEquals(SnakeBody.Direction.RIGHT, snakeBody.getCurrDir());
     }
 
     @Test
@@ -99,13 +99,8 @@ class SnakeBodyTest {
     }
 
     @Test
-    void moveSnakeTestUp() {
-        assertEquals(snakeBody.getCurrDir(), SnakeBody.Direction.UP);
-    }
-
-    @Test
     void moveSnakeTestRight() {
-        assertEquals(snakeBody.getCurrDir(), SnakeBody.Direction.UP);
+        assertEquals(SnakeBody.Direction.RIGHT, snakeBody.getCurrDir());
         snakeBody.moveSnake(SnakeBody.Direction.RIGHT);
         assertEquals(snakeBody.getHeadCoord().getCoordinateX(), 450);
         assertEquals(snakeBody.getHeadCoord().getCoordinateY(), 400);
@@ -113,7 +108,7 @@ class SnakeBodyTest {
 
     @Test
     void moveSnakeTestLeft() {
-        assertEquals(snakeBody.getCurrDir(), SnakeBody.Direction.UP);
+        assertEquals(SnakeBody.Direction.RIGHT, snakeBody.getCurrDir());
         snakeBody.moveSnake(SnakeBody.Direction.LEFT);
         assertEquals(snakeBody.getHeadCoord().getCoordinateX(), 350);
         assertEquals(snakeBody.getHeadCoord().getCoordinateY(), 400);
@@ -121,7 +116,7 @@ class SnakeBodyTest {
 
     @Test
     void moveSnakeTestDown() {
-        assertEquals(snakeBody.getCurrDir(), SnakeBody.Direction.UP);
+        assertEquals(SnakeBody.Direction.RIGHT, snakeBody.getCurrDir());
         snakeBody.moveSnake(SnakeBody.Direction.DOWN);
         assertEquals(snakeBody.getHeadCoord().getCoordinateX(), 400);
         assertEquals(snakeBody.getHeadCoord().getCoordinateY(), 350);
