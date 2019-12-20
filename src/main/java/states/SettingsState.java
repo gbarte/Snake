@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class SettingsState extends State {
     /**
      * Cosntructor.
-     * @param gameManager
+     * @param gameManager gamemanager of the screen.
      */
     public SettingsState(GameStateManager gameManager) {
         super(gameManager);
