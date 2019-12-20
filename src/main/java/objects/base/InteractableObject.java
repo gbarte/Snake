@@ -4,6 +4,9 @@ import com.badlogic.gdx.graphics.Texture;
 
 import java.util.function.Function;
 
+/**
+ * Abstract class for future use and decoupling of the map objects.
+ */
 public abstract class InteractableObject extends BasicObject {
 
     /**

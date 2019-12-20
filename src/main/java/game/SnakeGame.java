@@ -9,6 +9,9 @@ import states.LeaderboardState;
 import states.LoginState;
 import states.PlayState;
 
+/**
+ * The initialization game class.
+ */
 public class SnakeGame extends ApplicationAdapter {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 800;

@@ -7,7 +7,9 @@ import gamelogic.Coordinate;
 import java.util.Random;
 import snake.SnakeBody;
 
-
+/**
+ * Interactive food object of Apple.
+ */
 public class Apple {
 
     private static int DEFAULT_SCORE = 10;

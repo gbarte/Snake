@@ -6,6 +6,9 @@ import gamelogic.Coordinate;
 
 import java.util.LinkedList;
 
+/**
+ * Class that defines the snake's body logics.
+ */
 public class SnakeBody {
     public static final int CELL_SIZE = 50;
     private static final int INITIAL_LENGTH = 2;
