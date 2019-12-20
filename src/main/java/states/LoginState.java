@@ -141,18 +141,6 @@ public class LoginState extends State {
         TextButton loginButton = new TextButton("Login", skin);
         //        loginButton.setPosition(300, 200);
         loginButton.setPosition(325, 125);
-        loginButton.addListener(new InputListener() {
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                gameManager.set(new MenuState(gameManager));
-            }
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                System.out.println("pressed sign in");
-                return true;
-            }
-        });
         BitmapFont bitmapFont = new BitmapFont();
         // Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, new Color(1, 0, 1, 1));
         Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
@@ -185,7 +173,7 @@ public class LoginState extends State {
                 service.dizpose();
 
                 if (response == AuthResponse.SUCCESS) {
-                    gameManager.set(new PlayState(gameManager));
+                    gameManager.set(new MenuState(gameManager));
                 } else {
                     // TODO: display failed authentication.
                     failedAuthenticationDialog();
