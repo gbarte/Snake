@@ -7,10 +7,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import game.SnakeGame;
-import gamelogic.Coordinates;
+import gamelogic.Coordinate;
 import gamelogic.ScoreCalculator;
 
 import objects.base.Apple;
@@ -163,7 +161,7 @@ public class PlayState extends State {
     public void render(SpriteBatch batch) {
         snake.renderSnake(shapeRenderer);
         batch.begin();
-        Coordinates appleCoord = apple.getCoordinates();
+        Coordinate appleCoord = apple.getCoordinate();
         batch.draw(apple.getTexture(), appleCoord.getCoordinateX(), appleCoord.getCoordinateY());
         renderScore(batch);
         batch.end();
@@ -269,7 +267,7 @@ public class PlayState extends State {
     }
 
     private void checkAppleEaten() {
-        if (snake.getHeadCoord().equals(apple.getCoordinates())) {
+        if (snake.getHeadCoord().equals(apple.getCoordinate())) {
             score.add(apple.getScore());
             apple = new Apple();
             checkAppleOnSnake();
@@ -280,7 +278,7 @@ public class PlayState extends State {
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     private void checkAppleOnSnake() {
         for (BodyPart bp : snake.getBodyParts()) {
-            if (bp.getCoordinates().equals(apple.getCoordinates())) {
+            if (bp.getCoordinate().equals(apple.getCoordinate())) {
                 apple = new Apple();
             }
         }
