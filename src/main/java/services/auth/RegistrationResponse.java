@@ -1,4 +1,4 @@
-package auth;
+package services.auth;
 
 public enum RegistrationResponse {
     SUCCESS,
