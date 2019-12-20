@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SnakeBody.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">template</a> &gt; <a href="index.source.html" class="el_package">snake</a> &gt; <span class="el_source">SnakeBody.java</span></div><h1>SnakeBody.java</h1><pre class="source lang-java linenums">package snake;
+
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import gamelogic.Coordinate;
+
+import java.util.LinkedList;
+
+public class SnakeBody {
+    public static final int CELL_SIZE = 50;
+    private static final int INITIAL_LENGTH = 2;
+
+    private Coordinate headCoord;
+    private LinkedList&lt;BodyPart&gt; bodyParts;
+    private Direction currDir;
+
+<span class="fc" id="L17">    public enum Direction { LEFT, RIGHT, UP, DOWN }</span>
+
+    /**
+     * Constructs a snake with INITIAL_LENGTH amount of bodyparts.
+     *
+     * @param headX - X coordinate of head
+     * @param headY - Y coordinate of head
+     */
+<span class="fc" id="L25">    public SnakeBody(int headX, int headY) {</span>
+<span class="fc" id="L26">        this.headCoord = new Coordinate(headX / 2, headY / 2);</span>
+<span class="fc" id="L27">        this.currDir = Direction.RIGHT;</span>
+<span class="fc" id="L28">        this.bodyParts = new LinkedList&lt;BodyPart&gt;();</span>
+<span class="fc" id="L29">        growSnake(INITIAL_LENGTH);</span>
+<span class="fc" id="L30">    }</span>
+
+    public LinkedList&lt;BodyPart&gt; getBodyParts() {
+<span class="fc" id="L33">        return bodyParts;</span>
+    }
+
+    public void setBodyParts(LinkedList&lt;BodyPart&gt; bodyParts) {
+<span class="fc" id="L37">        this.bodyParts = bodyParts;</span>
+<span class="fc" id="L38">    }</span>
+
+    public Direction getCurrDir() {
+<span class="fc" id="L41">        return currDir;</span>
+    }
+
+    public void setCurrDir(Direction currDir) {
+<span class="fc" id="L45">        this.currDir = currDir;</span>
+<span class="fc" id="L46">    }</span>
+
+    public Coordinate getHeadCoord() {
+<span class="fc" id="L49">        return headCoord;</span>
+    }
+
+    public void setHeadCoord(Coordinate headCoord) {
+<span class="fc" id="L53">        this.headCoord = headCoord;</span>
+<span class="fc" id="L54">    }</span>
+
+    /**
+     * Grows the snake body by one body part.
+     */
+    public void growSnake() {
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        if (bodyParts.size() == 0) {</span>
+<span class="fc" id="L61">            bodyParts.add(new BodyPart(headCoord.getCoordinateX(), headCoord.getCoordinateY()));</span>
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">        } else if (bodyParts.size() &gt; 0) {</span>
+<span class="fc" id="L63">            int tailID = bodyParts.size() - 1;</span>
+<span class="fc" id="L64">            BodyPart tail = bodyParts.get(tailID);</span>
+<span class="fc" id="L65">            Coordinate tailCoord = tail.getCoordinate();</span>
+<span class="fc" id="L66">            bodyParts.add(new BodyPart(tailCoord.getCoordinateX(), tailCoord.getCoordinateY()));</span>
+        }
+<span class="fc" id="L68">    }</span>
+
+    /**
+     * Grows the snake body by a specified number of body parts.
+     *
+     * @param length - by how many body parts the snake will be grown
+     */
+    public void growSnake(int length) {
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        for (int i = 0; i &lt; length; i++) {</span>
+<span class="fc" id="L77">            this.growSnake();</span>
+        }
+<span class="fc" id="L79">    }</span>
+
+    /**
+     * First renders the head of the snake as a rectangle.
+     * Then loops through the bodyparts and renders those.
+     *
+     * @param shapeRenderer - ShapeRenderer object
+     */
+    @SuppressWarnings(&quot;PMD.DataflowAnomalyAnalysis&quot;)
+    public void renderSnake(ShapeRenderer shapeRenderer) {
+<span class="fc" id="L89">        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);</span>
+<span class="fc" id="L90">        shapeRenderer.setColor(new Color(Color.GREEN));</span>
+<span class="fc" id="L91">        int x = this.headCoord.getCoordinateX();</span>
+<span class="fc" id="L92">        int y = this.headCoord.getCoordinateY();</span>
+<span class="fc" id="L93">        shapeRenderer.rect(x, y, CELL_SIZE, CELL_SIZE);</span>
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">        if (bodyParts.size() &gt; 0) {</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">            for (BodyPart bp : bodyParts) {</span>
+<span class="fc" id="L96">                Coordinate bodyCoord = bp.getCoordinate();</span>
+<span class="fc" id="L97">                shapeRenderer.rect(bodyCoord.getCoordinateX(), bodyCoord.getCoordinateY(),</span>
+                        CELL_SIZE, CELL_SIZE);
+<span class="fc" id="L99">            }</span>
+        }
+<span class="fc" id="L101">        shapeRenderer.end();</span>
+<span class="fc" id="L102">    }</span>
+
+    /**
+     * Updates currDir to the given direction.
+     *
+     * @param snakeDirection - Updates currDir to this direction
+     */
+    public void moveSnake(Direction snakeDirection) {
+<span class="pc bpc" id="L110" title="1 of 5 branches missed.">        switch (snakeDirection) {</span>
+            case RIGHT:
+<span class="fc" id="L112">                updateBodyPartsPosition(headCoord);</span>
+<span class="fc" id="L113">                headCoord.addToX(CELL_SIZE);</span>
+<span class="fc" id="L114">                break;</span>
+            case LEFT:
+<span class="fc" id="L116">                updateBodyPartsPosition(headCoord);</span>
+<span class="fc" id="L117">                headCoord.subtractFromX(CELL_SIZE);</span>
+<span class="fc" id="L118">                break;</span>
+            case UP:
+<span class="fc" id="L120">                updateBodyPartsPosition(headCoord);</span>
+<span class="fc" id="L121">                headCoord.addToY(CELL_SIZE);</span>
+<span class="fc" id="L122">                break;</span>
+            case DOWN:
+<span class="fc" id="L124">                updateBodyPartsPosition(headCoord);</span>
+<span class="fc" id="L125">                headCoord.subtractFromY(CELL_SIZE);</span>
+<span class="fc" id="L126">                break;</span>
+            default:
+                // will not execute
+        }
+<span class="fc" id="L130">    }</span>
+
+    /**
+     * Updates the position of each body part.
+     */
+    @SuppressWarnings(&quot;PMD.DataflowAnomalyAnalysis&quot;)
+    public void updateBodyPartsPosition(Coordinate coordinate) {
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">        if (bodyParts.size() &gt; 0) {</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">            for (BodyPart bp : bodyParts) {</span>
+<span class="fc" id="L139">                int currX = bp.getCoordinate().getCoordinateX();</span>
+<span class="fc" id="L140">                int currY = bp.getCoordinate().getCoordinateY();</span>
+<span class="fc" id="L141">                bp.updateBodyPartPos(coordinate);</span>
+<span class="fc" id="L142">                coordinate = new Coordinate(currX, currY);</span>
+<span class="fc" id="L143">            }</span>
+        }
+<span class="fc" id="L145">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

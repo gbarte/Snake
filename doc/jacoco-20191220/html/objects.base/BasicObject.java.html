@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BasicObject.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">template</a> &gt; <a href="index.source.html" class="el_package">objects.base</a> &gt; <span class="el_source">BasicObject.java</span></div><h1>BasicObject.java</h1><pre class="source lang-java linenums">package objects.base;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+
+public abstract class BasicObject extends Actor {
+
+    /**
+     * Sprite of the object.
+     */
+    private transient Sprite sprite;
+
+    /**
+     * Defines whether or not the object
+     * has a collision property (solid).
+     */
+<span class="fc" id="L21">    private boolean isCollidable = true;</span>
+
+    /**
+     * Setter for the specific sprite.
+     * @param sprite of the object.
+     */
+    public void setSprite(Sprite sprite) {
+<span class="fc" id="L28">        this.sprite = sprite;</span>
+<span class="fc" id="L29">    }</span>
+
+    /**
+     * Setter for the sprite through texture.
+     * @param texture of the object that converts to sprite.
+     */
+    public void setSprite(Texture texture) {
+<span class="fc" id="L36">        sprite = new Sprite(texture);</span>
+<span class="fc" id="L37">    }</span>
+
+
+    /**
+     * Setter for the collidable property.
+     * @param isCollidable as a new state of the property.
+     */
+    public void setIsCollidable(boolean isCollidable) {
+<span class="fc" id="L45">        this.isCollidable = isCollidable;</span>
+<span class="fc" id="L46">    }</span>
+
+    /**
+     * Getter for the collidable property.
+     * @return True if the object is collidable.
+     */
+    public boolean getIsCollidable() {
+<span class="fc" id="L53">        return this.isCollidable;</span>
+    }
+
+    /**
+     * Constructor for the object.
+     * @param texture of the object that converts to sprite.
+     */
+<span class="fc" id="L60">    public BasicObject(Texture texture) {</span>
+<span class="fc" id="L61">        sprite = new Sprite(texture);</span>
+<span class="fc" id="L62">        spritePos(sprite.getX(), sprite.getY());</span>
+<span class="fc" id="L63">        setTouchable(Touchable.enabled);</span>
+
+<span class="fc" id="L65">    }</span>
+
+    /**
+     * Constructor of the object.
+     * @param texture of the object that converts to sprite.
+     * @param isCollidable defines if the object is a solid object.
+     */
+    public BasicObject(Texture texture, boolean isCollidable) {
+<span class="fc" id="L73">        this(texture);</span>
+<span class="fc" id="L74">        this.isCollidable = isCollidable;</span>
+<span class="fc" id="L75">    }</span>
+
+    /**
+     * Sets position of the object.
+     * @param x - position along X-axis of the window.
+     * @param y - position along Y-axis of the window.
+     */
+    public void spritePos(float x, float y) {
+<span class="fc" id="L83">        sprite.setPosition(x, y);</span>
+<span class="fc" id="L84">        setBounds(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());</span>
+<span class="fc" id="L85">    }</span>
+
+    public Rectangle getSpriteRectangle() {
+<span class="fc" id="L88">        return sprite.getBoundingRectangle();</span>
+    }
+
+    /**
+     * Checks if the object is colliding with another object.
+     * @param other object to check with.
+     * @return True if two objects collide.
+     */
+    public boolean isColliding(BasicObject other) {
+<span class="fc" id="L97">        Rectangle rectThis = this.sprite.getBoundingRectangle();</span>
+<span class="fc" id="L98">        Rectangle rectOther = other.sprite.getBoundingRectangle();</span>
+<span class="fc" id="L99">        return rectThis.overlaps(rectOther);</span>
+    }
+
+    @Override
+    public void act(float delta) {
+<span class="nc" id="L104">        super.act(delta);</span>
+<span class="nc" id="L105">    }</span>
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+<span class="fc" id="L109">        sprite.draw(batch);</span>
+<span class="fc" id="L110">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DatabaseHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">template</a> &gt; <a href="index.source.html" class="el_package">services.db</a> &gt; <span class="el_source">DatabaseHandler.java</span></div><h1>DatabaseHandler.java</h1><pre class="source lang-java linenums">package services.db;
+
+import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+/**
+ * The class that handles the logics of database connection.
+ */
+<span class="fc" id="L11">public class DatabaseHandler {</span>
+
+    private static final String DATA_PATH = &quot;data&quot;;
+    private static final String FILE_NAME = &quot;storage.db&quot;;
+
+
+    private Connection connection;
+<span class="fc" id="L18">    private transient boolean isTest = false;</span>
+
+    /**
+     * Setter for the database connection.
+     * @param connection instance for the database.
+     */
+    private void setConnection(Connection connection) {
+<span class="nc" id="L25">        this.connection = connection;</span>
+<span class="nc" id="L26">    }</span>
+
+    /**
+     * Getter of the database connection.
+     * @return
+     */
+    public Connection getConnection() {
+<span class="fc" id="L33">        return this.connection;</span>
+    }
+
+    /**
+     * Open connection with database with custom name where users are stored.
+     * @param isTest - indicates whether or not it is a test connection.
+     * @return True if the connection was established successfully.
+     */
+    public boolean connect(boolean isTest) {
+
+<span class="fc" id="L43">        this.isTest = isTest;</span>
+
+        // Create data directory if does not exist
+        //noinspection ResultOfMethodCallIgnored
+<span class="fc" id="L47">        new File(DATA_PATH).mkdirs();</span>
+
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        String fileName = (isTest ? &quot;test_&quot; : &quot;&quot;) + FILE_NAME;</span>
+
+
+
+        // Define url to table
+<span class="fc" id="L54">        String url = &quot;jdbc:sqlite:&quot; + DATA_PATH + &quot;/&quot; + fileName;</span>
+
+
+        try {
+
+<span class="fc" id="L59">            Class.forName(&quot;org.sqlite.JDBC&quot;);</span>
+<span class="fc" id="L60">            connection = DriverManager.getConnection(url);</span>
+
+<span class="fc" id="L62">            System.out.println(&quot;Connected to DB: &quot; + fileName);</span>
+<span class="fc" id="L63">            return true;</span>
+
+<span class="nc" id="L65">        } catch (Exception e) {</span>
+<span class="nc" id="L66">            System.out.println(e.getMessage());</span>
+<span class="nc" id="L67">            return false;</span>
+        }
+
+    }
+
+    /**
+     * Open connection with database where users are stored.
+     * @return True if the connection was established successfully.
+     */
+    public boolean connect() {
+<span class="nc" id="L77">        return connect(false);</span>
+    }
+
+    /**
+     * Closes the connection with database.
+     */
+    public void close() {
+
+        try {
+<span class="fc" id="L86">            connection.close();</span>
+<span class="nc" id="L87">        } catch (SQLException e) {</span>
+<span class="nc" id="L88">            e.printStackTrace();</span>
+<span class="fc" id="L89">        }</span>
+
+<span class="fc" id="L91">    }</span>
+
+    /**
+     * Configures the schema of the users table.
+     */
+    public void configureSchema(String query) {
+
+<span class="fc" id="L98">        System.out.println(&quot;Configuring schema...&quot;);</span>
+
+        try {
+<span class="fc" id="L101">            connection.createStatement().execute(query);</span>
+<span class="nc" id="L102">        } catch (SQLException e) {</span>
+<span class="nc" id="L103">            e.printStackTrace();</span>
+<span class="fc" id="L104">        }</span>
+
+<span class="fc" id="L106">    }</span>
+
+    /**
+     * Clear the table of entities for the given table.
+     * @param tableName of the table that needs to be cleared.
+     */
+    public void clearTable(String tableName) {
+<span class="fc" id="L113">        this.connect(isTest);</span>
+
+        try {
+<span class="fc" id="L116">            connection.createStatement()</span>
+<span class="nc" id="L117">                    .executeQuery(String.format(&quot;DELETE FROM %s&quot;, tableName));</span>
+<span class="fc" id="L118">        } catch (SQLException e) {</span>
+<span class="fc" id="L119">            e.printStackTrace();</span>
+<span class="nc" id="L120">        }</span>
+
+<span class="fc" id="L122">        this.close();</span>
+
+<span class="fc" id="L124">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

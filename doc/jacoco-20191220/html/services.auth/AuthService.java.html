@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AuthService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">template</a> &gt; <a href="index.source.html" class="el_package">services.auth</a> &gt; <span class="el_source">AuthService.java</span></div><h1>AuthService.java</h1><pre class="source lang-java linenums">package services.auth;
+
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Map;
+
+import services.db.UsersTableHandler;
+
+/**
+ * The class that handles the logics for the authentication.
+ */
+public class AuthService {
+
+    private static final int MIN_PASS_LENGTH = 6;
+
+    private transient UsersTableHandler tableHandler;
+
+    public UsersTableHandler getTable() {
+<span class="fc" id="L20">        return this.tableHandler;</span>
+    }
+
+    private void setTable(UsersTableHandler tableHandler) {
+<span class="nc" id="L24">        this.tableHandler = tableHandler;</span>
+<span class="nc" id="L25">    }</span>
+
+<span class="fc" id="L27">    public AuthService(boolean isTest) {</span>
+<span class="fc" id="L28">        tableHandler = new UsersTableHandler(isTest);</span>
+<span class="fc" id="L29">    }</span>
+
+<span class="fc" id="L31">    public AuthService() {</span>
+<span class="fc" id="L32">        tableHandler = new UsersTableHandler(false);</span>
+<span class="fc" id="L33">    }</span>
+
+    /**
+     * Authenticates user with provided username and password.
+     * @param username - username of the player.
+     * @param password - password of the player.
+     * @return AuthResponse that defines result of the authentication.
+     */
+    public AuthResponse auth(String username, String password) {
+
+<span class="fc" id="L43">        Map&lt;String, String&gt; user = tableHandler.getUser(username);</span>
+
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        if (user == null) {</span>
+<span class="fc" id="L46">            return AuthResponse.WRONG_PASSWORD;</span>
+        }
+
+<span class="fc" id="L49">        String hash = getPasswordHash(password);</span>
+<span class="pc bpc" id="L50" title="1 of 4 branches missed.">        if (user.containsKey(&quot;hash&quot;) &amp;&amp; user.get(&quot;hash&quot;).equals(hash)) {</span>
+<span class="fc" id="L51">            return AuthResponse.SUCCESS;</span>
+        } else {
+<span class="fc" id="L53">            return AuthResponse.WRONG_PASSWORD;</span>
+        }
+
+    }
+
+
+    /**
+     * Registers a new user in the database while checking for basic formatting.
+     * @param username - username of the player.
+     * @param password - password of the player.
+     * @return RegistrationResponse that defines result of the registration.
+     */
+    public RegistrationResponse register(String username, String password) {
+
+<span class="fc bfc" id="L67" title="All 2 branches covered.">        if (password.length() &lt; MIN_PASS_LENGTH) {</span>
+<span class="fc" id="L68">            return RegistrationResponse.SHORT_PASSWORD;</span>
+        }
+
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        if (tableHandler.getUser(username) != null) {</span>
+<span class="fc" id="L72">            return RegistrationResponse.OCCUPIED_NAME;</span>
+        }
+
+<span class="fc" id="L75">        String hash = getPasswordHash(password);</span>
+<span class="fc" id="L76">        tableHandler.createUser(username, hash);</span>
+<span class="fc" id="L77">        return RegistrationResponse.SUCCESS;</span>
+    }
+
+
+    private static String getPasswordHash(String password) {
+        try {
+
+<span class="fc" id="L84">            MessageDigest md = MessageDigest.getInstance(&quot;MD5&quot;);</span>
+
+<span class="fc" id="L86">            byte[] messageDigest = md.digest(password.getBytes());</span>
+
+<span class="fc" id="L88">            BigInteger no = new BigInteger(1, messageDigest);</span>
+
+<span class="fc" id="L90">            String hashtext = no.toString(16);</span>
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">            while (hashtext.length() &lt; 32) {</span>
+<span class="nc" id="L92">                hashtext = &quot;0&quot; + hashtext;</span>
+            }
+<span class="fc" id="L94">            return hashtext;</span>
+
+<span class="nc" id="L96">        } catch (NoSuchAlgorithmException e) {</span>
+<span class="nc" id="L97">            throw new RuntimeException(e);</span>
+        }
+
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

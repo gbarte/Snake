@@ -71,7 +71,7 @@ Requirements:
 ## Miscellaneous
 | Task   | Assigned to | Estimated effort (in hours) | Actual effort (in hours) | Done | Notes                                                                                                           |
 |--------|-------------|-----------------------------|--------------------------|------|-----------------------------------------------------------------------------------------------------------------|
-| #49    | Roman       | 1                           | 1                        | yes  | No particular challenges encountered. This issue is implemented to comply with the feedback on code quality.    |
+| #49    | Roman       | 1                           | 0.25                     | yes  | No particular challenges encountered. This issue is implemented to comply with the feedback on code quality.    |
 | #43    | Gabriele    | 2                           | 2.5                      | yes  | Took longer than expected as it was my first time dealing with checkStyle warnings.                             |
 
 
