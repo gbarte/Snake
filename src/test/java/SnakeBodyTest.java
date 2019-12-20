@@ -139,8 +139,8 @@ class SnakeBodyTest {
 
         LinkedList<BodyPart> bodyParts = snakeBody.getBodyParts();
 
-        assertEquals(bodyParts.get(1).getCoordinates().getCoordinateY(),
-                bodyParts.get(0).getCoordinates().getCoordinateY() - SnakeBody.CELL_SIZE);
+        assertEquals(bodyParts.get(1).getCoordinate().getCoordinateY(),
+                bodyParts.get(0).getCoordinate().getCoordinateY() - SnakeBody.CELL_SIZE);
     }
 
     @Test
