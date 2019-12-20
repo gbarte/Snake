@@ -2,11 +2,11 @@ package gamelogic;
 
 import java.util.Objects;
 
-public class Coordinates {
+public class Coordinate {
     private int coordinateX;
     private int coordinateY;
 
-    public Coordinates(int coordinateX, int coordinateY) {
+    public Coordinate(int coordinateX, int coordinateY) {
         this.coordinateX = coordinateX;
         this.coordinateY = coordinateY;
     }
@@ -48,7 +48,7 @@ public class Coordinates {
         if (this == obj) {
             return true;
         }
-        Coordinates that = (Coordinates) obj;
+        Coordinate that = (Coordinate) obj;
         if (this.coordinateX == that.coordinateX && this.coordinateY == that.coordinateY) {
             return true;
         }
@@ -62,6 +62,6 @@ public class Coordinates {
 
     @Override
     public String toString() {
-        return "Coordinates are: X = " + coordinateX + ", " + "Y = " + coordinateY;
+        return "Coordinate are: X = " + coordinateX + ", " + "Y = " + coordinateY;
     }
 }

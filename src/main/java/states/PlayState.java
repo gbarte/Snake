@@ -7,11 +7,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import game.SnakeGame;
-import gamelogic.Coordinates;
-import gamelogic.ScoreCalculator;
+import gamelogic.Coordinate;
+import gamelogic.Score;
 
 import objects.base.Apple;
 import snake.BodyPart;
@@ -28,7 +26,7 @@ public class PlayState extends State {
     private SnakeBody snake;
     private ShapeRenderer shapeRenderer;
     private Apple apple;
-    private ScoreCalculator score;
+    private Score score;
 
     /**
      * Constructor which creates a new state within the game.
@@ -44,7 +42,7 @@ public class PlayState extends State {
         snake = new SnakeBody(SnakeGame.WIDTH, SnakeGame.HEIGHT);
         camera.setToOrtho(false, SnakeGame.WIDTH, SnakeGame.HEIGHT);
         apple = new Apple();
-        score = new ScoreCalculator();
+        score = new Score();
     }
 
     //    private void setDialogScreen() {
@@ -59,7 +57,7 @@ public class PlayState extends State {
         super(gameManager);
         this.snake = snake;
         this.shapeRenderer = renderer;
-        this.score = new ScoreCalculator();
+        this.score = new Score();
         this.apple = new Apple(0, 0, 10);
     }
 
@@ -107,11 +105,11 @@ public class PlayState extends State {
         return timer;
     }
 
-    public ScoreCalculator getScore() {
+    public Score getScore() {
         return score;
     }
 
-    public void setScore(ScoreCalculator score) {
+    public void setScore(Score score) {
         this.score = score;
     }
 
@@ -165,7 +163,7 @@ public class PlayState extends State {
     public void render(SpriteBatch batch) {
         snake.renderSnake(shapeRenderer);
         batch.begin();
-        Coordinates appleCoord = apple.getCoordinates();
+        Coordinate appleCoord = apple.getCoordinate();
         batch.draw(apple.getTexture(), appleCoord.getCoordinateX(), appleCoord.getCoordinateY());
         renderScore(batch);
         batch.end();
@@ -180,7 +178,7 @@ public class PlayState extends State {
     public void renderScore(SpriteBatch batch) {
         BitmapFont bitmapFont = new BitmapFont();
         bitmapFont.setColor(Color.RED);
-        bitmapFont.draw(batch, String.valueOf(score.getScore()), 20, 20);
+        bitmapFont.draw(batch, String.valueOf(score.getValue()), 20, 20);
     }
 
     /**
@@ -277,7 +275,7 @@ public class PlayState extends State {
      * Checks whether an apple has been eaten or not.
      */
     private void checkAppleEaten() {
-        if (snake.getHeadCoord().equals(apple.getCoordinates())) {
+        if (snake.getHeadCoord().equals(apple.getCoordinate())) {
             score.add(apple.getScore());
             apple = new Apple();
             checkAppleOnSnake();
@@ -291,7 +289,7 @@ public class PlayState extends State {
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     private void checkAppleOnSnake() {
         for (BodyPart bp : snake.getBodyParts()) {
-            if (bp.getCoordinates().equals(apple.getCoordinates())) {
+            if (bp.getCoordinate().equals(apple.getCoordinate())) {
                 apple = new Apple();
             }
         }
