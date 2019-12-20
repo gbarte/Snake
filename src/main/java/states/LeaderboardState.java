@@ -87,6 +87,9 @@ public class LeaderboardState extends State {
         this.bitmapFont = bitmapFont;
     }
 
+    /**
+     * Creates return button.
+     */
     private void initReturn() {
         TextButton returnButton = new TextButton("return", skin);
         //        signUpButton.setPosition(300, 150);

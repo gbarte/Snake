@@ -2,7 +2,14 @@ package states;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+/**
+ * Settings screen, allows the user to edit theme etc.
+ */
 public class SettingsState extends State {
+    /**
+     * Cosntructor.
+     * @param gameManager
+     */
     public SettingsState(GameStateManager gameManager) {
         super(gameManager);
     }
