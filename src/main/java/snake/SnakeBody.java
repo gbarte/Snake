@@ -24,7 +24,7 @@ public class SnakeBody {
      */
     public SnakeBody(int headX, int headY) {
         this.headCoord = new Coordinate(headX / 2, headY / 2);
-        this.currDir = Direction.UP;
+        this.currDir = Direction.RIGHT;
         this.bodyParts = new LinkedList<BodyPart>();
         growSnake(INITIAL_LENGTH);
     }

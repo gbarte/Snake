@@ -92,7 +92,8 @@ class PlayStateTest {
     void updateDirectionTestLeft() {
         play.updateDirection(SnakeBody.Direction.LEFT);
 
-        assertEquals(snake.getCurrDir(), SnakeBody.Direction.LEFT);
+        //Default direction is Right so nothing happens when you go left
+        assertEquals(SnakeBody.Direction.RIGHT, snake.getCurrDir());
     }
 
     @Test
@@ -215,7 +216,8 @@ class PlayStateTest {
 
         play.handleInput();
 
-        assertEquals(SnakeBody.Direction.LEFT, play.getSnake().getCurrDir());
+        //Default direction is Right so nothing happens when you go left
+        assertEquals(SnakeBody.Direction.RIGHT, play.getSnake().getCurrDir());
     }
 
     @Test
