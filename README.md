@@ -39,8 +39,11 @@ $ https://gitlab.ewi.tudelft.nl/cse2115/2019-2020/SN/sem-group-10/template.git
 
 ### Run
 
-1) Run `Main.java`;
-2) MacOS may throw an error. In this case, use `-XstartOnFirstThread` VM option for the configuration;
+1) Import cloned repo;
+    - When asked in Gradle configuration, check `use auto import`
+    - `Gradle JVM` choose `12`
+2) Run `Main.java`;
+    - MacOS may throw an error. In this case, use `-XstartOnFirstThread` VM option for the configuration.
 3) Use auth credentials:
     - username: john
     - password: 12345678

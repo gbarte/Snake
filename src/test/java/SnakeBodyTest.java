@@ -1,15 +1,16 @@
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.util.LinkedList;
+
+import gamelogic.Coordinate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import snake.BodyPart;
 import snake.SnakeBody;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class SnakeBodyTest {
     private transient SnakeBody snakeBody;
@@ -46,7 +47,7 @@ class SnakeBodyTest {
 
     @Test
     void getCurrDirTest() {
-        assertEquals(snakeBody.getCurrDir(), SnakeBody.Direction.UP);
+        assertEquals(SnakeBody.Direction.RIGHT, snakeBody.getCurrDir());
     }
 
     @Test
@@ -56,7 +57,21 @@ class SnakeBodyTest {
     }
 
     @Test
-    void growSnakeTest() {
+    void getHeadCoord() {
+        Coordinate c = new Coordinate(10, 10);
+        snakeBody.setHeadCoord(c);
+        assertEquals(snakeBody.getHeadCoord(), c);
+    }
+
+    @Test
+    void setHeadCoord() {
+        Coordinate c = new Coordinate(10, 10);
+        snakeBody.setHeadCoord(c);
+        assertEquals(snakeBody.getHeadCoord(), c);
+    }
+
+    @Test
+    void growSnakeTestOne() {
         LinkedList<BodyPart> ll = snakeBody.getBodyParts();
 
         //test for growing first bodyPart
@@ -68,6 +83,15 @@ class SnakeBodyTest {
         ll.add(new BodyPart(450 - (length * SnakeBody.CELL_SIZE), 400));
         snakeBody.growSnake();
         assertEquals(ll, snakeBody.getBodyParts());
+    }
+
+    @Test
+    void growSnakeTestMultiple() {
+        LinkedList<BodyPart> ll = snakeBody.getBodyParts();
+
+        //test for growing first bodyPart
+        ll.add(new BodyPart(450, 400));
+        assertEquals(ll.get(0), snakeBody.getBodyParts().get(0));
 
         //test for growing by multiple cells
         int oldLength = snakeBody.getBodyParts().size();
@@ -77,21 +101,40 @@ class SnakeBodyTest {
     }
 
     @Test
-    void moveSnakeTest() {
-        assertEquals(snakeBody.getCurrDir(), SnakeBody.Direction.UP);
+    void growSnakeTestNegative() {
+        LinkedList<BodyPart> ll = snakeBody.getBodyParts();
+
+        //test for growing first bodyPart
+        ll.add(new BodyPart(450, 400));
+        assertEquals(ll.get(0), snakeBody.getBodyParts().get(0));
+
+        //test for trying to grow by a negative amount.
+        int length = snakeBody.getBodyParts().size();
+        snakeBody.growSnake(-1);
+        assertEquals(length, length);
+    }
+
+    @Test
+    void moveSnakeTestRight() {
+        assertEquals(SnakeBody.Direction.RIGHT, snakeBody.getCurrDir());
         snakeBody.moveSnake(SnakeBody.Direction.RIGHT);
         assertEquals(snakeBody.getHeadCoord().getCoordinateX(), 450);
         assertEquals(snakeBody.getHeadCoord().getCoordinateY(), 400);
     }
 
     @Test
-    void moveSnakeTest2() {
+    void moveSnakeTestLeft() {
+        assertEquals(SnakeBody.Direction.RIGHT, snakeBody.getCurrDir());
         snakeBody.moveSnake(SnakeBody.Direction.LEFT);
         assertEquals(snakeBody.getHeadCoord().getCoordinateX(), 350);
         assertEquals(snakeBody.getHeadCoord().getCoordinateY(), 400);
+    }
 
+    @Test
+    void moveSnakeTestDown() {
+        assertEquals(SnakeBody.Direction.RIGHT, snakeBody.getCurrDir());
         snakeBody.moveSnake(SnakeBody.Direction.DOWN);
-        assertEquals(snakeBody.getHeadCoord().getCoordinateX(), 350);
+        assertEquals(snakeBody.getHeadCoord().getCoordinateX(), 400);
         assertEquals(snakeBody.getHeadCoord().getCoordinateY(), 350);
     }
 
@@ -107,8 +150,8 @@ class SnakeBodyTest {
 
         LinkedList<BodyPart> bodyParts = snakeBody.getBodyParts();
 
-        assertEquals(bodyParts.get(1).getCoordinates().getCoordinateY(),
-                bodyParts.get(0).getCoordinates().getCoordinateY() - SnakeBody.CELL_SIZE);
+        assertEquals(bodyParts.get(1).getCoordinate().getCoordinateY(),
+                bodyParts.get(0).getCoordinate().getCoordinateY() - SnakeBody.CELL_SIZE);
     }
 
     @Test

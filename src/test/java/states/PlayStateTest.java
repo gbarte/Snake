@@ -1,11 +1,15 @@
 package states;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import game.SnakeGame;
+import gamelogic.Coordinate;
 import objects.base.Apple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,6 +30,7 @@ class PlayStateTest {
         shapeRenderer = Mockito.mock(ShapeRenderer.class);
         snake = new SnakeBody(100, 100);
         play = new PlayState(stateManager, snake, shapeRenderer);
+        stateManager.push(play);
     }
 
     @Test
@@ -68,21 +73,187 @@ class PlayStateTest {
     }
 
     @Test
-    void updateDirectionTest() {
+    void getAppleTest() {
+        Apple apple = Mockito.mock(Apple.class);
+        play.setApple(apple);
+
+        assertEquals(play.getApple(), apple);
+    }
+
+    @Test
+    void setAppleTest() {
+        Apple apple2 = Mockito.mock(Apple.class);
+        play.setApple(apple2);
+
+        assertEquals(play.getApple(), apple2);
+    }
+
+    @Test
+    void updateDirectionTestLeft() {
+        play.updateDirection(SnakeBody.Direction.LEFT);
+
+        //Default direction is Right so nothing happens when you go left
+        assertEquals(SnakeBody.Direction.RIGHT, snake.getCurrDir());
+    }
+
+    @Test
+    void updateDirectionTestRight() {
         play.updateDirection(SnakeBody.Direction.RIGHT);
 
         assertEquals(snake.getCurrDir(), SnakeBody.Direction.RIGHT);
     }
 
     @Test
-    void updateDirectionTest2() {
+    void updateDirectionTestUp() {
         play.updateDirection(SnakeBody.Direction.UP);
 
         assertEquals(snake.getCurrDir(), SnakeBody.Direction.UP);
     }
 
     @Test
-    void handleInputTest() {
+    void updateIfNotOppositeTest1() {
+        snake.setCurrDir(SnakeBody.Direction.LEFT);
+        play.updateDirection(SnakeBody.Direction.RIGHT);
+        assertEquals(SnakeBody.Direction.LEFT, snake.getCurrDir());
+    }
+
+    @Test
+    void updateIfNotOppositeTest2() {
+        snake.setCurrDir(SnakeBody.Direction.RIGHT);
+        play.updateDirection(SnakeBody.Direction.LEFT);
+        assertEquals(SnakeBody.Direction.RIGHT, snake.getCurrDir());
+    }
+
+    @Test
+    void updateIfNotOppositeTest3() {
+        snake.setCurrDir(SnakeBody.Direction.UP);
+        play.updateDirection(SnakeBody.Direction.DOWN);
+        assertEquals(SnakeBody.Direction.UP, snake.getCurrDir());
+    }
+
+    @Test
+    void updateIfNotOppositeTest4() {
+        snake.setCurrDir(SnakeBody.Direction.DOWN);
+        play.updateDirection(SnakeBody.Direction.UP);
+        assertEquals(SnakeBody.Direction.DOWN, snake.getCurrDir());
+    }
+
+    @Test
+    void checkOutOfMapTest1() {
+        snake.setHeadCoord(new Coordinate(SnakeGame.WIDTH, 10));
+        play.setSnake(snake);
+        play.checkOutOfMap();
+        assertTrue(play.gameManager.getStates().peek() instanceof GameOverState);
+    }
+
+    @Test
+    void checkOutOfMapTest2() {
+        snake.setHeadCoord(new Coordinate(-1, 10));
+        play.setSnake(snake);
+        play.checkOutOfMap();
+        assertTrue(play.gameManager.getStates().peek() instanceof GameOverState);
+    }
+
+    @Test
+    void checkOutOfMapTest3() {
+        snake.setHeadCoord(new Coordinate(10, SnakeGame.HEIGHT));
+        play.setSnake(snake);
+        play.checkOutOfMap();
+        assertTrue(play.gameManager.getStates().peek() instanceof GameOverState);
+    }
+
+    @Test
+    void checkOutOfMapTest4() {
+        snake.setHeadCoord(new Coordinate(10, -1));
+        play.setSnake(snake);
+        play.checkOutOfMap();
+        assertTrue(play.gameManager.getStates().peek() instanceof GameOverState);
+    }
+
+    @Test
+    void checkHeadHitsBodyTest1() {
+        //here snake of initial length < 3
+        for (int i = 0; i < snake.getBodyParts().size(); i++) {
+            snake.setHeadCoord(snake.getBodyParts().get(i).getCoordinate());
+            play.setSnake(snake);
+            play.checkHeadHitsBody();
+            assertFalse(play.gameManager.getStates().peek() instanceof GameOverState);
+        }
+    }
+
+    @Test
+    void checkHeadHitsBodyTest2() {
+        //here snake length > 3
+        snake.growSnake(2);
+        for (int i = 0; i < snake.getBodyParts().size(); i++) {
+            snake.setHeadCoord(snake.getBodyParts().get(i).getCoordinate());
+            play.setSnake(snake);
+            play.checkHeadHitsBody();
+            assertTrue(play.gameManager.getStates().peek() instanceof GameOverState);
+        }
+    }
+
+    @Test
+    void updateDirectionTestDown() {
+        play.updateDirection(SnakeBody.Direction.DOWN);
+
+        assertEquals(snake.getCurrDir(), SnakeBody.Direction.DOWN);
+    }
+
+    @Test
+    void updateDirectionTestSameDirection() {
+        play.updateDirection(snake.getCurrDir());
+        assertEquals(snake.getCurrDir(), snake.getCurrDir());
+    }
+
+    @Test
+    void updateIfNotOppositeTest() {
+        play.updateDirection(SnakeBody.Direction.LEFT);
+        play.updateDirection(SnakeBody.Direction.DOWN);
+        assertEquals(snake.getCurrDir(), SnakeBody.Direction.DOWN);
+    }
+
+    @Test
+    void handleInputTestLeft() {
+        Gdx.input = Mockito.mock(Input.class);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.W)).thenReturn(false);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.A)).thenReturn(true);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.S)).thenReturn(false);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.D)).thenReturn(false);
+
+        play.handleInput();
+
+        //Default direction is Right so nothing happens when you go left
+        assertEquals(SnakeBody.Direction.RIGHT, play.getSnake().getCurrDir());
+    }
+
+    @Test
+    void handleInputTestRight() {
+        Gdx.input = Mockito.mock(Input.class);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.W)).thenReturn(false);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.A)).thenReturn(false);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.S)).thenReturn(false);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.D)).thenReturn(true);
+
+        play.handleInput();
+
+        assertEquals(SnakeBody.Direction.RIGHT, play.getSnake().getCurrDir());
+    }
+
+    @Test
+    void handleInputTestUp() {
+        Gdx.input = Mockito.mock(Input.class);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.W)).thenReturn(true);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.A)).thenReturn(false);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.S)).thenReturn(false);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.D)).thenReturn(false);
+
+        play.handleInput();
+        assertEquals(SnakeBody.Direction.UP, play.getSnake().getCurrDir());
+    }
+
+    @Test
+    void handleInputTestDown() {
         Gdx.input = Mockito.mock(Input.class);
         Mockito.when(Gdx.input.isKeyPressed(Input.Keys.W)).thenReturn(false);
         Mockito.when(Gdx.input.isKeyPressed(Input.Keys.A)).thenReturn(false);
@@ -92,31 +263,6 @@ class PlayStateTest {
         play.handleInput();
 
         assertEquals(SnakeBody.Direction.DOWN, play.getSnake().getCurrDir());
-    }
-
-    @Test
-    void handleInputTest2() {
-        Gdx.input = Mockito.mock(Input.class);
-        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.W)).thenReturn(false);
-        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.A)).thenReturn(true);
-        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.S)).thenReturn(false);
-        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.D)).thenReturn(false);
-
-        play.handleInput();
-
-        assertEquals(SnakeBody.Direction.LEFT, play.getSnake().getCurrDir());
-    }
-
-    @Test
-    void handleInputTest3() {
-        Gdx.input = Mockito.mock(Input.class);
-        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.W)).thenReturn(true);
-        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.A)).thenReturn(false);
-        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.S)).thenReturn(false);
-        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.D)).thenReturn(false);
-
-        play.handleInput();
-        assertEquals(SnakeBody.Direction.UP, play.getSnake().getCurrDir());
     }
 
     //Flaky test bellow!
@@ -132,7 +278,7 @@ class PlayStateTest {
         play.update(10);
 
         Apple apple2 = play.getApple();
-        assertEquals(apple2.getCoordinates(), apple.getCoordinates());
+        assertEquals(apple2.getCoordinate(), apple.getCoordinate());
     }
 
 }

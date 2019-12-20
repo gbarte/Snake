@@ -2,15 +2,18 @@ package snake;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import gamelogic.Coordinates;
+import gamelogic.Coordinate;
 
 import java.util.LinkedList;
 
+/**
+ * Class that defines the snake's body logics.
+ */
 public class SnakeBody {
     public static final int CELL_SIZE = 50;
     private static final int INITIAL_LENGTH = 2;
 
-    private Coordinates headCoord;
+    private Coordinate headCoord;
     private LinkedList<BodyPart> bodyParts;
     private Direction currDir;
 
@@ -23,8 +26,8 @@ public class SnakeBody {
      * @param headY - Y coordinate of head
      */
     public SnakeBody(int headX, int headY) {
-        this.headCoord = new Coordinates(headX / 2, headY / 2);
-        this.currDir = Direction.UP;
+        this.headCoord = new Coordinate(headX / 2, headY / 2);
+        this.currDir = Direction.RIGHT;
         this.bodyParts = new LinkedList<BodyPart>();
         growSnake(INITIAL_LENGTH);
     }
@@ -45,11 +48,11 @@ public class SnakeBody {
         this.currDir = currDir;
     }
 
-    public Coordinates getHeadCoord() {
+    public Coordinate getHeadCoord() {
         return headCoord;
     }
 
-    public void setHeadCoord(Coordinates headCoord) {
+    public void setHeadCoord(Coordinate headCoord) {
         this.headCoord = headCoord;
     }
 
@@ -62,7 +65,7 @@ public class SnakeBody {
         } else if (bodyParts.size() > 0) {
             int tailID = bodyParts.size() - 1;
             BodyPart tail = bodyParts.get(tailID);
-            Coordinates tailCoord = tail.getCoordinates();
+            Coordinate tailCoord = tail.getCoordinate();
             bodyParts.add(new BodyPart(tailCoord.getCoordinateX(), tailCoord.getCoordinateY()));
         }
     }
@@ -93,7 +96,7 @@ public class SnakeBody {
         shapeRenderer.rect(x, y, CELL_SIZE, CELL_SIZE);
         if (bodyParts.size() > 0) {
             for (BodyPart bp : bodyParts) {
-                Coordinates bodyCoord = bp.getCoordinates();
+                Coordinate bodyCoord = bp.getCoordinate();
                 shapeRenderer.rect(bodyCoord.getCoordinateX(), bodyCoord.getCoordinateY(),
                         CELL_SIZE, CELL_SIZE);
             }
@@ -133,13 +136,13 @@ public class SnakeBody {
      * Updates the position of each body part.
      */
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-    public void updateBodyPartsPosition(Coordinates coordinates) {
+    public void updateBodyPartsPosition(Coordinate coordinate) {
         if (bodyParts.size() > 0) {
             for (BodyPart bp : bodyParts) {
-                int currX = bp.getCoordinates().getCoordinateX();
-                int currY = bp.getCoordinates().getCoordinateY();
-                bp.updateBodyPartPos(coordinates);
-                coordinates = new Coordinates(currX, currY);
+                int currX = bp.getCoordinate().getCoordinateX();
+                int currY = bp.getCoordinate().getCoordinateY();
+                bp.updateBodyPartPos(coordinate);
+                coordinate = new Coordinate(currX, currY);
             }
         }
     }

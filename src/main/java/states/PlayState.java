@@ -7,17 +7,17 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import game.SnakeGame;
-import gamelogic.Coordinates;
-import gamelogic.ScoreCalculator;
+import gamelogic.Coordinate;
+import gamelogic.Score;
 
 import objects.base.Apple;
 import snake.BodyPart;
 import snake.SnakeBody;
 
-
+/**
+ * In-game screen.
+ */
 public class PlayState extends State {
     protected static final float MOVE_TIME = 0.25f;
     // private Dialog gameOver;
@@ -26,7 +26,7 @@ public class PlayState extends State {
     private SnakeBody snake;
     private ShapeRenderer shapeRenderer;
     private Apple apple;
-    private ScoreCalculator score;
+    private Score score;
 
     /**
      * Constructor which creates a new state within the game.
@@ -42,7 +42,7 @@ public class PlayState extends State {
         snake = new SnakeBody(SnakeGame.WIDTH, SnakeGame.HEIGHT);
         camera.setToOrtho(false, SnakeGame.WIDTH, SnakeGame.HEIGHT);
         apple = new Apple();
-        score = new ScoreCalculator();
+        score = new Score();
     }
 
     //    private void setDialogScreen() {
@@ -57,7 +57,7 @@ public class PlayState extends State {
         super(gameManager);
         this.snake = snake;
         this.shapeRenderer = renderer;
-        this.score = new ScoreCalculator();
+        this.score = new Score();
         this.apple = new Apple(0, 0, 10);
     }
 
@@ -105,11 +105,11 @@ public class PlayState extends State {
         return timer;
     }
 
-    public ScoreCalculator getScore() {
+    public Score getScore() {
         return score;
     }
 
-    public void setScore(ScoreCalculator score) {
+    public void setScore(Score score) {
         this.score = score;
     }
 
@@ -149,6 +149,7 @@ public class PlayState extends State {
     public void update(float dt) {
         handleInput();
         checkOutOfMap();
+        checkHeadHitsBody();
         updateSnake(dt);
         checkAppleEaten();
     }
@@ -163,7 +164,7 @@ public class PlayState extends State {
     public void render(SpriteBatch batch) {
         snake.renderSnake(shapeRenderer);
         batch.begin();
-        Coordinates appleCoord = apple.getCoordinates();
+        Coordinate appleCoord = apple.getCoordinate();
         batch.draw(apple.getTexture(), appleCoord.getCoordinateX(), appleCoord.getCoordinateY());
         renderScore(batch);
         batch.end();
@@ -178,7 +179,7 @@ public class PlayState extends State {
     public void renderScore(SpriteBatch batch) {
         BitmapFont bitmapFont = new BitmapFont();
         bitmapFont.setColor(Color.RED);
-        bitmapFont.draw(batch, String.valueOf(score.getScore()), 20, 20);
+        bitmapFont.draw(batch, String.valueOf(score.getValue()), 20, 20);
     }
 
     /**
@@ -202,22 +203,23 @@ public class PlayState extends State {
     /**
      * Updates the direction by calling updateIfNotOpposite.
      *
-     * @param direction - direction in which the user wants to move the snake
+     * @param newDirection - direction in which the user wants to move the snake
      */
-    public void updateDirection(SnakeBody.Direction direction) {
-        if (!direction.equals(snake.getCurrDir())) {
-            switch (direction) {
+    public void updateDirection(SnakeBody.Direction newDirection) {
+        SnakeBody.Direction current = snake.getCurrDir();
+        if (!newDirection.equals(current)) {
+            switch (current) {
                 case UP:
-                    updateIfNotOpposite(SnakeBody.Direction.UP, SnakeBody.Direction.DOWN);
+                    updateIfNotOpposite(newDirection, SnakeBody.Direction.DOWN);
                     break;
                 case DOWN:
-                    updateIfNotOpposite(SnakeBody.Direction.DOWN, SnakeBody.Direction.UP);
+                    updateIfNotOpposite(newDirection, SnakeBody.Direction.UP);
                     break;
                 case LEFT:
-                    updateIfNotOpposite(SnakeBody.Direction.LEFT, SnakeBody.Direction.RIGHT);
+                    updateIfNotOpposite(newDirection, SnakeBody.Direction.RIGHT);
                     break;
                 case RIGHT:
-                    updateIfNotOpposite(SnakeBody.Direction.RIGHT, SnakeBody.Direction.LEFT);
+                    updateIfNotOpposite(newDirection, SnakeBody.Direction.LEFT);
                     break;
                 default:
                     // nothing happens
@@ -244,20 +246,40 @@ public class PlayState extends State {
      * if it hits then the state changes to GAME_OVER.
      */
     public void checkOutOfMap() {
-        if (snake.getHeadCoord().getCoordinateX() >= SnakeGame.WIDTH - SnakeBody.CELL_SIZE) {
-            System.out.println("Game oveeer");
+        if (snake.getHeadCoord().getCoordinateX() >= SnakeGame.WIDTH) {
+            gameManager.set(new GameOverState(gameManager));
         }
-        if (snake.getHeadCoord().getCoordinateX() <= 0) {
-            System.out.println("Game oveer");
+        if (snake.getHeadCoord().getCoordinateX() < 0) {
+            gameManager.set(new GameOverState(gameManager));
         }
-        if (snake.getHeadCoord().getCoordinateY() >= SnakeGame.HEIGHT - SnakeBody.CELL_SIZE) {
-            System.out.println("Game over");
+        if (snake.getHeadCoord().getCoordinateY() >= SnakeGame.HEIGHT) {
+            gameManager.set(new GameOverState(gameManager));
         }
-        if (snake.getHeadCoord().getCoordinateY() <= 0) {
-            System.out.println("Game oveeeeer");
+        if (snake.getHeadCoord().getCoordinateY() < 0) {
+            gameManager.set(new GameOverState(gameManager));
         }
     }
 
+    /**
+     * Checks whether the snake head hits the body.
+     * If it does, then the state changes to GAME_OVER.
+     */
+    public void checkHeadHitsBody() {
+        int minLength = 3;
+        // head can touch tail only if snake has more than 3 bodyparts
+        int size = snake.getBodyParts().size();
+        if (size > minLength) {
+            for (int i = 0; i < size; i++) {
+                if (snake.getBodyParts().get(i).getCoordinate().equals(snake.getHeadCoord())) {
+                    gameManager.set(new GameOverState(gameManager));
+                }
+            }
+        }
+    }
+
+    /**
+     * Draws the grid on the background.
+     */
     private void drawGrid() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         for (int x = 0; x < SnakeGame.WIDTH; x += SnakeBody.CELL_SIZE) {
@@ -268,8 +290,11 @@ public class PlayState extends State {
         shapeRenderer.end();
     }
 
+    /**
+     * Checks whether an apple has been eaten or not.
+     */
     private void checkAppleEaten() {
-        if (snake.getHeadCoord().equals(apple.getCoordinates())) {
+        if (snake.getHeadCoord().equals(apple.getCoordinate())) {
             score.add(apple.getScore());
             apple = new Apple();
             checkAppleOnSnake();
@@ -277,10 +302,13 @@ public class PlayState extends State {
         }
     }
 
+    /**
+     * Checks whether the snakebody is over an apple or not.
+     */
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     private void checkAppleOnSnake() {
         for (BodyPart bp : snake.getBodyParts()) {
-            if (bp.getCoordinates().equals(apple.getCoordinates())) {
+            if (bp.getCoordinate().equals(apple.getCoordinate())) {
                 apple = new Apple();
             }
         }
