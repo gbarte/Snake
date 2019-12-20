@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import objects.base.Apple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import snake.SnakeBody;
 
@@ -68,34 +69,57 @@ class PlayStateTest {
     }
 
     @Test
-    void updateDirectionTest() {
+    void getAppleTest() {
+        Apple apple = Mockito.mock(Apple.class);
+        play.setApple(apple);
+
+        assertEquals(play.getApple(), apple);
+    }
+
+    @Test
+    void setAppleTest() {
+        Apple apple2 = Mockito.mock(Apple.class);
+        play.setApple(apple2);
+
+        assertEquals(play.getApple(), apple2);
+    }
+
+    @Test
+    void updateDirectionTestLeft() {
+        play.updateDirection(SnakeBody.Direction.LEFT);
+
+        assertEquals(snake.getCurrDir(), SnakeBody.Direction.LEFT);
+    }
+
+    @Test
+    void updateDirectionTestRight() {
         play.updateDirection(SnakeBody.Direction.RIGHT);
 
         assertEquals(snake.getCurrDir(), SnakeBody.Direction.RIGHT);
     }
 
     @Test
-    void updateDirectionTest2() {
+    void updateDirectionTestUp() {
         play.updateDirection(SnakeBody.Direction.UP);
 
         assertEquals(snake.getCurrDir(), SnakeBody.Direction.UP);
     }
 
     @Test
-    void handleInputTest() {
-        Gdx.input = Mockito.mock(Input.class);
-        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.W)).thenReturn(false);
-        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.A)).thenReturn(false);
-        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.S)).thenReturn(true);
-        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.D)).thenReturn(false);
+    void updateDirectionTestDown() {
+        play.updateDirection(SnakeBody.Direction.DOWN);
 
-        play.handleInput();
-
-        assertEquals(SnakeBody.Direction.DOWN, play.getSnake().getCurrDir());
+        assertEquals(snake.getCurrDir(), SnakeBody.Direction.DOWN);
     }
 
     @Test
-    void handleInputTest2() {
+    void updateDirectionTestSameDirection() {
+        play.updateDirection(snake.getCurrDir());
+        assertEquals(snake.getCurrDir(), snake.getCurrDir());
+    }
+
+    @Test
+    void handleInputTestLeft() {
         Gdx.input = Mockito.mock(Input.class);
         Mockito.when(Gdx.input.isKeyPressed(Input.Keys.W)).thenReturn(false);
         Mockito.when(Gdx.input.isKeyPressed(Input.Keys.A)).thenReturn(true);
@@ -108,7 +132,20 @@ class PlayStateTest {
     }
 
     @Test
-    void handleInputTest3() {
+    void handleInputTestRight() {
+        Gdx.input = Mockito.mock(Input.class);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.W)).thenReturn(false);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.A)).thenReturn(false);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.S)).thenReturn(false);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.D)).thenReturn(true);
+
+        play.handleInput();
+
+        assertEquals(SnakeBody.Direction.RIGHT, play.getSnake().getCurrDir());
+    }
+
+    @Test
+    void handleInputTestUp() {
         Gdx.input = Mockito.mock(Input.class);
         Mockito.when(Gdx.input.isKeyPressed(Input.Keys.W)).thenReturn(true);
         Mockito.when(Gdx.input.isKeyPressed(Input.Keys.A)).thenReturn(false);
@@ -117,6 +154,19 @@ class PlayStateTest {
 
         play.handleInput();
         assertEquals(SnakeBody.Direction.UP, play.getSnake().getCurrDir());
+    }
+
+    @Test
+    void handleInputTestDown() {
+        Gdx.input = Mockito.mock(Input.class);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.W)).thenReturn(false);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.A)).thenReturn(false);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.S)).thenReturn(true);
+        Mockito.when(Gdx.input.isKeyPressed(Input.Keys.D)).thenReturn(false);
+
+        play.handleInput();
+
+        assertEquals(SnakeBody.Direction.DOWN, play.getSnake().getCurrDir());
     }
 
     //Flaky test bellow!
@@ -132,7 +182,7 @@ class PlayStateTest {
         play.update(10);
 
         Apple apple2 = play.getApple();
-        assertEquals(apple2.getCoordinates(), apple.getCoordinates());
+        assertEquals(apple2.getCoordinate(), apple.getCoordinate());
     }
 
 }

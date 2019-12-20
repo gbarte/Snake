@@ -1,34 +1,35 @@
-package auth;
-
-import db.UsersTable;
+package services.auth;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
+import services.db.UsersTableHandler;
+
+/**
+ * The class that handles the logics for the authentication.
+ */
 public class AuthService {
 
     private static final int MIN_PASS_LENGTH = 6;
 
-    private UsersTable table;
+    private transient UsersTableHandler tableHandler;
 
-    public UsersTable getTable() {
-        return this.table;
+    public UsersTableHandler getTable() {
+        return this.tableHandler;
     }
 
-    private void setTable(UsersTable table) {
-        this.table = table;
+    private void setTable(UsersTableHandler tableHandler) {
+        this.tableHandler = tableHandler;
+    }
+
+    public AuthService(boolean isTest) {
+        tableHandler = new UsersTableHandler(isTest);
     }
 
     public AuthService() {
-        table = new UsersTable();
-        table.connect();
-    }
-
-    public AuthService(String tableName) {
-        table = new UsersTable();
-        table.connect(tableName);
+        tableHandler = new UsersTableHandler(false);
     }
 
     /**
@@ -39,10 +40,7 @@ public class AuthService {
      */
     public AuthResponse auth(String username, String password) {
 
-        assert username != null;
-        assert password != null;
-
-        Map<String, String> user = table.getUser(username);
+        Map<String, String> user = tableHandler.getUser(username);
 
         if (user == null) {
             return AuthResponse.WRONG_PASSWORD;
@@ -66,19 +64,16 @@ public class AuthService {
      */
     public RegistrationResponse register(String username, String password) {
 
-        assert username != null;
-        assert password != null;
-
         if (password.length() < MIN_PASS_LENGTH) {
             return RegistrationResponse.SHORT_PASSWORD;
         }
 
-        if (table.getUser(username) != null) {
+        if (tableHandler.getUser(username) != null) {
             return RegistrationResponse.OCCUPIED_NAME;
         }
 
         String hash = getPasswordHash(password);
-        table.createUser(username, hash);
+        tableHandler.createUser(username, hash);
         return RegistrationResponse.SUCCESS;
     }
 

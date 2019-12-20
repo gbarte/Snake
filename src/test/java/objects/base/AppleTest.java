@@ -3,7 +3,7 @@ package objects.base;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.badlogic.gdx.graphics.Texture;
-import gamelogic.Coordinates;
+import gamelogic.Coordinate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -21,16 +21,16 @@ class AppleTest {
     @Test
     void getCoordinatesTest() {
         Apple apple = new Apple(10, 15, 100, texture);
-        assertEquals(10 * SnakeBody.CELL_SIZE, apple.getCoordinates().getCoordinateX());
-        assertEquals(15 * SnakeBody.CELL_SIZE, apple.getCoordinates().getCoordinateY());
+        assertEquals(10 * SnakeBody.CELL_SIZE, apple.getCoordinate().getCoordinateX());
+        assertEquals(15 * SnakeBody.CELL_SIZE, apple.getCoordinate().getCoordinateY());
     }
 
     @Test
     void setCoordinatesTest() {
         Apple apple = new Apple(10, 15, 100, texture);
-        Coordinates coordinates = new Coordinates(20, 25);
-        apple.setCoordinates(coordinates);
-        assertEquals(coordinates, apple.getCoordinates());
+        Coordinate coordinate = new Coordinate(20, 25);
+        apple.setCoordinate(coordinate);
+        assertEquals(coordinate, apple.getCoordinate());
     }
 
     @Test
