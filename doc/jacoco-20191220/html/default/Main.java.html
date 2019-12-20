@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Main.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">template</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">Main.java</span></div><h1>Main.java</h1><pre class="source lang-java linenums">import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import game.SnakeGame;
+import services.auth.AuthService;
+import services.leaderboard.LeaderboardService;
+
+/**
+ * Sets a window for the game and then calls the snake game.
+ */
+<span class="nc" id="L10">public class Main {</span>
+    /**
+     * Main method which runs the game with the defined window size and title.
+     * @param args as for all main methods.
+     */
+    public static void main(String[] args) {
+
+        // Dummy data
+
+<span class="nc" id="L19">        AuthService authService = new AuthService();</span>
+<span class="nc" id="L20">        authService.register(&quot;john&quot;, &quot;12345678&quot;);</span>
+
+<span class="nc" id="L22">        LeaderboardService leaderboardService = new LeaderboardService();</span>
+
+<span class="nc bnc" id="L24" title="All 2 branches missed.">        if (leaderboardService.retrieveLeaderboard().isEmpty()) {</span>
+<span class="nc" id="L25">            leaderboardService.createEntry(&quot;test1&quot;, 78);</span>
+<span class="nc" id="L26">            leaderboardService.createEntry(&quot;test2&quot;, 33);</span>
+<span class="nc" id="L27">            leaderboardService.createEntry(&quot;test3&quot;, 21);</span>
+<span class="nc" id="L28">            leaderboardService.createEntry(&quot;test4&quot;, 16);</span>
+<span class="nc" id="L29">            leaderboardService.createEntry(&quot;test3&quot;, 1);</span>
+        }
+
+<span class="nc" id="L32">        Lwjgl3ApplicationConfiguration cfg = new Lwjgl3ApplicationConfiguration();</span>
+<span class="nc" id="L33">        cfg.setTitle(SnakeGame.TITLE);</span>
+<span class="nc" id="L34">        cfg.setWindowSizeLimits(SnakeGame.WIDTH, SnakeGame.HEIGHT,</span>
+                SnakeGame.WIDTH, SnakeGame.HEIGHT);
+<span class="nc" id="L36">        cfg.setWindowedMode(SnakeGame.WIDTH, SnakeGame.HEIGHT);</span>
+<span class="nc" id="L37">        new Lwjgl3Application(new SnakeGame(), cfg);</span>
+<span class="nc" id="L38">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

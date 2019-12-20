@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LeaderboardState.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">template</a> &gt; <a href="index.source.html" class="el_package">states</a> &gt; <span class="el_source">LeaderboardState.java</span></div><h1>LeaderboardState.java</h1><pre class="source lang-java linenums">package states;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import services.LeaderboardEntry;
+import services.leaderboard.LeaderboardService;
+
+import java.util.List;
+
+/**
+ * LeaderBoardState class
+ * Shows a leaderboard of all players playing the gaming.
+ */
+public class LeaderboardState extends State {
+    private Stage stage;
+    private Skin skin;
+    private Label title;
+    private Texture backGround;
+    private BitmapFont bitmapFont;
+
+    /**
+     * Constructor which creates a new state within the game.
+     * E.g. Play/Pause/Menu.
+     *
+     * @param gameManager which keeps track of the state of the game.
+     */
+    public LeaderboardState(GameStateManager gameManager) {
+<span class="nc" id="L39">        super(gameManager);</span>
+<span class="nc" id="L40">        stage = new Stage(new ScreenViewport());</span>
+<span class="nc" id="L41">        Gdx.input.setInputProcessor(stage);</span>
+<span class="nc" id="L42">        skin =  new Skin(Gdx.files.internal(&quot;assets/quantum-horizon/skin/quantum-horizon-ui.json&quot;));</span>
+<span class="nc" id="L43">        backGround = new Texture(&quot;assets/three.png&quot;);</span>
+<span class="nc" id="L44">        bitmapFont = new BitmapFont(Gdx.files.internal(&quot;assets/font.fnt&quot;));</span>
+<span class="nc" id="L45">        initReturn();</span>
+<span class="nc" id="L46">        initTitle();</span>
+<span class="nc" id="L47">        initRank();</span>
+<span class="nc" id="L48">        initBoard();</span>
+<span class="nc" id="L49">    }</span>
+
+    public Stage getStage() {
+<span class="nc" id="L52">        return stage;</span>
+    }
+
+    public void setStage(Stage stage) {
+<span class="nc" id="L56">        this.stage = stage;</span>
+<span class="nc" id="L57">    }</span>
+
+    public Skin getSkin() {
+<span class="nc" id="L60">        return skin;</span>
+    }
+
+    public void setSkin(Skin skin) {
+<span class="nc" id="L64">        this.skin = skin;</span>
+<span class="nc" id="L65">    }</span>
+
+    public Label getTitle() {
+<span class="nc" id="L68">        return title;</span>
+    }
+
+    public void setTitle(Label title) {
+<span class="nc" id="L72">        this.title = title;</span>
+<span class="nc" id="L73">    }</span>
+
+    public Texture getBackGround() {
+<span class="nc" id="L76">        return backGround;</span>
+    }
+
+    public void setBackGround(Texture backGround) {
+<span class="nc" id="L80">        this.backGround = backGround;</span>
+<span class="nc" id="L81">    }</span>
+
+    public BitmapFont getBitmapFont() {
+<span class="nc" id="L84">        return bitmapFont;</span>
+    }
+
+    public void setBitmapFont(BitmapFont bitmapFont) {
+<span class="nc" id="L88">        this.bitmapFont = bitmapFont;</span>
+<span class="nc" id="L89">    }</span>
+
+    /**
+     * Creates return button.
+     */
+    private void initReturn() {
+<span class="nc" id="L95">        TextButton returnButton = new TextButton(&quot;return&quot;, skin);</span>
+        //        signUpButton.setPosition(300, 150);
+<span class="nc" id="L97">        returnButton.setPosition(350, 50);</span>
+<span class="nc" id="L98">        returnButton.addListener(new InputListener() {</span>
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+<span class="nc" id="L101">                gameManager.set(new MenuState(gameManager));</span>
+<span class="nc" id="L102">            }</span>
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                // TODO
+<span class="nc" id="L107">                System.out.println(&quot;pressed return button&quot;);</span>
+<span class="nc" id="L108">                return true;</span>
+            }
+        });
+<span class="nc" id="L111">        stage.addActor(returnButton);</span>
+<span class="nc" id="L112">    }</span>
+
+    /**
+     * Sets the leaderboard title in the middle of the screen.
+     */
+    private void initTitle() {
+<span class="nc" id="L118">        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,</span>
+                new Color(0, (float) 2.55, 0, 1));
+<span class="nc" id="L120">        title = new Label(&quot;Leaderboard&quot;, labelStyle);</span>
+<span class="nc" id="L121">        title.setSize(400, 100);</span>
+<span class="nc" id="L122">        title.setPosition(160,650);</span>
+<span class="nc" id="L123">        title.setFontScale(2);</span>
+        // title.setAlignment(Align.center);
+<span class="nc" id="L125">        stage.addActor(title);</span>
+<span class="nc" id="L126">    }</span>
+
+    /**
+     * Creates a numbering on the left side of the screen.
+     */
+    private void initRank() {
+<span class="nc" id="L132">        setNumber(550, &quot;1.&quot;);</span>
+<span class="nc" id="L133">        setNumber(500, &quot;2.&quot;);</span>
+<span class="nc" id="L134">        setNumber(450, &quot;3.&quot;);</span>
+<span class="nc" id="L135">        setNumber(400, &quot;4.&quot;);</span>
+<span class="nc" id="L136">        setNumber(350, &quot;5.&quot;);</span>
+<span class="nc" id="L137">        setNumber(300, &quot;6.&quot;);</span>
+<span class="nc" id="L138">        setNumber(250, &quot;7.&quot;);</span>
+<span class="nc" id="L139">        setNumber(200, &quot;8.&quot;);</span>
+<span class="nc" id="L140">        setNumber(150, &quot;9.&quot;);</span>
+<span class="nc" id="L141">        setNumber(100, &quot;10.&quot;);</span>
+<span class="nc" id="L142">    }</span>
+
+    /**
+     * Adds score to the player..
+     */
+    private void initBoard() {
+
+<span class="nc" id="L149">        LeaderboardService service = new LeaderboardService();</span>
+<span class="nc" id="L150">        List&lt;LeaderboardEntry&gt; entries = service.retrieveLeaderboard();</span>
+
+<span class="nc bnc" id="L152" title="All 2 branches missed.">        for (int i = 0; i &lt; entries.size(); i++) {</span>
+<span class="nc" id="L153">            setPlayerRank(550 - 50*i, entries.get(i).getNickname());</span>
+<span class="nc" id="L154">            setScore(550 - 50*i, entries.get(i).getScore());</span>
+        }
+
+<span class="nc" id="L157">    }</span>
+
+    /**
+     * Puts a given number on the stage at given position y.
+     * @param y y coordinate where the number will be placed.
+     * @param number number which will be shown.
+     */
+    private void setNumber(int y, String number) {
+<span class="nc" id="L165">        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,</span>
+                new Color(0, (float) 2.55, 0, 1));
+<span class="nc" id="L167">        Label one = new Label(number, labelStyle);</span>
+<span class="nc" id="L168">        one.setSize(100, 100);</span>
+<span class="nc" id="L169">        one.setPosition(200, y);</span>
+<span class="nc" id="L170">        stage.addActor(one);</span>
+<span class="nc" id="L171">    }</span>
+
+    /**
+     * Puts given player name on the rank position.
+     * @param y y coordinate where the player will be placed.
+     * @param player player which will be shown.
+     */
+    private void setPlayerRank(int y, String player) {
+<span class="nc" id="L179">        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,</span>
+                new Color(0, (float) 2.55, 0, 1));
+<span class="nc" id="L181">        Label one = new Label(player, labelStyle);</span>
+<span class="nc" id="L182">        one.setSize(100, 100);</span>
+<span class="nc" id="L183">        one.setPosition(250, y);</span>
+<span class="nc" id="L184">        stage.addActor(one);</span>
+<span class="nc" id="L185">    }</span>
+
+    /**
+     * Puts given player score on the score position.
+     * @param y y coordinate where the score will be placed.
+     * @param score score which will be shown.
+     */
+    private void setScore(int y, int score) {
+<span class="nc" id="L193">        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,</span>
+                new Color(0, (float) 2.55, 0, 1));
+<span class="nc" id="L195">        Label one = new Label(Integer.toString(score), labelStyle);</span>
+<span class="nc" id="L196">        one.setSize(100, 100);</span>
+<span class="nc" id="L197">        one.setPosition(600, y);</span>
+<span class="nc" id="L198">        stage.addActor(one);</span>
+<span class="nc" id="L199">    }</span>
+
+    @Override
+    public void handleInput() {
+
+<span class="nc" id="L204">    }</span>
+
+    @Override
+    public void update(float dt) {
+
+<span class="nc" id="L209">    }</span>
+
+    @Override
+    public void render(SpriteBatch batch) {
+<span class="nc" id="L213">        Gdx.gl.glClearColor((float) 0.61, (float) 0.77, (float) 0.65, 1);</span>
+<span class="nc" id="L214">        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);</span>
+<span class="nc" id="L215">        stage.act();</span>
+<span class="nc" id="L216">        stage.getBatch().begin();</span>
+<span class="nc" id="L217">        stage.getBatch().draw(backGround, 0, 0, 800, 800);</span>
+<span class="nc" id="L218">        stage.getBatch().end();</span>
+<span class="nc" id="L219">        stage.draw();</span>
+<span class="nc" id="L220">    }</span>
+
+    @Override
+    public void dispose() {
+<span class="nc" id="L224">        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);</span>
+<span class="nc" id="L225">        gameManager.update(Gdx.graphics.getDeltaTime());</span>
+        // gameManager.render(batch);
+<span class="nc" id="L227">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
