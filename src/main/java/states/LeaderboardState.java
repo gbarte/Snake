@@ -142,22 +142,6 @@ public class LeaderboardState extends State {
     }
 
     /**
-     * Adds players to their rank.
-     */
-    private void initPlayers() {
-        setPlayerRank(550, "first");
-        setPlayerRank(500, "second");
-        setPlayerRank(450, "third");
-        setPlayerRank(400, "fourth");
-        setPlayerRank(350, "fifth");
-        setPlayerRank(300, "sixth");
-        setPlayerRank(250, "seventh");
-        setPlayerRank(200, "eigth");
-        setPlayerRank(150, "nint");
-        setPlayerRank(100, "ten");
-    }
-
-    /**
      * Adds score to the player..
      */
     private void initBoard() {
@@ -165,12 +149,9 @@ public class LeaderboardState extends State {
         LeaderboardService service = new LeaderboardService();
         List<LeaderboardEntry> entries = service.retrieveLeaderboard();
 
-        int yCoord = 550;
-
-        for (LeaderboardEntry entry : entries) {
-            setPlayerRank(yCoord, entry.getNickname());
-            setScore(yCoord, entry.getScore());
-            yCoord -= 50;
+        for (int i = 0; i < entries.size(); i++) {
+            setPlayerRank(550 - 50*i, entries.get(i).getNickname());
+            setScore(550 - 50*i, entries.get(i).getScore());
         }
 
     }

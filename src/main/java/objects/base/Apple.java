@@ -9,6 +9,9 @@ import snake.SnakeBody;
 
 
 public class Apple {
+
+    private static int DEFAULT_SCORE = 10;
+
     private Coordinate coordinate;
     private int score;
     private Texture texture;
@@ -22,7 +25,7 @@ public class Apple {
      */
     public Apple(int x, int y) {
         this.coordinate = new Coordinate(x * SnakeBody.CELL_SIZE, y * SnakeBody.CELL_SIZE);
-        this.score = 10;
+        this.score = DEFAULT_SCORE;
         this.texture = new Texture(texturePath);
     }
 
