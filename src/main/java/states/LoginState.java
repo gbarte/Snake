@@ -139,7 +139,7 @@ public class LoginState extends State {
      */
     private void initLogin() {
         TextButton loginButton = new TextButton("Login", skin);
-        loginButton.setPosition(300, 190);
+        loginButton.setPosition(325, 125);
 
         BitmapFont bitmapFont = new BitmapFont();
         // Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, new Color(1, 0, 1, 1));

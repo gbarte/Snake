@@ -8,6 +8,8 @@ import services.db.LeaderboardTableHandler;
 
 public class LeaderboardService {
 
+    private static int DEFAULT_LIMIT = 10;
+
     private LeaderboardTableHandler tableHandler;
 
     public LeaderboardTableHandler getTableHandler() {
@@ -33,7 +35,7 @@ public class LeaderboardService {
     }
 
     public List<LeaderboardEntry> retrieveLeaderboard() {
-        return tableHandler.getLeaderboardData(5);
+        return tableHandler.getLeaderboardData(DEFAULT_LIMIT);
     }
 
 }

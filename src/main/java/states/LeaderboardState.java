@@ -12,9 +12,11 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import services.LeaderboardEntry;
+import services.leaderboard.LeaderboardService;
+
+import java.util.List;
 
 /**
  * LeaderBoardState class
@@ -43,8 +45,7 @@ public class LeaderboardState extends State {
         initReturn();
         initTitle();
         initRank();
-        initPlayers();
-        initScores();
+        initBoard();
     }
 
     public Stage getStage() {
@@ -159,17 +160,19 @@ public class LeaderboardState extends State {
     /**
      * Adds score to the player..
      */
-    private void initScores() {
-        setScore(550, 10);
-        setScore(500, 9);
-        setScore(450, 8);
-        setScore(400, 7);
-        setScore(350, 6);
-        setScore(300, 5);
-        setScore(250, 4);
-        setScore(200, 3);
-        setScore(150, 2);
-        setScore(100, 1);
+    private void initBoard() {
+
+        LeaderboardService service = new LeaderboardService();
+        List<LeaderboardEntry> entries = service.retrieveLeaderboard();
+
+        int yCoord = 550;
+
+        for (LeaderboardEntry entry : entries) {
+            setPlayerRank(yCoord, entry.getNickname());
+            setScore(yCoord, entry.getScore());
+            yCoord -= 50;
+        }
+
     }
 
     /**
