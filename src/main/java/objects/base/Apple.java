@@ -2,31 +2,32 @@ package objects.base;
 
 import com.badlogic.gdx.graphics.Texture;
 import game.SnakeGame;
-import gamelogic.Coordinates;
+import gamelogic.Coordinate;
+
 import java.util.Random;
 import snake.SnakeBody;
 
 
 public class Apple {
-    private Coordinates coordinates;
+    private Coordinate coordinate;
     private int score;
     private Texture texture;
     private static final String texturePath = "assets/greenapplesmall.png";
 
     /**
-     * Creates an apple with a predefined texture at given coordinates in the
+     * Creates an apple with a predefined texture at given coordinate in the
      * texture space (Coordinate is multiplied with cell size).
      * @param x coordinate of the apple on the map.
      * @param y coordinate of the apple on the map.
      */
     public Apple(int x, int y) {
-        this.coordinates = new Coordinates(x * SnakeBody.CELL_SIZE, y * SnakeBody.CELL_SIZE);
+        this.coordinate = new Coordinate(x * SnakeBody.CELL_SIZE, y * SnakeBody.CELL_SIZE);
         this.score = 10;
         this.texture = new Texture(texturePath);
     }
 
     /**
-     * Creates an apple with a predefined texture at Random coordinates in the
+     * Creates an apple with a predefined texture at Random coordinate in the
      * texture space (Coordinate is multiplied with cell size!).
      */
     public Apple() {
@@ -39,14 +40,14 @@ public class Apple {
         int x = r.nextInt(maxX - minX) + minX;
         int y = r.nextInt(maxY - minY) + minY;
 
-        Coordinates coord = new Coordinates(x * SnakeBody.CELL_SIZE, y * SnakeBody.CELL_SIZE);
-        this.coordinates = coord;
+        Coordinate coord = new Coordinate(x * SnakeBody.CELL_SIZE, y * SnakeBody.CELL_SIZE);
+        this.coordinate = coord;
         this.score = 10;
         this.texture = new Texture(texturePath);
     }
 
     /**
-     * Creates an apple with given texture and coordinates, as well as the score
+     * Creates an apple with given texture and coordinate, as well as the score
      * that will get the player when eating this apple. This method was mainly created
      * for testing as you pass your own (mocked) texture.
      * @param x coordinate of the apple on the map.
@@ -55,22 +56,22 @@ public class Apple {
      * @param texture of the apple on the map (has to be of the same size as cell).
      */
     public Apple(int x, int y, int score, Texture texture) {
-        this.coordinates = new Coordinates(x * SnakeBody.CELL_SIZE, y * SnakeBody.CELL_SIZE);
+        this.coordinate = new Coordinate(x * SnakeBody.CELL_SIZE, y * SnakeBody.CELL_SIZE);
         this.score = score;
         this.texture = texture;
     }
 
     public Apple(int x, int y, int score) {
-        this.coordinates = new Coordinates(x * SnakeBody.CELL_SIZE, y * SnakeBody.CELL_SIZE);
+        this.coordinate = new Coordinate(x * SnakeBody.CELL_SIZE, y * SnakeBody.CELL_SIZE);
         this.score = score;
     }
 
-    public Coordinates getCoordinates() {
-        return coordinates;
+    public Coordinate getCoordinate() {
+        return coordinate;
     }
 
-    public void setCoordinates(Coordinates coordinates) {
-        this.coordinates = coordinates;
+    public void setCoordinate(Coordinate coordinate) {
+        this.coordinate = coordinate;
     }
 
     public int getScore() {
