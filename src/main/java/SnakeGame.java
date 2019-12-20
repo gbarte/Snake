@@ -6,6 +6,9 @@ import states.GameStateManager;
 import states.LeaderboardState;
 import states.PlayState;
 
+/**
+ * Creates the snakegame.
+ */
 public class SnakeGame extends ApplicationAdapter {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 800;

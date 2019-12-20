@@ -3,6 +3,9 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import game.SnakeGame;
 
+/**
+ * Sets a window for the game and then calls the snake game.
+ */
 public class Main {
     /**
      * Main method which runs the game with the defined window size and title.
