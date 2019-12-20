@@ -1,36 +1,36 @@
 package gamelogic;
 
 public class Score {
-    private int score;
+    private int value;
 
     public Score() {
-        score = 0;
+        value = 0;
     }
 
-    public int getScore() {
-        return score;
+    public int getValue() {
+        return value;
     }
 
-    public void setScore(int score) {
-        this.score = score;
+    public void setValue(int value) {
+        this.value = value;
     }
 
     public void add(int points) {
-        score += points;
+        value += points;
     }
 
     /**
-     * Subtracts points from the score if you have more points
+     * Subtracts points from the value if you have more points
      * than the ones that will be subtracted.
      * @param points to subtract.
      */
     public void subtract(int points) {
-        if (score > points) {
-            score -= points;
+        if (value > points) {
+            value -= points;
         }
     }
 
     public void resetScore() {
-        score = 0;
+        value = 0;
     }
 }

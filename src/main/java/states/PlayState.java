@@ -176,7 +176,7 @@ public class PlayState extends State {
     public void renderScore(SpriteBatch batch) {
         BitmapFont bitmapFont = new BitmapFont();
         bitmapFont.setColor(Color.RED);
-        bitmapFont.draw(batch, String.valueOf(score.getScore()), 20, 20);
+        bitmapFont.draw(batch, String.valueOf(score.getValue()), 20, 20);
     }
 
     /**

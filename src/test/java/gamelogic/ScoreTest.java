@@ -15,40 +15,40 @@ class ScoreTest {
 
     @Test
     void getScoreTest() {
-        assertEquals(0, score.getScore());
+        assertEquals(0, score.getValue());
     }
 
     @Test
     void setScoreTest() {
-        score.setScore(50);
-        assertEquals(50, score.getScore());
+        score.setValue(50);
+        assertEquals(50, score.getValue());
     }
 
     @Test
     void addTest() {
         score.add(50);
-        assertEquals(50, score.getScore());
+        assertEquals(50, score.getValue());
     }
 
     @Test
     void subtractTest() {
-        score.setScore(80);
+        score.setValue(80);
         score.subtract(20);
-        assertEquals(60, score.getScore());
+        assertEquals(60, score.getValue());
     }
 
     @Test
     void subtractTest2() {
-        score.setScore(80);
+        score.setValue(80);
         score.subtract(100);
-        assertEquals(80, score.getScore());
+        assertEquals(80, score.getValue());
     }
 
     @Test
     void resetScoreTest() {
-        score.setScore(80);
+        score.setValue(80);
         score.subtract(20);
         score.resetScore();
-        assertEquals(0, score.getScore());
+        assertEquals(0, score.getValue());
     }
 }
