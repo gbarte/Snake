@@ -14,6 +14,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+/**
+ * Creates menu screen.
+ */
 public class MenuState extends State {
     private static final int BUTTON_WIDTH = 300;
     private static final int BUTTON_HEIGHT = 60;
@@ -63,6 +66,9 @@ public class MenuState extends State {
         this.background = background;
     }
 
+    /**
+     * Adds "Menu" to the screen.
+     */
     private void initTitle() {
         BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal("assets/font.fnt"));
         Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
@@ -74,6 +80,9 @@ public class MenuState extends State {
         stage.addActor(menuTitle);
     }
 
+    /**
+     * Adds the sign out button.
+     */
     private void initSignOutButton() {
         TextButton signOutButton = new TextButton("Sign Out",
                 new Skin(Gdx.files.internal(
@@ -89,13 +98,16 @@ public class MenuState extends State {
             @Override
             public boolean touchDown(
                     InputEvent event, float x, float y, int pointer, int button) {
-                System.out.println("pressed leaderboard");
+                System.out.println("pressed signout");
                 return true;
             }
         });
         stage.addActor(signOutButton);
     }
 
+    /**
+     * Adds leader board button.
+     */
     private void initLeaderBoardButton() {
         TextButton leaderBoardButton = new TextButton("Leaderboard", skin);
         leaderBoardButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -117,6 +129,9 @@ public class MenuState extends State {
         stage.addActor(leaderBoardButton);
     }
 
+    /**
+     * Adds play button.
+     */
     private void initPlayButton() {
         TextButton playButton = new TextButton("Start Game", skin);
         playButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -131,7 +146,7 @@ public class MenuState extends State {
             @Override
             public boolean touchDown(InputEvent event, float x, float y,
                                      int pointer, int button) {
-                System.out.println("to playstate");
+                System.out.println("pressed play");
                 return true;
             }
         });
@@ -139,6 +154,9 @@ public class MenuState extends State {
 
     }
 
+    /**
+     * Adds settings button.
+     */
     private void initSettingsButton() {
         TextButton settingsButton = new TextButton("Settings",
                 new Skin(Gdx.files.internal(
@@ -148,7 +166,8 @@ public class MenuState extends State {
         settingsButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                gameManager.set(new SettingsState(gameManager));
+                //                gameManager.set(new SettingsState(gameManager));
+                System.out.println("to settingsstate");
             }
 
             @Override
