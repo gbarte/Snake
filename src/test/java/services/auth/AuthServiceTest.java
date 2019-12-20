@@ -1,4 +1,4 @@
-package auth;
+package services.auth;
 
 import java.sql.SQLException;
 
@@ -12,17 +12,18 @@ public class AuthServiceTest {
     private transient AuthService service;
 
     private static final String TEST_USERNAME = "john";
+    private static final String TEST_PASS = "12345678";
 
     @BeforeEach
     void setUp() {
-        service = new AuthService("test_table");
-        service.register(TEST_USERNAME, "12345678");
+        service = new AuthService(true);
+        service.register(TEST_USERNAME, TEST_PASS);
     }
 
     @Test
     void defaultConnectTest() throws SQLException {
         service = new AuthService();
-        Assertions.assertFalse(service.getTable().getConnection().isClosed());
+        Assertions.assertNotNull(service.getTable());
     }
 
     @Test
@@ -38,6 +39,12 @@ public class AuthServiceTest {
     }
 
     @Test
+    void registrationOccupiedFailureTest() {
+        RegistrationResponse response = service.register(TEST_USERNAME, TEST_PASS);
+        Assertions.assertEquals(RegistrationResponse.OCCUPIED_NAME, response);
+    }
+
+    @Test
     void registrationSuccessTest() {
         RegistrationResponse response = service.register("sem10", "ROMAN_IS_BEST");
         Assertions.assertEquals(RegistrationResponse.SUCCESS, response);
@@ -45,7 +52,7 @@ public class AuthServiceTest {
 
     @Test
     void authenticationSuccessTest() {
-        AuthResponse authResponse = service.auth(TEST_USERNAME, "12345678");
+        AuthResponse authResponse = service.auth(TEST_USERNAME, TEST_PASS);
         Assertions.assertEquals(AuthResponse.SUCCESS, authResponse);
     }
 
@@ -57,7 +64,7 @@ public class AuthServiceTest {
 
     @Test
     void nonExistentUserTest() {
-        AuthResponse authResponse = service.auth("i_dont_exist", "12345678");
+        AuthResponse authResponse = service.auth("i_dont_exist", TEST_PASS);
         Assertions.assertEquals(AuthResponse.WRONG_PASSWORD, authResponse);
     }
 

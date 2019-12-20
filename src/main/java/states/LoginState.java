@@ -1,7 +1,7 @@
 package states;
 
-import auth.AuthResponse;
-import auth.AuthService;
+import services.auth.AuthResponse;
+import services.auth.AuthService;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -139,7 +139,6 @@ public class LoginState extends State {
      */
     private void initLogin() {
         TextButton loginButton = new TextButton("Login", skin);
-        //        loginButton.setPosition(300, 200);
         loginButton.setPosition(325, 125);
         BitmapFont bitmapFont = new BitmapFont();
         // Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, new Color(1, 0, 1, 1));
@@ -168,9 +167,8 @@ public class LoginState extends State {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 
                 AuthService service = new AuthService();
-                AuthResponse response = service.auth(usernameField.getText(),
-                        passWordField.getText());
-                service.dizpose();
+                AuthResponse response = service.auth(usernameField.getText(), passWordField.getText());
+
 
                 if (response == AuthResponse.SUCCESS) {
                     gameManager.set(new MenuState(gameManager));
