@@ -18,6 +18,18 @@ public class LeaderboardServiceTest {
     }
 
     @Test
+    void simpleConstructor() {
+        service = new LeaderboardService();
+        Assertions.assertNotNull(service.getTableHandler());
+    }
+
+    @Test
+    void advancedConstructor() {
+        service = new LeaderboardService(true);
+        Assertions.assertNotNull(service.getTableHandler());
+    }
+
+    @Test
     void createAndRetrieveEntryTest() {
         Assertions.assertTrue(service.retrieveLeaderboard().isEmpty());
         service.createEntry("nickname", 55);
