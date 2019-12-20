@@ -3,8 +3,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import states.GameStateManager;
+import states.LeaderboardState;
 import states.PlayState;
 
+/**
+ * Creates the snakegame.
+ */
 public class SnakeGame extends ApplicationAdapter {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 800;
@@ -19,7 +23,7 @@ public class SnakeGame extends ApplicationAdapter {
         batch = new SpriteBatch();
         gameManager = new GameStateManager();
         Gdx.gl.glClearColor(0, 0, 0, 1);
-        gameManager.push(new PlayState(gameManager));
+        gameManager.push(new LeaderboardState(gameManager));
     }
 
     @Override

@@ -132,7 +132,7 @@ class PlayStateTest {
         play.update(10);
 
         Apple apple2 = play.getApple();
-        assertEquals(apple2.getCoordinates(), apple.getCoordinates());
+        assertEquals(apple2.getCoordinate(), apple.getCoordinate());
     }
 
 }

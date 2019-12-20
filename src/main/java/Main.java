@@ -4,6 +4,9 @@ import game.SnakeGame;
 import services.auth.AuthService;
 import services.leaderboard.LeaderboardService;
 
+/**
+ * Sets a window for the game and then calls the snake game.
+ */
 public class Main {
     /**
      * Main method which runs the game with the defined window size and title.
