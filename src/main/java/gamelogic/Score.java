@@ -1,9 +1,9 @@
 package gamelogic;
 
-public class ScoreCalculator {
+public class Score {
     private int score;
 
-    public ScoreCalculator() {
+    public Score() {
         score = 0;
     }
 

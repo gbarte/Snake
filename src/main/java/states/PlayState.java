@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import game.SnakeGame;
 import gamelogic.Coordinate;
-import gamelogic.ScoreCalculator;
+import gamelogic.Score;
 
 import objects.base.Apple;
 import snake.BodyPart;
@@ -24,7 +24,7 @@ public class PlayState extends State {
     private SnakeBody snake;
     private ShapeRenderer shapeRenderer;
     private Apple apple;
-    private ScoreCalculator score;
+    private Score score;
 
     /**
      * Constructor which creates a new state within the game.
@@ -40,7 +40,7 @@ public class PlayState extends State {
         snake = new SnakeBody(SnakeGame.WIDTH, SnakeGame.HEIGHT);
         camera.setToOrtho(false, SnakeGame.WIDTH, SnakeGame.HEIGHT);
         apple = new Apple();
-        score = new ScoreCalculator();
+        score = new Score();
     }
 
     //    private void setDialogScreen() {
@@ -55,7 +55,7 @@ public class PlayState extends State {
         super(gameManager);
         this.snake = snake;
         this.shapeRenderer = renderer;
-        this.score = new ScoreCalculator();
+        this.score = new Score();
         this.apple = new Apple(0, 0, 10);
     }
 
@@ -103,11 +103,11 @@ public class PlayState extends State {
         return timer;
     }
 
-    public ScoreCalculator getScore() {
+    public Score getScore() {
         return score;
     }
 
-    public void setScore(ScoreCalculator score) {
+    public void setScore(Score score) {
         this.score = score;
     }
 
