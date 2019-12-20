@@ -39,9 +39,16 @@ $ https://gitlab.ewi.tudelft.nl/cse2115/2019-2020/SN/sem-group-10/template.git
 
 ### Run
 
-1) Run `Main.java`;
-2) If there is an error, use `-XstartOnFirstThread` VM option for the configuration;
-2) Use WASD to control the snake.
+1) Import cloned repo;
+2) When asked in Gradle configuration, check `use auto import`;
+3) Configure IDE to use JDK 12:
+    - `Project Settings` -> `Project` -> `Project SDKs` -> `12`
+4) Run `Main.java`;
+5) MacOS may throw an error. In this case, use `-XstartOnFirstThread` VM option for the configuration;
+6) Use auth credentials:
+    - username: john
+    - password: 12345678
+7) Use WASD to control the snake.
 
 ## Reports
 
