@@ -207,6 +207,13 @@ class PlayStateTest {
     }
 
     @Test
+    void updateIfNotOppositeTest() {
+        play.updateDirection(SnakeBody.Direction.LEFT);
+        play.updateDirection(SnakeBody.Direction.DOWN);
+        assertEquals(snake.getCurrDir(), SnakeBody.Direction.DOWN);
+    }
+
+    @Test
     void handleInputTestLeft() {
         Gdx.input = Mockito.mock(Input.class);
         Mockito.when(Gdx.input.isKeyPressed(Input.Keys.W)).thenReturn(false);

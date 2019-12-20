@@ -1,6 +1,8 @@
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.util.LinkedList;
+
+import gamelogic.Coordinate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -52,6 +54,20 @@ class SnakeBodyTest {
     void setCurrDirTest() {
         snakeBody.setCurrDir(SnakeBody.Direction.DOWN);
         assertEquals(snakeBody.getCurrDir(), SnakeBody.Direction.DOWN);
+    }
+
+    @Test
+    void getHeadCoord() {
+        Coordinate c = new Coordinate(10, 10);
+        snakeBody.setHeadCoord(c);
+        assertEquals(snakeBody.getHeadCoord(), c);
+    }
+
+    @Test
+    void setHeadCoord() {
+        Coordinate c = new Coordinate(10, 10);
+        snakeBody.setHeadCoord(c);
+        assertEquals(snakeBody.getHeadCoord(), c);
     }
 
     @Test

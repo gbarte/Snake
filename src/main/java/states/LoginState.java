@@ -1,7 +1,5 @@
 package states;
 
-import services.auth.AuthResponse;
-import services.auth.AuthService;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -18,6 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import services.auth.AuthResponse;
+import services.auth.AuthService;
 
 /**
  * Creates login screen.
@@ -167,7 +167,8 @@ public class LoginState extends State {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 
                 AuthService service = new AuthService();
-                AuthResponse response = service.auth(usernameField.getText(), passWordField.getText());
+                AuthResponse response = service.auth(usernameField.getText(),
+                        passWordField.getText());
 
 
                 if (response == AuthResponse.SUCCESS) {

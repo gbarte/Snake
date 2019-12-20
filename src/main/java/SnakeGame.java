@@ -27,10 +27,10 @@ public class SnakeGame extends ApplicationAdapter {
         gameManager.push(new LeaderboardState(gameManager));
     }
 
-//    @Override
-//    public void dispose() {
-//        gameManager.set(new GameOverState(gameManager));
-//    }
+    //    @Override
+    //    public void dispose() {
+    //        gameManager.set(new GameOverState(gameManager));
+    //    }
 
     @Override
     public void render() {

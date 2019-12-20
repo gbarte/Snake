@@ -13,10 +13,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import java.util.List;
 import services.LeaderboardEntry;
 import services.leaderboard.LeaderboardService;
-
-import java.util.List;
 
 /**
  * LeaderBoardState class
@@ -150,8 +149,8 @@ public class LeaderboardState extends State {
         List<LeaderboardEntry> entries = service.retrieveLeaderboard();
 
         for (int i = 0; i < entries.size(); i++) {
-            setPlayerRank(550 - 50*i, entries.get(i).getNickname());
-            setScore(550 - 50*i, entries.get(i).getScore());
+            setPlayerRank(550 - 50 * i, entries.get(i).getNickname());
+            setScore(550 - 50 * i, entries.get(i).getScore());
         }
 
     }
