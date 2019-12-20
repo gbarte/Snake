@@ -82,8 +82,6 @@ public class DatabaseHandler {
      */
     public void close() {
 
-        assert connection != null;
-
         try {
             connection.close();
         } catch (SQLException e) {

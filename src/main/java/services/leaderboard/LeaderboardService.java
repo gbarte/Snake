@@ -30,7 +30,6 @@ public class LeaderboardService {
 
 
     public void createEntry(String nickname, int score) {
-        assert score >= 0;
         tableHandler.createEntry(nickname, score);
     }
 
