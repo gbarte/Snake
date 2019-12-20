@@ -172,7 +172,7 @@ public class LoginState extends State {
 
 
                 if (response == AuthResponse.SUCCESS) {
-                    gameManager.set(new PlayState(gameManager));
+                    gameManager.set(new MenuState(gameManager));
                 } else {
                     // TODO: display failed authentication.
                     failedAuthenticationDialog();
