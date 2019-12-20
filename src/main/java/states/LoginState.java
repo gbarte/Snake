@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -46,21 +47,6 @@ public class LoginState extends State {
         backGround = new Texture("assets/bg.png");
     }
 
-    /**
-     * Sets title of login screen.
-     */
-    private void initTitle() {
-        BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal("assets/font.fnt"));
-        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
-                new Color(0, 255, 0, 1));
-        title = new Label("Lil' Snake", labelStyle);
-        title.setSize(600, 120);
-        title.setPosition(100,550);
-        title.setFontScale(3);
-        title.setAlignment(Align.center);
-        stage.addActor(title);
-    }
-
     public Stage getStage() {
         return stage;
     }
@@ -93,13 +79,44 @@ public class LoginState extends State {
         this.backGround = backGround;
     }
 
+    public TextField getUsernameField() {
+        return usernameField;
+    }
+
+    public void setUsernameField(TextField usernameField) {
+        this.usernameField = usernameField;
+    }
+
+    public TextField getPassWordField() {
+        return passWordField;
+    }
+
+    public void setPassWordField(TextField passWordField) {
+        this.passWordField = passWordField;
+    }
+
+    /**
+     * Sets title of login screen.
+     */
+    private void initTitle() {
+        BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal("assets/font.fnt"));
+        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
+                new Color(0, 255, 0, 1));
+        title = new Label("Lil' Snake", labelStyle);
+        title.setSize(600, 120);
+        title.setPosition(100,550);
+        title.setFontScale(3);
+        title.setAlignment(Align.center);
+        stage.addActor(title);
+    }
+
     /**
      * Sets up Sign Up button.
      */
     private void initSignUp() {
         TextButton signUpButton = new TextButton("Sign up", skin);
         //        signUpButton.setPosition(300, 150);
-        signUpButton.setPosition(325, 65);
+        signUpButton.setPosition(320, 65);
         signUpButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
@@ -109,7 +126,7 @@ public class LoginState extends State {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 // TODO
-                System.out.println("pressed");
+                System.out.println("pressed sign up");
                 return true;
             }
         });
@@ -132,7 +149,7 @@ public class LoginState extends State {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                System.out.println("pressed");
+                System.out.println("pressed sign in");
                 return true;
             }
         });
@@ -141,20 +158,20 @@ public class LoginState extends State {
         Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
                 new Color(255,  0, 255, 1));
         Label usernameLabel = new Label("Username", labelStyle);
-        usernameLabel.setPosition(350, 282);
+        usernameLabel.setPosition(350, 279);
 
         TextField usernameField = new TextField("",
                 new Skin(Gdx.files.internal("assets/cloud-form/skin/cloud-form-ui.json")));
         usernameField.setSize(180, 30);
-        usernameField.setPosition(300, 250);
+        usernameField.setPosition(300, 247);
 
         Label passwordLabel = new Label("Password", labelStyle);
-        passwordLabel.setPosition(350, 232);
+        passwordLabel.setPosition(350, 229);
 
         TextField passWordField = new TextField("",
                 new Skin(Gdx.files.internal("assets/cloud-form/skin/cloud-form-ui.json")));
         passWordField.setSize(180, 30);
-        passWordField.setPosition(300, 200);
+        passWordField.setPosition(300, 197);
         passWordField.isPasswordMode();
         passWordField.setPasswordCharacter('*');
 
@@ -171,14 +188,14 @@ public class LoginState extends State {
                     gameManager.set(new PlayState(gameManager));
                 } else {
                     // TODO: display failed authentication.
-                    System.out.println("Failed authentication");
+                    failedAuthenticationDialog();
                 }
 
             }
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                System.out.println("pressed");
+                System.out.println("pressed sign in");
                 return true;
             }
         });
@@ -189,6 +206,22 @@ public class LoginState extends State {
         stage.addActor(usernameField);
         stage.addActor(passWordField);
     }
+
+    /**
+     * This dialog box is shown when the authentication fails.
+     */
+    public void failedAuthenticationDialog() {
+        Skin uiSkin = new Skin(Gdx.files.internal("assets/cloud-form/skin/cloud-form-ui.json"));
+        Dialog dialog = new Dialog("Username taken", uiSkin, "dialog") {
+            public void result(Object obj) {
+                System.out.println("result " + obj);
+            }
+        };
+        dialog.text("Incorrect username or password, please try again.");
+        dialog.button("OK", true); //sends "true" as the result
+        dialog.show(stage);
+    }
+
 
     @Override
     public void handleInput() {
