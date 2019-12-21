@@ -36,7 +36,8 @@ public class GameMain extends ApplicationAdapter {
             Vector3 position = orthographicCamera.unproject(
                     new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
             //might have to change the layer to 1!!!
-            TileType type = getGameMap().getTileTypeByLocation(0, position.x, position.y);
+            TileType type = getGameMap().getTileTypeByLocation(getGameMap().getLayers() - 1,
+                    position.x, position.y);
 
             if (type != null) {
                 System.out.println("Id is " + type.getId() + " name is " + type.getName());

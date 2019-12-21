@@ -3,7 +3,6 @@ package world.customgamemap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
-import utils.Maat;
 import utils.Sizes;
 import utils.TileType;
 
@@ -11,16 +10,16 @@ import utils.TileType;
 public class CustomGameMapLoader {
 
     private static Json json = new Json();
-    private static final int SIZE = Maat.DEFAULT_MINIMUM_MAP_TILES;
+    private static final int SIZE = Sizes.DEFAULT_MINIMUM_MAP_TILES;
 
     /**
      * Generate a custom game map using without specifying the maximum size of the map.
      * @param id The id of the map to generate.
      * @param name The name of the map to generate.
-     * @return The generated map of 100 by 100 tiles.
+     * @return The generated map of 50 by 50 tiles.
      */
-    public static CustomGameMapData generateRandomMap(String id, String name) {
-        return generateRandomMap(id, name, SIZE);
+    public static CustomGameMapData generateDefaultMap(String id, String name) {
+        return generateDefaultMap(id, name, SIZE);
     }
 
     /**
@@ -30,7 +29,7 @@ public class CustomGameMapLoader {
      * @param maxEdge The maximum size of the map's edge, in the amount of tiles on each edge.
      * @return The generated map of given edge size.
      */
-    public static CustomGameMapData generateRandomMap(String id, String name, int maxEdge) {
+    public static CustomGameMapData generateDefaultMap(String id, String name, int maxEdge) {
         if (maxEdge > SIZE) {
             maxEdge = SIZE;
         }
@@ -68,7 +67,7 @@ public class CustomGameMapLoader {
             CustomGameMapData data = json.fromJson(CustomGameMapData.class, file.readString());
             return data;
         } else {
-            CustomGameMapData data = generateRandomMap(id, name);
+            CustomGameMapData data = generateDefaultMap(id, name);
             saveMap(data.id, data.name, data.map);
             return data;
         }
@@ -80,7 +79,7 @@ public class CustomGameMapLoader {
         data.name = name;
         data.map = map;
 
-        //if the folder doesn't exist, u create it
+        //if the folder doesn't exist, you create it
         Gdx.files.local("maps/").file().mkdirs();
         FileHandle file = Gdx.files.local("maps/" + id + ".map");
         file.writeString(json.prettyPrint(data), false); //false cz u wanna overwrite ipv append

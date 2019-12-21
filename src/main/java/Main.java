@@ -2,6 +2,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import utils.Sizes;
 
 public class Main {
     /**
@@ -12,8 +13,9 @@ public class Main {
         Lwjgl3ApplicationConfiguration cfg = new Lwjgl3ApplicationConfiguration();
 
         cfg.setTitle("snek");
-        cfg.setWindowSizeLimits(640, 480, 1600, 1600);
-        cfg.setWindowedMode(800, 800);
+        cfg.setWindowSizeLimits(Sizes.MIN_WIDTH_WINDOW, Sizes.MIN_HEIGHT_WINDOW,
+                Sizes.MAX_WIDTH_WINDOW, Sizes.MAX_HEIGHT_WINDOW);
+        cfg.setWindowedMode(Sizes.WINDOWED_MODE_WIDTH, Sizes.WINDOWED_MODE_HEIGHT);
 
         new Lwjgl3Application(new GameMain(), cfg);
     }

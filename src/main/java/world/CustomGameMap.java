@@ -38,7 +38,7 @@ public class CustomGameMap extends GameMap {
 
         spriteBatch.begin();
 
-        for (int layer = 0; layer < getLayers(); layer++) {
+        for (int layer = 1; layer < getLayers(); layer++) {
             for (int row = 0; row < getHeight(); row++) {
                 for (int col = 0; col < getWidth(); col++) {
                     TileType type = this.getTileTypeByCoordinate(layer, col, row);
@@ -74,7 +74,16 @@ public class CustomGameMap extends GameMap {
         if (col < 0 || col >= getWidth() || row < 0 || row >= getHeight()) {
             return null;
         }
+        //check if layer isn't out of bounds
+        if (layer >= getLayers() || layer < 0) {
+            layer = getLayers() - 1;
+        }
+        //check if there's a tile on that layer
         int id = map[layer][getHeight() - row - 1][col];
+        if (id == 0) {
+            layer--;
+            id = map[layer][getHeight() - row - 1][col];
+        }
         TileType toReturn = TileType.getTileTypeById(id);
         return toReturn;
     }
