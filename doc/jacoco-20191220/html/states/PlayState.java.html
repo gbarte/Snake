@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PlayState.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">template</a> &gt; <a href="index.source.html" class="el_package">states</a> &gt; <span class="el_source">PlayState.java</span></div><h1>PlayState.java</h1><pre class="source lang-java linenums">package states;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import game.SnakeGame;
+import gamelogic.Coordinate;
+import gamelogic.Score;
+
+import objects.base.Apple;
+import snake.BodyPart;
+import snake.SnakeBody;
+
+/**
+ * In-game screen.
+ */
+public class PlayState extends State {
+    protected static final float MOVE_TIME = 0.25f;
+    // private Dialog gameOver;
+    // private Skin skin;
+<span class="pc" id="L25">    private float timer = MOVE_TIME;</span>
+    private SnakeBody snake;
+    private ShapeRenderer shapeRenderer;
+    private Apple apple;
+    private Score score;
+
+    /**
+     * Constructor which creates a new state within the game.
+     * E.g. Play/Pause/Menu.
+     *
+     * @param gameManager which keeps track of the state of the game.
+     */
+    public PlayState(GameStateManager gameManager) {
+<span class="nc" id="L38">        super(gameManager);</span>
+        // skin = new Skin(Gdx.files.internal(&quot;assets/neon/skin/neon-ui.json&quot;));
+        // setDialogScreen();
+<span class="nc" id="L41">        shapeRenderer = new ShapeRenderer();</span>
+<span class="nc" id="L42">        snake = new SnakeBody(SnakeGame.WIDTH, SnakeGame.HEIGHT);</span>
+<span class="nc" id="L43">        camera.setToOrtho(false, SnakeGame.WIDTH, SnakeGame.HEIGHT);</span>
+<span class="nc" id="L44">        apple = new Apple();</span>
+<span class="nc" id="L45">        score = new Score();</span>
+<span class="nc" id="L46">    }</span>
+
+    //    private void setDialogScreen() {
+    //        gameOver = new Dialog(&quot;Game Over&quot;, skin);
+    //    }
+
+    /**
+     * Constructor which creates a new state within the game.
+     * Method was made just to make testing easier!
+     */
+    public PlayState(GameStateManager gameManager, SnakeBody snake, ShapeRenderer renderer) {
+<span class="fc" id="L57">        super(gameManager);</span>
+<span class="fc" id="L58">        this.snake = snake;</span>
+<span class="fc" id="L59">        this.shapeRenderer = renderer;</span>
+<span class="fc" id="L60">        this.score = new Score();</span>
+<span class="fc" id="L61">        this.apple = new Apple(0, 0, 10);</span>
+<span class="fc" id="L62">    }</span>
+
+    //    public Dialog getGameOver() {
+    //        return gameOver;
+    //    }
+    //
+    //    public void setGameOver(Dialog gameOver) {
+    //        this.gameOver = gameOver;
+    //    }
+
+    //    public Skin getSkin() {
+    //        return skin;
+    //    }
+    //
+    //    public void setSkin(Skin skin) {
+    //        this.skin = skin;
+    //    }
+
+    public OrthographicCamera getCamera() {
+<span class="fc" id="L81">        return camera;</span>
+    }
+
+    public void setCamera(OrthographicCamera camera) {
+<span class="fc" id="L85">        this.camera = camera;</span>
+<span class="fc" id="L86">    }</span>
+
+    public SnakeBody getSnake() {
+<span class="fc" id="L89">        return snake;</span>
+    }
+
+    public void setSnake(SnakeBody snake) {
+<span class="fc" id="L93">        this.snake = snake;</span>
+<span class="fc" id="L94">    }</span>
+
+    public ShapeRenderer getShapeRenderer() {
+<span class="fc" id="L97">        return shapeRenderer;</span>
+    }
+
+    public void setShapeRenderer(ShapeRenderer shapeRenderer) {
+<span class="fc" id="L101">        this.shapeRenderer = shapeRenderer;</span>
+<span class="fc" id="L102">    }</span>
+
+    public float getTimer() {
+<span class="fc" id="L105">        return timer;</span>
+    }
+
+    public Score getScore() {
+<span class="nc" id="L109">        return score;</span>
+    }
+
+    public void setScore(Score score) {
+<span class="nc" id="L113">        this.score = score;</span>
+<span class="nc" id="L114">    }</span>
+
+    public void setTimer(float timer) {
+<span class="nc" id="L117">        this.timer = timer;</span>
+<span class="nc" id="L118">    }</span>
+
+    public Apple getApple() {
+<span class="fc" id="L121">        return apple;</span>
+    }
+
+    public void setApple(Apple apple) {
+<span class="fc" id="L125">        this.apple = apple;</span>
+<span class="fc" id="L126">    }</span>
+
+    @Override
+    public void handleInput() {
+<span class="fc" id="L130">        boolean upPressed = Gdx.input.isKeyPressed(Input.Keys.W);</span>
+<span class="fc bfc" id="L131" title="All 2 branches covered.">        if (upPressed) {</span>
+<span class="fc" id="L132">            updateDirection(SnakeBody.Direction.UP);</span>
+        }
+<span class="fc" id="L134">        boolean downPressed = Gdx.input.isKeyPressed(Input.Keys.S);</span>
+<span class="fc bfc" id="L135" title="All 2 branches covered.">        if (downPressed) {</span>
+<span class="fc" id="L136">            updateDirection(SnakeBody.Direction.DOWN);</span>
+        }
+<span class="fc" id="L138">        boolean leftPressed = Gdx.input.isKeyPressed(Input.Keys.A);</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">        if (leftPressed) {</span>
+<span class="fc" id="L140">            updateDirection(SnakeBody.Direction.LEFT);</span>
+        }
+<span class="fc" id="L142">        boolean rightPressed = Gdx.input.isKeyPressed(Input.Keys.D);</span>
+<span class="fc bfc" id="L143" title="All 2 branches covered.">        if (rightPressed) {</span>
+<span class="fc" id="L144">            updateDirection(SnakeBody.Direction.RIGHT);</span>
+        }
+<span class="fc" id="L146">    }</span>
+
+    @Override
+    public void update(float dt) {
+<span class="fc" id="L150">        handleInput();</span>
+<span class="fc" id="L151">        checkOutOfMap();</span>
+<span class="fc" id="L152">        checkHeadHitsBody();</span>
+<span class="fc" id="L153">        updateSnake(dt);</span>
+<span class="fc" id="L154">        checkAppleEaten();</span>
+<span class="fc" id="L155">    }</span>
+
+    /**
+     * Clears the background, renders the batch and snake.
+     * Checks what the state is and changes state and updates snake.
+     *
+     * @param batch - Renders again every delta amount of time.
+     */
+    @Override
+    public void render(SpriteBatch batch) {
+<span class="nc" id="L165">        snake.renderSnake(shapeRenderer);</span>
+<span class="nc" id="L166">        batch.begin();</span>
+<span class="nc" id="L167">        Coordinate appleCoord = apple.getCoordinate();</span>
+<span class="nc" id="L168">        batch.draw(apple.getTexture(), appleCoord.getCoordinateX(), appleCoord.getCoordinateY());</span>
+<span class="nc" id="L169">        renderScore(batch);</span>
+<span class="nc" id="L170">        batch.end();</span>
+        //Comment out next line if you don't want the grid
+<span class="nc" id="L172">        drawGrid();</span>
+<span class="nc" id="L173">    }</span>
+
+    /**
+     * Renders the current score on the screen.
+     * @param batch used for drawing elements.
+     */
+    public void renderScore(SpriteBatch batch) {
+<span class="nc" id="L180">        BitmapFont bitmapFont = new BitmapFont();</span>
+<span class="nc" id="L181">        bitmapFont.setColor(Color.RED);</span>
+<span class="nc" id="L182">        bitmapFont.draw(batch, String.valueOf(score.getValue()), 20, 20);</span>
+<span class="nc" id="L183">    }</span>
+
+    /**
+     * Moves the snake every MOVE_TIME.
+     *
+     * @param delta - time interval between each step
+     */
+    private void updateSnake(float delta) {
+<span class="fc" id="L191">        timer -= delta;</span>
+<span class="pc bpc" id="L192" title="1 of 2 branches missed.">        if (timer &lt;= 0) {</span>
+<span class="fc" id="L193">            timer = MOVE_TIME;</span>
+<span class="fc" id="L194">            snake.moveSnake(snake.getCurrDir());</span>
+        }
+<span class="fc" id="L196">    }</span>
+
+    @Override
+    public void dispose() {
+
+<span class="nc" id="L201">    }</span>
+
+    /**
+     * Updates the direction by calling updateIfNotOpposite.
+     *
+     * @param newDirection - direction in which the user wants to move the snake
+     */
+    public void updateDirection(SnakeBody.Direction newDirection) {
+<span class="fc" id="L209">        SnakeBody.Direction current = snake.getCurrDir();</span>
+<span class="fc bfc" id="L210" title="All 2 branches covered.">        if (!newDirection.equals(current)) {</span>
+<span class="pc bpc" id="L211" title="1 of 5 branches missed.">            switch (current) {</span>
+                case UP:
+<span class="fc" id="L213">                    updateIfNotOpposite(newDirection, SnakeBody.Direction.DOWN);</span>
+<span class="fc" id="L214">                    break;</span>
+                case DOWN:
+<span class="fc" id="L216">                    updateIfNotOpposite(newDirection, SnakeBody.Direction.UP);</span>
+<span class="fc" id="L217">                    break;</span>
+                case LEFT:
+<span class="fc" id="L219">                    updateIfNotOpposite(newDirection, SnakeBody.Direction.RIGHT);</span>
+<span class="fc" id="L220">                    break;</span>
+                case RIGHT:
+<span class="fc" id="L222">                    updateIfNotOpposite(newDirection, SnakeBody.Direction.LEFT);</span>
+<span class="fc" id="L223">                    break;</span>
+                default:
+                    // nothing happens
+            }
+        }
+<span class="fc" id="L228">    }</span>
+
+    /**
+     * Updates the position if newDir does not equal opposite direction,
+     * this would mean that the snakes moves to itself.
+     *
+     * @param newDir            - Direction the snake wants to move to.
+     * @param oppositeDirection - Direction snake comes from.
+     */
+    private void updateIfNotOpposite(SnakeBody.Direction newDir,
+                                     SnakeBody.Direction oppositeDirection) {
+<span class="fc bfc" id="L239" title="All 2 branches covered.">        if (!newDir.equals(oppositeDirection)) {</span>
+<span class="fc" id="L240">            snake.setCurrDir(newDir);</span>
+        }
+<span class="fc" id="L242">    }</span>
+
+    /**
+     * Checks whether the snake (head) hits the border,
+     * if it hits then the state changes to GAME_OVER.
+     */
+    public void checkOutOfMap() {
+<span class="fc bfc" id="L249" title="All 2 branches covered.">        if (snake.getHeadCoord().getCoordinateX() &gt;= SnakeGame.WIDTH) {</span>
+<span class="fc" id="L250">            gameManager.set(new GameOverState(gameManager));</span>
+        }
+<span class="fc bfc" id="L252" title="All 2 branches covered.">        if (snake.getHeadCoord().getCoordinateX() &lt; 0) {</span>
+<span class="fc" id="L253">            gameManager.set(new GameOverState(gameManager));</span>
+        }
+<span class="fc bfc" id="L255" title="All 2 branches covered.">        if (snake.getHeadCoord().getCoordinateY() &gt;= SnakeGame.HEIGHT) {</span>
+<span class="fc" id="L256">            gameManager.set(new GameOverState(gameManager));</span>
+        }
+<span class="fc bfc" id="L258" title="All 2 branches covered.">        if (snake.getHeadCoord().getCoordinateY() &lt; 0) {</span>
+<span class="fc" id="L259">            gameManager.set(new GameOverState(gameManager));</span>
+        }
+<span class="fc" id="L261">    }</span>
+
+    /**
+     * Checks whether the snake head hits the body.
+     * If it does, then the state changes to GAME_OVER.
+     */
+    public void checkHeadHitsBody() {
+<span class="fc" id="L268">        int minLength = 3;</span>
+        // head can touch tail only if snake has more than 3 bodyparts
+<span class="fc" id="L270">        int size = snake.getBodyParts().size();</span>
+<span class="fc bfc" id="L271" title="All 2 branches covered.">        if (size &gt; minLength) {</span>
+<span class="fc bfc" id="L272" title="All 2 branches covered.">            for (int i = 0; i &lt; size; i++) {</span>
+<span class="pc bpc" id="L273" title="1 of 2 branches missed.">                if (snake.getBodyParts().get(i).getCoordinate().equals(snake.getHeadCoord())) {</span>
+<span class="fc" id="L274">                    gameManager.set(new GameOverState(gameManager));</span>
+                }
+            }
+        }
+<span class="fc" id="L278">    }</span>
+
+    /**
+     * Draws the grid on the background.
+     */
+    private void drawGrid() {
+<span class="nc" id="L284">        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);</span>
+<span class="nc bnc" id="L285" title="All 2 branches missed.">        for (int x = 0; x &lt; SnakeGame.WIDTH; x += SnakeBody.CELL_SIZE) {</span>
+<span class="nc bnc" id="L286" title="All 2 branches missed.">            for (int y = 0; y &lt; SnakeGame.HEIGHT; y += SnakeBody.CELL_SIZE) {</span>
+<span class="nc" id="L287">                shapeRenderer.rect(x, y, SnakeBody.CELL_SIZE, SnakeBody.CELL_SIZE);</span>
+            }
+        }
+<span class="nc" id="L290">        shapeRenderer.end();</span>
+<span class="nc" id="L291">    }</span>
+
+    /**
+     * Checks whether an apple has been eaten or not.
+     */
+    private void checkAppleEaten() {
+<span class="pc bpc" id="L297" title="1 of 2 branches missed.">        if (snake.getHeadCoord().equals(apple.getCoordinate())) {</span>
+<span class="nc" id="L298">            score.add(apple.getScore());</span>
+<span class="nc" id="L299">            apple = new Apple();</span>
+<span class="nc" id="L300">            checkAppleOnSnake();</span>
+<span class="nc" id="L301">            snake.growSnake();</span>
+        }
+<span class="fc" id="L303">    }</span>
+
+    /**
+     * Checks whether the snakebody is over an apple or not.
+     */
+    @SuppressWarnings(&quot;PMD.DataflowAnomalyAnalysis&quot;)
+    private void checkAppleOnSnake() {
+<span class="nc bnc" id="L310" title="All 2 branches missed.">        for (BodyPart bp : snake.getBodyParts()) {</span>
+<span class="nc bnc" id="L311" title="All 2 branches missed.">            if (bp.getCoordinate().equals(apple.getCoordinate())) {</span>
+<span class="nc" id="L312">                apple = new Apple();</span>
+            }
+<span class="nc" id="L314">        }</span>
+<span class="nc" id="L315">    }</span>
+}
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

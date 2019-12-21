@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameOverState.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">template</a> &gt; <a href="index.source.html" class="el_package">states</a> &gt; <span class="el_source">GameOverState.java</span></div><h1>GameOverState.java</h1><pre class="source lang-java linenums">package states;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+public class GameOverState extends State {
+    private Texture backGround;
+    private static final String texturePath = &quot;assets/glitchy.png&quot;;
+
+    /**
+     * Constructor which creates a new state within the game.
+     * E.g. Play/Pause/Menu.
+     *
+     * @param gameManager which keeps track of the state of the game.
+     */
+    public GameOverState(GameStateManager gameManager) {
+<span class="fc" id="L17">        super(gameManager);</span>
+<span class="fc" id="L18">    }</span>
+
+    public Texture getBackGround() {
+<span class="nc" id="L21">        return backGround;</span>
+    }
+
+    public void setBackGround(Texture backGround) {
+<span class="nc" id="L25">        this.backGround = backGround;</span>
+<span class="nc" id="L26">    }</span>
+
+    @Override
+    public void handleInput() {
+
+<span class="nc" id="L31">    }</span>
+
+    @Override
+    public void update(float dt) {
+
+<span class="nc" id="L36">    }</span>
+
+    @Override
+    public void render(SpriteBatch batch) {
+<span class="nc" id="L40">        backGround = new Texture(texturePath);</span>
+<span class="nc" id="L41">        batch.begin();</span>
+<span class="nc" id="L42">        batch.draw(backGround, 0, 0, 800, 800);</span>
+<span class="nc" id="L43">        batch.end();</span>
+<span class="nc" id="L44">    }</span>
+
+    @Override
+    public void dispose() {
+<span class="nc" id="L48">        backGround.dispose();</span>
+<span class="nc" id="L49">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
