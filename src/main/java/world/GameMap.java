@@ -1,13 +1,18 @@
 package world;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import utils.TileType;
 
 public abstract class GameMap {
 
-    public abstract void render(OrthographicCamera camera);
+    public void render(OrthographicCamera camera, SpriteBatch batch) {
+        //
+    }
 
-    public abstract void update(float delta);
+    public void update(float delta) {
+        //
+    }
 
     public abstract void dispose(OrthographicCamera camera);
 

@@ -1,6 +1,7 @@
 package world;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -20,9 +21,18 @@ public class TiledGameMap extends GameMap {
     }
 
     @Override
-    public void render(OrthographicCamera camera) {
+    public void render(OrthographicCamera camera, SpriteBatch batch) {
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
+        //after rendering map up here^ u wanna render entities on the map
+        //which is what u do in the super class GameMap
+
+        //set projection matrix to this so it renders according to how the camera want to render it
+        batch.setProjectionMatrix(camera.combined);
+
+        batch.begin();
+        super.render(camera, batch);
+        batch.end();
     }
 
     @Override

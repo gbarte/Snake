@@ -2,6 +2,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import world.CustomGameMap;
 import world.GameMap;
@@ -11,11 +12,13 @@ public class GameMain extends ApplicationAdapter {
 
     GameMap gameMap;
     OrthographicCamera orthographicCamera;
+    SpriteBatch batch;
 
     @Override
     public void create() {
+        batch = new SpriteBatch();
         orthographicCamera = new OrthographicCamera();
-        //false cz u wanna draw from bottom left ipv top left
+        //false cz u wanna draw from bottom left ipv top leftx
         orthographicCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         orthographicCamera.update();
         gameMap = new CustomGameMap(); //CustomGameMap ipv TiledGameMap
@@ -32,6 +35,7 @@ public class GameMain extends ApplicationAdapter {
             orthographicCamera.update();
         } */
 
+        /*
         if (Gdx.input.justTouched()) {
             Vector3 position = orthographicCamera.unproject(
                     new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
@@ -44,8 +48,8 @@ public class GameMain extends ApplicationAdapter {
                 System.out.println("tile coordinate is x=" + (int) position.x / TileType.TILE_SIZE
                         + " & y=" + (gameMap.getHeight() - (int) position.y / TileType.TILE_SIZE));
             }
-        }
-        gameMap.render(orthographicCamera);
+        } */
+        gameMap.render(orthographicCamera, batch);
     }
 
     @Override
@@ -68,5 +72,13 @@ public class GameMain extends ApplicationAdapter {
 
     public void setOrthographicCamera(OrthographicCamera orthographicCamera) {
         this.orthographicCamera = orthographicCamera;
+    }
+
+    public SpriteBatch getBatch() {
+        return batch;
+    }
+
+    public void setBatch(SpriteBatch batch) {
+        this.batch = batch;
     }
 }
