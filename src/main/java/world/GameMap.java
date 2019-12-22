@@ -3,6 +3,7 @@ package world;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import entities.Player;
+import utils.Sizes;
 import utils.TileType;
 
 public abstract class GameMap {
@@ -16,7 +17,9 @@ public abstract class GameMap {
         //render entities here
         //batch.begin();
         Player test = new Player(this);
-        batch.draw(test.getTexture(), test.getHeadX(), test.getHeadY());
+        batch.draw(test.getTexture(),
+                test.getHeadX() * Sizes.TILE_PIXELS,
+                test.getHeadY() * Sizes.TILE_PIXELS);
         //batch.end();
     }
 
