@@ -3,10 +3,16 @@ package world;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import entities.Player;
+import snake.BodyPart;
+import snake.SnakeBody;
+import utils.Direction;
 import utils.Sizes;
 import utils.TileType;
 
+@SuppressWarnings("PMD")
 public abstract class GameMap {
+
+    SnakeBody snake;
 
     /**
      * Render entities here after subclass renders map.
@@ -20,11 +26,17 @@ public abstract class GameMap {
         batch.draw(test.getTexture(),
                 test.getHeadX() * Sizes.TILE_PIXELS,
                 test.getHeadY() * Sizes.TILE_PIXELS);
+        snake = new SnakeBody((this.getHeight() / 2), (this.getWidth() / 2));
+        for (BodyPart bodyPart : snake.getBodyParts()) {
+            batch.draw(test.getTexture(),
+                    bodyPart.getCoordinate().getCoordinateX() * Sizes.TILE_PIXELS,
+                    bodyPart.getCoordinate().getCoordinateY() * Sizes.TILE_PIXELS);
+        }
         //batch.end();
     }
 
     public void update(float delta) {
-        //
+        snake.moveSnake(SnakeBody.Direction.RIGHT);
     }
 
     public abstract void dispose(OrthographicCamera camera);
