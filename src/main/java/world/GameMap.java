@@ -1,13 +1,28 @@
 package world;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import entities.Player;
 import utils.TileType;
 
 public abstract class GameMap {
 
-    public abstract void render(OrthographicCamera camera);
+    /**
+     * Render entities here after subclass renders map.
+     * @param camera Camera on which to render.
+     * @param batch Batch to use.
+     */
+    public void render(OrthographicCamera camera, SpriteBatch batch) {
+        //render entities here
+        //batch.begin();
+        Player test = new Player(this);
+        batch.draw(test.getTexture(), test.getHeadX(), test.getHeadY());
+        //batch.end();
+    }
 
-    public abstract void update(float delta);
+    public void update(float delta) {
+        //
+    }
 
     public abstract void dispose(OrthographicCamera camera);
 
@@ -30,4 +45,12 @@ public abstract class GameMap {
     public abstract int getHeight();
 
     public abstract int getLayers();
+
+    public int getPixelWidth() {
+        return this.getWidth() * TileType.TILE_SIZE;
+    }
+
+    public int getPixelHeight() {
+        return this.getHeight() * TileType.TILE_SIZE;
+    }
 }

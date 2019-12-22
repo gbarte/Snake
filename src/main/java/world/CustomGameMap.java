@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import entities.Player;
 import utils.TileType;
 import world.customgamemap.CustomGameMapData;
 import world.customgamemap.CustomGameMapLoader;
@@ -14,7 +15,6 @@ public class CustomGameMap extends GameMap {
     String name;
     int[][][] map;
 
-    private SpriteBatch spriteBatch;
     private TextureRegion[][] tiles;
 
     /**
@@ -27,13 +27,12 @@ public class CustomGameMap extends GameMap {
         this.name = customGameMapData.name;
         this.map = customGameMapData.map;
 
-        spriteBatch = new SpriteBatch();
         Texture texture = new Texture("assets/setOfFive.png");
         tiles = TextureRegion.split(texture, TileType.TILE_SIZE, TileType.TILE_SIZE);
     }
 
     @Override
-    public void render(OrthographicCamera camera) {
+    public void render(OrthographicCamera camera, SpriteBatch spriteBatch) {
         spriteBatch.setProjectionMatrix(camera.combined);
 
         spriteBatch.begin();
@@ -49,17 +48,20 @@ public class CustomGameMap extends GameMap {
                 }
             }
         }
+        //after rendering map up here^ u wanna render entities on the map
+        //which is what u do in the super class GameMap
+        super.render(camera, spriteBatch);
         spriteBatch.end();
     }
 
     @Override
     public void update(float delta) {
-
+        super.update(delta);
     }
 
     @Override
     public void dispose(OrthographicCamera camera) {
-        spriteBatch.dispose();
+
     }
 
     @Override
@@ -125,14 +127,6 @@ public class CustomGameMap extends GameMap {
 
     public void setMap(int[][][] map) {
         this.map = map;
-    }
-
-    public SpriteBatch getSpriteBatch() {
-        return spriteBatch;
-    }
-
-    public void setSpriteBatch(SpriteBatch spriteBatch) {
-        this.spriteBatch = spriteBatch;
     }
 
     public TextureRegion[][] getTiles() {
