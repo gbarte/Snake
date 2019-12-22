@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import entities.Player;
 import utils.TileType;
 import world.customgamemap.CustomGameMapData;
 import world.customgamemap.CustomGameMapLoader;
@@ -55,7 +56,7 @@ public class CustomGameMap extends GameMap {
 
     @Override
     public void update(float delta) {
-
+        super.update(delta);
     }
 
     @Override

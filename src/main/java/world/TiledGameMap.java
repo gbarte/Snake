@@ -37,7 +37,7 @@ public class TiledGameMap extends GameMap {
 
     @Override
     public void update(float delta) {
-
+        super.update(delta);
     }
 
     @Override
