@@ -23,7 +23,7 @@ public class CustomGameMap extends GameMap {
     /**
      * Constructor for the custom game map.
      */
-    public CustomGameMap() {
+    public CustomGameMap(SnakeBody snake) {
         CustomGameMapData customGameMapData =
                 CustomGameMapLoader.loadMap("defaultID", "defaultName");
         this.id = customGameMapData.id;
@@ -32,7 +32,7 @@ public class CustomGameMap extends GameMap {
 
         Texture texture = new Texture("assets/setOfFive.png");
         tiles = TextureRegion.split(texture, TileType.TILE_SIZE, TileType.TILE_SIZE);
-        this.snake = new SnakeBody(map[0][0].length, map[0].length);
+        this.snake = snake;
     }
 
     /**

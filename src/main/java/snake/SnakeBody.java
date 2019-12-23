@@ -73,7 +73,6 @@ public class SnakeBody {
             int tailID = bodyParts.size() - 1;
             BodyPart tail = bodyParts.get(tailID);
             Coordinate tailCoord = tail.getCoordinate();
-            moveSnake(getCurrDir()); // remove
             bodyParts.add(new BodyPart(tailCoord.getCoordinateX(), tailCoord.getCoordinateY()));
         }
     }
@@ -114,6 +113,7 @@ public class SnakeBody {
 
     /**
      * This method renders the snake on the map using textures.
+     * It also rotates the head in the appropriate direction.
      * @param batch The sprite batch that got passed on.
      * @param textureRegions This contains the texture for the head and body.
      * @param map The game map.
@@ -157,6 +157,8 @@ public class SnakeBody {
                     a * Sizes.TILE_PIXELS,
                     b * Sizes.TILE_PIXELS);
         }
+//        map.update(Sizes.MOVE_TIME+1f); //remove TODO
+
 
     }
 

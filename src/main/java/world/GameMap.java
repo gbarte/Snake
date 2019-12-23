@@ -28,10 +28,10 @@ public abstract class GameMap {
     private Apple apple;
     private Score score;
     private String texturePath;
-    private LinkedList<BodyPart> all;
 
     public GameMap() {
         this.texturePath = "assets/DefaultBody.png";
+        this.snake = getSnake();
     }
 
     /**
@@ -50,40 +50,15 @@ public abstract class GameMap {
         renderScore(batch);
          */
 
+        System.out.println("render");
+        this.snake = snake;
         Texture def = new Texture(this.texturePath);
         TextureRegion[][] textureRegions =
                 TextureRegion.split(def, Sizes.TILE_PIXELS, Sizes.TILE_PIXELS);
 
         snake.renderSnake(batch, textureRegions, this);
-        all = snake.getBodyParts();
+        update(0.03f);
 
-        /*
-        SnakeBody snake2 = new SnakeBody(this.getHeight()-this.getWidth()+2,
-                this.getWidth()-this.getHeight()+2);
-        snake2.renderSnake(batch, textureRegions); */
-
-        /*
-        for (BodyPart bodyPart : snake.getBodyParts()) {
-            batch.draw(test.getTexture(),
-                    bodyPart.getCoordinate().getCoordinateX() * Sizes.TILE_PIXELS,
-                    bodyPart.getCoordinate().getCoordinateY() * Sizes.TILE_PIXELS);
-        }
-        */
-
-        /*
-        for (int i = 0; i < snake.getBodyParts().size(); i++) {
-            BodyPart curr = snake.getBodyParts().get(i);
-            if (i == 0) {
-                batch.draw(all[0][0],
-                        (curr.getCoordinate().getCoordinateX() * Sizes.TILE_PIXELS),
-                        (curr.getCoordinate().getCoordinateY() * Sizes.TILE_PIXELS) );
-            } else {
-                //this one gets drawn instead anyways
-                batch.draw(all[0][1],
-                        (curr.getCoordinate().getCoordinateX() * Sizes.TILE_PIXELS),
-                        (curr.getCoordinate().getCoordinateY() * Sizes.TILE_PIXELS) );
-            }
-        } */
     }
 
     /**
@@ -91,6 +66,7 @@ public abstract class GameMap {
      * @param delta The delta time it takes to update the snake.
      */
     public void update(float delta) {
+        System.out.println("update");
         handleInput();
         //checkOutOfMap();
         //checkHeadHitsBody();
@@ -127,6 +103,16 @@ public abstract class GameMap {
 
     public int getPixelHeight() {
         return this.getHeight() * TileType.TILE_SIZE;
+    }
+
+    public abstract SnakeBody getSnake();
+
+    public Apple getApple() {
+        return apple;
+    }
+
+    public Score getScore() {
+        return score;
     }
 
     /**
