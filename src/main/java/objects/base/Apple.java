@@ -17,7 +17,7 @@ public class Apple {
     private Coordinate coordinate;
     private int score;
     private Texture texture;
-    private static final String texturePath = "assets/greenapplesmall.png";
+    private static final String texturePath = "assets/redapple.png";
 
     /**
      * Creates an apple with a predefined texture at given coordinate in the

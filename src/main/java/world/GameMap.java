@@ -18,8 +18,6 @@ import utils.TileType;
 
 import static utils.Sizes.MOVE_TIME;
 
-import java.util.LinkedList;
-
 @SuppressWarnings("PMD")
 public abstract class GameMap {
 
@@ -29,9 +27,13 @@ public abstract class GameMap {
     private Score score;
     private String texturePath;
 
+    /**
+     * Constructor for the GameMap that sets a default snake body texture, an apple and the snake.
+     */
     public GameMap() {
         this.texturePath = "assets/DefaultBody.png";
         this.snake = getSnake();
+        this.apple = new Apple();
     }
 
     /**
@@ -50,13 +52,17 @@ public abstract class GameMap {
         renderScore(batch);
          */
 
-        System.out.println("render");
         this.snake = snake;
         Texture def = new Texture(this.texturePath);
         TextureRegion[][] textureRegions =
                 TextureRegion.split(def, Sizes.TILE_PIXELS, Sizes.TILE_PIXELS);
 
+        batch.draw(apple.getTexture(),
+                apple.getCoordinate().getCoordinateX(),
+                apple.getCoordinate().getCoordinateY());
+
         snake.renderSnake(batch, textureRegions, this);
+
         update(0.03f);
 
     }
@@ -66,12 +72,11 @@ public abstract class GameMap {
      * @param delta The delta time it takes to update the snake.
      */
     public void update(float delta) {
-        System.out.println("update");
         handleInput();
-        //checkOutOfMap();
+        checkOutOfMap();
         //checkHeadHitsBody();
         updateSnake(delta);
-        //checkAppleEaten();
+        checkAppleEaten();
 
     }
 
@@ -206,16 +211,20 @@ public abstract class GameMap {
      * if it hits then the state changes to GAME_OVER.
      */
     public void checkOutOfMap() {
-        if (snake.getHeadCoord().getCoordinateX() >= this.getWidth()) {
+        if (snake.getHeadCoord().getCoordinateX() >= this.getWidth() - 2) {
+            System.out.println("Game over!");
             //gameManager.set(new GameOverState(gameManager));
         }
-        if (snake.getHeadCoord().getCoordinateX() < 0) {
+        if (snake.getHeadCoord().getCoordinateX() < 2) {
+            System.out.println("Game over!");
             //gameManager.set(new GameOverState(gameManager));
         }
-        if (snake.getHeadCoord().getCoordinateY() >= this.getHeight()) {
+        if (snake.getHeadCoord().getCoordinateY() >= this.getHeight() - 2) {
+            System.out.println("Game over!");
             //gameManager.set(new GameOverState(gameManager));
         }
-        if (snake.getHeadCoord().getCoordinateY() < 0) {
+        if (snake.getHeadCoord().getCoordinateY() < 2) {
+            System.out.println("Game over!");
             //gameManager.set(new GameOverState(gameManager));
         }
     }

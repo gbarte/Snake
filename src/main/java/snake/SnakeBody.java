@@ -36,7 +36,7 @@ public class SnakeBody {
         this.headCoord = new Coordinate(headX / 2, headY / 2);
         this.currDir = Direction.RIGHT;
         this.bodyParts = new LinkedList<BodyPart>();
-        growSnake(INITIAL_LENGTH+2);
+        growSnake(INITIAL_LENGTH);
     }
 
     public LinkedList<BodyPart> getBodyParts() {
@@ -157,7 +157,7 @@ public class SnakeBody {
                     a * Sizes.TILE_PIXELS,
                     b * Sizes.TILE_PIXELS);
         }
-//        map.update(Sizes.MOVE_TIME+1f); //remove TODO
+        //map.update(Sizes.MOVE_TIME); //remove TODO
 
 
     }
