@@ -40,10 +40,10 @@ public class CustomGameMap extends GameMap {
      * @param id The id for the map.
      * @param name The name of the map.
      */
-    public CustomGameMap(String id, String name) {
+    public CustomGameMap(String id, String name, SnakeBody snake) {
         this.id = id;
         this.name = name;
-        this.snake = new SnakeBody(getWidth(), getHeight());
+        this.snake = snake;
         CustomGameMapData customGameMapData =
                 CustomGameMapLoader.loadMap(id, name);
         this.map = customGameMapData.map;

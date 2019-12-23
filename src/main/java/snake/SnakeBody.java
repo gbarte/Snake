@@ -36,7 +36,7 @@ public class SnakeBody {
         this.headCoord = new Coordinate(headX / 2, headY / 2);
         this.currDir = Direction.RIGHT;
         this.bodyParts = new LinkedList<BodyPart>();
-        growSnake(INITIAL_LENGTH);
+        growSnake(INITIAL_LENGTH+2);
     }
 
     public LinkedList<BodyPart> getBodyParts() {
@@ -170,20 +170,20 @@ public class SnakeBody {
     public void moveSnake(Direction snakeDirection) {
         switch (snakeDirection) {
             case RIGHT:
-                updateBodyPartsPosition(headCoord);
                 headCoord.addToX(1);
+                updateBodyPartsPosition(headCoord);
                 break;
             case LEFT:
-                updateBodyPartsPosition(headCoord);
                 headCoord.subtractFromX(1);
+                updateBodyPartsPosition(headCoord);
                 break;
             case UP:
-                updateBodyPartsPosition(headCoord);
                 headCoord.addToY(1);
+                updateBodyPartsPosition(headCoord);
                 break;
             case DOWN:
-                updateBodyPartsPosition(headCoord);
                 headCoord.subtractFromY(1);
+                updateBodyPartsPosition(headCoord);
                 break;
             default:
                 // will not execute
