@@ -24,7 +24,7 @@ public class Player extends Sprite {
         //Texture texture = new Texture("assets/pixel.png");
         //GridPoint2 pos = new GridPoint2(gameMap.getHeight() / 2, gameMap.getWidth() / 2);
         //Direction currDir = Direction.RIGHT;
-        this("assets/black-gray.png",
+        this("assets/DefaultBody.png",
                 new GridPoint2((gameMap.getHeight() / 2), (gameMap.getWidth() / 2)),
                 Direction.RIGHT,
                 gameMap);

@@ -1,24 +1,30 @@
 package snake;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import gamelogic.Coordinate;
+import utils.Direction;
 import utils.Sizes;
+import world.GameMap;
 
 import java.util.LinkedList;
 
 /**
- * Class that defines the snake's body logics.
+ * Class that defines the snake's body logic.
  */
 public class SnakeBody {
+
     public static final int CELL_SIZE = Sizes.TILE_PIXELS;
-    private static final int INITIAL_LENGTH = 2;
+    private static final int INITIAL_LENGTH = Sizes.INITIAL_LENGTH;
 
     private Coordinate headCoord;
     private LinkedList<BodyPart> bodyParts;
     private Direction currDir;
 
-    public enum Direction { LEFT, RIGHT, UP, DOWN }
+    //public enum Direction { LEFT, RIGHT, UP, DOWN }
 
     /**
      * Constructs a snake with INITIAL_LENGTH amount of bodyparts.
@@ -67,6 +73,7 @@ public class SnakeBody {
             int tailID = bodyParts.size() - 1;
             BodyPart tail = bodyParts.get(tailID);
             Coordinate tailCoord = tail.getCoordinate();
+            moveSnake(getCurrDir()); // remove
             bodyParts.add(new BodyPart(tailCoord.getCoordinateX(), tailCoord.getCoordinateY()));
         }
     }
@@ -106,6 +113,54 @@ public class SnakeBody {
     }
 
     /**
+     * This method renders the snake on the map using textures.
+     * @param batch The sprite batch that got passed on.
+     * @param textureRegions This contains the texture for the head and body.
+     * @param map The game map.
+     */
+    public void renderSnake(SpriteBatch batch, TextureRegion[][] textureRegions, GameMap map) {
+
+        float rot;
+        switch (getCurrDir()) {
+            case RIGHT:
+                rot = -90f;
+                break;
+            case LEFT:
+                rot = 90f;
+                break;
+            case DOWN:
+                rot = 180f;
+                break;
+            default:
+                rot = 0f;
+                break;
+        }
+        int x = headCoord.getCoordinateX() * Sizes.TILE_PIXELS;
+        int y = headCoord.getCoordinateY() * Sizes.TILE_PIXELS;
+        batch.draw(textureRegions[0][0],
+                x,
+                y,
+                Sizes.TILE_PIXELS / 2, Sizes.TILE_PIXELS / 2,
+                Sizes.TILE_PIXELS, Sizes.TILE_PIXELS, 1, 1,
+                rot, true);
+        //originX is amount of pixels away from origin
+        //originX takes from the MIDDLE OF the square tile away
+        //so if the first x, y take from bottom (left,right) corner of the square tile,
+        // originX will take from middle
+
+        for (int i = 1; i < getBodyParts().size(); i++) {
+            BodyPart part = getBodyParts().get(i);
+            Coordinate curr = part.getCoordinate();
+            int a = curr.getCoordinateX();
+            int b = curr.getCoordinateY();
+            batch.draw(textureRegions[0][1],
+                    a * Sizes.TILE_PIXELS,
+                    b * Sizes.TILE_PIXELS);
+        }
+
+    }
+
+    /**
      * Updates currDir to the given direction.
      *
      * @param snakeDirection - Updates currDir to this direction
@@ -114,19 +169,19 @@ public class SnakeBody {
         switch (snakeDirection) {
             case RIGHT:
                 updateBodyPartsPosition(headCoord);
-                headCoord.addToX(CELL_SIZE);
+                headCoord.addToX(1);
                 break;
             case LEFT:
                 updateBodyPartsPosition(headCoord);
-                headCoord.subtractFromX(CELL_SIZE);
+                headCoord.subtractFromX(1);
                 break;
             case UP:
                 updateBodyPartsPosition(headCoord);
-                headCoord.addToY(CELL_SIZE);
+                headCoord.addToY(1);
                 break;
             case DOWN:
                 updateBodyPartsPosition(headCoord);
-                headCoord.subtractFromY(CELL_SIZE);
+                headCoord.subtractFromY(1);
                 break;
             default:
                 // will not execute
