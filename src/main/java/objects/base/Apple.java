@@ -1,11 +1,11 @@
 package objects.base;
 
 import com.badlogic.gdx.graphics.Texture;
-import game.SnakeGame;
 import gamelogic.Coordinate;
 
 import java.util.Random;
 import snake.SnakeBody;
+import utils.Sizes;
 
 /**
  * Interactive food object of Apple.
@@ -17,7 +17,7 @@ public class Apple {
     private Coordinate coordinate;
     private int score;
     private Texture texture;
-    private static final String texturePath = "assets/greenapplesmall.png";
+    private static final String texturePath = "assets/redapple.png";
 
     /**
      * Creates an apple with a predefined texture at given coordinate in the
@@ -39,8 +39,8 @@ public class Apple {
         Random r = new Random();
         int minX = 0;
         int minY = 0;
-        int maxX = SnakeGame.WIDTH / SnakeBody.CELL_SIZE;
-        int maxY = SnakeGame.HEIGHT / SnakeBody.CELL_SIZE;
+        int maxX = Sizes.DEFAULT_MINIMUM_MAP_TILES;
+        int maxY = Sizes.DEFAULT_MINIMUM_MAP_TILES;
 
         int x = r.nextInt(maxX - minX) + minX;
         int y = r.nextInt(maxY - minY) + minY;

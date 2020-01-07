@@ -4,11 +4,13 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import entities.Player;
+import snake.SnakeBody;
+import utils.Sizes;
 import utils.TileType;
 import world.customgamemap.CustomGameMapData;
 import world.customgamemap.CustomGameMapLoader;
 
+@SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
 public class CustomGameMap extends GameMap {
 
     String id;
@@ -16,11 +18,12 @@ public class CustomGameMap extends GameMap {
     int[][][] map;
 
     private TextureRegion[][] tiles;
+    private SnakeBody snake;
 
     /**
      * Constructor for the custom game map.
      */
-    public CustomGameMap() {
+    public CustomGameMap(SnakeBody snake) {
         CustomGameMapData customGameMapData =
                 CustomGameMapLoader.loadMap("defaultID", "defaultName");
         this.id = customGameMapData.id;
@@ -29,10 +32,27 @@ public class CustomGameMap extends GameMap {
 
         Texture texture = new Texture("assets/setOfFive.png");
         tiles = TextureRegion.split(texture, TileType.TILE_SIZE, TileType.TILE_SIZE);
+        this.snake = snake;
+    }
+
+    /**
+     * Constructor for the custom game map which takes in the id and name of the map.
+     * @param id The id for the map.
+     * @param name The name of the map.
+     */
+    public CustomGameMap(String id, String name, SnakeBody snake) {
+        this.id = id;
+        this.name = name;
+        this.snake = snake;
+        CustomGameMapData customGameMapData =
+                CustomGameMapLoader.loadMap(id, name);
+        this.map = customGameMapData.map;
+        Texture texture = new Texture("assets/setOfFive.png");
+        tiles = TextureRegion.split(texture, TileType.TILE_SIZE, TileType.TILE_SIZE);
     }
 
     @Override
-    public void render(OrthographicCamera camera, SpriteBatch spriteBatch) {
+    public void render(OrthographicCamera camera, SpriteBatch spriteBatch, SnakeBody snake) {
         spriteBatch.setProjectionMatrix(camera.combined);
 
         spriteBatch.begin();
@@ -50,7 +70,7 @@ public class CustomGameMap extends GameMap {
         }
         //after rendering map up here^ u wanna render entities on the map
         //which is what u do in the super class GameMap
-        super.render(camera, spriteBatch);
+        super.render(camera, spriteBatch, this.snake);
         spriteBatch.end();
     }
 
@@ -135,5 +155,13 @@ public class CustomGameMap extends GameMap {
 
     public void setTiles(TextureRegion[][] tiles) {
         this.tiles = tiles;
+    }
+
+    public SnakeBody getSnake() {
+        return snake;
+    }
+
+    public void setSnake(SnakeBody snake) {
+        this.snake = snake;
     }
 }

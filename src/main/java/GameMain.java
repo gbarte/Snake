@@ -3,6 +3,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import snake.SnakeBody;
+import utils.Sizes;
 import world.CustomGameMap;
 import world.GameMap;
 
@@ -11,6 +13,7 @@ public class GameMain extends ApplicationAdapter {
     GameMap gameMap;
     OrthographicCamera orthographicCamera;
     SpriteBatch batch;
+    SnakeBody snakeBody;
 
     @Override
     public void create() {
@@ -19,7 +22,9 @@ public class GameMain extends ApplicationAdapter {
         //false cz u wanna draw from bottom left ipv top leftx
         orthographicCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         orthographicCamera.update();
-        gameMap = new CustomGameMap(); //CustomGameMap ipv TiledGameMap
+        this.snakeBody =
+                new SnakeBody(Sizes.DEFAULT_MINIMUM_MAP_TILES, Sizes.DEFAULT_MINIMUM_MAP_TILES);
+        gameMap = new CustomGameMap(snakeBody); //CustomGameMap ipv TiledGameMap
     }
 
     @Override
@@ -47,7 +52,7 @@ public class GameMain extends ApplicationAdapter {
                         + " & y=" + (gameMap.getHeight() - (int) position.y / TileType.TILE_SIZE));
             }
         } */
-        gameMap.render(orthographicCamera, batch);
+        gameMap.render(orthographicCamera, batch, snakeBody);
     }
 
     @Override
@@ -78,5 +83,13 @@ public class GameMain extends ApplicationAdapter {
 
     public void setBatch(SpriteBatch batch) {
         this.batch = batch;
+    }
+
+    public SnakeBody getSnakeBody() {
+        return snakeBody;
+    }
+
+    public void setSnakeBody(SnakeBody snakeBody) {
+        this.snakeBody = snakeBody;
     }
 }

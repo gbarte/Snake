@@ -8,20 +8,41 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import snake.SnakeBody;
 import utils.TileType;
 
 public class TiledGameMap extends GameMap {
 
     TiledMap tiledMap;
     OrthogonalTiledMapRenderer tiledMapRenderer;
+    String fileName;
 
+    SnakeBody snake;
+
+    /**
+     * Default constructor that will use a pre-defined map.
+     */
     public TiledGameMap() {
-        tiledMap = new TmxMapLoader().load("assets/def3.tmx");
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+        this("assets/def3.tmx");
+        //tiledMap = new TmxMapLoader().load("assets/def3.tmx");
+        //tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+        //snake = new SnakeBody(getWidth(), getHeight());
+    }
+
+    /**
+     * Constructor that takes in a file name for the map.
+     * @param fileName The file's name in string format.
+     */
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
+    public TiledGameMap(String fileName) {
+        this.fileName = fileName;
+        this.tiledMap = new TmxMapLoader().load(fileName);
+        this.tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+        this.snake = new SnakeBody(getWidth(), getHeight());
     }
 
     @Override
-    public void render(OrthographicCamera camera, SpriteBatch batch) {
+    public void render(OrthographicCamera camera, SpriteBatch batch, SnakeBody snake) {
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
         //after rendering map up here^ u wanna render entities on the map
@@ -31,7 +52,7 @@ public class TiledGameMap extends GameMap {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-        super.render(camera, batch);
+        super.render(camera, batch, this.snake);
         batch.end();
     }
 
@@ -89,5 +110,21 @@ public class TiledGameMap extends GameMap {
 
     public void setTiledMapRenderer(OrthogonalTiledMapRenderer tiledMapRenderer) {
         this.tiledMapRenderer = tiledMapRenderer;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public SnakeBody getSnake() {
+        return snake;
+    }
+
+    public void setSnake(SnakeBody snake) {
+        this.snake = snake;
     }
 }
