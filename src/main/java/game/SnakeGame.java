@@ -8,15 +8,16 @@ import states.GameStateManager;
 import states.LeaderboardState;
 import states.LoginState;
 import states.PlayState;
+import utils.Sizes;
 
 /**
  * The initialization game class.
  */
 public class SnakeGame extends ApplicationAdapter {
-    public static final int WIDTH = 800;
-    public static final int HEIGHT = 800;
+    public static final int WIDTH = Sizes.MIN_WIDTH_WINDOW;
+    public static final int HEIGHT = Sizes.MIN_WIDTH_WINDOW;
 
-    public static final String TITLE = "Snake TBD";
+    public static final String TITLE = "Lil' Snake";
 
     private GameStateManager gameManager;
     private SpriteBatch batch;

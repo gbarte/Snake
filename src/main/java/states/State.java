@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector3;
  * Abstract class state.
  */
 public abstract class State {
+
     protected OrthographicCamera camera;
     protected GameStateManager gameManager;
 
@@ -18,7 +19,7 @@ public abstract class State {
      */
     public State(GameStateManager gameManager) {
         this.gameManager = gameManager;
-        camera = new OrthographicCamera();
+        this.camera = new OrthographicCamera();
     }
 
     public abstract void handleInput();

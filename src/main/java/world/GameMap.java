@@ -63,8 +63,6 @@ public abstract class GameMap {
 
         snake.renderSnake(batch, textureRegions, this);
 
-        update(Gdx.graphics.getDeltaTime());
-
     }
 
     /**

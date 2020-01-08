@@ -140,7 +140,7 @@ public class MenuState extends State {
             @Override
             public void touchUp(InputEvent event, float x, float y,
                                 int pointer, int button) {
-                gameManager.set(new PlayState(gameManager));
+                gameManager.set(new PlayStateTwo(gameManager));
             }
 
             @Override

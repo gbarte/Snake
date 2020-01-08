@@ -13,7 +13,8 @@ import snake.BodyPart;
 import snake.SnakeBody;
 import utils.Direction;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
 class SnakeBodyTest {
     private transient SnakeBody snakeBody;
@@ -160,7 +161,8 @@ class SnakeBodyTest {
                 bodyParts.get(0).getCoordinate().getCoordinateY() - 1);
     } */
 
-    @SuppressWarnings("PMD.DataflowAnomalyAnalysis") //supress this because redefining a variable is necessary
+    //suppress this because redefining a variable is necessary
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     @ParameterizedTest
     @CsvSource({
             "r, 1, 0",
@@ -169,16 +171,20 @@ class SnakeBodyTest {
             "d, 0, -1"
     }) //DONT ANNOTATE WITH @Test
     void update3BodyPartsPositionTest(char dir, int dx, int dy) {
-        LinkedList<BodyPart> linkedList = new LinkedList<>();
 
-        int x = 26, y = 25;
+        int x = 26;
+        int y = 25;
         BodyPart zeroHead = new BodyPart(x, y);
-        x-=dx; y-=dy;
+        x -= dx;
+        y -= dy;
         BodyPart one = new BodyPart(x, y);
         System.out.println("one " + one.getCoordinate().toString());
-        x-=dx; y-=dy;
+        x -= dx;
+        y -= dy;
         BodyPart two = new BodyPart(x, y);
         System.out.println("last " + two.getCoordinate().toString());
+
+        LinkedList<BodyPart> linkedList = new LinkedList<>();
         linkedList.add(zeroHead);
         linkedList.add(one);
         linkedList.add(two);

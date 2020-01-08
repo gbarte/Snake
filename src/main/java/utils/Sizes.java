@@ -15,5 +15,7 @@ public class Sizes {
     public static final int WINDOWED_MODE_HEIGHT = DEFAULT_MINIMUM_MAP_TILES * TILE_PIXELS;
     public static final int INITIAL_LENGTH = 2;
     public static final float MOVE_TIME = 0.25f;
+    public static final int DEFAULT_SCORE = 10;
+    public static final int DEFAULT_AMOUNT_BORDER_TILES = 2;
 
 }

@@ -12,7 +12,7 @@ import utils.Sizes;
  */
 public class Apple {
 
-    private static int DEFAULT_SCORE = 10;
+    private static int DEFAULT_SCORE = Sizes.DEFAULT_SCORE;
 
     private Coordinate coordinate;
     private int score;
@@ -47,7 +47,7 @@ public class Apple {
 
         Coordinate coord = new Coordinate(x * SnakeBody.CELL_SIZE, y * SnakeBody.CELL_SIZE);
         this.coordinate = coord;
-        this.score = 10;
+        this.score = DEFAULT_SCORE;
         this.texture = new Texture(texturePath);
     }
 
