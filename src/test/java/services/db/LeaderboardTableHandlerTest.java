@@ -1,5 +1,6 @@
 package services.db;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,11 +47,13 @@ public class LeaderboardTableHandlerTest {
         DatabaseHandler databaseHandler = new DatabaseHandler();
         databaseHandler.connect(true);
 
-        Assertions.assertFalse(databaseHandler.getConnection().getMetaData().getTables(null, null, LeaderboardTableHandler.TABLE_NAME, null).next());
+        Assertions.assertFalse(databaseHandler.getConnection().getMetaData().
+                getTables(null, null, LeaderboardTableHandler.TABLE_NAME, null).next());
 
         tableHandler = new LeaderboardTableHandler(true);
 
-        Assertions.assertTrue(databaseHandler.getConnection().getMetaData().getTables(null, null, LeaderboardTableHandler.TABLE_NAME, null).next());
+        Assertions.assertTrue(databaseHandler.getConnection().getMetaData().
+                getTables(null, null, LeaderboardTableHandler.TABLE_NAME, null).next());
         dropCustomTable();
 
     }

@@ -5,10 +5,13 @@ import java.util.LinkedList;
 import gamelogic.Coordinate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mockito;
 
 import snake.BodyPart;
 import snake.SnakeBody;
+import utils.Direction;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -47,13 +50,13 @@ class SnakeBodyTest {
 
     @Test
     void getCurrDirTest() {
-        assertEquals(SnakeBody.Direction.RIGHT, snakeBody.getCurrDir());
+        assertEquals(Direction.RIGHT, snakeBody.getCurrDir());
     }
 
     @Test
     void setCurrDirTest() {
-        snakeBody.setCurrDir(SnakeBody.Direction.DOWN);
-        assertEquals(snakeBody.getCurrDir(), SnakeBody.Direction.DOWN);
+        snakeBody.setCurrDir(Direction.DOWN);
+        assertEquals(snakeBody.getCurrDir(), Direction.DOWN);
     }
 
     @Test
@@ -116,42 +119,109 @@ class SnakeBodyTest {
 
     @Test
     void moveSnakeTestRight() {
-        assertEquals(SnakeBody.Direction.RIGHT, snakeBody.getCurrDir());
-        snakeBody.moveSnake(SnakeBody.Direction.RIGHT);
-        assertEquals(snakeBody.getHeadCoord().getCoordinateX(), 450);
+        assertEquals(Direction.RIGHT, snakeBody.getCurrDir());
+        snakeBody.moveSnake(Direction.RIGHT);
+        assertEquals(snakeBody.getHeadCoord().getCoordinateX(), 401);
         assertEquals(snakeBody.getHeadCoord().getCoordinateY(), 400);
     }
 
     @Test
     void moveSnakeTestLeft() {
-        assertEquals(SnakeBody.Direction.RIGHT, snakeBody.getCurrDir());
-        snakeBody.moveSnake(SnakeBody.Direction.LEFT);
-        assertEquals(snakeBody.getHeadCoord().getCoordinateX(), 350);
+        assertEquals(Direction.RIGHT, snakeBody.getCurrDir());
+        snakeBody.moveSnake(Direction.LEFT);
+        assertEquals(snakeBody.getHeadCoord().getCoordinateX(), 399);
         assertEquals(snakeBody.getHeadCoord().getCoordinateY(), 400);
     }
 
     @Test
     void moveSnakeTestDown() {
-        assertEquals(SnakeBody.Direction.RIGHT, snakeBody.getCurrDir());
-        snakeBody.moveSnake(SnakeBody.Direction.DOWN);
+        assertEquals(Direction.RIGHT, snakeBody.getCurrDir());
+        snakeBody.moveSnake(Direction.DOWN);
         assertEquals(snakeBody.getHeadCoord().getCoordinateX(), 400);
-        assertEquals(snakeBody.getHeadCoord().getCoordinateY(), 350);
+        assertEquals(snakeBody.getHeadCoord().getCoordinateY(), 399);
     }
 
-    @Test
+    /*@Test
     void updateBodyPartsPositionTest() {
         LinkedList<BodyPart> ll = new LinkedList<>();
-        ll.add(new BodyPart(350, 400));
-        ll.add(new BodyPart(300, 400));
+        //ll.add(new BodyPart(400, 400));
+        //ll.add(new BodyPart(399, 400));
+        ll.add(new BodyPart(26, 25));
+        ll.add(new BodyPart(25, 25));
 
         snakeBody.setBodyParts(ll);
-        snakeBody.moveSnake(SnakeBody.Direction.UP);
+        snakeBody.moveSnake(Direction.UP);
         snakeBody.updateBodyPartsPosition(snakeBody.getHeadCoord());
+        //no need to update again since its already done in moveSnake?
 
         LinkedList<BodyPart> bodyParts = snakeBody.getBodyParts();
 
         assertEquals(bodyParts.get(1).getCoordinate().getCoordinateY(),
-                bodyParts.get(0).getCoordinate().getCoordinateY() - SnakeBody.CELL_SIZE);
+                bodyParts.get(0).getCoordinate().getCoordinateY() - 1);
+    } */
+
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis") //supress this because redefining a variable is necessary
+    @ParameterizedTest
+    @CsvSource({
+            "r, 1, 0",
+            "l, -1, 0",
+            "u, 0, 1",
+            "d, 0, -1"
+    }) //DONT ANNOTATE WITH @Test
+    void update3BodyPartsPositionTest(char dir, int dx, int dy) {
+        LinkedList<BodyPart> linkedList = new LinkedList<>();
+
+        int x = 26, y = 25;
+        BodyPart zeroHead = new BodyPart(x, y);
+        x-=dx; y-=dy;
+        BodyPart one = new BodyPart(x, y);
+        System.out.println("one " + one.getCoordinate().toString());
+        x-=dx; y-=dy;
+        BodyPart two = new BodyPart(x, y);
+        System.out.println("last " + two.getCoordinate().toString());
+        linkedList.add(zeroHead);
+        linkedList.add(one);
+        linkedList.add(two);
+
+        snakeBody.setBodyParts(linkedList);
+        //snakeBody.moveSnake(Direction.UP);
+        Direction temp = Direction.RIGHT;
+        switch (dir) {
+            case 'r':
+                temp = Direction.RIGHT;
+                break;
+            case 'l':
+                temp = Direction.LEFT;
+                break;
+            case 'u':
+                temp = Direction.UP;
+                break;
+            case 'd':
+                temp = Direction.DOWN;
+                break;
+            default:
+                //do nothing
+        }
+
+        snakeBody.setCurrDir(temp);
+        snakeBody.updateBodyPartsPosition(snakeBody.getHeadCoord());
+
+        LinkedList<BodyPart> allBP = snakeBody.getBodyParts();
+
+        /*assertEquals(allBP.get(0).getCoordinate(), new Coordinate(26, 26));
+        assertEquals(allBP.get(1).getCoordinate(), snakeBody.getHeadCoord());
+        assertEquals(allBP.get(2).getCoordinate(), two);*/
+
+
+        /*System.out.println("\nindex 0=" + allBP.get(0).getCoordinate().toString());
+        System.out.println("index 1=" + allBP.get(1).getCoordinate().toString());
+        System.out.println("index 2=" + allBP.get(2).getCoordinate().toString());
+        System.out.println("afterHead is " + one.getCoordinate());*/
+
+        assertEquals(allBP.get(1).getCoordinate(), allBP.get(0).getCoordinate());
+        assertEquals(new Coordinate(allBP.get(1).getCoordinate().getCoordinateX() - dx,
+                        allBP.get(1).getCoordinate().getCoordinateY() - dy),
+                allBP.get(2).getCoordinate());
     }
 
     @Test

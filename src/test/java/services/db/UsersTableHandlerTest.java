@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.sql.SQLException;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,11 +46,13 @@ public class UsersTableHandlerTest {
         DatabaseHandler databaseHandler = new DatabaseHandler();
         databaseHandler.connect(true);
 
-        Assertions.assertFalse(databaseHandler.getConnection().getMetaData().getTables(null, null, UsersTableHandler.TABLE_NAME, null).next());
+        Assertions.assertFalse(databaseHandler.getConnection().getMetaData().
+                getTables(null, null, UsersTableHandler.TABLE_NAME, null).next());
 
         tableHandler = new UsersTableHandler(true);
 
-        Assertions.assertTrue(databaseHandler.getConnection().getMetaData().getTables(null, null, UsersTableHandler.TABLE_NAME, null).next());
+        Assertions.assertTrue(databaseHandler.getConnection().getMetaData().
+                getTables(null, null, UsersTableHandler.TABLE_NAME, null).next());
         dropCustomTable();
 
     }

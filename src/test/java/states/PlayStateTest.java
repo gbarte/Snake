@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import snake.SnakeBody;
+import utils.Direction;
 
 
 class PlayStateTest {
@@ -90,52 +91,52 @@ class PlayStateTest {
 
     @Test
     void updateDirectionTestLeft() {
-        play.updateDirection(SnakeBody.Direction.LEFT);
+        play.updateDirection(Direction.LEFT);
 
         //Default direction is Right so nothing happens when you go left
-        assertEquals(SnakeBody.Direction.RIGHT, snake.getCurrDir());
+        assertEquals(Direction.RIGHT, snake.getCurrDir());
     }
 
     @Test
     void updateDirectionTestRight() {
-        play.updateDirection(SnakeBody.Direction.RIGHT);
+        play.updateDirection(Direction.RIGHT);
 
-        assertEquals(snake.getCurrDir(), SnakeBody.Direction.RIGHT);
+        assertEquals(snake.getCurrDir(), Direction.RIGHT);
     }
 
     @Test
     void updateDirectionTestUp() {
-        play.updateDirection(SnakeBody.Direction.UP);
+        play.updateDirection(Direction.UP);
 
-        assertEquals(snake.getCurrDir(), SnakeBody.Direction.UP);
+        assertEquals(snake.getCurrDir(), Direction.UP);
     }
 
     @Test
     void updateIfNotOppositeTest1() {
-        snake.setCurrDir(SnakeBody.Direction.LEFT);
-        play.updateDirection(SnakeBody.Direction.RIGHT);
-        assertEquals(SnakeBody.Direction.LEFT, snake.getCurrDir());
+        snake.setCurrDir(Direction.LEFT);
+        play.updateDirection(Direction.RIGHT);
+        assertEquals(Direction.LEFT, snake.getCurrDir());
     }
 
     @Test
     void updateIfNotOppositeTest2() {
-        snake.setCurrDir(SnakeBody.Direction.RIGHT);
-        play.updateDirection(SnakeBody.Direction.LEFT);
-        assertEquals(SnakeBody.Direction.RIGHT, snake.getCurrDir());
+        snake.setCurrDir(Direction.RIGHT);
+        play.updateDirection(Direction.LEFT);
+        assertEquals(Direction.RIGHT, snake.getCurrDir());
     }
 
     @Test
     void updateIfNotOppositeTest3() {
-        snake.setCurrDir(SnakeBody.Direction.UP);
-        play.updateDirection(SnakeBody.Direction.DOWN);
-        assertEquals(SnakeBody.Direction.UP, snake.getCurrDir());
+        snake.setCurrDir(Direction.UP);
+        play.updateDirection(Direction.DOWN);
+        assertEquals(Direction.UP, snake.getCurrDir());
     }
 
     @Test
     void updateIfNotOppositeTest4() {
-        snake.setCurrDir(SnakeBody.Direction.DOWN);
-        play.updateDirection(SnakeBody.Direction.UP);
-        assertEquals(SnakeBody.Direction.DOWN, snake.getCurrDir());
+        snake.setCurrDir(Direction.DOWN);
+        play.updateDirection(Direction.UP);
+        assertEquals(Direction.DOWN, snake.getCurrDir());
     }
 
     @Test
@@ -195,9 +196,9 @@ class PlayStateTest {
 
     @Test
     void updateDirectionTestDown() {
-        play.updateDirection(SnakeBody.Direction.DOWN);
+        play.updateDirection(Direction.DOWN);
 
-        assertEquals(snake.getCurrDir(), SnakeBody.Direction.DOWN);
+        assertEquals(snake.getCurrDir(), Direction.DOWN);
     }
 
     @Test
@@ -208,9 +209,9 @@ class PlayStateTest {
 
     @Test
     void updateIfNotOppositeTest() {
-        play.updateDirection(SnakeBody.Direction.LEFT);
-        play.updateDirection(SnakeBody.Direction.DOWN);
-        assertEquals(snake.getCurrDir(), SnakeBody.Direction.DOWN);
+        play.updateDirection(Direction.LEFT);
+        play.updateDirection(Direction.DOWN);
+        assertEquals(snake.getCurrDir(), Direction.DOWN);
     }
 
     @Test
@@ -224,7 +225,7 @@ class PlayStateTest {
         play.handleInput();
 
         //Default direction is Right so nothing happens when you go left
-        assertEquals(SnakeBody.Direction.RIGHT, play.getSnake().getCurrDir());
+        assertEquals(Direction.RIGHT, play.getSnake().getCurrDir());
     }
 
     @Test
@@ -237,7 +238,7 @@ class PlayStateTest {
 
         play.handleInput();
 
-        assertEquals(SnakeBody.Direction.RIGHT, play.getSnake().getCurrDir());
+        assertEquals(Direction.RIGHT, play.getSnake().getCurrDir());
     }
 
     @Test
@@ -249,7 +250,7 @@ class PlayStateTest {
         Mockito.when(Gdx.input.isKeyPressed(Input.Keys.D)).thenReturn(false);
 
         play.handleInput();
-        assertEquals(SnakeBody.Direction.UP, play.getSnake().getCurrDir());
+        assertEquals(Direction.UP, play.getSnake().getCurrDir());
     }
 
     @Test
@@ -262,7 +263,7 @@ class PlayStateTest {
 
         play.handleInput();
 
-        assertEquals(SnakeBody.Direction.DOWN, play.getSnake().getCurrDir());
+        assertEquals(Direction.DOWN, play.getSnake().getCurrDir());
     }
 
     //Flaky test bellow!

@@ -14,6 +14,9 @@ import gamelogic.Score;
 import objects.base.Apple;
 import snake.BodyPart;
 import snake.SnakeBody;
+import utils.Direction;
+
+import static snake.SnakeBody.CELL_SIZE;
 
 /**
  * In-game screen.
@@ -21,7 +24,7 @@ import snake.SnakeBody;
 public class PlayState extends State {
     protected static final float MOVE_TIME = 0.25f;
     // private Dialog gameOver;
-    // private Skin skin;
+    // private Skin skin;               //change import of cell size TODO
     private float timer = MOVE_TIME;
     private SnakeBody snake;
     private ShapeRenderer shapeRenderer;
@@ -129,19 +132,19 @@ public class PlayState extends State {
     public void handleInput() {
         boolean upPressed = Gdx.input.isKeyPressed(Input.Keys.W);
         if (upPressed) {
-            updateDirection(SnakeBody.Direction.UP);
+            updateDirection(Direction.UP);
         }
         boolean downPressed = Gdx.input.isKeyPressed(Input.Keys.S);
         if (downPressed) {
-            updateDirection(SnakeBody.Direction.DOWN);
+            updateDirection(Direction.DOWN);
         }
         boolean leftPressed = Gdx.input.isKeyPressed(Input.Keys.A);
         if (leftPressed) {
-            updateDirection(SnakeBody.Direction.LEFT);
+            updateDirection(Direction.LEFT);
         }
         boolean rightPressed = Gdx.input.isKeyPressed(Input.Keys.D);
         if (rightPressed) {
-            updateDirection(SnakeBody.Direction.RIGHT);
+            updateDirection(Direction.RIGHT);
         }
     }
 
@@ -205,21 +208,21 @@ public class PlayState extends State {
      *
      * @param newDirection - direction in which the user wants to move the snake
      */
-    public void updateDirection(SnakeBody.Direction newDirection) {
-        SnakeBody.Direction current = snake.getCurrDir();
+    public void updateDirection(Direction newDirection) {
+        Direction current = snake.getCurrDir();
         if (!newDirection.equals(current)) {
             switch (current) {
                 case UP:
-                    updateIfNotOpposite(newDirection, SnakeBody.Direction.DOWN);
+                    updateIfNotOpposite(newDirection, Direction.DOWN);
                     break;
                 case DOWN:
-                    updateIfNotOpposite(newDirection, SnakeBody.Direction.UP);
+                    updateIfNotOpposite(newDirection, Direction.UP);
                     break;
                 case LEFT:
-                    updateIfNotOpposite(newDirection, SnakeBody.Direction.RIGHT);
+                    updateIfNotOpposite(newDirection, Direction.RIGHT);
                     break;
                 case RIGHT:
-                    updateIfNotOpposite(newDirection, SnakeBody.Direction.LEFT);
+                    updateIfNotOpposite(newDirection, Direction.LEFT);
                     break;
                 default:
                     // nothing happens
@@ -234,8 +237,8 @@ public class PlayState extends State {
      * @param newDir            - Direction the snake wants to move to.
      * @param oppositeDirection - Direction snake comes from.
      */
-    private void updateIfNotOpposite(SnakeBody.Direction newDir,
-                                     SnakeBody.Direction oppositeDirection) {
+    private void updateIfNotOpposite(Direction newDir,
+                                     Direction oppositeDirection) {
         if (!newDir.equals(oppositeDirection)) {
             snake.setCurrDir(newDir);
         }
@@ -282,9 +285,9 @@ public class PlayState extends State {
      */
     private void drawGrid() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        for (int x = 0; x < SnakeGame.WIDTH; x += SnakeBody.CELL_SIZE) {
-            for (int y = 0; y < SnakeGame.HEIGHT; y += SnakeBody.CELL_SIZE) {
-                shapeRenderer.rect(x, y, SnakeBody.CELL_SIZE, SnakeBody.CELL_SIZE);
+        for (int x = 0; x < SnakeGame.WIDTH; x += CELL_SIZE) {
+            for (int y = 0; y < SnakeGame.HEIGHT; y += CELL_SIZE) {
+                shapeRenderer.rect(x, y, CELL_SIZE, CELL_SIZE);
             }
         }
         shapeRenderer.end();

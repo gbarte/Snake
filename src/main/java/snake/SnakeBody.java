@@ -45,6 +45,7 @@ public class SnakeBody {
 
     public void setBodyParts(LinkedList<BodyPart> bodyParts) {
         this.bodyParts = bodyParts;
+        setHeadCoord(bodyParts.get(0).getCoordinate());
     }
 
     public Direction getCurrDir() {
