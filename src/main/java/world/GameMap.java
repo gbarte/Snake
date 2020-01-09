@@ -25,6 +25,7 @@ import static utils.Sizes.MOVE_TIME;
 public abstract class GameMap {
 
     private float timer = MOVE_TIME;
+    private GameMap gameMap;
     GameStateManager manager;
     private SnakeBody snake;
     private Apple apple;
@@ -35,6 +36,7 @@ public abstract class GameMap {
      * Constructor for the GameMap that sets a default snake body texture, an apple and the snake.
      */
     public GameMap() {
+        this.gameMap = getGameMap();
         this.manager = getManager();
         this.snake = getSnake();
         this.apple = new Apple();
@@ -120,6 +122,8 @@ public abstract class GameMap {
 
     public abstract GameStateManager getManager();
 
+    public abstract GameMap getGameMap();
+
     public Apple getApple() {
         return apple;
     }
@@ -158,7 +162,7 @@ public abstract class GameMap {
         BitmapFont bitmapFont = new BitmapFont();
         bitmapFont.setColor(Color.RED);
         bitmapFont.draw(batch, String.valueOf(score.getValue()),
-                Sizes.DEFAULT_AMOUNT_BORDER_TILES * Sizes.TILE_PIXELS,
+                Sizes.DEFAULT_MINIMUM_MAP_TILES * Sizes.TILE_PIXELS,
                 Sizes.DEFAULT_AMOUNT_BORDER_TILES * Sizes.TILE_PIXELS);
     }
 
@@ -228,22 +232,6 @@ public abstract class GameMap {
             System.out.println("collides at " + currentTile.getName() + "->" + currentHead.toString());
             System.out.println("snake head " + currentHead.toString());
         }
-//        if (getSnake().getHeadCoord().getCoordinateX() >= this.getWidth() - 2) {
-//            System.out.println("Game over! at " + getSnake().getHeadCoord().toString());
-//            getManager().set(new GameOverState(getManager()));
-//        }
-//        if (getSnake().getHeadCoord().getCoordinateX() < 2) {
-//            System.out.println("Game over! at " + getSnake().getHeadCoord().toString());
-//            getManager().set(new GameOverState(getManager()));
-//        }
-//        if (getSnake().getHeadCoord().getCoordinateY() >= this.getHeight() - 2) {
-//            System.out.println("Game over! at " + getSnake().getHeadCoord().toString());
-//            getManager().set(new GameOverState(getManager()));
-//        }
-//        if (getSnake().getHeadCoord().getCoordinateY() < 2) {
-//            System.out.println("Game over! at " + getSnake().getHeadCoord().toString());
-//            getManager().set(new GameOverState(getManager()));
-//        }
     }
 
     /**

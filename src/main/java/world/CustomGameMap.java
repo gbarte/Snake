@@ -173,6 +173,11 @@ public class CustomGameMap extends GameMap {
         return manager;
     }
 
+    @Override
+    public GameMap getGameMap() {
+        return this;
+    }
+
     public void setManager(GameStateManager manager) {
         this.manager = manager;
     }
