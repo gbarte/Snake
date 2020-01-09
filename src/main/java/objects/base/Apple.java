@@ -2,9 +2,6 @@ package objects.base;
 
 import com.badlogic.gdx.graphics.Texture;
 import gamelogic.Coordinate;
-
-import java.util.Random;
-import snake.SnakeBody;
 import utils.Sizes;
 
 /**
@@ -36,16 +33,15 @@ public class Apple {
      * texture space (Coordinate is multiplied with cell size!).
      */
     public Apple() {
-        Random r = new Random();
-        int minX = 0;
-        int minY = 0;
-        int maxX = Sizes.DEFAULT_MINIMUM_MAP_TILES;
-        int maxY = Sizes.DEFAULT_MINIMUM_MAP_TILES;
+        int minX = Sizes.DEFAULT_AMOUNT_BORDER_TILES;
+        int minY = Sizes.DEFAULT_AMOUNT_BORDER_TILES;
+        int maxX = Sizes.DEFAULT_MINIMUM_MAP_TILES - Sizes.DEFAULT_AMOUNT_BORDER_TILES;
+        int maxY = Sizes.DEFAULT_MINIMUM_MAP_TILES - Sizes.DEFAULT_AMOUNT_BORDER_TILES;
 
-        int x = r.nextInt(maxX - minX) + minX;
-        int y = r.nextInt(maxY - minY) + minY;
+        Randomizer randomizer = new Randomizer(minX, minY, maxX, maxY);
 
-        Coordinate coord = new Coordinate(x, y);
+        Coordinate coord = randomizer.getRandomCoordinate();
+        
         this.coordinate = coord;
         this.score = DEFAULT_SCORE;
         this.texture = new Texture(texturePath);
