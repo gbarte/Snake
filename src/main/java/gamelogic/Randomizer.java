@@ -1,4 +1,4 @@
-package objects.base;
+package gamelogic;
 
 import gamelogic.Coordinate;
 import utils.Sizes;

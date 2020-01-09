@@ -2,6 +2,7 @@ package objects.base;
 
 import com.badlogic.gdx.graphics.Texture;
 import gamelogic.Coordinate;
+import gamelogic.Randomizer;
 import utils.Sizes;
 
 /**
