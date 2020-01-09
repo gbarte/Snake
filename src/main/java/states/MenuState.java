@@ -37,7 +37,7 @@ public class MenuState extends State {
         initTitle();
         initSettingsButton();
         initPlayButton();
-        initLeaderBoardButton();
+        initLeaderboardButton();
         initSignOutButton();
         background = new Texture("assets/bg.png");
     }
@@ -106,13 +106,13 @@ public class MenuState extends State {
     }
 
     /**
-     * Adds leader board button.
+     * Adds leaderboard button.
      */
-    private void initLeaderBoardButton() {
-        TextButton leaderBoardButton = new TextButton("Leaderboard", skin);
-        leaderBoardButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-        leaderBoardButton.setPosition(400 - (leaderBoardButton.getWidth() / 2), 250);
-        leaderBoardButton.addListener(new InputListener() {
+    private void initLeaderboardButton() {
+        TextButton leaderboardButton = new TextButton("Leaderboard", skin);
+        leaderboardButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
+        leaderboardButton.setPosition(400 - (leaderboardButton.getWidth() / 2), 250);
+        leaderboardButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y,
                                 int pointer, int button) {
@@ -126,7 +126,7 @@ public class MenuState extends State {
                 return true;
             }
         });
-        stage.addActor(leaderBoardButton);
+        stage.addActor(leaderboardButton);
     }
 
     /**
