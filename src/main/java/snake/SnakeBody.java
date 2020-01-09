@@ -74,8 +74,27 @@ public class SnakeBody {
             int tailID = bodyParts.size() - 1;
             BodyPart tail = bodyParts.get(tailID);
             Coordinate tailCoord = tail.getCoordinate();
-            bodyParts.add(new BodyPart(tailCoord.getCoordinateX(), tailCoord.getCoordinateY()));
-        }
+            int x;
+            int y;
+            switch (getCurrDir()) {
+                case RIGHT:
+                    x = - 1;
+                    y = 0;
+                    break;
+                case LEFT:
+                    x = 1;
+                    y = 0;
+                    break;
+                case DOWN:
+                    x = 0;
+                    y = 1;
+                    break;
+                default:
+                    x = 0;
+                    y = - 1;
+                    break;
+            }
+            bodyParts.add(new BodyPart(tailCoord.getCoordinateX()+x, tailCoord.getCoordinateY()+y));        }
     }
 
     /**
