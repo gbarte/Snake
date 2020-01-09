@@ -159,7 +159,7 @@ public class LoginState extends State {
                 new Skin(Gdx.files.internal("assets/cloud-form/skin/cloud-form-ui.json")));
         passWordField.setSize(180, 30);
         passWordField.setPosition(300, 197);
-        passWordField.isPasswordMode();
+        passWordField.setPasswordMode(true);
         passWordField.setPasswordCharacter('*');
 
         loginButton.addListener(new InputListener() {
