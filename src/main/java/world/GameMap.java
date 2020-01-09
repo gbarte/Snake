@@ -8,10 +8,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import gamelogic.Coordinate;
 import gamelogic.Score;
 import objects.base.Apple;
 import snake.BodyPart;
 import snake.SnakeBody;
+import states.GameOverState;
+import states.GameStateManager;
 import utils.Direction;
 import utils.Sizes;
 import utils.TileType;
@@ -22,6 +25,7 @@ import static utils.Sizes.MOVE_TIME;
 public abstract class GameMap {
 
     private float timer = MOVE_TIME;
+    GameStateManager manager;
     private SnakeBody snake;
     private Apple apple;
     private Score score;
@@ -31,9 +35,11 @@ public abstract class GameMap {
      * Constructor for the GameMap that sets a default snake body texture, an apple and the snake.
      */
     public GameMap() {
-        this.texturePath = "assets/DefaultBody.png";
+        this.manager = getManager();
         this.snake = getSnake();
         this.apple = new Apple();
+        this.score = new Score();
+        this.texturePath = "assets/DefaultBody.png";
     }
 
     /**
@@ -58,8 +64,10 @@ public abstract class GameMap {
                 TextureRegion.split(def, Sizes.TILE_PIXELS, Sizes.TILE_PIXELS);
 
         batch.draw(apple.getTexture(),
-                apple.getCoordinate().getCoordinateX(),
-                apple.getCoordinate().getCoordinateY());
+                apple.getCoordinate().getCoordinateX() * Sizes.TILE_PIXELS,
+                apple.getCoordinate().getCoordinateY() * Sizes.TILE_PIXELS);
+
+        renderScore(batch);
 
         snake.renderSnake(batch, textureRegions, this);
 
@@ -72,7 +80,7 @@ public abstract class GameMap {
     public void update(float delta) {
         handleInput();
         checkOutOfMap();
-        //checkHeadHitsBody();
+        checkHeadHitsBody();
         updateSnake(delta);
         checkAppleEaten();
 
@@ -109,6 +117,8 @@ public abstract class GameMap {
     }
 
     public abstract SnakeBody getSnake();
+
+    public abstract GameStateManager getManager();
 
     public Apple getApple() {
         return apple;
@@ -147,7 +157,9 @@ public abstract class GameMap {
     public void renderScore(SpriteBatch batch) {
         BitmapFont bitmapFont = new BitmapFont();
         bitmapFont.setColor(Color.RED);
-        bitmapFont.draw(batch, String.valueOf(score.getValue()), 20, 20);
+        bitmapFont.draw(batch, String.valueOf(score.getValue()),
+                Sizes.DEFAULT_AMOUNT_BORDER_TILES * Sizes.TILE_PIXELS,
+                Sizes.DEFAULT_AMOUNT_BORDER_TILES * Sizes.TILE_PIXELS);
     }
 
     /**
@@ -205,26 +217,33 @@ public abstract class GameMap {
     }
 
     /**
-     * Checks whether the snake (head) hits the border,
+     * Checks whether the snake (head) hits the border, // TODO remove comments!!!!!!!
      * if it hits then the state changes to GAME_OVER.
      */
     public void checkOutOfMap() {
-        if (snake.getHeadCoord().getCoordinateX() >= this.getWidth() - 2) {
-            System.out.println("Game over!");
-            //gameManager.set(new GameOverState(gameManager));
+        Coordinate currentHead = getSnake().getHeadCoord();
+        TileType currentTile = getTileTypeByCoordinate(getLayers(), currentHead.getCoordinateX(), currentHead.getCoordinateY());
+        if(currentTile.isCollidable()) {
+            getManager().set(new GameOverState(getManager()));
+            System.out.println("collides at " + currentTile.getName() + "->" + currentHead.toString());
+            System.out.println("snake head " + currentHead.toString());
         }
-        if (snake.getHeadCoord().getCoordinateX() < 2) {
-            System.out.println("Game over!");
-            //gameManager.set(new GameOverState(gameManager));
-        }
-        if (snake.getHeadCoord().getCoordinateY() >= this.getHeight() - 2) {
-            System.out.println("Game over!");
-            //gameManager.set(new GameOverState(gameManager));
-        }
-        if (snake.getHeadCoord().getCoordinateY() < 2) {
-            System.out.println("Game over!");
-            //gameManager.set(new GameOverState(gameManager));
-        }
+//        if (getSnake().getHeadCoord().getCoordinateX() >= this.getWidth() - 2) {
+//            System.out.println("Game over! at " + getSnake().getHeadCoord().toString());
+//            getManager().set(new GameOverState(getManager()));
+//        }
+//        if (getSnake().getHeadCoord().getCoordinateX() < 2) {
+//            System.out.println("Game over! at " + getSnake().getHeadCoord().toString());
+//            getManager().set(new GameOverState(getManager()));
+//        }
+//        if (getSnake().getHeadCoord().getCoordinateY() >= this.getHeight() - 2) {
+//            System.out.println("Game over! at " + getSnake().getHeadCoord().toString());
+//            getManager().set(new GameOverState(getManager()));
+//        }
+//        if (getSnake().getHeadCoord().getCoordinateY() < 2) {
+//            System.out.println("Game over! at " + getSnake().getHeadCoord().toString());
+//            getManager().set(new GameOverState(getManager()));
+//        }
     }
 
     /**
@@ -234,11 +253,11 @@ public abstract class GameMap {
     public void checkHeadHitsBody() {
         int minLength = 3;
         // head can touch tail only if snake has more than 3 bodyparts
-        int size = snake.getBodyParts().size();
+        int size = getSnake().getBodyParts().size();
         if (size > minLength) {
             for (int i = 0; i < size; i++) {
-                if (snake.getBodyParts().get(i).getCoordinate().equals(snake.getHeadCoord())) {
-                    //gameManager.set(new GameOverState(gameManager));
+                if (getSnake().getBodyParts().get(i).getCoordinate().equals(getSnake().getHeadCoord())) {
+                    getManager().set(new GameOverState(getManager()));
                 }
             }
         }
@@ -248,11 +267,11 @@ public abstract class GameMap {
      * Checks whether an apple has been eaten or not.
      */
     private void checkAppleEaten() {
-        if (snake.getHeadCoord().equals(apple.getCoordinate())) {
-            score.add(apple.getScore());
+        if (getSnake().getHeadCoord().equals(apple.getCoordinate())) {
+            getScore().add(getApple().getScore());
             apple = new Apple();
             checkAppleOnSnake();
-            snake.growSnake();
+            getSnake().growSnake();
         }
     }
 
@@ -261,7 +280,7 @@ public abstract class GameMap {
      */
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     private void checkAppleOnSnake() {
-        for (BodyPart bp : snake.getBodyParts()) {
+        for (BodyPart bp : getSnake().getBodyParts()) {
             if (bp.getCoordinate().equals(apple.getCoordinate())) {
                 apple = new Apple();
             }

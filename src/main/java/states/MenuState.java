@@ -13,13 +13,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import utils.Sizes;
 
 /**
  * Creates menu screen.
  */
 public class MenuState extends State {
-    private static final int BUTTON_WIDTH = 300;
-    private static final int BUTTON_HEIGHT = 60;
+    private static final int BUTTON_WIDTH = Sizes.BUTTON_WIDTH;
+    private static final int BUTTON_HEIGHT = Sizes.BUTTON_HEIGHT;
     private Stage stage;
     private Skin skin;
     private Texture background;
@@ -195,7 +196,7 @@ public class MenuState extends State {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.getBatch().begin();
-        stage.getBatch().draw(background, 0, 0, 800, 800);
+        stage.getBatch().draw(background, 0, 0, Sizes.MIN_WIDTH_WINDOW, Sizes.MIN_HEIGHT_WINDOW);
         stage.getBatch().end();
         stage.draw();
     }

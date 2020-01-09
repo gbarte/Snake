@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import snake.SnakeBody;
+import states.GameStateManager;
 import utils.Sizes;
 import world.CustomGameMap;
 import world.GameMap;
@@ -24,7 +25,7 @@ public class GameMain extends ApplicationAdapter {
         orthographicCamera.update();
         this.snakeBody =
                 new SnakeBody(Sizes.DEFAULT_MINIMUM_MAP_TILES, Sizes.DEFAULT_MINIMUM_MAP_TILES);
-        gameMap = new CustomGameMap(snakeBody); //CustomGameMap ipv TiledGameMap
+        gameMap = new CustomGameMap(snakeBody, new GameStateManager()); //CustomGameMap ipv TiledGameMap
     }
 
     @Override

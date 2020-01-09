@@ -21,8 +21,8 @@ class AppleTest {
     @Test
     void getCoordinatesTest() {
         Apple apple = new Apple(10, 15, 100, texture);
-        assertEquals(10 * SnakeBody.CELL_SIZE, apple.getCoordinate().getCoordinateX());
-        assertEquals(15 * SnakeBody.CELL_SIZE, apple.getCoordinate().getCoordinateY());
+        assertEquals(10, apple.getCoordinate().getCoordinateX());
+        assertEquals(15, apple.getCoordinate().getCoordinateY());
     }
 
     @Test

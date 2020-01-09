@@ -2,6 +2,7 @@ package states;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import utils.Sizes;
 
 /**
  * State of the game over game.
@@ -42,7 +43,7 @@ public class GameOverState extends State {
     public void render(SpriteBatch batch) {
         backGround = new Texture(texturePath);
         batch.begin();
-        batch.draw(backGround, 0, 0, 800, 800);
+        batch.draw(backGround, 0, 0, Sizes.MIN_WIDTH_WINDOW, Sizes.MIN_HEIGHT_WINDOW);
         batch.end();
     }
 

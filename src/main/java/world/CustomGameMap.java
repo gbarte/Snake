@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import snake.SnakeBody;
+import states.GameStateManager;
 import utils.Sizes;
 import utils.TileType;
 import world.customgamemap.CustomGameMapData;
@@ -19,11 +20,12 @@ public class CustomGameMap extends GameMap {
 
     private TextureRegion[][] tiles;
     private SnakeBody snake;
+    GameStateManager manager;
 
     /**
      * Constructor for the custom game map.
      */
-    public CustomGameMap(SnakeBody snake) {
+    public CustomGameMap(SnakeBody snake, GameStateManager manager) {
         CustomGameMapData customGameMapData =
                 CustomGameMapLoader.loadMap("defaultID", "defaultName");
         this.id = customGameMapData.id;
@@ -33,6 +35,7 @@ public class CustomGameMap extends GameMap {
         Texture texture = new Texture("assets/setOfFive.png");
         tiles = TextureRegion.split(texture, TileType.TILE_SIZE, TileType.TILE_SIZE);
         this.snake = snake;
+        this.manager = manager;
     }
 
     /**
@@ -40,7 +43,7 @@ public class CustomGameMap extends GameMap {
      * @param id The id for the map.
      * @param name The name of the map.
      */
-    public CustomGameMap(String id, String name, SnakeBody snake) {
+    public CustomGameMap(String id, String name, SnakeBody snake, GameStateManager manager) {
         this.id = id;
         this.name = name;
         this.snake = snake;
@@ -49,6 +52,7 @@ public class CustomGameMap extends GameMap {
         this.map = customGameMapData.map;
         Texture texture = new Texture("assets/setOfFive.png");
         tiles = TextureRegion.split(texture, TileType.TILE_SIZE, TileType.TILE_SIZE);
+        this.manager = manager;
     }
 
     @Override
@@ -163,5 +167,13 @@ public class CustomGameMap extends GameMap {
 
     public void setSnake(SnakeBody snake) {
         this.snake = snake;
+    }
+
+    public GameStateManager getManager() {
+        return manager;
+    }
+
+    public void setManager(GameStateManager manager) {
+        this.manager = manager;
     }
 }

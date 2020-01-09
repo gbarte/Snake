@@ -9,6 +9,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import snake.SnakeBody;
+import states.GameStateManager;
 import utils.TileType;
 
 public class TiledGameMap extends GameMap {
@@ -18,12 +19,13 @@ public class TiledGameMap extends GameMap {
     String fileName;
 
     SnakeBody snake;
+    GameStateManager manager;
 
     /**
      * Default constructor that will use a pre-defined map.
      */
-    public TiledGameMap() {
-        this("assets/def3.tmx");
+    public TiledGameMap(SnakeBody snake, GameStateManager manager) {
+        this("assets/def3.tmx", snake, manager);
         //tiledMap = new TmxMapLoader().load("assets/def3.tmx");
         //tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         //snake = new SnakeBody(getWidth(), getHeight());
@@ -34,11 +36,12 @@ public class TiledGameMap extends GameMap {
      * @param fileName The file's name in string format.
      */
     @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
-    public TiledGameMap(String fileName) {
+    public TiledGameMap(String fileName, SnakeBody snake, GameStateManager manager) {
         this.fileName = fileName;
         this.tiledMap = new TmxMapLoader().load(fileName);
         this.tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-        this.snake = new SnakeBody(getWidth(), getHeight());
+        this.snake = snake;
+        this.manager = manager;
     }
 
     @Override
@@ -122,6 +125,15 @@ public class TiledGameMap extends GameMap {
 
     public SnakeBody getSnake() {
         return snake;
+    }
+
+    @Override
+    public GameStateManager getManager() {
+        return manager;
+    }
+
+    public void setManager(GameStateManager manager) {
+        this.manager = manager;
     }
 
     public void setSnake(SnakeBody snake) {

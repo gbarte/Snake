@@ -26,7 +26,7 @@ public class Apple {
      * @param y coordinate of the apple on the map.
      */
     public Apple(int x, int y) {
-        this.coordinate = new Coordinate(x * SnakeBody.CELL_SIZE, y * SnakeBody.CELL_SIZE);
+        this.coordinate = new Coordinate(x, y);
         this.score = DEFAULT_SCORE;
         this.texture = new Texture(texturePath);
     }
@@ -45,7 +45,7 @@ public class Apple {
         int x = r.nextInt(maxX - minX) + minX;
         int y = r.nextInt(maxY - minY) + minY;
 
-        Coordinate coord = new Coordinate(x * SnakeBody.CELL_SIZE, y * SnakeBody.CELL_SIZE);
+        Coordinate coord = new Coordinate(x, y);
         this.coordinate = coord;
         this.score = DEFAULT_SCORE;
         this.texture = new Texture(texturePath);
@@ -61,13 +61,13 @@ public class Apple {
      * @param texture of the apple on the map (has to be of the same size as cell).
      */
     public Apple(int x, int y, int score, Texture texture) {
-        this.coordinate = new Coordinate(x * SnakeBody.CELL_SIZE, y * SnakeBody.CELL_SIZE);
+        this.coordinate = new Coordinate(x, y);
         this.score = score;
         this.texture = texture;
     }
 
     public Apple(int x, int y, int score) {
-        this.coordinate = new Coordinate(x * SnakeBody.CELL_SIZE, y * SnakeBody.CELL_SIZE);
+        this.coordinate = new Coordinate(x, y);
         this.score = score;
     }
 

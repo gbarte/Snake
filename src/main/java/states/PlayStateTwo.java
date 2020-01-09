@@ -17,7 +17,6 @@ public class PlayStateTwo extends State {
     private float timer = MOVE_TIME;
     GameMap gameMap;
     OrthographicCamera orthographicCamera;
-    //SpriteBatch batch;
     SnakeBody snakeBody;
     private Apple apple;
     private Score score;
@@ -47,7 +46,7 @@ public class PlayStateTwo extends State {
         //this.batch = new SpriteBatch();
         this.snakeBody =
                 new SnakeBody(Sizes.DEFAULT_MINIMUM_MAP_TILES, Sizes.DEFAULT_MINIMUM_MAP_TILES);
-        gameMap = new CustomGameMap(snakeBody); //CustomGameMap ipv TiledGameMap
+        gameMap = new CustomGameMap(snakeBody, gameManager); //CustomGameMap ipv TiledGameMap
         this.apple = new Apple();
         this.score = new Score();
 
@@ -56,16 +55,14 @@ public class PlayStateTwo extends State {
     /**
      * This constructor is for testability purposes.
      * @param gameStateManager
-     * @param batch
      * @param snake
      * @param gameMap
      * @param apple
      * @param score
      */
-    public PlayStateTwo(GameStateManager gameStateManager, SpriteBatch batch,
-                        SnakeBody snake, GameMap gameMap, Apple apple, Score score) {
+    public PlayStateTwo(GameStateManager gameStateManager, SnakeBody snake,
+                        GameMap gameMap, Apple apple, Score score) {
         super(gameStateManager);
-        //this.batch = batch;
         this.snakeBody = snake;
         this.gameMap = gameMap;
         this.apple = apple;
