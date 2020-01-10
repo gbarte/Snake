@@ -10,8 +10,6 @@ import utils.Sizes;
  */
 public class Apple {
 
-    private static int DEFAULT_SCORE = Sizes.DEFAULT_SCORE;
-
     private Coordinate coordinate;
     private int score;
     private Texture texture;
@@ -25,7 +23,7 @@ public class Apple {
      */
     public Apple(int x, int y) {
         this.coordinate = new Coordinate(x, y);
-        this.score = DEFAULT_SCORE;
+        this.score = Sizes.DEFAULT_SCORE;
         this.texture = new Texture(texturePath);
     }
 
@@ -44,7 +42,7 @@ public class Apple {
         Coordinate coord = randomizer.getRandomCoordinate();
         
         this.coordinate = coord;
-        this.score = DEFAULT_SCORE;
+        this.score = Sizes.DEFAULT_SCORE;
         this.texture = new Texture(texturePath);
     }
 

@@ -1,16 +1,12 @@
 package snake;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import gamelogic.Coordinate;
+import java.util.LinkedList;
 import utils.Direction;
 import utils.Sizes;
-import world.GameMap;
 
-import java.util.LinkedList;
 
 /**
  * Class that defines the snake's body logic.
@@ -74,27 +70,8 @@ public class SnakeBody {
             int tailID = bodyParts.size() - 1;
             BodyPart tail = bodyParts.get(tailID);
             Coordinate tailCoord = tail.getCoordinate();
-            int x;
-            int y;
-            switch (getCurrDir()) {
-                case RIGHT:
-                    x = - 1;
-                    y = 0;
-                    break;
-                case LEFT:
-                    x = 1;
-                    y = 0;
-                    break;
-                case DOWN:
-                    x = 0;
-                    y = 1;
-                    break;
-                default:
-                    x = 0;
-                    y = - 1;
-                    break;
-            }
-            bodyParts.add(new BodyPart(tailCoord.getCoordinateX()+x, tailCoord.getCoordinateY()+y));        }
+            bodyParts.add(new BodyPart(tailCoord.getCoordinateX(), tailCoord.getCoordinateY()));
+        }
     }
 
     /**
@@ -109,36 +86,12 @@ public class SnakeBody {
     }
 
     /**
-     * First renders the head of the snake as a rectangle.
-     * Then loops through the bodyparts and renders those.
-     *
-     * @param shapeRenderer - ShapeRenderer object
-     */
-    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-    public void renderSnake(ShapeRenderer shapeRenderer) {
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(new Color(Color.GREEN));
-        int x = this.headCoord.getCoordinateX();
-        int y = this.headCoord.getCoordinateY();
-        shapeRenderer.rect(x, y, CELL_SIZE, CELL_SIZE);
-        if (bodyParts.size() > 0) {
-            for (BodyPart bp : bodyParts) {
-                Coordinate bodyCoord = bp.getCoordinate();
-                shapeRenderer.rect(bodyCoord.getCoordinateX(), bodyCoord.getCoordinateY(),
-                        CELL_SIZE, CELL_SIZE);
-            }
-        }
-        shapeRenderer.end();
-    }
-
-    /**
      * This method renders the snake on the map using textures.
      * It also rotates the head in the appropriate direction.
      * @param batch The sprite batch that got passed on.
      * @param textureRegions This contains the texture for the head and body.
-     * @param map The game map.
      */
-    public void renderSnake(SpriteBatch batch, TextureRegion[][] textureRegions, GameMap map) {
+    public void renderSnake(SpriteBatch batch, TextureRegion[][] textureRegions) {
 
         float rot;
         switch (getCurrDir()) {

@@ -27,7 +27,7 @@ public abstract class GameMap {
     private SnakeBody snake;
     private Apple apple;
     private Score score;
-    private String texturePath;
+    private String bodyTexture;
 
     /**
      * Constructor for the GameMap that sets a default snake body texture, an apple and the snake.
@@ -37,7 +37,7 @@ public abstract class GameMap {
         this.snake = getSnake();
         this.apple = new Apple();
         this.score = new Score();
-        this.texturePath = "assets/DefaultBody.png";
+        this.bodyTexture = "assets/DefaultBody.png";
     }
 
 
@@ -50,15 +50,8 @@ public abstract class GameMap {
     public void render(OrthographicCamera camera, SpriteBatch batch, SnakeBody snake) {
         //render entities here
 
-        /*
-        apple = new Apple();
-        Coordinate appleCoord = apple.getCoordinate();
-        batch.draw(apple.getTexture(), appleCoord.getCoordinateX(), appleCoord.getCoordinateY());
-        renderScore(batch);
-         */
-
         this.snake = snake;
-        Texture def = new Texture(this.texturePath);
+        Texture def = new Texture(this.bodyTexture);
         TextureRegion[][] textureRegions =
                 TextureRegion.split(def, Sizes.TILE_PIXELS, Sizes.TILE_PIXELS);
 
@@ -67,9 +60,8 @@ public abstract class GameMap {
                 apple.getCoordinate().getCoordinateY() * Sizes.TILE_PIXELS);
 
         renderScore(batch);
-        System.out.println("gdx time is " + Gdx.graphics.getDeltaTime());
 
-        snake.renderSnake(batch, textureRegions, this);
+        snake.renderSnake(batch, textureRegions);
 
     }
 
@@ -222,10 +214,12 @@ public abstract class GameMap {
      */
     public void checkOutOfMap() {
         Coordinate currentHead = getSnake().getHeadCoord();
-        TileType currentTile = getTileTypeByCoordinate(getLayers(), currentHead.getCoordinateX(), currentHead.getCoordinateY());
-        if(currentTile.isCollidable()) {
+        TileType currentTile = getTileTypeByCoordinate(getLayers(),
+                currentHead.getCoordinateX(),
+                currentHead.getCoordinateY());
+        if (currentTile.isCollidable()) {
             getManager().set(new GameOverState(getManager()));
-            System.out.println("collides at " + currentTile.getName() + "->" + currentHead.toString());
+            System.out.println("collides at "+currentTile.getName()+"->"+currentHead.toString());
             System.out.println("snake head " + currentHead.toString());
         }
     }
@@ -240,7 +234,8 @@ public abstract class GameMap {
         int size = getSnake().getBodyParts().size();
         if (size > minLength) {
             for (int i = 0; i < size; i++) {
-                if (getSnake().getBodyParts().get(i).getCoordinate().equals(getSnake().getHeadCoord())) {
+                if (getSnake().getBodyParts().get(i).getCoordinate()
+                        .equals(getSnake().getHeadCoord())) {
                     getManager().set(new GameOverState(getManager()));
                 }
             }

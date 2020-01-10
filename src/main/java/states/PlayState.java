@@ -165,7 +165,7 @@ public class PlayState extends State {
      */
     @Override
     public void render(SpriteBatch batch) {
-        snake.renderSnake(shapeRenderer);
+        //snake.renderSnake(shapeRenderer);
         batch.begin();
         Coordinate appleCoord = apple.getCoordinate();
         batch.draw(apple.getTexture(), appleCoord.getCoordinateX(), appleCoord.getCoordinateY());

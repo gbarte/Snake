@@ -9,6 +9,13 @@ public class Randomizer {
     private int maxX;
     private int maxY;
 
+    /**
+     * Constructor to create a randomizer.
+     * @param minX The smallest x-value for where the item can be placed.
+     * @param minY The smallest y-value for where the item can be placed.
+     * @param maxX The largest x-value for where the item can be placed.
+     * @param maxY The largest y-value for where the item can be placed.
+     */
     public Randomizer(int minX, int minY, int maxX, int maxY) {
         this.minX = minX;
         this.minY = minY;
@@ -16,6 +23,10 @@ public class Randomizer {
         this.maxY = maxY;
     }
 
+    /**
+     * Method that outputs a random coordinate that also takes obstacles into account.
+     * @return
+     */
     public Coordinate getRandomCoordinate() {
         Random r = new Random();
         Coordinate toReturn = new Coordinate(minX, minY);
