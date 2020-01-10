@@ -107,6 +107,11 @@ public class PlayState extends State {
 
     @Override
     public void handleInput() {
+        boolean pausePressed = Gdx.input.isKeyPressed(Input.Keys.P);
+        if (pausePressed) {
+            gameManager.push(gameManager.getStates().peek());
+            gameManager.set(new PausedState(gameManager));
+        }
         boolean upPressed = Gdx.input.isKeyPressed(Input.Keys.W);
         if (upPressed) {
             updateDirection(SnakeBody.Direction.UP);
