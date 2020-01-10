@@ -25,7 +25,7 @@ public class SnakeGame extends ApplicationAdapter {
         batch = new SpriteBatch();
         gameManager = new GameStateManager();
         Gdx.gl.glClearColor(0, 0, 0, 1);
-        gameManager.push(new PlayState(gameManager));
+        gameManager.push(new LoginState(gameManager));
     }
 
     @Override
