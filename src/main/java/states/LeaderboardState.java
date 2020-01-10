@@ -43,7 +43,6 @@ public class LeaderboardState extends State {
         bitmapFont = new BitmapFont(Gdx.files.internal("assets/font.fnt"));
         initReturn();
         initTitle();
-        initRank();
         initBoard();
     }
 
@@ -125,22 +124,6 @@ public class LeaderboardState extends State {
     }
 
     /**
-     * Creates a numbering on the left side of the screen.
-     */
-    private void initRank() {
-        setNumber(550, "1.");
-        setNumber(500, "2.");
-        setNumber(450, "3.");
-        setNumber(400, "4.");
-        setNumber(350, "5.");
-        setNumber(300, "6.");
-        setNumber(250, "7.");
-        setNumber(200, "8.");
-        setNumber(150, "9.");
-        setNumber(100, "10.");
-    }
-
-    /**
      * Adds score to the player..
      */
     private void initBoard() {
@@ -151,6 +134,7 @@ public class LeaderboardState extends State {
         for (int i = 0; i < entries.size(); i++) {
             setPlayerRank(550 - 50 * i, entries.get(i).getNickname());
             setScore(550 - 50 * i, entries.get(i).getScore());
+            setNumber(550 - 50 * i, i + 1 + ".");
         }
 
     }

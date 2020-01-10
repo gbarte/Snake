@@ -1,6 +1,6 @@
-# CSE2115: TBD
+# CSE2115: Lil' Snake
 
-**TBD** is a student project for TU Delft's course *CSE2115*, Software Engineering Methods. It was developed by 5 students in 8 weeks. The application is a variation of the classical snake game.
+**Lil' Snake** is a student project for TU Delft's course *CSE2115*, Software Engineering Methods. It was developed by 5 students in 8 weeks. The application is a variation of the classical snake game.
 
 ## Table of Contents
 

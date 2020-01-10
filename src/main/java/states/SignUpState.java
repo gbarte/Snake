@@ -146,7 +146,7 @@ public class SignUpState extends State {
         TextField passWordField = new TextField("", cloudSkin);
         passWordField.setSize(180, 30);
         passWordField.setPosition(300, 197);
-        passWordField.isPasswordMode();
+        passWordField.setPasswordMode(true);
         passWordField.setPasswordCharacter('*');
 
         stage.addActor(usernameLabel);
