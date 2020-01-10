@@ -25,7 +25,6 @@ import static utils.Sizes.MOVE_TIME;
 public abstract class GameMap {
 
     private float timer = MOVE_TIME;
-    private GameMap gameMap;
     GameStateManager manager;
     private SnakeBody snake;
     private Apple apple;
@@ -36,13 +35,13 @@ public abstract class GameMap {
      * Constructor for the GameMap that sets a default snake body texture, an apple and the snake.
      */
     public GameMap() {
-        this.gameMap = getGameMap();
         this.manager = getManager();
         this.snake = getSnake();
         this.apple = new Apple();
         this.score = new Score();
         this.texturePath = "assets/DefaultBody.png";
     }
+
 
     /**
      * Render entities here after subclass renders map.
@@ -121,8 +120,6 @@ public abstract class GameMap {
     public abstract SnakeBody getSnake();
 
     public abstract GameStateManager getManager();
-
-    public abstract GameMap getGameMap();
 
     public Apple getApple() {
         return apple;

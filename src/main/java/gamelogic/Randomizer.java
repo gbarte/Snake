@@ -23,11 +23,25 @@ public class Randomizer {
 
     public Coordinate getRandomCoordinate() {
         Random r = new Random();
+        Coordinate toReturn = new Coordinate(minX, minY);
 
-        int x = r.nextInt(getMaxX() - getMinY()) + getMinX();
-        int y = r.nextInt(getMaxY() - getMinY()) + getMinY();
+        /*
+        for (int i = 0; i < 20; i++) {
+            int x = r.nextInt(getMaxX() - getMinY()) + getMinX();
+            int y = r.nextInt(getMaxY() - getMinY()) + getMinY();
 
-        return new Coordinate(x, y);
+            TileType tileType =
+                    map.getTileTypeByCoordinate(map.getLayers(), x, y);
+            if(!tileType.isCollidable()) {
+                toReturn.setCoordinateX(x);
+                toReturn.setCoordinateY(y);
+                break;
+            }
+        }
+         */
+
+
+        return toReturn;
     }
 
     public int getMinX() {

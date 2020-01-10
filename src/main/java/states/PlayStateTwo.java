@@ -13,8 +13,6 @@ import world.GameMap;
 
 public class PlayStateTwo extends State {
 
-    protected static final float MOVE_TIME = Sizes.MOVE_TIME;
-    private float timer = MOVE_TIME;
     GameMap gameMap;
     OrthographicCamera orthographicCamera;
     SnakeBody snakeBody;
@@ -29,25 +27,14 @@ public class PlayStateTwo extends State {
      */
     public PlayStateTwo(GameStateManager gameManager) {
         super(gameManager);
-        /*
-        this(gameManager,
-                new SpriteBatch(),
-                new SnakeBody(Sizes.DEFAULT_MINIMUM_MAP_TILES, Sizes.DEFAULT_MINIMUM_MAP_TILES),
-                new CustomGameMap(
-                        new SnakeBody(Sizes.DEFAULT_MINIMUM_MAP_TILES,
-                                Sizes.DEFAULT_MINIMUM_MAP_TILES)),
-                new Apple(),
-                new Score());
-         */
+
         this.orthographicCamera = super.getCamera();
         orthographicCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         orthographicCamera.update();
 
-        //this.batch = new SpriteBatch();
         this.snakeBody =
                 new SnakeBody(Sizes.DEFAULT_MINIMUM_MAP_TILES, Sizes.DEFAULT_MINIMUM_MAP_TILES);
         gameMap = new CustomGameMap(snakeBody, gameManager); //CustomGameMap ipv TiledGameMap
-        this.apple = new Apple();
         this.score = new Score();
 
     }
@@ -84,26 +71,6 @@ public class PlayStateTwo extends State {
         Gdx.gl.glClearColor(1, 0, 0, 1); //this changes the background color, number between 0-1
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        //uncomment to be able to move the map
-        /*if (Gdx.input.isTouched()) {
-            orthographicCamera.translate(-Gdx.input.getDeltaX(), Gdx.input.getDeltaY());
-            orthographicCamera.update();
-        } */
-
-        /*
-        if (Gdx.input.justTouched()) {
-            Vector3 position = orthographicCamera.unproject(
-                    new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-            //might have to change the layer to 1!!!
-            TileType type = getGameMap().getTileTypeByLocation(getGameMap().getLayers() - 1,
-                    position.x, position.y);
-
-            if (type != null) {
-                System.out.println("Id is " + type.getId() + " name is " + type.getName());
-                System.out.println("tile coordinate is x=" + (int) position.x / TileType.TILE_SIZE
-                        + " & y=" + (gameMap.getHeight() - (int) position.y / TileType.TILE_SIZE));
-            }
-        } */
         gameMap.render(orthographicCamera, batch, snakeBody);
     }
 

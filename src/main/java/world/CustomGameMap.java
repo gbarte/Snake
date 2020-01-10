@@ -61,13 +61,14 @@ public class CustomGameMap extends GameMap {
 
         spriteBatch.begin();
 
-        for (int layer = 1; layer < getLayers(); layer++) {
+        for (int layer = 0; layer < getLayers(); layer++) {
             for (int row = 0; row < getHeight(); row++) {
                 for (int col = 0; col < getWidth(); col++) {
                     TileType type = this.getTileTypeByCoordinate(layer, col, row);
                     if (type != null) {
                         spriteBatch.draw(tiles[0][type.getId() - 1], (col * TileType.TILE_SIZE),
                                 (row * TileType.TILE_SIZE));
+
                     }
                 }
             }
@@ -171,11 +172,6 @@ public class CustomGameMap extends GameMap {
 
     public GameStateManager getManager() {
         return manager;
-    }
-
-    @Override
-    public GameMap getGameMap() {
-        return this;
     }
 
     public void setManager(GameStateManager manager) {
