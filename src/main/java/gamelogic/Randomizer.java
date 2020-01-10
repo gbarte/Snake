@@ -1,10 +1,5 @@
 package gamelogic;
 
-import gamelogic.Coordinate;
-import utils.Sizes;
-import utils.TileType;
-import world.GameMap;
-
 import java.util.Random;
 
 public class Randomizer {
@@ -24,6 +19,11 @@ public class Randomizer {
     public Coordinate getRandomCoordinate() {
         Random r = new Random();
         Coordinate toReturn = new Coordinate(minX, minY);
+
+        int x = r.nextInt(getMaxX() - getMinY()) + getMinX();
+        int y = r.nextInt(getMaxY() - getMinY()) + getMinY();
+        toReturn.setCoordinateX(x);
+        toReturn.setCoordinateY(y);
 
         /*
         for (int i = 0; i < 20; i++) {
