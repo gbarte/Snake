@@ -1,18 +1,23 @@
 package states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import net.java.games.input.Component;
 
 /**
  * Creates menu screen.
@@ -35,9 +40,10 @@ public class MenuState extends State {
         skin = new Skin(Gdx.files.internal(
                 "assets/quantum-horizon/skin/quantum-horizon-ui.json"));
         initTitle();
-        initSettingsButton();
+        initRulesButton();
         initPlayButton();
-        initLeaderBoardButton();
+        initSettingsButton();
+        initLeaderboardButton();
         initSignOutButton();
         background = new Texture("assets/bg.png");
     }
@@ -106,13 +112,13 @@ public class MenuState extends State {
     }
 
     /**
-     * Adds leader board button.
+     * Adds leaderboard button.
      */
-    private void initLeaderBoardButton() {
-        TextButton leaderBoardButton = new TextButton("Leaderboard", skin);
-        leaderBoardButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-        leaderBoardButton.setPosition(400 - (leaderBoardButton.getWidth() / 2), 250);
-        leaderBoardButton.addListener(new InputListener() {
+    private void initLeaderboardButton() {
+        TextButton leaderboardButton = new TextButton("Leaderboard", skin);
+        leaderboardButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
+        leaderboardButton.setPosition(400 - (leaderboardButton.getWidth() / 2), 250);
+        leaderboardButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y,
                                 int pointer, int button) {
@@ -126,7 +132,31 @@ public class MenuState extends State {
                 return true;
             }
         });
-        stage.addActor(leaderBoardButton);
+        stage.addActor(leaderboardButton);
+    }
+
+    /**
+     * Add rules button.
+     */
+    private void initRulesButton() {
+        TextButton rulesButton = new TextButton("Rules", skin);
+        rulesButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
+        rulesButton.setPosition(400 - (rulesButton.getWidth() / 2), 350);
+        rulesButton.addListener(new InputListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y,
+                                int pointer, int button) {
+                gameRulesDialog();
+            }
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y,
+                                     int pointer, int button) {
+                System.out.println("pressed play");
+                return true;
+            }
+        });
+        stage.addActor(rulesButton);
     }
 
     /**
@@ -135,7 +165,7 @@ public class MenuState extends State {
     private void initPlayButton() {
         TextButton playButton = new TextButton("Start Game", skin);
         playButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-        playButton.setPosition(400 - (playButton.getWidth() / 2), 350);
+        playButton.setPosition(400 - (playButton.getWidth() / 2), 450);
         playButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y,
@@ -205,6 +235,26 @@ public class MenuState extends State {
         background.dispose();
         skin.dispose();
         stage.dispose();
+    }
+
+    /**
+     * This dialog box is shown when the user wants to start the game.
+     */
+    public void gameRulesDialog() {
+        Skin uiSkin = new Skin(Gdx.files.internal("assets/cloud-form/skin/cloud-form-ui.json"));
+        Dialog dialog = new Dialog("Rules", uiSkin, "dialog") {
+            public void result(Object obj) {
+                System.out.println("result " + obj);
+            }
+        };
+        dialog.text("Use wasd to move the snake.\n"
+                + "Eat food to grow your snake.\n"
+                + "Game will end when you either hit yourself or the wall.\n"
+                + "Press p to pause the game.\n"
+                + "Press q to quit the game.\n"
+                + "Enjoy :)");
+        dialog.button("OK", true);
+        dialog.show(stage);
     }
 
 

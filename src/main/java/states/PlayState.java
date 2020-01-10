@@ -45,10 +45,6 @@ public class PlayState extends State {
         score = new Score();
     }
 
-    //    private void setDialogScreen() {
-    //        gameOver = new Dialog("Game Over", skin);
-    //    }
-
     /**
      * Constructor which creates a new state within the game.
      * Method was made just to make testing easier!
@@ -60,22 +56,6 @@ public class PlayState extends State {
         this.score = new Score();
         this.apple = new Apple(0, 0, 10);
     }
-
-    //    public Dialog getGameOver() {
-    //        return gameOver;
-    //    }
-    //
-    //    public void setGameOver(Dialog gameOver) {
-    //        this.gameOver = gameOver;
-    //    }
-
-    //    public Skin getSkin() {
-    //        return skin;
-    //    }
-    //
-    //    public void setSkin(Skin skin) {
-    //        this.skin = skin;
-    //    }
 
     public OrthographicCamera getCamera() {
         return camera;
@@ -127,6 +107,11 @@ public class PlayState extends State {
 
     @Override
     public void handleInput() {
+        boolean pausePressed = Gdx.input.isKeyPressed(Input.Keys.P);
+        if (pausePressed) {
+            gameManager.push(gameManager.getStates().peek());
+            gameManager.set(new PausedState(gameManager));
+        }
         boolean upPressed = Gdx.input.isKeyPressed(Input.Keys.W);
         if (upPressed) {
             updateDirection(SnakeBody.Direction.UP);
