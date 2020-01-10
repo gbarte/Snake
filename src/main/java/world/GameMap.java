@@ -19,12 +19,10 @@ import utils.Direction;
 import utils.Sizes;
 import utils.TileType;
 
-import static utils.Sizes.MOVE_TIME;
-
 @SuppressWarnings("PMD")
 public abstract class GameMap {
 
-    private float timer = MOVE_TIME;
+    private float timer = Sizes.MOVE_TIME;
     GameStateManager manager;
     private SnakeBody snake;
     private Apple apple;
@@ -69,6 +67,7 @@ public abstract class GameMap {
                 apple.getCoordinate().getCoordinateY() * Sizes.TILE_PIXELS);
 
         renderScore(batch);
+        System.out.println("gdx time is " + Gdx.graphics.getDeltaTime());
 
         snake.renderSnake(batch, textureRegions, this);
 
@@ -171,7 +170,7 @@ public abstract class GameMap {
     private void updateSnake(float delta) {
         timer -= delta;
         if (timer <= 0) {
-            timer = MOVE_TIME;
+            timer = Sizes.MOVE_TIME;
             snake.moveSnake(snake.getCurrDir());
         }
     }

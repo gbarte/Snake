@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import gamelogic.Score;
-import objects.base.Apple;
 import snake.SnakeBody;
 import utils.Sizes;
 import world.CustomGameMap;
@@ -13,11 +12,10 @@ import world.GameMap;
 
 public class PlayStateTwo extends State {
 
-    GameMap gameMap;
     OrthographicCamera orthographicCamera;
+    GameStateManager gameStateManager;
     SnakeBody snakeBody;
-    private Apple apple;
-    private Score score;
+    GameMap gameMap;
 
     /**
      * Constructor which creates a new state within the game.
@@ -28,6 +26,7 @@ public class PlayStateTwo extends State {
     public PlayStateTwo(GameStateManager gameManager) {
         super(gameManager);
 
+        this.gameStateManager = super.getGameManager();
         this.orthographicCamera = super.getCamera();
         orthographicCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         orthographicCamera.update();
@@ -35,25 +34,21 @@ public class PlayStateTwo extends State {
         this.snakeBody =
                 new SnakeBody(Sizes.DEFAULT_MINIMUM_MAP_TILES, Sizes.DEFAULT_MINIMUM_MAP_TILES);
         gameMap = new CustomGameMap(snakeBody, gameManager); //CustomGameMap ipv TiledGameMap
-        this.score = new Score();
 
     }
 
     /**
      * This constructor is for testability purposes.
-     * @param gameStateManager
-     * @param snake
-     * @param gameMap
-     * @param apple
-     * @param score
+     * @param gameStateManager The gameManager which keeps track of the state of the game.
+     * @param snake The snake that'll be displayed on the map.
+     * @param gameMap The map that gets instantiated.
      */
     public PlayStateTwo(GameStateManager gameStateManager, SnakeBody snake,
-                        GameMap gameMap, Apple apple, Score score) {
+                        GameMap gameMap) {
         super(gameStateManager);
+        this.gameStateManager = gameStateManager;
         this.snakeBody = snake;
         this.gameMap = gameMap;
-        this.apple = apple;
-        this.score = score;
     }
 
     @Override
@@ -96,27 +91,19 @@ public class PlayStateTwo extends State {
         this.orthographicCamera = orthographicCamera;
     }
 
+    public GameStateManager getGameStateManager() {
+        return gameStateManager;
+    }
+
+    public void setGameStateManager(GameStateManager gameStateManager) {
+        this.gameStateManager = gameStateManager;
+    }
+
     public SnakeBody getSnakeBody() {
         return snakeBody;
     }
 
     public void setSnakeBody(SnakeBody snakeBody) {
         this.snakeBody = snakeBody;
-    }
-
-    public Apple getApple() {
-        return apple;
-    }
-
-    public void setApple(Apple apple) {
-        this.apple = apple;
-    }
-
-    public Score getScore() {
-        return score;
-    }
-
-    public void setScore(Score score) {
-        this.score = score;
     }
 }
