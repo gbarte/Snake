@@ -111,6 +111,7 @@ public class PlayState extends State {
         if (quitPressed) {
             gameManager.push(gameManager.getStates().peek());
             gameManager.set(new GameOverState(gameManager));
+        }
         boolean pausePressed = Gdx.input.isKeyPressed(Input.Keys.P);
         if (pausePressed) {
             gameManager.push(gameManager.getStates().peek());
