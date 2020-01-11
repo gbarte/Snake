@@ -11,7 +11,7 @@ public class PowerUpFactory extends FoodFactory {
         Random random = new Random();
         double num = random.nextDouble();
 
-        Food food = null;
+        Food food = new SimpleFoodFactory().createFood();
         Coordinate coordinate = randomCoordinates();
         //Lowest rarity should be checked first
         if(num <= MushroomPowerUp.rarity) {

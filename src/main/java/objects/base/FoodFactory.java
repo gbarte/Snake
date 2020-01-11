@@ -8,7 +8,7 @@ import java.util.Random;
 
 public abstract class FoodFactory {
 
-    abstract Food createFood();
+    public abstract Food createFood();
 
     public Coordinate randomCoordinates() {
         Random r = new Random();

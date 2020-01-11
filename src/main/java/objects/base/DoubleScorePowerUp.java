@@ -1,5 +1,6 @@
 package objects.base;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.TimeUtils;
 import gamelogic.Coordinate;
@@ -29,14 +30,9 @@ public class DoubleScorePowerUp implements Food {
 
     @Override
     public void start(PlayState play) {
-        long startTime = TimeUtils.millis();
-        long elapsedTime = TimeUtils.timeSinceMillis(startTime) / 1000;
-
-        while (elapsedTime < duration) {
-            if(play.isAppleEaten()) {
-                play.getScore().add(Apple.DEFAULT_SCORE);
-                elapsedTime = TimeUtils.timeSinceMillis(startTime) / 1000;
-            }
+        play.getShapeRenderer().setColor(Color.RED);
+        if(play.isAppleEaten()) {
+            play.getScore().add(Apple.DEFAULT_SCORE);
         }
     }
 
