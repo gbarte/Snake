@@ -7,6 +7,7 @@ public class Sizes {
 
     public static final int DEFAULT_MINIMUM_MAP_TILES = 50;
     public static final int TILE_PIXELS = 16;
+    public static final int PADDING_TILE_PIXELS = 2;
     public static final int MIN_WIDTH_WINDOW = 800;
     public static final int MIN_HEIGHT_WINDOW = 800;
     public static final int MAX_HEIGHT_WINDOW = 1024;

@@ -153,8 +153,8 @@ public abstract class GameMap {
         BitmapFont bitmapFont = new BitmapFont();
         bitmapFont.setColor(Color.RED);
         bitmapFont.draw(batch, String.valueOf(score.getValue()),
-                Sizes.DEFAULT_MINIMUM_MAP_TILES * Sizes.TILE_PIXELS,
-                Sizes.DEFAULT_AMOUNT_BORDER_TILES * Sizes.TILE_PIXELS);
+                Sizes.DEFAULT_AMOUNT_BORDER_TILES * (Sizes.TILE_PIXELS - Sizes.PADDING_TILE_PIXELS),
+                Sizes.DEFAULT_AMOUNT_BORDER_TILES * (Sizes.TILE_PIXELS - Sizes.PADDING_TILE_PIXELS));
     }
 
     /**
