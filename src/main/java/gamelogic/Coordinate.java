@@ -1,9 +1,12 @@
 package gamelogic;
 
+import snake.SnakeBody;
+
 import java.util.Objects;
 
 /**
  * Coordinate class.
+ *
  */
 public class Coordinate {
     private int coordinateX;
@@ -12,6 +15,10 @@ public class Coordinate {
     public Coordinate(int coordinateX, int coordinateY) {
         this.coordinateX = coordinateX;
         this.coordinateY = coordinateY;
+    }
+
+    public Coordinate() {
+
     }
 
     /**

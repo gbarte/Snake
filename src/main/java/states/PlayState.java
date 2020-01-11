@@ -12,6 +12,9 @@ import gamelogic.Coordinate;
 import gamelogic.Score;
 
 import objects.base.Apple;
+import objects.base.Food;
+import objects.base.FoodFactory;
+import objects.base.SimpleFoodFactory;
 import snake.BodyPart;
 import snake.SnakeBody;
 
@@ -19,13 +22,20 @@ import snake.SnakeBody;
  * In-game screen.
  */
 public class PlayState extends State {
-    protected static final float MOVE_TIME = 0.25f;
-    // private Dialog gameOver;
-    // private Skin skin;
-    private float timer = MOVE_TIME;
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public static float DEFAULT_SPEED = 0.25f;
+    private float speed = DEFAULT_SPEED;
+    private float timer = speed;
     private SnakeBody snake;
     private ShapeRenderer shapeRenderer;
-    private Apple apple;
+    private Food apple;
     private Score score;
 
     /**
@@ -36,18 +46,14 @@ public class PlayState extends State {
      */
     public PlayState(GameStateManager gameManager) {
         super(gameManager);
-        // skin = new Skin(Gdx.files.internal("assets/neon/skin/neon-ui.json"));
-        // setDialogScreen();
         shapeRenderer = new ShapeRenderer();
         snake = new SnakeBody(SnakeGame.WIDTH, SnakeGame.HEIGHT);
         camera.setToOrtho(false, SnakeGame.WIDTH, SnakeGame.HEIGHT);
-        apple = new Apple();
         score = new Score();
-    }
 
-    //    private void setDialogScreen() {
-    //        gameOver = new Dialog("Game Over", skin);
-    //    }
+        SimpleFoodFactory foodFactory = new SimpleFoodFactory();
+        apple = foodFactory.createFood();
+    }
 
     /**
      * Constructor which creates a new state within the game.
@@ -58,24 +64,8 @@ public class PlayState extends State {
         this.snake = snake;
         this.shapeRenderer = renderer;
         this.score = new Score();
-        this.apple = new Apple(0, 0, 10);
     }
 
-    //    public Dialog getGameOver() {
-    //        return gameOver;
-    //    }
-    //
-    //    public void setGameOver(Dialog gameOver) {
-    //        this.gameOver = gameOver;
-    //    }
-
-    //    public Skin getSkin() {
-    //        return skin;
-    //    }
-    //
-    //    public void setSkin(Skin skin) {
-    //        this.skin = skin;
-    //    }
 
     public OrthographicCamera getCamera() {
         return camera;
@@ -117,7 +107,7 @@ public class PlayState extends State {
         this.timer = timer;
     }
 
-    public Apple getApple() {
+    public Food getApple() {
         return apple;
     }
 
@@ -151,7 +141,7 @@ public class PlayState extends State {
         checkOutOfMap();
         checkHeadHitsBody();
         updateSnake(dt);
-        checkAppleEaten();
+        isAppleEaten();
     }
 
     /**
@@ -190,7 +180,7 @@ public class PlayState extends State {
     private void updateSnake(float delta) {
         timer -= delta;
         if (timer <= 0) {
-            timer = MOVE_TIME;
+            timer = speed;
             snake.moveSnake(snake.getCurrDir());
         }
     }
@@ -293,13 +283,13 @@ public class PlayState extends State {
     /**
      * Checks whether an apple has been eaten or not.
      */
-    private void checkAppleEaten() {
+    public boolean isAppleEaten() {
         if (snake.getHeadCoord().equals(apple.getCoordinate())) {
-            score.add(apple.getScore());
             apple = new Apple();
             checkAppleOnSnake();
-            snake.growSnake();
+            return true;
         }
+        return false;
     }
 
     /**
@@ -312,6 +302,15 @@ public class PlayState extends State {
                 apple = new Apple();
             }
         }
+    }
+
+    public void createObject() {
+        FoodFactory factory = new FoodFactory();
+        Food food = factory.createRandomFood();
+
+        food.act(this);
+        Apple apple3 = new Apple(new Coordinate(1, 1));
+        apple3.getCoordinate();
     }
 }
 
