@@ -10,8 +10,7 @@ import java.awt.*;
 
 
 public class MushroomPowerUp implements Food {
-    private final static float timeout = 5f;
-    public final static double rarity = 0.9;
+    public final static double rarity = 0.15;
     private static final String texturePath = "assets/mushroom.png";
     private Coordinate coordinate;
     private Texture texture;
@@ -32,7 +31,7 @@ public class MushroomPowerUp implements Food {
 
     @Override
     public void start(PlayState play) {
-        play.setSpeed(0.1f);
+        play.setSpeed(PlayState.DEFAULT_SPEED / 2);
         play.getShapeRenderer().setColor(Color.PURPLE);
     }
 

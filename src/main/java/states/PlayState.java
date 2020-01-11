@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.TimeUtils;
 import game.SnakeGame;
 import gamelogic.Coordinate;
+import gamelogic.DoubleScore;
 import gamelogic.Score;
 
 import objects.base.*;
@@ -28,6 +29,7 @@ public class PlayState extends State {
     private Food apple;
     private Score score;
     private FoodFactory foodFactory;
+    private static double powerUpTimeout = 10;
 
 
     /**
@@ -39,6 +41,7 @@ public class PlayState extends State {
     public PlayState(GameStateManager gameManager) {
         super(gameManager);
         shapeRenderer = new ShapeRenderer();
+        shapeRenderer.setColor(Color.GREEN);
         snake = new SnakeBody(SnakeGame.WIDTH, SnakeGame.HEIGHT);
         camera.setToOrtho(false, SnakeGame.WIDTH, SnakeGame.HEIGHT);
         score = new Score();
@@ -137,6 +140,8 @@ public class PlayState extends State {
         checkHeadHitsBody();
         updateSnake(dt);
         isAppleEaten();
+
+        powerUpTimeout();
 
     }
 
@@ -293,8 +298,22 @@ public class PlayState extends State {
     }
 
     public void activatePowerUp() {
-        if(this.getScore().getValue() > 10) {
+        if(this.getScore().getValue() > 100) {
             foodFactory = new PowerUpFactory();
+        }
+    }
+
+    public void powerUpTimeout() {
+        if (speed != DEFAULT_SPEED || score instanceof DoubleScore) {
+            powerUpTimeout -= Gdx.graphics.getDeltaTime();
+        }
+        if (powerUpTimeout <= 0) {
+            shapeRenderer.setColor(Color.GREEN);
+            speed = DEFAULT_SPEED;
+            int currScore = score.getValue();
+            score = new Score();
+            score.setValue(currScore);
+            powerUpTimeout = 10;
         }
     }
 

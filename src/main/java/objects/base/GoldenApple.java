@@ -7,7 +7,7 @@ import states.PlayState;
 public class GoldenApple implements Food {
 
     public static int DEFAULT_SCORE = 25;
-    public static double rarity = 0.1;
+    public static double rarity = 0.2;
     private static final String texturePath = "assets/appleYellowSmall.png";
     private Coordinate coordinate;
     private Texture texture;
