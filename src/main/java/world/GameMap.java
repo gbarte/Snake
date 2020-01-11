@@ -19,6 +19,8 @@ import utils.Direction;
 import utils.Sizes;
 import utils.TileType;
 
+import java.util.LinkedList;
+
 @SuppressWarnings("PMD")
 public abstract class GameMap {
 
@@ -75,6 +77,7 @@ public abstract class GameMap {
         checkHeadHitsBody();
         updateSnake(delta);
         checkAppleEaten();
+        updateBadApple();
 
     }
 
@@ -124,19 +127,19 @@ public abstract class GameMap {
      * This method handles the keyboard input for the snake movements.
      */
     public void handleInput() {
-        boolean upPressed = Gdx.input.isKeyPressed(Input.Keys.W);
+        boolean upPressed = Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyJustPressed(Input.Keys.UP);
         if (upPressed) {
             updateDirection(Direction.UP);
         }
-        boolean downPressed = Gdx.input.isKeyPressed(Input.Keys.S);
+        boolean downPressed = Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyJustPressed(Input.Keys.DOWN);
         if (downPressed) {
             updateDirection(Direction.DOWN);
         }
-        boolean leftPressed = Gdx.input.isKeyPressed(Input.Keys.A);
+        boolean leftPressed = Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyJustPressed(Input.Keys.LEFT);
         if (leftPressed) {
             updateDirection(Direction.LEFT);
         }
-        boolean rightPressed = Gdx.input.isKeyPressed(Input.Keys.D);
+        boolean rightPressed = Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyJustPressed(Input.Keys.RIGHT);
         if (rightPressed) {
             updateDirection(Direction.RIGHT);
         }
@@ -229,11 +232,11 @@ public abstract class GameMap {
      * If it does, then the state changes to GAME_OVER.
      */
     public void checkHeadHitsBody() {
-        int minLength = 3;
+        int minLength = 2;
         // head can touch tail only if snake has more than 3 bodyparts
         int size = getSnake().getBodyParts().size();
         if (size > minLength) {
-            for (int i = 0; i < size; i++) {
+            for (int i = 1; i < size; i++) {
                 if (getSnake().getBodyParts().get(i).getCoordinate()
                         .equals(getSnake().getHeadCoord())) {
                     getManager().set(new GameOverState(getManager()));
@@ -261,6 +264,15 @@ public abstract class GameMap {
     private void checkAppleOnSnake() {
         for (BodyPart bp : getSnake().getBodyParts()) {
             if (bp.getCoordinate().equals(apple.getCoordinate())) {
+                apple = new Apple();
+            }
+        }
+    }
+
+    private void updateBadApple() {
+        LinkedList<BodyPart> all = getSnake().getBodyParts();
+        for (int i = 0; i < all.size(); i++) {
+            if (all.get(i).getCoordinate().equals(apple.getCoordinate())) {
                 apple = new Apple();
             }
         }
