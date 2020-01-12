@@ -139,38 +139,6 @@ class PlayStateTest {
     }
 
     @Test
-    void checkOutOfMapTest1() {
-        snake.setHeadCoord(new Coordinate(SnakeGame.WIDTH, 10));
-        play.setSnake(snake);
-        play.checkOutOfMap();
-        assertTrue(play.gameManager.getStates().peek() instanceof GameOverState);
-    }
-
-    @Test
-    void checkOutOfMapTest2() {
-        snake.setHeadCoord(new Coordinate(-1, 10));
-        play.setSnake(snake);
-        play.checkOutOfMap();
-        assertTrue(play.gameManager.getStates().peek() instanceof GameOverState);
-    }
-
-    @Test
-    void checkOutOfMapTest3() {
-        snake.setHeadCoord(new Coordinate(10, SnakeGame.HEIGHT));
-        play.setSnake(snake);
-        play.checkOutOfMap();
-        assertTrue(play.gameManager.getStates().peek() instanceof GameOverState);
-    }
-
-    @Test
-    void checkOutOfMapTest4() {
-        snake.setHeadCoord(new Coordinate(10, -1));
-        play.setSnake(snake);
-        play.checkOutOfMap();
-        assertTrue(play.gameManager.getStates().peek() instanceof GameOverState);
-    }
-
-    @Test
     void checkHeadHitsBodyTest1() {
         //here snake of initial length < 3
         for (int i = 0; i < snake.getBodyParts().size(); i++) {
@@ -178,18 +146,6 @@ class PlayStateTest {
             play.setSnake(snake);
             play.checkHeadHitsBody();
             assertFalse(play.gameManager.getStates().peek() instanceof GameOverState);
-        }
-    }
-
-    @Test
-    void checkHeadHitsBodyTest2() {
-        //here snake length > 3
-        snake.growSnake(2);
-        for (int i = 0; i < snake.getBodyParts().size(); i++) {
-            snake.setHeadCoord(snake.getBodyParts().get(i).getCoordinate());
-            play.setSnake(snake);
-            play.checkHeadHitsBody();
-            assertTrue(play.gameManager.getStates().peek() instanceof GameOverState);
         }
     }
 

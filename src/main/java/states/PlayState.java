@@ -3,6 +3,7 @@ package states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -73,6 +74,10 @@ public class PlayState extends State {
         return foodFactory;
     }
 
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
+
     public void setFoodFactory(FoodFactory foodFactory) {
         this.foodFactory = foodFactory;
     }
@@ -111,6 +116,16 @@ public class PlayState extends State {
 
     @Override
     public void handleInput() {
+        boolean quitPressed = Gdx.input.isKeyPressed(Input.Keys.Q);
+        if (quitPressed) {
+            gameManager.push(gameManager.getStates().peek());
+            gameManager.set(new GameOverState(gameManager));
+        }
+        boolean pausePressed = Gdx.input.isKeyPressed(Input.Keys.P);
+        if (pausePressed) {
+            gameManager.push(gameManager.getStates().peek());
+            gameManager.set(new PausedState(gameManager));
+        }
         boolean upPressed = Gdx.input.isKeyPressed(Input.Keys.W);
         if (upPressed) {
             updateDirection(SnakeBody.Direction.UP);

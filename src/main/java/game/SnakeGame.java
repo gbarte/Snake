@@ -5,9 +5,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import states.GameStateManager;
-import states.LeaderboardState;
 import states.LoginState;
-import states.PlayState;
+
 
 /**
  * The initialization game class.
@@ -26,7 +25,7 @@ public class SnakeGame extends ApplicationAdapter {
         batch = new SpriteBatch();
         gameManager = new GameStateManager();
         Gdx.gl.glClearColor(0, 0, 0, 1);
-        gameManager.push(new PlayState(gameManager));
+        gameManager.push(new LoginState(gameManager));
     }
 
     @Override
