@@ -24,7 +24,7 @@ import snake.SnakeBody;
  * In-game screen.
  */
 public class PlayState extends State {
-    public static float DEFAULT_MOVE_TIME = 0.25f;
+    public static final float DEFAULT_MOVE_TIME = 0.25f;
     @SuppressWarnings("PMD")
     private float moveTime = DEFAULT_MOVE_TIME;
     @SuppressWarnings("PMD")
