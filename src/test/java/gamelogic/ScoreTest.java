@@ -41,7 +41,7 @@ class ScoreTest {
     void subtractTest2() {
         score.setValue(80);
         score.subtract(100);
-        assertEquals(80, score.getValue());
+        assertEquals(0, score.getValue());
     }
 
     @Test

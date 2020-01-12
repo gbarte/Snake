@@ -70,6 +70,14 @@ public class PlayState extends State {
         return speed;
     }
 
+    public FoodFactory getFoodFactory() {
+        return foodFactory;
+    }
+
+    public void setFoodFactory(FoodFactory foodFactory) {
+        this.foodFactory = foodFactory;
+    }
+
     public SnakeBody getSnake() {
         return snake;
     }
@@ -98,7 +106,7 @@ public class PlayState extends State {
         return food;
     }
 
-    public void setFood(Apple food) {
+    public void setFood(Food food) {
         this.food = food;
     }
 
@@ -156,7 +164,7 @@ public class PlayState extends State {
      * Renders the current score on the screen.
      * @param batch used for drawing elements.
      */
-    public void renderScore(SpriteBatch batch) {
+    private void renderScore(SpriteBatch batch) {
         BitmapFont bitmapFont = new BitmapFont();
         bitmapFont.setColor(Color.RED);
         bitmapFont.draw(batch, String.valueOf(score.getValue()), 20, 20);
@@ -273,7 +281,7 @@ public class PlayState extends State {
     /**
      * Checks whether an apple has been eaten or not.
      */
-    public boolean isAppleEaten() {
+    private void isAppleEaten() {
         if (snake.getHeadCoord().equals(food.getCoordinate())) {
             food.action(this);
             food = foodFactory.createFood();
@@ -281,18 +289,16 @@ public class PlayState extends State {
             if(foodFactory instanceof SimpleFoodFactory) {
                 activatePowerUp();
             }
-            return true;
         }
-        return false;
     }
 
-    public void activatePowerUp() {
+    private void activatePowerUp() {
         if(this.getScore().getValue() > 100) {
             foodFactory = new PowerUpFactory();
         }
     }
 
-    public void powerUpTimeout() {
+    private void powerUpTimeout() {
         if (speed != DEFAULT_SPEED || score instanceof DoubleScore) {
             powerUpTimeout -= Gdx.graphics.getDeltaTime();
         }

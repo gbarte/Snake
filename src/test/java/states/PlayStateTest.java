@@ -1,9 +1,5 @@
 package states;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -12,10 +8,15 @@ import game.SnakeGame;
 import gamelogic.Coordinate;
 import objects.base.Apple;
 import objects.base.Food;
+import objects.base.MushroomPowerUp;
+import objects.base.factories.FoodFactory;
+import objects.base.factories.SimpleFoodFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import snake.SnakeBody;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 class PlayStateTest {
@@ -269,11 +270,22 @@ class PlayStateTest {
         Mockito.when(Gdx.input.isKeyPressed(Input.Keys.S)).thenReturn(false);
         Mockito.when(Gdx.input.isKeyPressed(Input.Keys.D)).thenReturn(false);
 
-        Food apple = play.getFood();
-        play.update(10);
+        Food food = new Apple();
+        food.setCoordinate(snake.getHeadCoord());
+        play.setFood(food);
 
-        Food apple2 = play.getFood();
-        assertEquals(apple2.getCoordinate(), apple.getCoordinate());
+        Food food2 = new MushroomPowerUp();
+        food2.setCoordinate(new Coordinate(0, 0));
+
+        FoodFactory foodFactory = Mockito.mock(SimpleFoodFactory.class);
+        Mockito.when(foodFactory.createFood()).thenReturn(food2);
+        play.setFoodFactory(foodFactory);
+
+        play.update(10);
+        Food foodAfterEaten = play.getFood();
+
+        assertNotEquals(foodAfterEaten.getCoordinate(), food.getCoordinate());
+        assertEquals(foodAfterEaten.getCoordinate(), food2.getCoordinate());
     }
 
 }

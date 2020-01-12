@@ -159,7 +159,6 @@ class SnakeBodyTest {
         ShapeRenderer shapeRenderer = Mockito.mock(ShapeRenderer.class);
         snakeBody.renderSnake(shapeRenderer);
 
-        Mockito.verify(shapeRenderer).setColor(Mockito.any(Color.class));
         Mockito.verify(shapeRenderer).end();
     }
 
