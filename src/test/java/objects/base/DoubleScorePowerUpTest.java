@@ -16,7 +16,7 @@ public class DoubleScorePowerUpTest extends FoodTest {
 
     @Override
     protected Food getFood() {
-        return new MushroomPowerUp();
+        return new DoubleScorePowerUp();
     }
 
     @Test
