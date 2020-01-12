@@ -9,6 +9,7 @@ import snake.SnakeBody;
 import utils.Sizes;
 import world.CustomGameMap;
 import world.GameMap;
+import world.TiledGameMap;
 
 public class PlayStateTwo extends State {
 
@@ -33,7 +34,7 @@ public class PlayStateTwo extends State {
 
         this.snakeBody =
                 new SnakeBody(Sizes.DEFAULT_MINIMUM_MAP_TILES, Sizes.DEFAULT_MINIMUM_MAP_TILES);
-        gameMap = new CustomGameMap(snakeBody, gameManager); //CustomGameMap ipv TiledGameMap
+        gameMap = new CustomGameMap(this.snakeBody, gameManager); //CustomGameMap ipv TiledGameMap
 
     }
 

@@ -222,8 +222,6 @@ public abstract class GameMap {
                 currentHead.getCoordinateY());
         if (currentTile.isCollidable()) {
             getManager().set(new GameOverState(getManager()));
-            System.out.println("collides at "+currentTile.getName()+"->"+currentHead.toString());
-            System.out.println("snake head " + currentHead.toString());
         }
     }
 
@@ -233,7 +231,7 @@ public abstract class GameMap {
      */
     public void checkHeadHitsBody() {
         int minLength = 2;
-        // head can touch tail only if snake has more than 3 bodyparts
+        // head can touch tail only if snake has more than 2 bodyparts
         int size = getSnake().getBodyParts().size();
         if (size > minLength) {
             for (int i = 1; i < size; i++) {

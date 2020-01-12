@@ -1,20 +1,24 @@
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import java.util.LinkedList;
+package snake;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import gamelogic.Coordinate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mockito;
-
-import snake.BodyPart;
-import snake.SnakeBody;
 import utils.Direction;
+import utils.Sizes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.atMost;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.LinkedList;
 
 class SnakeBodyTest {
     private transient SnakeBody snakeBody;
@@ -61,14 +65,14 @@ class SnakeBodyTest {
     }
 
     @Test
-    void getHeadCoord() {
+    void getHeadCoordTest() {
         Coordinate c = new Coordinate(10, 10);
         snakeBody.setHeadCoord(c);
         assertEquals(snakeBody.getHeadCoord(), c);
     }
 
     @Test
-    void setHeadCoord() {
+    void setHeadCoordTest() {
         Coordinate c = new Coordinate(10, 10);
         snakeBody.setHeadCoord(c);
         assertEquals(snakeBody.getHeadCoord(), c);
@@ -142,39 +146,21 @@ class SnakeBodyTest {
         assertEquals(snakeBody.getHeadCoord().getCoordinateY(), 399);
     }
 
-    /*@Test
-    void updateBodyPartsPositionTest() {
-        LinkedList<BodyPart> ll = new LinkedList<>();
-        //ll.add(new BodyPart(400, 400));
-        //ll.add(new BodyPart(399, 400));
-        ll.add(new BodyPart(26, 25));
-        ll.add(new BodyPart(25, 25));
-
-        snakeBody.setBodyParts(ll);
-        snakeBody.moveSnake(Direction.UP);
-        snakeBody.updateBodyPartsPosition(snakeBody.getHeadCoord());
-        //no need to update again since its already done in moveSnake?
-
-        LinkedList<BodyPart> bodyParts = snakeBody.getBodyParts();
-
-        assertEquals(bodyParts.get(1).getCoordinate().getCoordinateY(),
-                bodyParts.get(0).getCoordinate().getCoordinateY() - 1);
-    } */
-
     //suppress this because redefining a variable is necessary
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     @ParameterizedTest
     @CsvSource({
-            "r, 1, 0",
-            "l, -1, 0",
-            "u, 0, 1",
-            "d, 0, -1"
+            "RIGHT, 1, 0",
+            "LEFT, -1, 0",
+            "UP, 0, 1",
+            "DOWN, 0, -1"
     }) //DONT ANNOTATE WITH @Test
-    void update3BodyPartsPositionTest(char dir, int dx, int dy) {
+    void update3BodyPartsPositionTest(Direction dir, int dx, int dy) {
 
         int x = 26;
         int y = 25;
         BodyPart zeroHead = new BodyPart(x, y);
+        System.out.println("zero " + zeroHead.getCoordinate().toString());
         x -= dx;
         y -= dy;
         BodyPart one = new BodyPart(x, y);
@@ -182,7 +168,7 @@ class SnakeBodyTest {
         x -= dx;
         y -= dy;
         BodyPart two = new BodyPart(x, y);
-        System.out.println("last " + two.getCoordinate().toString());
+        System.out.println("two " + two.getCoordinate().toString());
 
         LinkedList<BodyPart> linkedList = new LinkedList<>();
         linkedList.add(zeroHead);
@@ -191,23 +177,7 @@ class SnakeBodyTest {
 
         snakeBody.setBodyParts(linkedList);
         //snakeBody.moveSnake(Direction.UP);
-        Direction temp = Direction.RIGHT;
-        switch (dir) {
-            case 'r':
-                temp = Direction.RIGHT;
-                break;
-            case 'l':
-                temp = Direction.LEFT;
-                break;
-            case 'u':
-                temp = Direction.UP;
-                break;
-            case 'd':
-                temp = Direction.DOWN;
-                break;
-            default:
-                //do nothing
-        }
+        Direction temp = dir;
 
         snakeBody.setCurrDir(temp);
         snakeBody.updateBodyPartsPosition(snakeBody.getHeadCoord());
@@ -230,13 +200,47 @@ class SnakeBodyTest {
                 allBP.get(2).getCoordinate());
     }
 
-    @Test
-    void renderSnake() {
-        /*ShapeRenderer shapeRenderer = Mockito.mock(ShapeRenderer.class);
-        snakeBody.renderSnake(shapeRenderer);
+    @ParameterizedTest
+    @CsvSource({
+            "RIGHT, -90f",
+            "LEFT, 90f",
+            "UP, 0f",
+            "DOWN, 180f"
+    })
+    void renderSnakeTest(Direction dir, float rotation) {
+        this.snakeBody =
+                new SnakeBody(Sizes.DEFAULT_MINIMUM_MAP_TILES, Sizes.DEFAULT_MINIMUM_MAP_TILES);
+        snakeBody.setCurrDir(dir);
+        //SpriteBatch batch = Mockito.mock(SpriteBatch.class);
 
-        Mockito.verify(shapeRenderer).setColor(Mockito.any(Color.class));
-        Mockito.verify(shapeRenderer).end();*/
+        /*
+        TextureRegion[][] textureRegions =
+                TextureRegion.split(new Texture("assets/DefaultBody.png"),
+                        Sizes.TILE_PIXELS, Sizes.TILE_PIXELS);
+        TextureRegion head = textureRegions[0][0];
+        TextureRegion body = textureRegions[0][1];
+        */
+
+        /*
+        TextureRegion[][] textureRegions = Mockito.mock(TextureRegion[][].class);
+        TextureRegion head = Mockito.mock(TextureRegion.class);
+        TextureRegion body = Mockito.mock(TextureRegion.class);
+        when(textureRegions[0][0]).thenReturn(head);
+        when(textureRegions[0][1]).thenReturn(body);
+
+
+
+        snakeBody.renderSnake(batch, textureRegions);
+        int x = snakeBody.getHeadCoord().getCoordinateX() * Sizes.TILE_PIXELS;
+        int y = snakeBody.getHeadCoord().getCoordinateY() * Sizes.TILE_PIXELS;
+        verify(batch).draw(any(TextureRegion.class),
+                x,
+                y,
+                (float) Sizes.TILE_PIXELS / 2, (float) Sizes.TILE_PIXELS / 2,
+                Sizes.TILE_PIXELS, Sizes.TILE_PIXELS, 1, 1,
+                rotation, true);
+        verify(snakeBody.getBodyParts().get(any()), atMost(snakeBody.getBodyParts().size() - 1));
+         */
     }
 
 }

@@ -10,6 +10,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import snake.SnakeBody;
 import states.GameStateManager;
+import utils.Sizes;
 import utils.TileType;
 
 public class TiledGameMap extends GameMap {
@@ -26,14 +27,13 @@ public class TiledGameMap extends GameMap {
      */
     public TiledGameMap(SnakeBody snake, GameStateManager manager) {
         this("assets/def3.tmx", snake, manager);
-        //tiledMap = new TmxMapLoader().load("assets/def3.tmx");
-        //tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-        //snake = new SnakeBody(getWidth(), getHeight());
     }
 
     /**
      * Constructor that takes in a file name for the map.
      * @param fileName The file's name in string format.
+     * @param snake The snake that gets passed through.
+     * @param manager The game's state manager that's required to manage the game.
      */
     @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public TiledGameMap(String fileName, SnakeBody snake, GameStateManager manager) {
@@ -45,13 +45,13 @@ public class TiledGameMap extends GameMap {
     }
 
     @Override
-    public void render(OrthographicCamera camera, SpriteBatch batch, SnakeBody snake) {
+    public void render(OrthographicCamera camera, SpriteBatch batch, SnakeBody snakeBody) {
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
         //after rendering map up here^ u wanna render entities on the map
         //which is what u do in the super class GameMap
 
-        //set projection matrix to this so it renders according to how the camera want to render it
+        //set projection matrix to this so it renders according to how the camera wants to render it
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
@@ -71,6 +71,15 @@ public class TiledGameMap extends GameMap {
 
     @Override
     public TileType getTileTypeByCoordinate(int layer, int col, int row) {
+        //check if its out of bounds first
+        if (col < 0 || col >= getWidth() || row < 0 || row >= getHeight()) {
+            return null;
+        }
+        //check if layer isn't out of bounds
+        if (layer >= getLayers() || layer < 0) {
+            layer = getLayers() - 1;
+        }
+
         Cell cell = ((TiledMapTileLayer) tiledMap.getLayers().get(layer)).getCell(col, row);
 
         if (cell != null) {

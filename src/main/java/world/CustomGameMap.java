@@ -26,16 +26,7 @@ public class CustomGameMap extends GameMap {
      * Constructor for the custom game map.
      */
     public CustomGameMap(SnakeBody snake, GameStateManager manager) {
-        CustomGameMapData customGameMapData =
-                CustomGameMapLoader.loadMap("defaultID", "defaultName");
-        this.id = customGameMapData.id;
-        this.name = customGameMapData.name;
-        this.map = customGameMapData.map;
-
-        Texture texture = new Texture("assets/setOfFive.png");
-        tiles = TextureRegion.split(texture, TileType.TILE_SIZE, TileType.TILE_SIZE);
-        this.snake = snake;
-        this.manager = manager;
+        this("defaultID", "defaultName", "assets/setOfFive.png", snake, manager);
     }
 
     /**
@@ -43,14 +34,14 @@ public class CustomGameMap extends GameMap {
      * @param id The id for the map.
      * @param name The name of the map.
      */
-    public CustomGameMap(String id, String name, SnakeBody snake, GameStateManager manager) {
+    public CustomGameMap(String id, String name, String snakeSkin, SnakeBody snake, GameStateManager manager) {
         this.id = id;
         this.name = name;
         this.snake = snake;
         CustomGameMapData customGameMapData =
                 CustomGameMapLoader.loadMap(id, name);
         this.map = customGameMapData.map;
-        Texture texture = new Texture("assets/setOfFive.png");
+        Texture texture = new Texture(snakeSkin);
         tiles = TextureRegion.split(texture, TileType.TILE_SIZE, TileType.TILE_SIZE);
         this.manager = manager;
     }

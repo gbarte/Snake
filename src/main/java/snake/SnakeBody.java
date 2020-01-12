@@ -113,7 +113,7 @@ public class SnakeBody {
         batch.draw(textureRegions[0][0],
                 x,
                 y,
-                Sizes.TILE_PIXELS / 2, Sizes.TILE_PIXELS / 2,
+                (float) Sizes.TILE_PIXELS / 2, (float) Sizes.TILE_PIXELS / 2,
                 Sizes.TILE_PIXELS, Sizes.TILE_PIXELS, 1, 1,
                 rot, true);
         //originX is amount of pixels away from origin

@@ -44,10 +44,6 @@ class PlayStateTwoTest {
         gameStateManager.push(playStateTwo);
     }
 
-    @AfterEach
-    void tearDown() {
-    }
-
     @Test
     void handleInputTest() {
         playStateTwo.handleInput();
