@@ -19,6 +19,10 @@ public class DoubleScorePowerUp implements Food {
         this.texture = new Texture(texturePath);
     }
 
+    public DoubleScorePowerUp() {
+
+    }
+
     public Coordinate getCoordinate() {
         return coordinate;
     }
@@ -27,8 +31,16 @@ public class DoubleScorePowerUp implements Food {
         return texture;
     }
 
+    public void setCoordinate(Coordinate coordinate) {
+        this.coordinate = coordinate;
+    }
+
+    public void setTexture(Texture texture) {
+        this.texture = texture;
+    }
+
     @Override
-    public void start(PlayState play) {
+    public void action(PlayState play) {
         play.getShapeRenderer().setColor(Color.RED);
         int currScore = play.getScore().getValue();
 

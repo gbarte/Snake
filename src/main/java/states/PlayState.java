@@ -3,17 +3,18 @@ package states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.utils.TimeUtils;
 import game.SnakeGame;
 import gamelogic.Coordinate;
 import gamelogic.DoubleScore;
 import gamelogic.Score;
 
 import objects.base.*;
+import objects.base.factories.FoodFactory;
+import objects.base.factories.PowerUpFactory;
+import objects.base.factories.SimpleFoodFactory;
 import snake.BodyPart;
 import snake.SnakeBody;
 
@@ -26,7 +27,7 @@ public class PlayState extends State {
     private float timer = speed;
     private SnakeBody snake;
     private ShapeRenderer shapeRenderer;
-    private Food apple;
+    private Food food;
     private Score score;
     private FoodFactory foodFactory;
     private static double powerUpTimeout = 10;
@@ -47,7 +48,7 @@ public class PlayState extends State {
         score = new Score();
 
         foodFactory = new SimpleFoodFactory();
-        apple = foodFactory.createFood();
+        food = foodFactory.createFood();
     }
 
     /**
@@ -65,12 +66,8 @@ public class PlayState extends State {
         this.speed = speed;
     }
 
-    public OrthographicCamera getCamera() {
-        return camera;
-    }
-
-    public void setCamera(OrthographicCamera camera) {
-        this.camera = camera;
+    public float getSpeed() {
+        return speed;
     }
 
     public SnakeBody getSnake() {
@@ -89,10 +86,6 @@ public class PlayState extends State {
         this.shapeRenderer = shapeRenderer;
     }
 
-    public float getTimer() {
-        return timer;
-    }
-
     public Score getScore() {
         return score;
     }
@@ -101,16 +94,12 @@ public class PlayState extends State {
         this.score = score;
     }
 
-    public void setTimer(float timer) {
-        this.timer = timer;
+    public Food getFood() {
+        return food;
     }
 
-    public Food getApple() {
-        return apple;
-    }
-
-    public void setApple(Apple apple) {
-        this.apple = apple;
+    public void setFood(Apple food) {
+        this.food = food;
     }
 
     @Override
@@ -155,8 +144,8 @@ public class PlayState extends State {
     public void render(SpriteBatch batch) {
         snake.renderSnake(shapeRenderer);
         batch.begin();
-        Coordinate appleCoordinates = apple.getCoordinate();
-        batch.draw(apple.getTexture(), appleCoordinates.getCoordinateX(), appleCoordinates.getCoordinateY());
+        Coordinate appleCoordinates = food.getCoordinate();
+        batch.draw(food.getTexture(), appleCoordinates.getCoordinateX(), appleCoordinates.getCoordinateY());
         renderScore(batch);
         batch.end();
         //Comment out next line if you don't want the grid
@@ -285,9 +274,9 @@ public class PlayState extends State {
      * Checks whether an apple has been eaten or not.
      */
     public boolean isAppleEaten() {
-        if (snake.getHeadCoord().equals(apple.getCoordinate())) {
-            apple.start(this);
-            apple = foodFactory.createFood();
+        if (snake.getHeadCoord().equals(food.getCoordinate())) {
+            food.action(this);
+            food = foodFactory.createFood();
             checkAppleOnSnake();
             if(foodFactory instanceof SimpleFoodFactory) {
                 activatePowerUp();
@@ -323,8 +312,8 @@ public class PlayState extends State {
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     private void checkAppleOnSnake() {
         for (BodyPart bp : snake.getBodyParts()) {
-            if (bp.getCoordinate().equals(apple.getCoordinate())) {
-                apple = foodFactory.createFood();
+            if (bp.getCoordinate().equals(food.getCoordinate())) {
+                food = foodFactory.createFood();
             }
         }
     }

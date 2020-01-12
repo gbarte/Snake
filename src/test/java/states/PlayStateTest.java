@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import game.SnakeGame;
 import gamelogic.Coordinate;
 import objects.base.Apple;
+import objects.base.Food;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -68,24 +69,19 @@ class PlayStateTest {
     }
 
     @Test
-    void getTimerTest() {
-        assertEquals(PlayState.MOVE_TIME, play.getTimer());
-    }
-
-    @Test
     void getAppleTest() {
         Apple apple = Mockito.mock(Apple.class);
-        play.setApple(apple);
+        play.setFood(apple);
 
-        assertEquals(play.getApple(), apple);
+        assertEquals(play.getFood(), apple);
     }
 
     @Test
     void setAppleTest() {
         Apple apple2 = Mockito.mock(Apple.class);
-        play.setApple(apple2);
+        play.setFood(apple2);
 
-        assertEquals(play.getApple(), apple2);
+        assertEquals(play.getFood(), apple2);
     }
 
     @Test
@@ -265,7 +261,6 @@ class PlayStateTest {
         assertEquals(SnakeBody.Direction.DOWN, play.getSnake().getCurrDir());
     }
 
-    //Flaky test bellow!
     @Test
     void eatAppleTest() {
         Gdx.input = Mockito.mock(Input.class);
@@ -274,10 +269,10 @@ class PlayStateTest {
         Mockito.when(Gdx.input.isKeyPressed(Input.Keys.S)).thenReturn(false);
         Mockito.when(Gdx.input.isKeyPressed(Input.Keys.D)).thenReturn(false);
 
-        Apple apple = play.getApple();
+        Food apple = play.getFood();
         play.update(10);
 
-        Apple apple2 = play.getApple();
+        Food apple2 = play.getFood();
         assertEquals(apple2.getCoordinate(), apple.getCoordinate());
     }
 

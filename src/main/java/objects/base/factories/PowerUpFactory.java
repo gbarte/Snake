@@ -1,6 +1,7 @@
-package objects.base;
+package objects.base.factories;
 
 import gamelogic.Coordinate;
+import objects.base.*;
 
 import java.util.Random;
 

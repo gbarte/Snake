@@ -1,7 +1,8 @@
-package objects.base;
+package objects.base.factories;
 
 import game.SnakeGame;
 import gamelogic.Coordinate;
+import objects.base.Food;
 import snake.SnakeBody;
 
 import java.util.Random;

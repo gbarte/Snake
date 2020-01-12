@@ -21,6 +21,10 @@ public class GoldenApple implements Food {
         this.texture = new Texture(texturePath);
     }
 
+    public GoldenApple() {
+
+    }
+
     public Coordinate getCoordinate() {
         return coordinate;
     }
@@ -29,8 +33,17 @@ public class GoldenApple implements Food {
         return texture;
     }
 
+    public void setCoordinate(Coordinate coordinate) {
+        this.coordinate = coordinate;
+    }
+
+    public void setTexture(Texture texture) {
+        this.texture = texture;
+    }
+
     @Override
-    public void start(PlayState play) {
+    public void action(PlayState play) {
         play.getScore().add(DEFAULT_SCORE);
+        play.getSnake().growSnake(2);
     }
 }

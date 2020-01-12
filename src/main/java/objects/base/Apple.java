@@ -24,6 +24,10 @@ public class Apple implements Food {
         this.texture = new Texture(texturePath);
     }
 
+    public Apple() {
+
+    }
+
     public Coordinate getCoordinate() {
         return coordinate;
     }
@@ -32,8 +36,17 @@ public class Apple implements Food {
         return texture;
     }
 
+    public void setCoordinate(Coordinate coordinate) {
+        this.coordinate = coordinate;
+    }
+
+    public void setTexture(Texture texture) {
+        this.texture = texture;
+    }
+
     @Override
-    public void start(PlayState play) {
+    public void action(PlayState play) {
         play.getScore().add(Apple.DEFAULT_SCORE);
+        play.getSnake().growSnake();
     }
 }

@@ -1,6 +1,9 @@
-package objects.base;
+package objects.base.factories;
 
 import gamelogic.Coordinate;
+import objects.base.Apple;
+import objects.base.Food;
+import objects.base.GoldenApple;
 
 import java.util.Random;
 

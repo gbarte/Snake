@@ -21,6 +21,10 @@ public class MushroomPowerUp implements Food {
         this.texture = new Texture(texturePath);
     }
 
+    public MushroomPowerUp() {
+
+    }
+
     public Texture getTexture() {
         return texture;
     }
@@ -29,8 +33,16 @@ public class MushroomPowerUp implements Food {
         return coordinate;
     }
 
+    public void setCoordinate(Coordinate coordinate) {
+        this.coordinate = coordinate;
+    }
+
+    public void setTexture(Texture texture) {
+        this.texture = texture;
+    }
+
     @Override
-    public void start(PlayState play) {
+    public void action(PlayState play) {
         play.setSpeed(PlayState.DEFAULT_SPEED / 2);
         play.getShapeRenderer().setColor(Color.PURPLE);
     }
