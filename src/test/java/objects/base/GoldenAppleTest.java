@@ -1,12 +1,13 @@
 package objects.base;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import gamelogic.Score;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import snake.SnakeBody;
 import states.PlayState;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class GoldenAppleTest extends FoodTest {
 
@@ -17,7 +18,6 @@ public class GoldenAppleTest extends FoodTest {
 
     @Test
     void appleActionTest() {
-        GoldenApple apple = new GoldenApple();
         PlayState playState = Mockito.mock(PlayState.class);
 
         Score score = new Score();
@@ -28,6 +28,7 @@ public class GoldenAppleTest extends FoodTest {
         SnakeBody snake = Mockito.mock(SnakeBody.class);
         Mockito.when(playState.getSnake()).thenReturn(snake);
 
+        GoldenApple apple = new GoldenApple();
         apple.action(playState);
 
         assertEquals(initialScore + GoldenApple.DEFAULT_SCORE, score.getValue());

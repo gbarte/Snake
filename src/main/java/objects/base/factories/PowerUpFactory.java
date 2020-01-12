@@ -1,9 +1,11 @@
 package objects.base.factories;
 
-import gamelogic.Coordinate;
-import objects.base.*;
-
 import java.util.Random;
+import objects.base.DoubleScorePowerUp;
+import objects.base.Food;
+import objects.base.MushroomPowerUp;
+
+
 
 public class PowerUpFactory extends FoodFactory {
 
@@ -12,14 +14,12 @@ public class PowerUpFactory extends FoodFactory {
         Random random = new Random();
         double num = random.nextDouble();
 
-        Food food = new SimpleFoodFactory().createFood();
-        Coordinate coordinate = randomCoordinates();
         //Lowest rarity should be checked first
-        if(num <= MushroomPowerUp.rarity) {
-            food = new MushroomPowerUp(coordinate);
-        } else if(num <= DoubleScorePowerUp.rarity) {
-            food = new DoubleScorePowerUp(coordinate);
+        if (num <= MushroomPowerUp.rarity) {
+            return new MushroomPowerUp(randomCoordinates());
+        } else if (num <= DoubleScorePowerUp.rarity) {
+            return new DoubleScorePowerUp(randomCoordinates());
         }
-        return food;
+        return new SimpleFoodFactory().createFood();
     }
 }

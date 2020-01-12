@@ -8,7 +8,7 @@ import gamelogic.DoubleScore;
 import states.PlayState;
 
 public class DoubleScorePowerUp implements Food {
-    public final static double rarity = 0.2;
+    public static final double rarity = 0.2;
     private static final String texturePath = "assets/goldenApple.png";
     private Coordinate coordinate;
     private Texture texture;

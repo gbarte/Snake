@@ -24,7 +24,7 @@ public class MushroomTest extends FoodTest {
         mushroom.action(playState);
 
         Mockito.verify(shapeRenderer).setColor(Color.PURPLE);
-        Mockito.verify(playState).setSpeed(PlayState.DEFAULT_SPEED / 2);
+        Mockito.verify(playState).setMoveTime(PlayState.DEFAULT_MOVE_TIME / 2);
     }
 
 }

@@ -1,14 +1,13 @@
 package objects.base;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import game.SnakeGame;
 import gamelogic.Score;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import snake.SnakeBody;
 import states.PlayState;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AppleTest extends FoodTest {
 
@@ -19,7 +18,6 @@ class AppleTest extends FoodTest {
 
     @Test
     void appleActionTest() {
-        Apple apple = new Apple();
         PlayState playState = Mockito.mock(PlayState.class);
 
         Score score = new Score();
@@ -30,6 +28,7 @@ class AppleTest extends FoodTest {
         SnakeBody snake = Mockito.mock(SnakeBody.class);
         Mockito.when(playState.getSnake()).thenReturn(snake);
 
+        Apple apple = new Apple();
         apple.action(playState);
 
         assertEquals(initialScore + Apple.DEFAULT_SCORE, score.getValue());

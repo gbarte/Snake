@@ -1,5 +1,7 @@
 package objects.base;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import gamelogic.DoubleScore;
@@ -9,7 +11,6 @@ import org.mockito.Mockito;
 import snake.SnakeBody;
 import states.PlayState;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DoubleScorePowerUpTest extends FoodTest {
 
@@ -21,7 +22,6 @@ public class DoubleScorePowerUpTest extends FoodTest {
     @Test
     void mushroomActionTest() {
         PlayState playState = Mockito.mock(PlayState.class);
-        DoubleScorePowerUp powerUp = new DoubleScorePowerUp();
         ShapeRenderer shapeRenderer = Mockito.mock(ShapeRenderer.class);
         Mockito.when(playState.getShapeRenderer()).thenReturn(shapeRenderer);
 
@@ -30,6 +30,7 @@ public class DoubleScorePowerUpTest extends FoodTest {
         score.setValue(initialScore);
         Mockito.when(playState.getScore()).thenReturn(score);
 
+        DoubleScorePowerUp powerUp = new DoubleScorePowerUp();
         powerUp.action(playState);
 
         SnakeBody snake = Mockito.mock(SnakeBody.class);

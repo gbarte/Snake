@@ -10,7 +10,7 @@ import states.PlayState;
  */
 public class Apple implements Food {
 
-    protected final static int DEFAULT_SCORE = 10;
+    public static final int DEFAULT_SCORE = 10;
     private static final String texturePath = "assets/greenapplesmall.png";
     public Coordinate coordinate;
     private Texture texture;

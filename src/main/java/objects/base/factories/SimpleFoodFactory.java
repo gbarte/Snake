@@ -1,11 +1,11 @@
 package objects.base.factories;
 
 import gamelogic.Coordinate;
+import java.util.Random;
 import objects.base.Apple;
 import objects.base.Food;
 import objects.base.GoldenApple;
 
-import java.util.Random;
 
 public class SimpleFoodFactory extends FoodFactory {
 
@@ -16,7 +16,7 @@ public class SimpleFoodFactory extends FoodFactory {
 
         Coordinate coordinate = randomCoordinates();
 
-        if(num <= GoldenApple.rarity) {
+        if (num <= GoldenApple.rarity) {
             return new GoldenApple(coordinate);
         }
         return new Apple(coordinate);

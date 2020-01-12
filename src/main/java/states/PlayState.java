@@ -11,7 +11,8 @@ import gamelogic.Coordinate;
 import gamelogic.DoubleScore;
 import gamelogic.Score;
 
-import objects.base.*;
+import objects.base.Apple;
+import objects.base.Food;
 import objects.base.factories.FoodFactory;
 import objects.base.factories.PowerUpFactory;
 import objects.base.factories.SimpleFoodFactory;
@@ -22,9 +23,11 @@ import snake.SnakeBody;
  * In-game screen.
  */
 public class PlayState extends State {
-    public static float DEFAULT_SPEED = 0.25f;
-    private float speed = DEFAULT_SPEED;
-    private float timer = speed;
+    public static float DEFAULT_MOVE_TIME = 0.25f;
+    @SuppressWarnings("PMD")
+    private float moveTime = DEFAULT_MOVE_TIME;
+    @SuppressWarnings("PMD")
+    private float timer = moveTime;
     private SnakeBody snake;
     private ShapeRenderer shapeRenderer;
     private Food food;
@@ -62,12 +65,8 @@ public class PlayState extends State {
         this.score = new Score();
     }
 
-    public void setSpeed(float speed) {
-        this.speed = speed;
-    }
-
-    public float getSpeed() {
-        return speed;
+    public void setMoveTime(float moveTime) {
+        this.moveTime = moveTime;
     }
 
     public FoodFactory getFoodFactory() {
@@ -138,7 +137,7 @@ public class PlayState extends State {
         updateSnake(dt);
         isAppleEaten();
 
-        powerUpTimeout();
+        checkPowerUpTimeout();
 
     }
 
@@ -152,8 +151,8 @@ public class PlayState extends State {
     public void render(SpriteBatch batch) {
         snake.renderSnake(shapeRenderer);
         batch.begin();
-        Coordinate appleCoordinates = food.getCoordinate();
-        batch.draw(food.getTexture(), appleCoordinates.getCoordinateX(), appleCoordinates.getCoordinateY());
+        Coordinate foodPos = food.getCoordinate();
+        batch.draw(food.getTexture(), foodPos.getCoordinateX(), foodPos.getCoordinateY());
         renderScore(batch);
         batch.end();
         //Comment out next line if you don't want the grid
@@ -178,7 +177,7 @@ public class PlayState extends State {
     private void updateSnake(float delta) {
         timer -= delta;
         if (timer <= 0) {
-            timer = speed;
+            timer = moveTime;
             snake.moveSnake(snake.getCurrDir());
         }
     }
@@ -254,7 +253,7 @@ public class PlayState extends State {
      */
     public void checkHeadHitsBody() {
         int minLength = 3;
-        // head can touch tail only if snake has more than 3 bodyparts
+
         int size = snake.getBodyParts().size();
         if (size > minLength) {
             for (int i = 0; i < size; i++) {
@@ -286,25 +285,25 @@ public class PlayState extends State {
             food.action(this);
             food = foodFactory.createFood();
             checkAppleOnSnake();
-            if(foodFactory instanceof SimpleFoodFactory) {
+            if (foodFactory instanceof SimpleFoodFactory) {
                 activatePowerUp();
             }
         }
     }
 
     private void activatePowerUp() {
-        if(this.getScore().getValue() > 100) {
+        if (getScore().getValue() > Apple.DEFAULT_SCORE * 10) {
             foodFactory = new PowerUpFactory();
         }
     }
 
-    private void powerUpTimeout() {
-        if (speed != DEFAULT_SPEED || score instanceof DoubleScore) {
+    private void checkPowerUpTimeout() {
+        if (moveTime != DEFAULT_MOVE_TIME || score instanceof DoubleScore) {
             powerUpTimeout -= Gdx.graphics.getDeltaTime();
         }
         if (powerUpTimeout <= 0) {
             shapeRenderer.setColor(Color.GREEN);
-            speed = DEFAULT_SPEED;
+            moveTime = DEFAULT_MOVE_TIME;
             int currScore = score.getValue();
             score = new Score();
             score.setValue(currScore);

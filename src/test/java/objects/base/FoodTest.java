@@ -1,24 +1,26 @@
 package objects.base;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.badlogic.gdx.graphics.Texture;
 import gamelogic.Coordinate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public abstract class FoodTest {
 
+    @SuppressWarnings("PMD")
     private Food food;
-    private Coordinate coordinate;
+    @SuppressWarnings("PMD")
     private Texture texture;
 
     protected abstract Food getFood();
 
     @BeforeEach
     void setUp() {
-        coordinate = new Coordinate(10, 15);
+        Coordinate coordinate = new Coordinate(10, 15);
         texture = Mockito.mock(Texture.class);
 
         food = getFood();

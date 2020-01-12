@@ -2,15 +2,20 @@ package objects.base.factories;
 
 import game.SnakeGame;
 import gamelogic.Coordinate;
+import java.util.Random;
 import objects.base.Food;
 import snake.SnakeBody;
 
-import java.util.Random;
 
 public abstract class FoodFactory {
 
     public abstract Food createFood();
 
+    /**
+     * Randomly chooses an x and y coordinate to be used as
+     * the foods coordinates.
+     * @return random Coordinate on the map in game.
+     */
     public Coordinate randomCoordinates() {
         Random r = new Random();
         int minX = 0;

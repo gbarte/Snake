@@ -7,9 +7,13 @@ import states.PlayState;
 public interface Food {
 
     void action(PlayState play);
+
     Coordinate getCoordinate();
+
     Texture getTexture();
+
     void setCoordinate(Coordinate coordinate);
+
     void setTexture(Texture texture);
 
 }

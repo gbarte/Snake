@@ -1,7 +1,5 @@
 package gamelogic;
 
-import snake.SnakeBody;
-
 import java.util.Objects;
 
 /**
