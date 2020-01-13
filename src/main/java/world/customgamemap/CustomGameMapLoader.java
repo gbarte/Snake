@@ -6,11 +6,11 @@ import com.badlogic.gdx.utils.Json;
 import utils.Sizes;
 import utils.TileType;
 
-@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class CustomGameMapLoader {
 
     private static Json json = new Json();
     private static final int SIZE = Sizes.DEFAULT_MINIMUM_MAP_TILES;
+    public static final String PATH = "maps/";
 
     /**
      * Generate a custom game map using without specifying the maximum size of the map.
@@ -61,8 +61,8 @@ public class CustomGameMapLoader {
      * @return A custom game map's data.
      */
     public static CustomGameMapData loadMap(String id, String name) {
-        Gdx.files.local("maps/").file().mkdirs();
-        FileHandle file = Gdx.files.local("maps/" + id + ".map");
+        Gdx.files.local(PATH).file().mkdirs();
+        FileHandle file = Gdx.files.local(PATH + id + ".map");
         if (file.exists()) {
             CustomGameMapData data = json.fromJson(CustomGameMapData.class, file.readString());
             return data;
@@ -80,8 +80,8 @@ public class CustomGameMapLoader {
         data.map = map;
 
         //if the folder doesn't exist, you create it
-        Gdx.files.local("maps/").file().mkdirs();
-        FileHandle file = Gdx.files.local("maps/" + id + ".map");
+        Gdx.files.local(PATH).file().mkdirs();
+        FileHandle file = Gdx.files.local(PATH + id + ".map");
         file.writeString(json.prettyPrint(data), false); //false cz u wanna overwrite ipv append
     }
 }
