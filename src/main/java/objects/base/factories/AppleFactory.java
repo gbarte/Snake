@@ -7,7 +7,7 @@ import objects.base.Food;
 import objects.base.GoldenApple;
 
 
-public class SimpleFoodFactory extends FoodFactory {
+public class AppleFactory extends FoodFactory {
 
     @Override
     public Food createFood() {

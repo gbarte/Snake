@@ -16,7 +16,7 @@ import objects.base.Apple;
 import objects.base.Food;
 import objects.base.factories.FoodFactory;
 import objects.base.factories.PowerUpFactory;
-import objects.base.factories.SimpleFoodFactory;
+import objects.base.factories.AppleFactory;
 import snake.BodyPart;
 import snake.SnakeBody;
 
@@ -51,7 +51,7 @@ public class PlayState extends State {
         camera.setToOrtho(false, SnakeGame.WIDTH, SnakeGame.HEIGHT);
         score = new Score();
 
-        foodFactory = new SimpleFoodFactory();
+        foodFactory = new AppleFactory();
         food = foodFactory.createFood();
     }
 
@@ -300,7 +300,7 @@ public class PlayState extends State {
             food.action(this);
             food = foodFactory.createFood();
             checkAppleOnSnake();
-            if (foodFactory instanceof SimpleFoodFactory) {
+            if (foodFactory instanceof AppleFactory) {
                 activatePowerUp();
             }
         }

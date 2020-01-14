@@ -14,12 +14,11 @@ public class PowerUpFactory extends FoodFactory {
         Random random = new Random();
         double num = random.nextDouble();
 
-        //Lowest rarity should be checked first
         if (num <= MushroomPowerUp.rarity) {
             return new MushroomPowerUp(randomCoordinates());
-        } else if (num <= DoubleScorePowerUp.rarity) {
+        } else if (num <= DoubleScorePowerUp.rarity + MushroomPowerUp.rarity) {
             return new DoubleScorePowerUp(randomCoordinates());
         }
-        return new SimpleFoodFactory().createFood();
+        return new AppleFactory().createFood();
     }
 }

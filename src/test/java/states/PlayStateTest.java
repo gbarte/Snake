@@ -9,13 +9,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import game.SnakeGame;
 import gamelogic.Coordinate;
 import objects.base.Apple;
 import objects.base.Food;
 import objects.base.MushroomPowerUp;
 import objects.base.factories.FoodFactory;
-import objects.base.factories.SimpleFoodFactory;
+import objects.base.factories.AppleFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -236,7 +235,7 @@ class PlayStateTest {
         Food food2 = new MushroomPowerUp();
         food2.setCoordinate(new Coordinate(0, 0));
 
-        FoodFactory foodFactory = Mockito.mock(SimpleFoodFactory.class);
+        FoodFactory foodFactory = Mockito.mock(AppleFactory.class);
         Mockito.when(foodFactory.createFood()).thenReturn(food2);
         play.setFoodFactory(foodFactory);
 
