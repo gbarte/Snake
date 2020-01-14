@@ -22,7 +22,8 @@ import services.auth.AuthService;
 /**
  * Creates login screen.
  */
-public class LoginState extends State {
+public class LoginState implements State {
+    private GameStateManager stateManager;
     private Stage stage;
     private Skin skin;
     private Label title;
@@ -37,7 +38,7 @@ public class LoginState extends State {
      * @param gameManager which keeps track of the state of the game.
      */
     public LoginState(GameStateManager gameManager) {
-        super(gameManager);
+        this.stateManager = gameManager;
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         skin =  new Skin(Gdx.files.internal("assets/quantum-horizon/skin/quantum-horizon-ui.json"));
@@ -120,7 +121,7 @@ public class LoginState extends State {
         signUpButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                gameManager.set(new SignUpState(gameManager));
+                stateManager.set(new SignUpState(stateManager));
             }
 
             @Override
@@ -172,7 +173,7 @@ public class LoginState extends State {
 
 
                 if (response == AuthResponse.SUCCESS) {
-                    gameManager.set(new MenuState(gameManager));
+                    stateManager.set(new MenuState(stateManager));
                 } else {
                     // TODO: display failed authentication.
                     failedAuthenticationDialog();

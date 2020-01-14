@@ -2,14 +2,10 @@ package states;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import game.SnakeGame;
-import gamelogic.Coordinate;
 import objects.base.Apple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,14 +40,6 @@ class PlayStateTest {
         play.setShapeRenderer(shapeRenderer2);
 
         assertEquals(play.getShapeRenderer(), shapeRenderer2);
-    }
-
-    @Test
-    void getCameraTest() {
-        OrthographicCamera camera = new OrthographicCamera();
-        play.setCamera(camera);
-
-        assertEquals(play.getCamera(), camera);
     }
 
     @Test
@@ -145,7 +133,7 @@ class PlayStateTest {
             snake.setHeadCoord(snake.getBodyParts().get(i).getCoordinate());
             play.setSnake(snake);
             play.checkHeadHitsBody();
-            assertFalse(play.gameManager.getStates().peek() instanceof GameOverState);
+            assertFalse(stateManager.getStates().peek() instanceof GameOverState);
         }
     }
 

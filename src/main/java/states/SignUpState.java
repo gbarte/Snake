@@ -20,7 +20,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 /**
  * Creates sign up screen.
  */
-public class SignUpState extends State {
+public class SignUpState implements State {
+    private GameStateManager stateManager;
     private Stage stage;
     private Skin skin;
     private Texture background;
@@ -35,7 +36,7 @@ public class SignUpState extends State {
      * @param gameManager which keeps track of the state of the game.
      */
     public SignUpState(GameStateManager gameManager) {
-        super(gameManager);
+        this.stateManager = gameManager;
         stage = new Stage(new ScreenViewport());
         background = new Texture("assets/bg.png");
         Gdx.input.setInputProcessor(stage);
@@ -120,7 +121,7 @@ public class SignUpState extends State {
         signUpButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                gameManager.set(new LoginState(gameManager));
+                stateManager.set(new LoginState(stateManager));
             }
 
             @Override
@@ -166,7 +167,7 @@ public class SignUpState extends State {
         returnButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                gameManager.set(new LoginState(gameManager));
+                stateManager.set(new LoginState(stateManager));
             }
 
             @Override

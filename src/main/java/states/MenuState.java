@@ -22,7 +22,8 @@ import net.java.games.input.Component;
 /**
  * Creates menu screen.
  */
-public class MenuState extends State {
+public class MenuState implements State {
+    private GameStateManager stateManager;
     private static final int BUTTON_WIDTH = 300;
     private static final int BUTTON_HEIGHT = 60;
     private Stage stage;
@@ -34,7 +35,7 @@ public class MenuState extends State {
      * @param gameManager which keeps track of the state of the game.
      */
     public MenuState(GameStateManager gameManager) {
-        super(gameManager);
+        this.stateManager = gameManager;
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         skin = new Skin(Gdx.files.internal(
@@ -98,7 +99,7 @@ public class MenuState extends State {
         signOutButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                gameManager.set(new LoginState(gameManager));
+                stateManager.set(new LoginState(stateManager));
             }
 
             @Override
@@ -122,7 +123,7 @@ public class MenuState extends State {
             @Override
             public void touchUp(InputEvent event, float x, float y,
                                 int pointer, int button) {
-                gameManager.set(new LeaderboardState(gameManager));
+                stateManager.set(new LeaderboardState(stateManager));
             }
 
             @Override
@@ -170,7 +171,7 @@ public class MenuState extends State {
             @Override
             public void touchUp(InputEvent event, float x, float y,
                                 int pointer, int button) {
-                gameManager.set(new PlayState(gameManager));
+                stateManager.set(new PlayState(stateManager));
             }
 
             @Override

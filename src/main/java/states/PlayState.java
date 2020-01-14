@@ -18,10 +18,9 @@ import snake.SnakeBody;
 /**
  * In-game screen.
  */
-public class PlayState extends State {
+public class PlayState implements State {
+    private GameStateManager stateManager;
     protected static final float MOVE_TIME = 0.25f;
-    // private Dialog gameOver;
-    // private Skin skin;
     private float timer = MOVE_TIME;
     private SnakeBody snake;
     private ShapeRenderer shapeRenderer;
@@ -35,12 +34,12 @@ public class PlayState extends State {
      * @param gameManager which keeps track of the state of the game.
      */
     public PlayState(GameStateManager gameManager) {
-        super(gameManager);
+        this.stateManager = gameManager;
         // skin = new Skin(Gdx.files.internal("assets/neon/skin/neon-ui.json"));
         // setDialogScreen();
         shapeRenderer = new ShapeRenderer();
         snake = new SnakeBody(SnakeGame.WIDTH, SnakeGame.HEIGHT);
-        camera.setToOrtho(false, SnakeGame.WIDTH, SnakeGame.HEIGHT);
+     //   camera.setToOrtho(false, SnakeGame.WIDTH, SnakeGame.HEIGHT);
         apple = new Apple();
         score = new Score();
     }
@@ -50,19 +49,11 @@ public class PlayState extends State {
      * Method was made just to make testing easier!
      */
     public PlayState(GameStateManager gameManager, SnakeBody snake, ShapeRenderer renderer) {
-        super(gameManager);
+        this.stateManager = gameManager;
         this.snake = snake;
         this.shapeRenderer = renderer;
         this.score = new Score();
         this.apple = new Apple(0, 0, 10);
-    }
-
-    public OrthographicCamera getCamera() {
-        return camera;
-    }
-
-    public void setCamera(OrthographicCamera camera) {
-        this.camera = camera;
     }
 
     public SnakeBody getSnake() {
@@ -109,13 +100,13 @@ public class PlayState extends State {
     public void handleInput() {
         boolean quitPressed = Gdx.input.isKeyPressed(Input.Keys.Q);
         if (quitPressed) {
-            gameManager.push(gameManager.getStates().peek());
-            gameManager.set(new GameOverState(gameManager));
+            stateManager.push(this);
+            stateManager.set(new GameOverState(stateManager));
         }
         boolean pausePressed = Gdx.input.isKeyPressed(Input.Keys.P);
         if (pausePressed) {
-            gameManager.push(gameManager.getStates().peek());
-            gameManager.set(new PausedState(gameManager));
+            stateManager.push(stateManager.getStates().peek());
+            stateManager.set(new PausedState(stateManager));
         }
         boolean upPressed = Gdx.input.isKeyPressed(Input.Keys.W);
         if (upPressed) {
@@ -237,16 +228,16 @@ public class PlayState extends State {
      */
     public void checkOutOfMap() {
         if (snake.getHeadCoord().getCoordinateX() >= SnakeGame.WIDTH) {
-            gameManager.set(new GameOverState(gameManager));
+            stateManager.set(new GameOverState(stateManager));
         }
         if (snake.getHeadCoord().getCoordinateX() < 0) {
-            gameManager.set(new GameOverState(gameManager));
+            stateManager.set(new GameOverState(stateManager));
         }
         if (snake.getHeadCoord().getCoordinateY() >= SnakeGame.HEIGHT) {
-            gameManager.set(new GameOverState(gameManager));
+            stateManager.set(new GameOverState(stateManager));
         }
         if (snake.getHeadCoord().getCoordinateY() < 0) {
-            gameManager.set(new GameOverState(gameManager));
+            stateManager.set(new GameOverState(stateManager));
         }
     }
 
@@ -261,7 +252,7 @@ public class PlayState extends State {
         if (size > minLength) {
             for (int i = 0; i < size; i++) {
                 if (snake.getBodyParts().get(i).getCoordinate().equals(snake.getHeadCoord())) {
-                    gameManager.set(new GameOverState(gameManager));
+                    stateManager.set(new GameOverState(stateManager));
                 }
             }
         }

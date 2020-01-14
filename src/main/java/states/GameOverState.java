@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -18,15 +17,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import services.auth.AuthResponse;
-import services.auth.AuthService;
 
 /**
  * State of the game over game.
  */
-public class GameOverState extends State {
+public class GameOverState implements State {
+    private GameStateManager stateManager;
     private Stage stage;
     private Skin skin;
     private Texture backGround;
@@ -40,7 +37,7 @@ public class GameOverState extends State {
      * @param gameManager which keeps track of the state of the game.
      */
     public GameOverState(GameStateManager gameManager) {
-        super(gameManager);
+        this.stateManager = gameManager;
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         skin = new Skin(Gdx.files.internal(
@@ -221,7 +218,7 @@ public class GameOverState extends State {
         returnButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                gameManager.set(new MenuState(gameManager));
+                stateManager.set(new MenuState(stateManager));
             }
 
             @Override
@@ -255,7 +252,7 @@ public class GameOverState extends State {
         dialog.button("OK", true).addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                gameManager.set(new MenuState(gameManager));
+                stateManager.set(new MenuState(stateManager));
             }
         });
         dialog.show(stage);

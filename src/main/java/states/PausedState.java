@@ -15,7 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class PausedState extends State {
+public class PausedState implements State {
+    private GameStateManager stateManager;
     private Stage stage;
     private Skin skin;
     private Texture backGround;
@@ -27,7 +28,7 @@ public class PausedState extends State {
      * @param gameManager which keeps track of the state of the game.
      */
     public PausedState(GameStateManager gameManager) {
-        super(gameManager);
+        this.stateManager = gameManager;
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         skin = new Skin(Gdx.files.internal(
@@ -107,7 +108,7 @@ public class PausedState extends State {
         resumeButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                gameManager.pop();
+                stateManager.pop();
             }
 
             @Override
@@ -149,7 +150,7 @@ public class PausedState extends State {
         quitButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                gameManager.set(new GameOverState(gameManager));
+                stateManager.set(new GameOverState(stateManager));
             }
 
             @Override
