@@ -15,7 +15,7 @@ public class SnakeGame extends ApplicationAdapter {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 800;
 
-    public static final String TITLE = "Snake TBD";
+    public static final String TITLE = "Lil' Snake";
 
     private GameStateManager gameManager;
     private SpriteBatch batch;

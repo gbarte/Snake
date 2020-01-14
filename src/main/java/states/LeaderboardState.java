@@ -21,6 +21,7 @@ import services.leaderboard.LeaderboardService;
  * LeaderBoardState class
  * Shows a leaderboard of all players playing the gaming.
  */
+@SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public class LeaderboardState implements State {
     private GameStateManager stateManager;
     private Stage stage;
@@ -45,46 +46,6 @@ public class LeaderboardState implements State {
         initReturn();
         initTitle();
         initBoard();
-    }
-
-    public Stage getStage() {
-        return stage;
-    }
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
-    public Skin getSkin() {
-        return skin;
-    }
-
-    public void setSkin(Skin skin) {
-        this.skin = skin;
-    }
-
-    public Label getTitle() {
-        return title;
-    }
-
-    public void setTitle(Label title) {
-        this.title = title;
-    }
-
-    public Texture getBackGround() {
-        return backGround;
-    }
-
-    public void setBackGround(Texture backGround) {
-        this.backGround = backGround;
-    }
-
-    public BitmapFont getBitmapFont() {
-        return bitmapFont;
-    }
-
-    public void setBitmapFont(BitmapFont bitmapFont) {
-        this.bitmapFont = bitmapFont;
     }
 
     /**

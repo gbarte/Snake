@@ -22,6 +22,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 /**
  * State of the game over game.
  */
+@SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public class GameOverState implements State {
     private GameStateManager stateManager;
     private Stage stage;
@@ -49,46 +50,6 @@ public class GameOverState implements State {
         initSaveButton();
         initReturnButton();
         backGround = new Texture("assets/bg.png");
-    }
-
-    public Texture getBackGround() {
-        return backGround;
-    }
-
-    public void setBackGround(Texture backGround) {
-        this.backGround = backGround;
-    }
-
-    public Stage getStage() {
-        return stage;
-    }
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
-    public Skin getSkin() {
-        return skin;
-    }
-
-    public void setSkin(Skin skin) {
-        this.skin = skin;
-    }
-
-    public CheckBox getCheckBox() {
-        return checkBox;
-    }
-
-    public void setCheckBox(CheckBox checkBox) {
-        this.checkBox = checkBox;
-    }
-
-    public TextField getNicknameField() {
-        return nicknameField;
-    }
-
-    public void setNicknameField(TextField nicknameField) {
-        this.nicknameField = nicknameField;
     }
 
     @Override

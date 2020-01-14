@@ -22,6 +22,7 @@ import services.auth.AuthService;
 /**
  * Creates login screen.
  */
+@SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public class LoginState implements State {
     private GameStateManager stateManager;
     private Stage stage;
@@ -46,54 +47,6 @@ public class LoginState implements State {
         initLogin();
         initSignUp();
         backGround = new Texture("assets/bg.png");
-    }
-
-    public Stage getStage() {
-        return stage;
-    }
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
-    public Skin getSkin() {
-        return skin;
-    }
-
-    public void setSkin(Skin skin) {
-        this.skin = skin;
-    }
-
-    public Label getTitle() {
-        return title;
-    }
-
-    public void setTitle(Label title) {
-        this.title = title;
-    }
-
-    public Texture getBackGround() {
-        return backGround;
-    }
-
-    public void setBackGround(Texture backGround) {
-        this.backGround = backGround;
-    }
-
-    public TextField getUsernameField() {
-        return usernameField;
-    }
-
-    public void setUsernameField(TextField usernameField) {
-        this.usernameField = usernameField;
-    }
-
-    public TextField getPassWordField() {
-        return passWordField;
-    }
-
-    public void setPassWordField(TextField passWordField) {
-        this.passWordField = passWordField;
     }
 
     /**

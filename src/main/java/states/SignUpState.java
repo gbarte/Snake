@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 /**
  * Creates sign up screen.
  */
+@SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public class SignUpState implements State {
     private GameStateManager stateManager;
     private Stage stage;
@@ -46,54 +47,7 @@ public class SignUpState implements State {
         initReturn();
         initSignUp();
     }
-
-    public Stage getStage() {
-        return stage;
-    }
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
-    public Skin getSkin() {
-        return skin;
-    }
-
-    public void setSkin(Skin skin) {
-        this.skin = skin;
-    }
-
-    public Texture getBackground() {
-        return background;
-    }
-
-    public void setBackground(Texture background) {
-        this.background = background;
-    }
-
-    public TextField getUsername() {
-        return username;
-    }
-
-    public void setUsername(TextField username) {
-        this.username = username;
-    }
-
-    public TextField getPassword() {
-        return password;
-    }
-
-    public void setPassword(TextField password) {
-        this.password = password;
-    }
-
-    public Skin getCloudSkin() {
-        return cloudSkin;
-    }
-
-    public void setCloudSkin(Skin cloudSkin) {
-        this.cloudSkin = cloudSkin;
-    }
+    
 
     /**
      * Sets title of login screen.

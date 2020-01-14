@@ -22,6 +22,7 @@ import net.java.games.input.Component;
 /**
  * Creates menu screen.
  */
+@SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public class MenuState implements State {
     private GameStateManager stateManager;
     private static final int BUTTON_WIDTH = 300;
@@ -47,30 +48,6 @@ public class MenuState implements State {
         initLeaderboardButton();
         initSignOutButton();
         background = new Texture("assets/bg.png");
-    }
-
-    public Stage getStage() {
-        return stage;
-    }
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
-    public Skin getSkin() {
-        return skin;
-    }
-
-    public void setSkin(Skin skin) {
-        this.skin = skin;
-    }
-
-    public Texture getBackground() {
-        return background;
-    }
-
-    public void setBackground(Texture background) {
-        this.background = background;
     }
 
     /**

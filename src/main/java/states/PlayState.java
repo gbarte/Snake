@@ -18,6 +18,7 @@ import snake.SnakeBody;
 /**
  * In-game screen.
  */
+@SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public class PlayState implements State {
     private GameStateManager stateManager;
     protected static final float MOVE_TIME = 0.25f;
@@ -35,11 +36,8 @@ public class PlayState implements State {
      */
     public PlayState(GameStateManager gameManager) {
         this.stateManager = gameManager;
-        // skin = new Skin(Gdx.files.internal("assets/neon/skin/neon-ui.json"));
-        // setDialogScreen();
         shapeRenderer = new ShapeRenderer();
         snake = new SnakeBody(SnakeGame.WIDTH, SnakeGame.HEIGHT);
-     //   camera.setToOrtho(false, SnakeGame.WIDTH, SnakeGame.HEIGHT);
         apple = new Apple();
         score = new Score();
     }
