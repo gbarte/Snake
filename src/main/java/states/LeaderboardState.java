@@ -21,7 +21,9 @@ import services.leaderboard.LeaderboardService;
  * LeaderBoardState class
  * Shows a leaderboard of all players playing the gaming.
  */
-public class LeaderboardState extends State {
+@SuppressWarnings("PMD.BeanMembersShouldSerialize")
+public class LeaderboardState implements State {
+    private GameStateManager stateManager;
     private Stage stage;
     private Skin skin;
     private Label title;
@@ -35,7 +37,7 @@ public class LeaderboardState extends State {
      * @param gameManager which keeps track of the state of the game.
      */
     public LeaderboardState(GameStateManager gameManager) {
-        super(gameManager);
+        this.stateManager = gameManager;
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         skin =  new Skin(Gdx.files.internal("assets/quantum-horizon/skin/quantum-horizon-ui.json"));
@@ -44,46 +46,6 @@ public class LeaderboardState extends State {
         initReturn();
         initTitle();
         initBoard();
-    }
-
-    public Stage getStage() {
-        return stage;
-    }
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
-    public Skin getSkin() {
-        return skin;
-    }
-
-    public void setSkin(Skin skin) {
-        this.skin = skin;
-    }
-
-    public Label getTitle() {
-        return title;
-    }
-
-    public void setTitle(Label title) {
-        this.title = title;
-    }
-
-    public Texture getBackGround() {
-        return backGround;
-    }
-
-    public void setBackGround(Texture backGround) {
-        this.backGround = backGround;
-    }
-
-    public BitmapFont getBitmapFont() {
-        return bitmapFont;
-    }
-
-    public void setBitmapFont(BitmapFont bitmapFont) {
-        this.bitmapFont = bitmapFont;
     }
 
     /**
@@ -96,7 +58,7 @@ public class LeaderboardState extends State {
         returnButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                gameManager.set(new MenuState(gameManager));
+                stateManager.setState(new MenuState(stateManager));
             }
 
             @Override
@@ -205,7 +167,6 @@ public class LeaderboardState extends State {
     @Override
     public void dispose() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        gameManager.update(Gdx.graphics.getDeltaTime());
-        // gameManager.render(batch);
+        stateManager.update(Gdx.graphics.getDeltaTime());
     }
 }

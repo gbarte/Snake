@@ -1,8 +1,11 @@
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import gamelogic.Coordinate;
 import java.util.LinkedList;
 
-import gamelogic.Coordinate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -10,7 +13,6 @@ import org.mockito.Mockito;
 import snake.BodyPart;
 import snake.SnakeBody;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 class SnakeBodyTest {
     private transient SnakeBody snakeBody;
