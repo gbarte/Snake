@@ -74,7 +74,7 @@ public class LoginState implements State {
         signUpButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                stateManager.set(new SignUpState(stateManager));
+                stateManager.setState(new SignUpState(stateManager));
             }
 
             @Override
@@ -126,7 +126,7 @@ public class LoginState implements State {
 
 
                 if (response == AuthResponse.SUCCESS) {
-                    stateManager.set(new MenuState(stateManager));
+                    stateManager.setState(new MenuState(stateManager));
                 } else {
                     // TODO: display failed authentication.
                     failedAuthenticationDialog();

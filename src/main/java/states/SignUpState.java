@@ -47,7 +47,7 @@ public class SignUpState implements State {
         initReturn();
         initSignUp();
     }
-    
+
 
     /**
      * Sets title of login screen.
@@ -75,7 +75,7 @@ public class SignUpState implements State {
         signUpButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                stateManager.set(new LoginState(stateManager));
+                stateManager.setState(new LoginState(stateManager));
             }
 
             @Override
@@ -121,7 +121,7 @@ public class SignUpState implements State {
         returnButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                stateManager.set(new LoginState(stateManager));
+                stateManager.setState(new LoginState(stateManager));
             }
 
             @Override

@@ -26,7 +26,7 @@ class PlayStateTest {
         shapeRenderer = Mockito.mock(ShapeRenderer.class);
         snake = new SnakeBody(100, 100);
         play = new PlayState(stateManager, snake, shapeRenderer);
-        stateManager.push(play);
+        stateManager.pushState(play);
     }
 
     @Test

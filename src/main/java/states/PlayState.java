@@ -3,7 +3,6 @@ package states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -98,13 +97,13 @@ public class PlayState implements State {
     public void handleInput() {
         boolean quitPressed = Gdx.input.isKeyPressed(Input.Keys.Q);
         if (quitPressed) {
-            stateManager.push(this);
-            stateManager.set(new GameOverState(stateManager));
+            stateManager.pushState(this);
+            stateManager.setState(new GameOverState(stateManager));
         }
         boolean pausePressed = Gdx.input.isKeyPressed(Input.Keys.P);
         if (pausePressed) {
-            stateManager.push(stateManager.getStates().peek());
-            stateManager.set(new PausedState(stateManager));
+            stateManager.pushState(stateManager.getStates().peek());
+            stateManager.setState(new PausedState(stateManager));
         }
         boolean upPressed = Gdx.input.isKeyPressed(Input.Keys.W);
         if (upPressed) {
@@ -226,16 +225,16 @@ public class PlayState implements State {
      */
     public void checkOutOfMap() {
         if (snake.getHeadCoord().getCoordinateX() >= SnakeGame.WIDTH) {
-            stateManager.set(new GameOverState(stateManager));
+            stateManager.setState(new GameOverState(stateManager));
         }
         if (snake.getHeadCoord().getCoordinateX() < 0) {
-            stateManager.set(new GameOverState(stateManager));
+            stateManager.setState(new GameOverState(stateManager));
         }
         if (snake.getHeadCoord().getCoordinateY() >= SnakeGame.HEIGHT) {
-            stateManager.set(new GameOverState(stateManager));
+            stateManager.setState(new GameOverState(stateManager));
         }
         if (snake.getHeadCoord().getCoordinateY() < 0) {
-            stateManager.set(new GameOverState(stateManager));
+            stateManager.setState(new GameOverState(stateManager));
         }
     }
 
@@ -250,7 +249,7 @@ public class PlayState implements State {
         if (size > minLength) {
             for (int i = 0; i < size; i++) {
                 if (snake.getBodyParts().get(i).getCoordinate().equals(snake.getHeadCoord())) {
-                    stateManager.set(new GameOverState(stateManager));
+                    stateManager.setState(new GameOverState(stateManager));
                 }
             }
         }

@@ -1,13 +1,11 @@
 package states;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -15,9 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import net.java.games.input.Component;
 
 /**
  * Creates menu screen.
@@ -76,7 +72,7 @@ public class MenuState implements State {
         signOutButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                stateManager.set(new LoginState(stateManager));
+                stateManager.setState(new LoginState(stateManager));
             }
 
             @Override
@@ -100,7 +96,7 @@ public class MenuState implements State {
             @Override
             public void touchUp(InputEvent event, float x, float y,
                                 int pointer, int button) {
-                stateManager.set(new LeaderboardState(stateManager));
+                stateManager.setState(new LeaderboardState(stateManager));
             }
 
             @Override
@@ -148,7 +144,7 @@ public class MenuState implements State {
             @Override
             public void touchUp(InputEvent event, float x, float y,
                                 int pointer, int button) {
-                stateManager.set(new PlayState(stateManager));
+                stateManager.setState(new PlayState(stateManager));
             }
 
             @Override

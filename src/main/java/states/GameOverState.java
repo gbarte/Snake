@@ -179,7 +179,7 @@ public class GameOverState implements State {
         returnButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                stateManager.set(new MenuState(stateManager));
+                stateManager.setState(new MenuState(stateManager));
             }
 
             @Override
@@ -213,7 +213,7 @@ public class GameOverState implements State {
         dialog.button("OK", true).addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                stateManager.set(new MenuState(stateManager));
+                stateManager.setState(new MenuState(stateManager));
             }
         });
         dialog.show(stage);

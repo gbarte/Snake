@@ -86,7 +86,7 @@ public class PausedState implements State {
         resumeButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                stateManager.pop();
+                stateManager.popState();
             }
 
             @Override
@@ -128,7 +128,7 @@ public class PausedState implements State {
         quitButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                stateManager.set(new GameOverState(stateManager));
+                stateManager.setState(new GameOverState(stateManager));
             }
 
             @Override
