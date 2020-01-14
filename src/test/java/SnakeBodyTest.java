@@ -4,12 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import gamelogic.Coordinate;
 import java.util.LinkedList;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import snake.BodyPart;
 import snake.SnakeBody;
-
 
 
 class SnakeBodyTest {

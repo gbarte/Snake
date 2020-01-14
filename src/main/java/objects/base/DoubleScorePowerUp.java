@@ -7,6 +7,11 @@ import gamelogic.Coordinate;
 import gamelogic.DoubleScore;
 import states.PlayState;
 
+/**
+ * Food object which acts as a power up.
+ * Main purpose of it is to double the score in the game.
+ *
+ */
 public class DoubleScorePowerUp implements Food {
     public static final double rarity = 0.2;
     private static final String texturePath = "assets/goldenApple.png";

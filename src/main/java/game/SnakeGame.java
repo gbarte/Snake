@@ -15,8 +15,7 @@ public class SnakeGame extends ApplicationAdapter {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 800;
 
-    public static final String TITLE = "Lil Snake";
-
+    public static final String TITLE = "Lil' Snake";
     private GameStateManager gameManager;
     private SpriteBatch batch;
 
@@ -25,7 +24,7 @@ public class SnakeGame extends ApplicationAdapter {
         batch = new SpriteBatch();
         gameManager = new GameStateManager();
         Gdx.gl.glClearColor(0, 0, 0, 1);
-        gameManager.push(new LoginState(gameManager));
+        gameManager.pushState(new LoginState(gameManager));
     }
 
     @Override

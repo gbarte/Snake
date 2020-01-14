@@ -4,6 +4,11 @@ import com.badlogic.gdx.graphics.Texture;
 import gamelogic.Coordinate;
 import states.PlayState;
 
+/**
+ * Interactive food object of Golden Apple.
+ * Main difference from regular apple is that it gives more
+ * score points and increases the snake twice.
+ */
 public class GoldenApple implements Food {
 
     public static int DEFAULT_SCORE = 25;

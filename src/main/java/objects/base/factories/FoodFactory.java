@@ -7,6 +7,11 @@ import objects.base.Food;
 import snake.SnakeBody;
 
 
+/**
+ * Factory creates Food elements on the screen.
+ * Takes part of the factory method pattern.
+ *
+ */
 public abstract class FoodFactory {
 
     public abstract Food createFood();

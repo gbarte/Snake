@@ -6,7 +6,12 @@ import objects.base.Food;
 import objects.base.MushroomPowerUp;
 
 
-
+/**
+ * PowerUpFactory to create either power ups or apple objects..
+ * Takes part of the factory method pattern.
+ * Main purpose of it is to provide powerUps/apples with random coordinates.
+ *
+ */
 public class PowerUpFactory extends FoodFactory {
 
     @Override

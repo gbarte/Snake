@@ -3,7 +3,6 @@ package states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -14,20 +13,20 @@ import gamelogic.Score;
 
 import objects.base.Apple;
 import objects.base.Food;
+import objects.base.factories.AppleFactory;
 import objects.base.factories.FoodFactory;
 import objects.base.factories.PowerUpFactory;
-import objects.base.factories.AppleFactory;
 import snake.BodyPart;
 import snake.SnakeBody;
 
 /**
  * In-game screen.
  */
-public class PlayState extends State {
+@SuppressWarnings("PMD.BeanMembersShouldSerialize")
+public class PlayState implements State {
+    private GameStateManager stateManager;
     public static final float DEFAULT_MOVE_TIME = 0.25f;
-    @SuppressWarnings("PMD")
     private float moveTime = DEFAULT_MOVE_TIME;
-    @SuppressWarnings("PMD")
     private float timer = moveTime;
     private SnakeBody snake;
     private ShapeRenderer shapeRenderer;
@@ -38,19 +37,16 @@ public class PlayState extends State {
 
 
     /**
-     * Constructor which creates a new state within the game.
-     * E.g. Play/Pause/Menu.
+     * Constructor which creates a new PlayState within the game.
      *
      * @param gameManager which keeps track of the state of the game.
      */
     public PlayState(GameStateManager gameManager) {
-        super(gameManager);
+        this.stateManager = gameManager;
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setColor(Color.GREEN);
         snake = new SnakeBody(SnakeGame.WIDTH, SnakeGame.HEIGHT);
-        camera.setToOrtho(false, SnakeGame.WIDTH, SnakeGame.HEIGHT);
         score = new Score();
-
         foodFactory = new AppleFactory();
         food = foodFactory.createFood();
     }
@@ -60,7 +56,7 @@ public class PlayState extends State {
      * Method was made just to make testing easier!
      */
     public PlayState(GameStateManager gameManager, SnakeBody snake, ShapeRenderer renderer) {
-        super(gameManager);
+        this.stateManager = gameManager;
         this.snake = snake;
         this.shapeRenderer = renderer;
         this.score = new Score();
@@ -72,10 +68,6 @@ public class PlayState extends State {
 
     public FoodFactory getFoodFactory() {
         return foodFactory;
-    }
-
-    public OrthographicCamera getCamera() {
-        return camera;
     }
 
     public void setFoodFactory(FoodFactory foodFactory) {
@@ -118,13 +110,13 @@ public class PlayState extends State {
     public void handleInput() {
         boolean quitPressed = Gdx.input.isKeyPressed(Input.Keys.Q);
         if (quitPressed) {
-            gameManager.push(gameManager.getStates().peek());
-            gameManager.set(new GameOverState(gameManager));
+            stateManager.pushState(this);
+            stateManager.setState(new GameOverState(stateManager));
         }
         boolean pausePressed = Gdx.input.isKeyPressed(Input.Keys.P);
         if (pausePressed) {
-            gameManager.push(gameManager.getStates().peek());
-            gameManager.set(new PausedState(gameManager));
+            stateManager.pushState(stateManager.getStates().peek());
+            stateManager.setState(new PausedState(stateManager));
         }
         boolean upPressed = Gdx.input.isKeyPressed(Input.Keys.W);
         if (upPressed) {
@@ -249,16 +241,16 @@ public class PlayState extends State {
      */
     public void checkOutOfMap() {
         if (snake.getHeadCoord().getCoordinateX() >= SnakeGame.WIDTH) {
-            gameManager.set(new GameOverState(gameManager));
+            stateManager.setState(new GameOverState(stateManager));
         }
         if (snake.getHeadCoord().getCoordinateX() < 0) {
-            gameManager.set(new GameOverState(gameManager));
+            stateManager.setState(new GameOverState(stateManager));
         }
         if (snake.getHeadCoord().getCoordinateY() >= SnakeGame.HEIGHT) {
-            gameManager.set(new GameOverState(gameManager));
+            stateManager.setState(new GameOverState(stateManager));
         }
         if (snake.getHeadCoord().getCoordinateY() < 0) {
-            gameManager.set(new GameOverState(gameManager));
+            stateManager.setState(new GameOverState(stateManager));
         }
     }
 
@@ -273,7 +265,7 @@ public class PlayState extends State {
         if (size > minLength) {
             for (int i = 0; i < size; i++) {
                 if (snake.getBodyParts().get(i).getCoordinate().equals(snake.getHeadCoord())) {
-                    gameManager.set(new GameOverState(gameManager));
+                    stateManager.setState(new GameOverState(stateManager));
                 }
             }
         }

@@ -5,7 +5,11 @@ import com.badlogic.gdx.graphics.Texture;
 import gamelogic.Coordinate;
 import states.PlayState;
 
-
+/**
+ * Food object which acts as a power up.
+ * Main purpose of it is to increase the speed of the snake in the game.
+ *
+ */
 public class MushroomPowerUp implements Food {
     public static final double rarity = 0.15;
     private static final String texturePath = "assets/mushroom.png";
