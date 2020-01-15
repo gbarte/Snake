@@ -112,6 +112,11 @@ public class PlayState extends State {
             gameManager.push(gameManager.getStates().peek());
             gameManager.set(new PausedState(gameManager));
         }
+        boolean quitPressed = Gdx.input.isKeyPressed(Input.Keys.Q);
+        if (quitPressed) {
+            gameManager.push(gameManager.getStates().peek());
+            gameManager.set(new MenuState(gameManager));
+        }
         boolean upPressed = Gdx.input.isKeyPressed(Input.Keys.W);
         if (upPressed) {
             updateDirection(SnakeBody.Direction.UP);
