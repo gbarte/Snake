@@ -15,19 +15,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class PausedState extends State {
+@SuppressWarnings("PMD.BeanMembersShouldSerialize")
+public class PausedState implements IState {
+    private GameStateManager stateManager;
     private Stage stage;
     private Skin skin;
     private Texture backGround;
 
     /**
-     * Constructor which creates a new state within the game.
-     * E.g. Play/Pause/Menu.
+     * Constructor which creates a new Pause state within the game.
      *
      * @param gameManager which keeps track of the state of the game.
      */
     public PausedState(GameStateManager gameManager) {
-        super(gameManager);
+        this.stateManager = gameManager;
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         skin = new Skin(Gdx.files.internal(
@@ -39,29 +40,6 @@ public class PausedState extends State {
         backGround = new Texture("assets/bg.png");
     }
 
-    public Texture getBackGround() {
-        return backGround;
-    }
-
-    public void setBackGround(Texture backGround) {
-        this.backGround = backGround;
-    }
-
-    public Stage getStage() {
-        return stage;
-    }
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
-    public Skin getSkin() {
-        return skin;
-    }
-
-    public void setSkin(Skin skin) {
-        this.skin = skin;
-    }
 
     @Override
     public void handleInput() {
@@ -107,7 +85,7 @@ public class PausedState extends State {
         resumeButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                gameManager.pop();
+                stateManager.popState();
             }
 
             @Override
@@ -149,7 +127,7 @@ public class PausedState extends State {
         quitButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                gameManager.set(new GameOverState(gameManager));
+                stateManager.setState(new GameOverState(stateManager));
             }
 
             @Override

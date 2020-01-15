@@ -3,66 +3,78 @@ package states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import game.SnakeGame;
-import gamelogic.Coordinate;
-import gamelogic.Score;
 
-import objects.base.Apple;
-import snake.BodyPart;
-import snake.SnakeBody;
+import entities.Apple;
+import entities.Food;
+import entities.factories.AppleFactory;
+import entities.factories.FoodFactory;
+import entities.factories.PowerUpFactory;
+import entities.snake.BodyPart;
+import entities.snake.SnakeBody;
+import models.Coordinate;
+import models.DoubleScore;
+import models.Score;
+
 
 /**
  * In-game screen.
  */
-public class PlayState extends State {
-    protected static final float MOVE_TIME = 0.25f;
-    // private Dialog gameOver;
-    // private Skin skin;
-    private float timer = MOVE_TIME;
+@SuppressWarnings("PMD.BeanMembersShouldSerialize")
+public class PlayState implements IState {
+    private GameStateManager stateManager;
+    public static final float DEFAULT_MOVE_TIME = 0.25f;
+    private float moveTime = DEFAULT_MOVE_TIME;
+    private float timer = moveTime;
     private SnakeBody snake;
     private ShapeRenderer shapeRenderer;
-    private Apple apple;
+    private Food food;
     private Score score;
+    private FoodFactory foodFactory;
+    private static double powerUpTimeout = 10;
+
 
     /**
-     * Constructor which creates a new state within the game.
-     * E.g. Play/Pause/Menu.
+     * Constructor which creates a new PlayState within the game.
      *
      * @param gameManager which keeps track of the state of the game.
      */
     public PlayState(GameStateManager gameManager) {
-        super(gameManager);
-        // skin = new Skin(Gdx.files.internal("assets/neon/skin/neon-ui.json"));
-        // setDialogScreen();
+        this.stateManager = gameManager;
         shapeRenderer = new ShapeRenderer();
+        shapeRenderer.setColor(Color.GREEN);
         snake = new SnakeBody(SnakeGame.WIDTH, SnakeGame.HEIGHT);
-        camera.setToOrtho(false, SnakeGame.WIDTH, SnakeGame.HEIGHT);
-        apple = new Apple();
         score = new Score();
+        foodFactory = new AppleFactory();
+        food = foodFactory.createFood();
     }
 
     /**
      * Constructor which creates a new state within the game.
      * Method was made just to make testing easier!
+     * @param gameManager gameManager to manage this PlayState.
+     * @param renderer renderer of this PlayState.
+     * @param snake snake of this PlayState.
      */
     public PlayState(GameStateManager gameManager, SnakeBody snake, ShapeRenderer renderer) {
-        super(gameManager);
+        this.stateManager = gameManager;
         this.snake = snake;
         this.shapeRenderer = renderer;
         this.score = new Score();
-        this.apple = new Apple(0, 0, 10);
     }
 
-    public OrthographicCamera getCamera() {
-        return camera;
+    public void setMoveTime(float moveTime) {
+        this.moveTime = moveTime;
     }
 
-    public void setCamera(OrthographicCamera camera) {
-        this.camera = camera;
+    public FoodFactory getFoodFactory() {
+        return foodFactory;
+    }
+
+    public void setFoodFactory(FoodFactory foodFactory) {
+        this.foodFactory = foodFactory;
     }
 
     public SnakeBody getSnake() {
@@ -81,10 +93,6 @@ public class PlayState extends State {
         this.shapeRenderer = shapeRenderer;
     }
 
-    public float getTimer() {
-        return timer;
-    }
-
     public Score getScore() {
         return score;
     }
@@ -93,24 +101,25 @@ public class PlayState extends State {
         this.score = score;
     }
 
-    public void setTimer(float timer) {
-        this.timer = timer;
+    public Food getFood() {
+        return food;
     }
 
-    public Apple getApple() {
-        return apple;
-    }
-
-    public void setApple(Apple apple) {
-        this.apple = apple;
+    public void setFood(Food food) {
+        this.food = food;
     }
 
     @Override
     public void handleInput() {
+        boolean quitPressed = Gdx.input.isKeyPressed(Input.Keys.Q);
+        if (quitPressed) {
+            stateManager.pushState(this);
+            stateManager.setState(new GameOverState(stateManager));
+        }
         boolean pausePressed = Gdx.input.isKeyPressed(Input.Keys.P);
         if (pausePressed) {
-            gameManager.push(gameManager.getStates().peek());
-            gameManager.set(new PausedState(gameManager));
+            stateManager.pushState(stateManager.getStates().peek());
+            stateManager.setState(new PausedState(stateManager));
         }
         boolean upPressed = Gdx.input.isKeyPressed(Input.Keys.W);
         if (upPressed) {
@@ -136,7 +145,10 @@ public class PlayState extends State {
         checkOutOfMap();
         checkHeadHitsBody();
         updateSnake(dt);
-        checkAppleEaten();
+        isAppleEaten();
+
+        checkPowerUpTimeout();
+
     }
 
     /**
@@ -149,8 +161,8 @@ public class PlayState extends State {
     public void render(SpriteBatch batch) {
         snake.renderSnake(shapeRenderer);
         batch.begin();
-        Coordinate appleCoord = apple.getCoordinate();
-        batch.draw(apple.getTexture(), appleCoord.getCoordinateX(), appleCoord.getCoordinateY());
+        Coordinate foodPos = food.getCoordinate();
+        batch.draw(food.getTexture(), foodPos.getCoordinateX(), foodPos.getCoordinateY());
         renderScore(batch);
         batch.end();
         //Comment out next line if you don't want the grid
@@ -161,7 +173,7 @@ public class PlayState extends State {
      * Renders the current score on the screen.
      * @param batch used for drawing elements.
      */
-    public void renderScore(SpriteBatch batch) {
+    private void renderScore(SpriteBatch batch) {
         BitmapFont bitmapFont = new BitmapFont();
         bitmapFont.setColor(Color.RED);
         bitmapFont.draw(batch, String.valueOf(score.getValue()), 20, 20);
@@ -175,7 +187,7 @@ public class PlayState extends State {
     private void updateSnake(float delta) {
         timer -= delta;
         if (timer <= 0) {
-            timer = MOVE_TIME;
+            timer = moveTime;
             snake.moveSnake(snake.getCurrDir());
         }
     }
@@ -232,16 +244,16 @@ public class PlayState extends State {
      */
     public void checkOutOfMap() {
         if (snake.getHeadCoord().getCoordinateX() >= SnakeGame.WIDTH) {
-            gameManager.set(new GameOverState(gameManager));
+            stateManager.setState(new GameOverState(stateManager));
         }
         if (snake.getHeadCoord().getCoordinateX() < 0) {
-            gameManager.set(new GameOverState(gameManager));
+            stateManager.setState(new GameOverState(stateManager));
         }
         if (snake.getHeadCoord().getCoordinateY() >= SnakeGame.HEIGHT) {
-            gameManager.set(new GameOverState(gameManager));
+            stateManager.setState(new GameOverState(stateManager));
         }
         if (snake.getHeadCoord().getCoordinateY() < 0) {
-            gameManager.set(new GameOverState(gameManager));
+            stateManager.setState(new GameOverState(stateManager));
         }
     }
 
@@ -251,12 +263,12 @@ public class PlayState extends State {
      */
     public void checkHeadHitsBody() {
         int minLength = 3;
-        // head can touch tail only if snake has more than 3 bodyparts
+
         int size = snake.getBodyParts().size();
         if (size > minLength) {
             for (int i = 0; i < size; i++) {
                 if (snake.getBodyParts().get(i).getCoordinate().equals(snake.getHeadCoord())) {
-                    gameManager.set(new GameOverState(gameManager));
+                    stateManager.setState(new GameOverState(stateManager));
                 }
             }
         }
@@ -278,12 +290,34 @@ public class PlayState extends State {
     /**
      * Checks whether an apple has been eaten or not.
      */
-    private void checkAppleEaten() {
-        if (snake.getHeadCoord().equals(apple.getCoordinate())) {
-            score.add(apple.getScore());
-            apple = new Apple();
+    private void isAppleEaten() {
+        if (snake.getHeadCoord().equals(food.getCoordinate())) {
+            food.action(this);
+            food = foodFactory.createFood();
             checkAppleOnSnake();
-            snake.growSnake();
+            if (foodFactory instanceof AppleFactory) {
+                activatePowerUp();
+            }
+        }
+    }
+
+    private void activatePowerUp() {
+        if (getScore().getValue() > Apple.DEFAULT_SCORE * 10) {
+            foodFactory = new PowerUpFactory();
+        }
+    }
+
+    private void checkPowerUpTimeout() {
+        if (moveTime != DEFAULT_MOVE_TIME || score instanceof DoubleScore) {
+            powerUpTimeout -= Gdx.graphics.getDeltaTime();
+        }
+        if (powerUpTimeout <= 0) {
+            shapeRenderer.setColor(Color.GREEN);
+            moveTime = DEFAULT_MOVE_TIME;
+            int currScore = score.getValue();
+            score = new Score();
+            score.setValue(currScore);
+            powerUpTimeout = 10;
         }
     }
 
@@ -293,8 +327,8 @@ public class PlayState extends State {
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     private void checkAppleOnSnake() {
         for (BodyPart bp : snake.getBodyParts()) {
-            if (bp.getCoordinate().equals(apple.getCoordinate())) {
-                apple = new Apple();
+            if (bp.getCoordinate().equals(food.getCoordinate())) {
+                food = foodFactory.createFood();
             }
         }
     }

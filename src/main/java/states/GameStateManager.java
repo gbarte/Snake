@@ -9,27 +9,27 @@ import java.util.Stack;
  * Can change a state of the game.
  */
 public class GameStateManager {
-    private Stack<State> states;
+    private Stack<IState> states;
 
     /**
      * Constructor creates a new stack for the states.
      */
     public GameStateManager() {
-        states = new Stack<State>();
+        states = new Stack<>();
     }
 
     /**
      * Pushes a new state onto the stack.
      * @param state to be pushed on the stack.
      */
-    public void push(State state) {
+    public void pushState(IState state) {
         states.push(state);
     }
 
     /**
      * Pops latest state on the stack.
      */
-    public void pop() {
+    public void popState() {
         states.pop();
     }
 
@@ -37,7 +37,7 @@ public class GameStateManager {
      * Sets new current state.
      * @param state to become the current state.
      */
-    public void set(State state) {
+    public void setState(IState state) {
         states.pop();
         states.push(state);
     }
@@ -58,11 +58,11 @@ public class GameStateManager {
         states.peek().render(batch);
     }
 
-    public Stack<State> getStates() {
+    public Stack<IState> getStates() {
         return states;
     }
 
-    public void setStates(Stack<State> states) {
+    public void setStates(Stack<IState> states) {
         this.states = states;
     }
 }
