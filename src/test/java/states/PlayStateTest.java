@@ -128,7 +128,7 @@ class PlayStateTest {
 
     @Test
     void checkHeadHitsBodyTest1() {
-        //here entities.snake of initial length < 3
+        //here snake of initial length < 3
         for (int i = 0; i < snake.getBodyParts().size(); i++) {
             snake.setHeadCoord(snake.getBodyParts().get(i).getCoordinate());
             play.setSnake(snake);

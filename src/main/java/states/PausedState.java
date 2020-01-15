@@ -150,8 +150,8 @@ public class PausedState implements State {
                 System.out.println("result " + obj);
             }
         };
-        dialog.text("Use wasd to move the entities.snake.\n"
-                + "Eat food to grow your entities.snake.\n"
+        dialog.text("Use wasd to move the snake.\n"
+                + "Eat food to grow your snake.\n"
                 + "Game will end when you either hit yourself or the wall.\n"
                 + "Press p to pause the game.\n"
                 + "Press q to quit the game.\n"

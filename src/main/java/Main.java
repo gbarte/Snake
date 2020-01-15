@@ -5,7 +5,7 @@ import services.auth.AuthService;
 import services.leaderboard.LeaderboardService;
 
 /**
- * Sets a window for the game and then calls the entities.snake game.
+ * Sets a window for the game and then calls the snake game.
  */
 public class Main {
     /**

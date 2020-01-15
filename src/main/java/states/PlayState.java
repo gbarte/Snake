@@ -132,8 +132,8 @@ public class PlayState implements State {
     }
 
     /**
-     * Clears the background, renders the batch and entities.snake.
-     * Checks what the state is and changes state and updates entities.snake.
+     * Clears the background, renders the batch and snake.
+     * Checks what the state is and changes state and updates snake.
      *
      * @param batch - Renders again every delta amount of time.
      */
@@ -160,7 +160,7 @@ public class PlayState implements State {
     }
 
     /**
-     * Moves the entities.snake every MOVE_TIME.
+     * Moves the snake every MOVE_TIME.
      *
      * @param delta - time interval between each step
      */
@@ -180,7 +180,7 @@ public class PlayState implements State {
     /**
      * Updates the direction by calling updateIfNotOpposite.
      *
-     * @param newDirection - direction in which the user wants to move the entities.snake
+     * @param newDirection - direction in which the user wants to move the snake
      */
     public void updateDirection(SnakeBody.Direction newDirection) {
         SnakeBody.Direction current = snake.getCurrDir();
@@ -208,8 +208,8 @@ public class PlayState implements State {
      * Updates the position if newDir does not equal opposite direction,
      * this would mean that the snakes moves to itself.
      *
-     * @param newDir            - Direction the entities.snake wants to move to.
-     * @param oppositeDirection - Direction entities.snake comes from.
+     * @param newDir            - Direction the snake wants to move to.
+     * @param oppositeDirection - Direction snake comes from.
      */
     private void updateIfNotOpposite(SnakeBody.Direction newDir,
                                      SnakeBody.Direction oppositeDirection) {
@@ -219,7 +219,7 @@ public class PlayState implements State {
     }
 
     /**
-     * Checks whether the entities.snake (head) hits the border,
+     * Checks whether the snake (head) hits the border,
      * if it hits then the state changes to GAME_OVER.
      */
     public void checkOutOfMap() {
@@ -238,12 +238,12 @@ public class PlayState implements State {
     }
 
     /**
-     * Checks whether the entities.snake head hits the body.
+     * Checks whether the snake head hits the body.
      * If it does, then the state changes to GAME_OVER.
      */
     public void checkHeadHitsBody() {
         int minLength = 3;
-        // head can touch tail only if entities.snake has more than 3 bodyparts
+        // head can touch tail only if snake has more than 3 bodyparts
         int size = snake.getBodyParts().size();
         if (size > minLength) {
             for (int i = 0; i < size; i++) {
