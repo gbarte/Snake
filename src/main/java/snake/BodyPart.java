@@ -1,6 +1,6 @@
-package entities.snake;
+package snake;
 
-import models.Coordinate;
+import gamelogic.Coordinate;
 
 public class BodyPart {
     private Coordinate coordinate;

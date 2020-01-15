@@ -1,11 +1,13 @@
 package states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -13,14 +15,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import net.java.games.input.Component;
 
 /**
  * Creates menu screen.
  */
-@SuppressWarnings("PMD.BeanMembersShouldSerialize")
-public class MenuState implements State {
-    private GameStateManager stateManager;
+public class MenuState extends State {
     private static final int BUTTON_WIDTH = 300;
     private static final int BUTTON_HEIGHT = 60;
     private Stage stage;
@@ -32,7 +34,7 @@ public class MenuState implements State {
      * @param gameManager which keeps track of the state of the game.
      */
     public MenuState(GameStateManager gameManager) {
-        this.stateManager = gameManager;
+        super(gameManager);
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         skin = new Skin(Gdx.files.internal(
@@ -44,6 +46,30 @@ public class MenuState implements State {
         initLeaderboardButton();
         initSignOutButton();
         background = new Texture("assets/bg.png");
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public Skin getSkin() {
+        return skin;
+    }
+
+    public void setSkin(Skin skin) {
+        this.skin = skin;
+    }
+
+    public Texture getBackground() {
+        return background;
+    }
+
+    public void setBackground(Texture background) {
+        this.background = background;
     }
 
     /**
@@ -72,7 +98,7 @@ public class MenuState implements State {
         signOutButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                stateManager.setState(new LoginState(stateManager));
+                gameManager.set(new LoginState(gameManager));
             }
 
             @Override
@@ -96,7 +122,7 @@ public class MenuState implements State {
             @Override
             public void touchUp(InputEvent event, float x, float y,
                                 int pointer, int button) {
-                stateManager.setState(new LeaderboardState(stateManager));
+                gameManager.set(new LeaderboardState(gameManager));
             }
 
             @Override
@@ -144,7 +170,7 @@ public class MenuState implements State {
             @Override
             public void touchUp(InputEvent event, float x, float y,
                                 int pointer, int button) {
-                stateManager.setState(new PlayState(stateManager));
+                gameManager.set(new PlayState(gameManager));
             }
 
             @Override

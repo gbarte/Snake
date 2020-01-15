@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -17,14 +18,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import services.auth.AuthResponse;
+import services.auth.AuthService;
 
 /**
  * State of the game over game.
  */
-@SuppressWarnings("PMD.BeanMembersShouldSerialize")
-public class GameOverState implements State {
-    private GameStateManager stateManager;
+public class GameOverState extends State {
     private Stage stage;
     private Skin skin;
     private Texture backGround;
@@ -38,7 +40,7 @@ public class GameOverState implements State {
      * @param gameManager which keeps track of the state of the game.
      */
     public GameOverState(GameStateManager gameManager) {
-        this.stateManager = gameManager;
+        super(gameManager);
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         skin = new Skin(Gdx.files.internal(
@@ -50,6 +52,46 @@ public class GameOverState implements State {
         initSaveButton();
         initReturnButton();
         backGround = new Texture("assets/bg.png");
+    }
+
+    public Texture getBackGround() {
+        return backGround;
+    }
+
+    public void setBackGround(Texture backGround) {
+        this.backGround = backGround;
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public Skin getSkin() {
+        return skin;
+    }
+
+    public void setSkin(Skin skin) {
+        this.skin = skin;
+    }
+
+    public CheckBox getCheckBox() {
+        return checkBox;
+    }
+
+    public void setCheckBox(CheckBox checkBox) {
+        this.checkBox = checkBox;
+    }
+
+    public TextField getNicknameField() {
+        return nicknameField;
+    }
+
+    public void setNicknameField(TextField nicknameField) {
+        this.nicknameField = nicknameField;
     }
 
     @Override
@@ -179,7 +221,7 @@ public class GameOverState implements State {
         returnButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                stateManager.setState(new MenuState(stateManager));
+                gameManager.set(new MenuState(gameManager));
             }
 
             @Override
@@ -213,7 +255,7 @@ public class GameOverState implements State {
         dialog.button("OK", true).addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                stateManager.setState(new MenuState(stateManager));
+                gameManager.set(new MenuState(gameManager));
             }
         });
         dialog.show(stage);

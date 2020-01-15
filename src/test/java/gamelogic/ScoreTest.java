@@ -1,4 +1,4 @@
-package models;
+package gamelogic;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

@@ -1,11 +1,11 @@
-package entities;
+package objects.base;
 
 import com.badlogic.gdx.graphics.Texture;
-import states.SnakeGame;
-import models.Coordinate;
+import game.SnakeGame;
+import gamelogic.Coordinate;
 
 import java.util.Random;
-import entities.snake.SnakeBody;
+import snake.SnakeBody;
 
 /**
  * Interactive food object of Apple.
