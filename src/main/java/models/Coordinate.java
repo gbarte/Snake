@@ -15,10 +15,6 @@ public class Coordinate {
         this.coordinateY = coordinateY;
     }
 
-    public Coordinate() {
-
-    }
-
     /**
      * Get the X coordinate.
      * @return
