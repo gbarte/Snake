@@ -28,10 +28,15 @@ public class LoginState implements State {
     private Stage stage;
     private Skin skin;
     private Label title;
+    private TextField usernameField;
+    private TextField passwordField;
     private Texture backGround;
+    private BitmapFont bitmapFont;
+    private Label.LabelStyle labelStyle;
 
     /**
-     * Constructor which creates a new LoginState within the game.
+     * Constructor which creates a new state within the game.
+     * E.g. Play/Pause/Menu.
      *
      * @param gameManager which keeps track of the state of the game.
      */
@@ -40,10 +45,79 @@ public class LoginState implements State {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         skin =  new Skin(Gdx.files.internal("assets/quantum-horizon/skin/quantum-horizon-ui.json"));
+        bitmapFont = new BitmapFont();
+        labelStyle = new Label.LabelStyle(bitmapFont,
+                new Color(255,  0, 255, 1));
         initTitle();
         initLogin();
+        initPasswordField();
+        initButtons();
         initSignUp();
         backGround = new Texture("assets/bg.png");
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public Skin getSkin() {
+        return skin;
+    }
+
+    public void setSkin(Skin skin) {
+        this.skin = skin;
+    }
+
+    public Label getTitle() {
+        return title;
+    }
+
+    public void setTitle(Label title) {
+        this.title = title;
+    }
+
+    public Texture getBackGround() {
+        return backGround;
+    }
+
+    public void setBackGround(Texture backGround) {
+        this.backGround = backGround;
+    }
+
+    public TextField getUsernameField() {
+        return usernameField;
+    }
+
+    public void setUsernameField(TextField usernameField) {
+        this.usernameField = usernameField;
+    }
+
+    public TextField getPasswordField() {
+        return passwordField;
+    }
+
+    public void setPasswordField(TextField passWordField) {
+        this.passwordField = passWordField;
+    }
+
+    public BitmapFont getBitmapFont() {
+        return bitmapFont;
+    }
+
+    public void setBitmapFont(BitmapFont bitmapFont) {
+        this.bitmapFont = bitmapFont;
+    }
+
+    public Label.LabelStyle getLabelStyle() {
+        return labelStyle;
+    }
+
+    public void setLabelStyle(Label.LabelStyle labelStyle) {
+        this.labelStyle = labelStyle;
     }
 
     /**
@@ -85,42 +159,32 @@ public class LoginState implements State {
     }
 
     /**
-     * Sets username and password textfield,
+     * Sets username textfield,
      * Login and Sign Up buttons.
      */
     private void initLogin() {
-        TextButton loginButton = new TextButton("Login", skin);
-        loginButton.setPosition(325, 125);
-        BitmapFont bitmapFont = new BitmapFont();
-        // Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, new Color(1, 0, 1, 1));
-        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
-                new Color(255,  0, 255, 1));
         Label usernameLabel = new Label("Username", labelStyle);
         usernameLabel.setPosition(350, 279);
-
-        TextField usernameField = new TextField("",
+        usernameField = new TextField("",
                 new Skin(Gdx.files.internal("assets/cloud-form/skin/cloud-form-ui.json")));
         usernameField.setSize(180, 30);
         usernameField.setPosition(300, 247);
+        stage.addActor(usernameLabel);
+        stage.addActor(usernameField);
+    }
 
-        Label passwordLabel = new Label("Password", labelStyle);
-        passwordLabel.setPosition(350, 229);
-
-        TextField passWordField = new TextField("",
-                new Skin(Gdx.files.internal("assets/cloud-form/skin/cloud-form-ui.json")));
-        passWordField.setSize(180, 30);
-        passWordField.setPosition(300, 197);
-        passWordField.setPasswordMode(true);
-        passWordField.setPasswordCharacter('*');
-
+    /**
+     * Login and Sign Up buttons.
+     */
+    private void initButtons() {
+        TextButton loginButton = new TextButton("Login", skin);
+        loginButton.setPosition(325, 125);
         loginButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-
                 AuthService service = new AuthService();
                 AuthResponse response = service.auth(usernameField.getText(),
-                        passWordField.getText());
-
+                        passwordField.getText());
 
                 if (response == AuthResponse.SUCCESS) {
                     stateManager.setState(new MenuState(stateManager));
@@ -128,7 +192,6 @@ public class LoginState implements State {
                     // TODO: display failed authentication.
                     failedAuthenticationDialog();
                 }
-
             }
 
             @Override
@@ -137,12 +200,25 @@ public class LoginState implements State {
                 return true;
             }
         });
-
         stage.addActor(loginButton);
-        stage.addActor(usernameLabel);
+    }
+
+    /**
+     * Sets the password textfield.
+     */
+    private void initPasswordField() {
+        Label passwordLabel = new Label("Password", labelStyle);
+        passwordLabel.setPosition(350, 229);
+
+        passwordField = new TextField("",
+                new Skin(Gdx.files.internal("assets/cloud-form/skin/cloud-form-ui.json")));
+        passwordField.setSize(180, 30);
+        passwordField.setPosition(300, 197);
+        passwordField.setPasswordMode(true);
+        passwordField.setPasswordCharacter('*');
         stage.addActor(passwordLabel);
         stage.addActor(usernameField);
-        stage.addActor(passWordField);
+        stage.addActor(passwordField);
     }
 
     /**
