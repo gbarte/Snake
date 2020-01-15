@@ -6,11 +6,11 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import objects.base.Apple;
+import entities.Apple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import snake.SnakeBody;
+import entities.snake.SnakeBody;
 
 
 class PlayStateTest {

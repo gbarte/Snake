@@ -6,13 +6,12 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import game.SnakeGame;
-import gamelogic.Coordinate;
-import gamelogic.Score;
+import models.Coordinate;
+import models.Score;
 
-import objects.base.Apple;
-import snake.BodyPart;
-import snake.SnakeBody;
+import entities.Apple;
+import entities.snake.BodyPart;
+import entities.snake.SnakeBody;
 
 /**
  * In-game screen.
