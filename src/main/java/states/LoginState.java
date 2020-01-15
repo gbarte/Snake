@@ -22,17 +22,13 @@ import services.auth.AuthService;
 /**
  * Creates login screen.
  */
-@SuppressWarnings("PMD.BeanMembersShouldSerialize")
-public class LoginState implements State {
-    private GameStateManager stateManager;
+public class LoginState extends State {
     private Stage stage;
     private Skin skin;
     private Label title;
     private TextField usernameField;
-    private TextField passwordField;
+    private TextField passWordField;
     private Texture backGround;
-    private BitmapFont bitmapFont;
-    private Label.LabelStyle labelStyle;
 
     /**
      * Constructor which creates a new state within the game.
@@ -41,17 +37,12 @@ public class LoginState implements State {
      * @param gameManager which keeps track of the state of the game.
      */
     public LoginState(GameStateManager gameManager) {
-        this.stateManager = gameManager;
+        super(gameManager);
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         skin =  new Skin(Gdx.files.internal("assets/quantum-horizon/skin/quantum-horizon-ui.json"));
-        bitmapFont = new BitmapFont();
-        labelStyle = new Label.LabelStyle(bitmapFont,
-                new Color(255,  0, 255, 1));
         initTitle();
         initLogin();
-        initPasswordField();
-        initButtons();
         initSignUp();
         backGround = new Texture("assets/bg.png");
     }
@@ -96,28 +87,12 @@ public class LoginState implements State {
         this.usernameField = usernameField;
     }
 
-    public TextField getPasswordField() {
-        return passwordField;
+    public TextField getPassWordField() {
+        return passWordField;
     }
 
-    public void setPasswordField(TextField passWordField) {
-        this.passwordField = passWordField;
-    }
-
-    public BitmapFont getBitmapFont() {
-        return bitmapFont;
-    }
-
-    public void setBitmapFont(BitmapFont bitmapFont) {
-        this.bitmapFont = bitmapFont;
-    }
-
-    public Label.LabelStyle getLabelStyle() {
-        return labelStyle;
-    }
-
-    public void setLabelStyle(Label.LabelStyle labelStyle) {
-        this.labelStyle = labelStyle;
+    public void setPassWordField(TextField passWordField) {
+        this.passWordField = passWordField;
     }
 
     /**
@@ -145,7 +120,7 @@ public class LoginState implements State {
         signUpButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                stateManager.setState(new SignUpState(stateManager));
+                gameManager.set(new SignUpState(gameManager));
             }
 
             @Override
@@ -159,39 +134,50 @@ public class LoginState implements State {
     }
 
     /**
-     * Sets username textfield,
+     * Sets username and password textfield,
      * Login and Sign Up buttons.
      */
     private void initLogin() {
+        TextButton loginButton = new TextButton("Login", skin);
+        loginButton.setPosition(325, 125);
+        BitmapFont bitmapFont = new BitmapFont();
+        // Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, new Color(1, 0, 1, 1));
+        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
+                new Color(255,  0, 255, 1));
         Label usernameLabel = new Label("Username", labelStyle);
         usernameLabel.setPosition(350, 279);
-        usernameField = new TextField("",
+
+        TextField usernameField = new TextField("",
                 new Skin(Gdx.files.internal("assets/cloud-form/skin/cloud-form-ui.json")));
         usernameField.setSize(180, 30);
         usernameField.setPosition(300, 247);
-        stage.addActor(usernameLabel);
-        stage.addActor(usernameField);
-    }
 
-    /**
-     * Login and Sign Up buttons.
-     */
-    private void initButtons() {
-        TextButton loginButton = new TextButton("Login", skin);
-        loginButton.setPosition(325, 125);
+        Label passwordLabel = new Label("Password", labelStyle);
+        passwordLabel.setPosition(350, 229);
+
+        TextField passWordField = new TextField("",
+                new Skin(Gdx.files.internal("assets/cloud-form/skin/cloud-form-ui.json")));
+        passWordField.setSize(180, 30);
+        passWordField.setPosition(300, 197);
+        passWordField.setPasswordMode(true);
+        passWordField.setPasswordCharacter('*');
+
         loginButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+
                 AuthService service = new AuthService();
                 AuthResponse response = service.auth(usernameField.getText(),
-                        passwordField.getText());
+                        passWordField.getText());
+
 
                 if (response == AuthResponse.SUCCESS) {
-                    stateManager.setState(new MenuState(stateManager));
+                    gameManager.set(new MenuState(gameManager));
                 } else {
                     // TODO: display failed authentication.
                     failedAuthenticationDialog();
                 }
+
             }
 
             @Override
@@ -200,25 +186,12 @@ public class LoginState implements State {
                 return true;
             }
         });
+
         stage.addActor(loginButton);
-    }
-
-    /**
-     * Sets the password textfield.
-     */
-    private void initPasswordField() {
-        Label passwordLabel = new Label("Password", labelStyle);
-        passwordLabel.setPosition(350, 229);
-
-        passwordField = new TextField("",
-                new Skin(Gdx.files.internal("assets/cloud-form/skin/cloud-form-ui.json")));
-        passwordField.setSize(180, 30);
-        passwordField.setPosition(300, 197);
-        passwordField.setPasswordMode(true);
-        passwordField.setPasswordCharacter('*');
+        stage.addActor(usernameLabel);
         stage.addActor(passwordLabel);
         stage.addActor(usernameField);
-        stage.addActor(passwordField);
+        stage.addActor(passWordField);
     }
 
     /**

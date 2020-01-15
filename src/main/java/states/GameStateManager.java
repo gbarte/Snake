@@ -15,21 +15,21 @@ public class GameStateManager {
      * Constructor creates a new stack for the states.
      */
     public GameStateManager() {
-        states = new Stack<>();
+        states = new Stack<State>();
     }
 
     /**
      * Pushes a new state onto the stack.
      * @param state to be pushed on the stack.
      */
-    public void pushState(State state) {
+    public void push(State state) {
         states.push(state);
     }
 
     /**
      * Pops latest state on the stack.
      */
-    public void popState() {
+    public void pop() {
         states.pop();
     }
 
@@ -37,7 +37,7 @@ public class GameStateManager {
      * Sets new current state.
      * @param state to become the current state.
      */
-    public void setState(State state) {
+    public void set(State state) {
         states.pop();
         states.push(state);
     }
