@@ -1,14 +1,14 @@
 package services.db;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.sql.SQLException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import services.LeaderboardEntry;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.sql.SQLException;
 
 
 public class LeaderboardTableHandlerTest {
@@ -46,11 +46,13 @@ public class LeaderboardTableHandlerTest {
         DatabaseHandler databaseHandler = new DatabaseHandler();
         databaseHandler.connect(true);
 
-        Assertions.assertFalse(databaseHandler.getConnection().getMetaData().getTables(null, null, LeaderboardTableHandler.TABLE_NAME, null).next());
+        Assertions.assertFalse(databaseHandler.getConnection().getMetaData()
+                .getTables(null, null, LeaderboardTableHandler.TABLE_NAME, null).next());
 
         tableHandler = new LeaderboardTableHandler(true);
 
-        Assertions.assertTrue(databaseHandler.getConnection().getMetaData().getTables(null, null, LeaderboardTableHandler.TABLE_NAME, null).next());
+        Assertions.assertTrue(databaseHandler.getConnection().getMetaData()
+                .getTables(null, null, LeaderboardTableHandler.TABLE_NAME, null).next());
         dropCustomTable();
 
     }
