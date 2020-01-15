@@ -1,8 +1,8 @@
 package entities;
 
 import com.badlogic.gdx.graphics.Texture;
-import states.PlayState;
 import models.Coordinate;
+import states.PlayState;
 
 
 /**

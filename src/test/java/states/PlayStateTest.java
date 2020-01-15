@@ -12,11 +12,11 @@ import entities.Food;
 import entities.MushroomPowerUp;
 import entities.factories.AppleFactory;
 import entities.factories.FoodFactory;
+import entities.snake.SnakeBody;
 import models.Coordinate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import entities.snake.SnakeBody;
 
 
 class PlayStateTest {

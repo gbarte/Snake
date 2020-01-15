@@ -7,17 +7,17 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import entities.Apple;
 import entities.Food;
 import entities.factories.AppleFactory;
 import entities.factories.FoodFactory;
 import entities.factories.PowerUpFactory;
+import entities.snake.BodyPart;
+import entities.snake.SnakeBody;
 import models.Coordinate;
 import models.DoubleScore;
 import models.Score;
 
-import entities.Apple;
-import entities.snake.BodyPart;
-import entities.snake.SnakeBody;
 
 /**
  * In-game screen.

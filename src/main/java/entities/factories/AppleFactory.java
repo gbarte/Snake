@@ -3,8 +3,8 @@ package entities.factories;
 import entities.Apple;
 import entities.Food;
 import entities.GoldenApple;
-import models.Coordinate;
 import java.util.Random;
+import models.Coordinate;
 
 /**
  * Apple Factory to create Apple/Golden Apple objects.

@@ -2,12 +2,11 @@ package entities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
+import entities.snake.SnakeBody;
 import models.Score;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import entities.snake.SnakeBody;
 import states.PlayState;
 
 

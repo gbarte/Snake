@@ -2,8 +2,8 @@ package entities;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import models.DoubleScore;
 import models.Coordinate;
+import models.DoubleScore;
 import states.PlayState;
 
 /**

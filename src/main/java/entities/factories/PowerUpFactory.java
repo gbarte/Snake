@@ -1,10 +1,10 @@
 package entities.factories;
 
-import java.util.Random;
-
 import entities.DoubleScorePowerUp;
 import entities.Food;
 import entities.MushroomPowerUp;
+
+import java.util.Random;
 
 
 /**

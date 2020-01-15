@@ -1,13 +1,10 @@
 package entities.factories;
 
-
 import entities.Food;
 import entities.snake.SnakeBody;
+import java.util.Random;
 import models.Coordinate;
 import states.SnakeGame;
-
-import java.util.Random;
-
 
 
 /**

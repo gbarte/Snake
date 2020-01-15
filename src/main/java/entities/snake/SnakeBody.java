@@ -1,10 +1,9 @@
 package entities.snake;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import java.util.LinkedList;
 import models.Coordinate;
 
-import java.util.LinkedList;
 
 /**
  * Class that defines the snake's body logics.
