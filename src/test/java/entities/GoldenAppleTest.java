@@ -2,10 +2,13 @@ package objects.base;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import gamelogic.Score;
+import entities.Food;
+import entities.FoodTest;
+import entities.GoldenApple;
+import entities.snake.SnakeBody;
+import models.Score;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import snake.SnakeBody;
 import states.PlayState;
 
 

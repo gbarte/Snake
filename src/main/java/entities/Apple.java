@@ -1,32 +1,30 @@
-package objects.base;
+package entities;
 
 import com.badlogic.gdx.graphics.Texture;
-import gamelogic.Coordinate;
 import states.PlayState;
+import models.Coordinate;
+
 
 /**
- * Interactive food object of Golden Apple.
- * Main difference from regular apple is that it gives more
- * score points and increases the snake twice.
+ * Interactive food object of Apple.
  */
-public class GoldenApple implements Food {
+public class Apple implements Food {
 
-    public static int DEFAULT_SCORE = 25;
-    public static double rarity = 0.2;
-    private static final String texturePath = "assets/appleYellowSmall.png";
-    private Coordinate coordinate;
+    public static final int DEFAULT_SCORE = 10;
+    private static final String texturePath = "assets/greenapplesmall.png";
+    public Coordinate coordinate;
     private Texture texture;
 
     /**
      * Creates an apple with a predefined texture at Random coordinate in the
      * texture space (Coordinate is multiplied with cell size!).
      */
-    public GoldenApple(Coordinate coordinate) {
+    public Apple(Coordinate coordinate) {
         this.coordinate = coordinate;
         this.texture = new Texture(texturePath);
     }
 
-    public GoldenApple() {
+    public Apple() {
 
     }
 
@@ -48,7 +46,7 @@ public class GoldenApple implements Food {
 
     @Override
     public void action(PlayState play) {
-        play.getScore().add(DEFAULT_SCORE);
-        play.getSnake().growSnake(2);
+        play.getScore().add(Apple.DEFAULT_SCORE);
+        play.getSnake().growSnake();
     }
 }

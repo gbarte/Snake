@@ -1,4 +1,4 @@
-package gamelogic;
+package models;
 
 /**
  * The class that handles score recording and operations.

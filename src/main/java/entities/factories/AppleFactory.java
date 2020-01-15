@@ -1,10 +1,10 @@
-package objects.base.factories;
+package entities.factories;
 
-import gamelogic.Coordinate;
+import entities.Apple;
+import entities.Food;
+import entities.GoldenApple;
+import models.Coordinate;
 import java.util.Random;
-import objects.base.Apple;
-import objects.base.Food;
-import objects.base.GoldenApple;
 
 /**
  * Apple Factory to create Apple/Golden Apple objects.

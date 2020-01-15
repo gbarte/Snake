@@ -1,7 +1,7 @@
-package objects.base;
+package entities;
 
 import com.badlogic.gdx.graphics.Texture;
-import gamelogic.Coordinate;
+import models.Coordinate;
 import states.PlayState;
 
 

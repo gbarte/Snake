@@ -1,9 +1,10 @@
-package objects.base.factories;
+package entities.factories;
 
 import java.util.Random;
-import objects.base.DoubleScorePowerUp;
-import objects.base.Food;
-import objects.base.MushroomPowerUp;
+
+import entities.DoubleScorePowerUp;
+import entities.Food;
+import entities.MushroomPowerUp;
 
 
 /**

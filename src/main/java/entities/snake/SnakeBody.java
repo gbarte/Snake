@@ -1,8 +1,8 @@
-package snake;
+package entities.snake;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import gamelogic.Coordinate;
+import models.Coordinate;
 
 import java.util.LinkedList;
 

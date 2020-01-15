@@ -1,4 +1,4 @@
-package gamelogic;
+package models;
 
 public class DoubleScore extends Score {
 

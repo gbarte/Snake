@@ -1,14 +1,14 @@
-package objects.base;
+package entities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import gamelogic.DoubleScore;
-import gamelogic.Score;
+import entities.snake.SnakeBody;
+import models.DoubleScore;
+import models.Score;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import snake.SnakeBody;
 import states.PlayState;
 
 

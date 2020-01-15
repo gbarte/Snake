@@ -1,10 +1,13 @@
-package objects.base.factories;
+package entities.factories;
 
-import game.SnakeGame;
-import gamelogic.Coordinate;
+
+import entities.Food;
+import entities.snake.SnakeBody;
+import models.Coordinate;
+import states.SnakeGame;
+
 import java.util.Random;
-import objects.base.Food;
-import snake.SnakeBody;
+
 
 
 /**

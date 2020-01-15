@@ -7,16 +7,16 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import gamelogic.Coordinate;
-import objects.base.Apple;
-import objects.base.Food;
-import objects.base.MushroomPowerUp;
-import objects.base.factories.AppleFactory;
-import objects.base.factories.FoodFactory;
+import entities.Apple;
+import entities.Food;
+import entities.MushroomPowerUp;
+import entities.factories.AppleFactory;
+import entities.factories.FoodFactory;
+import models.Coordinate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import snake.SnakeBody;
+import entities.snake.SnakeBody;
 
 
 class PlayStateTest {

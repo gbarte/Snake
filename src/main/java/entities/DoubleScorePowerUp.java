@@ -1,10 +1,9 @@
-package objects.base;
+package entities;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.utils.TimeUtils;
-import gamelogic.Coordinate;
-import gamelogic.DoubleScore;
+import models.DoubleScore;
+import models.Coordinate;
 import states.PlayState;
 
 /**
