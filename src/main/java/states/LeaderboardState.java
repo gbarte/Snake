@@ -21,12 +21,15 @@ import services.leaderboard.LeaderboardService;
  * LeaderBoardState class
  * Shows a leaderboard of all players playing the gaming.
  */
-public class LeaderboardState extends State {
+@SuppressWarnings("PMD.BeanMembersShouldSerialize")
+public class LeaderboardState implements State {
+    private GameStateManager stateManager;
     private Stage stage;
     private Skin skin;
     private Label title;
     private Texture backGround;
     private BitmapFont bitmapFont;
+    private Label.LabelStyle labelStyle;
 
     /**
      * Constructor which creates a new state within the game.
@@ -35,15 +38,25 @@ public class LeaderboardState extends State {
      * @param gameManager which keeps track of the state of the game.
      */
     public LeaderboardState(GameStateManager gameManager) {
-        super(gameManager);
+        this.stateManager = gameManager;
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         skin =  new Skin(Gdx.files.internal("assets/quantum-horizon/skin/quantum-horizon-ui.json"));
         backGround = new Texture("assets/three.png");
         bitmapFont = new BitmapFont(Gdx.files.internal("assets/font.fnt"));
+        labelStyle = new Label.LabelStyle(bitmapFont,
+                new Color(0, (float) 2.55, 0, 1));
         initReturn();
         initTitle();
         initBoard();
+    }
+
+    public GameStateManager getStateManager() {
+        return stateManager;
+    }
+
+    public void setStateManager(GameStateManager stateManager) {
+        this.stateManager = stateManager;
     }
 
     public Stage getStage() {
@@ -86,17 +99,24 @@ public class LeaderboardState extends State {
         this.bitmapFont = bitmapFont;
     }
 
+    public Label.LabelStyle getLabelStyle() {
+        return labelStyle;
+    }
+
+    public void setLabelStyle(Label.LabelStyle labelStyle) {
+        this.labelStyle = labelStyle;
+    }
+
     /**
      * Creates return button.
      */
     private void initReturn() {
         TextButton returnButton = new TextButton("return", skin);
-        //        signUpButton.setPosition(300, 150);
         returnButton.setPosition(350, 50);
         returnButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                gameManager.set(new MenuState(gameManager));
+                stateManager.setState(new MenuState(stateManager));
             }
 
             @Override
@@ -113,13 +133,10 @@ public class LeaderboardState extends State {
      * Sets the leaderboard title in the middle of the screen.
      */
     private void initTitle() {
-        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
-                new Color(0, (float) 2.55, 0, 1));
         title = new Label("Leaderboard", labelStyle);
         title.setSize(400, 100);
         title.setPosition(160,650);
         title.setFontScale(2);
-        // title.setAlignment(Align.center);
         stage.addActor(title);
     }
 
@@ -127,7 +144,6 @@ public class LeaderboardState extends State {
      * Adds score to the player..
      */
     private void initBoard() {
-
         LeaderboardService service = new LeaderboardService();
         List<LeaderboardEntry> entries = service.retrieveLeaderboard();
 
@@ -145,7 +161,7 @@ public class LeaderboardState extends State {
      * @param number number which will be shown.
      */
     private void setNumber(int y, String number) {
-        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
+        labelStyle = new Label.LabelStyle(bitmapFont,
                 new Color(0, (float) 2.55, 0, 1));
         Label one = new Label(number, labelStyle);
         one.setSize(100, 100);
@@ -159,7 +175,7 @@ public class LeaderboardState extends State {
      * @param player player which will be shown.
      */
     private void setPlayerRank(int y, String player) {
-        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
+        labelStyle = new Label.LabelStyle(bitmapFont,
                 new Color(0, (float) 2.55, 0, 1));
         Label one = new Label(player, labelStyle);
         one.setSize(100, 100);
@@ -173,7 +189,7 @@ public class LeaderboardState extends State {
      * @param score score which will be shown.
      */
     private void setScore(int y, int score) {
-        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
+        labelStyle = new Label.LabelStyle(bitmapFont,
                 new Color(0, (float) 2.55, 0, 1));
         Label one = new Label(Integer.toString(score), labelStyle);
         one.setSize(100, 100);
@@ -205,7 +221,6 @@ public class LeaderboardState extends State {
     @Override
     public void dispose() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        gameManager.update(Gdx.graphics.getDeltaTime());
-        // gameManager.render(batch);
+        stateManager.update(Gdx.graphics.getDeltaTime());
     }
 }
