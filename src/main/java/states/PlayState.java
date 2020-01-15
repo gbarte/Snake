@@ -54,6 +54,9 @@ public class PlayState implements State {
     /**
      * Constructor which creates a new state within the game.
      * Method was made just to make testing easier!
+     * @param gameManager gameManager to manage this PlayState.
+     * @param renderer renderer of this PlayState.
+     * @param snake snake of this PlayState.
      */
     public PlayState(GameStateManager gameManager, SnakeBody snake, ShapeRenderer renderer) {
         this.stateManager = gameManager;

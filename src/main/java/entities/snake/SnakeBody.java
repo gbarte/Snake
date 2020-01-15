@@ -133,6 +133,7 @@ public class SnakeBody {
 
     /**
      * Updates the position of each body part.
+     * @param coordinate coordinate location next body part.
      */
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     public void updateBodyPartsPosition(Coordinate coordinate) {

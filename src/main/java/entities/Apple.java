@@ -18,6 +18,7 @@ public class Apple implements Food {
     /**
      * Creates an apple with a predefined texture at Random coordinate in the
      * texture space (Coordinate is multiplied with cell size!).
+     * @param coordinate of the apple to be placed.
      */
     public Apple(Coordinate coordinate) {
         this.coordinate = coordinate;

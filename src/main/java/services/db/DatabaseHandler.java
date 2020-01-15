@@ -27,7 +27,7 @@ public class DatabaseHandler {
 
     /**
      * Getter of the database connection.
-     * @return
+     * @return connection attribute.
      */
     public Connection getConnection() {
         return this.connection;
@@ -92,6 +92,7 @@ public class DatabaseHandler {
 
     /**
      * Configures the schema of the users table.
+     * @param query string with query.
      */
     public void configureSchema(String query) {
 
