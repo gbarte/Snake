@@ -3,6 +3,7 @@ package entities;
 import com.badlogic.gdx.graphics.Texture;
 import models.Coordinate;
 import states.PlayState;
+import world.GameMap;
 
 
 /**
@@ -11,7 +12,7 @@ import states.PlayState;
 public class Apple implements Food {
 
     public static final int DEFAULT_SCORE = 10;
-    private static final String texturePath = "assets/greenapplesmall.png";
+    private static final String texturePath = "assets/redapple16px.png";
     public Coordinate coordinate;
     private Texture texture;
 
@@ -44,9 +45,19 @@ public class Apple implements Food {
         this.texture = texture;
     }
 
-    @Override
     public void action(PlayState play) {
         play.getScore().add(Apple.DEFAULT_SCORE);
         play.getSnake().growSnake();
+    }
+
+    /**
+     * This method takes a map's score and increases it.
+     * Afterwards the snake is grown;
+     * @param map
+     */
+    @Override
+    public void actionTwo(GameMap map) {
+        map.getScore().add(Apple.DEFAULT_SCORE);
+        map.getSnake().growSnake();
     }
 }

@@ -1,16 +1,14 @@
 package states;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import entities.snake.SnakeBody;
 import utils.Sizes;
 import world.CustomGameMap;
 import world.GameMap;
+import world.TiledGameMap;
 
 public class PlayStateTwo implements State {
 
@@ -26,17 +24,13 @@ public class PlayStateTwo implements State {
      * @param gameManager which keeps track of the state of the game.
      */
     public PlayStateTwo(GameStateManager gameManager) {
-//
-//        this.gameStateManager = super.getGameManager();
-//        this.orthographicCamera = super.getCamera();
         orthographicCamera = new OrthographicCamera();
         orthographicCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         orthographicCamera.update();
 
         this.snakeBody =
                 new SnakeBody(Sizes.DEFAULT_MINIMUM_MAP_TILES, Sizes.DEFAULT_MINIMUM_MAP_TILES);
-        gameMap = new CustomGameMap(this.snakeBody, gameManager); //CustomGameMap ipv TiledGameMap
-
+        gameMap = new TiledGameMap(this.snakeBody, gameManager); //CustomGameMap ipv TiledGameMap
     }
 
     /**
@@ -72,7 +66,7 @@ public class PlayStateTwo implements State {
 
     @Override
     public void dispose() {
-        //batch.dispose(); ??not sure if i should dispose
+        gameMap.dispose(orthographicCamera);
     }
 
     public GameMap getGameMap() {

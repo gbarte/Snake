@@ -67,7 +67,6 @@ public class LoginState implements State {
      */
     private void initSignUp() {
         TextButton signUpButton = new TextButton("Sign up", skin);
-        //        signUpButton.setPosition(300, 150);
         signUpButton.setPosition(320, 65);
         signUpButton.addListener(new InputListener() {
             @Override
@@ -93,7 +92,6 @@ public class LoginState implements State {
         TextButton loginButton = new TextButton("Login", skin);
         loginButton.setPosition(325, 125);
         BitmapFont bitmapFont = new BitmapFont();
-        // Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, new Color(1, 0, 1, 1));
         Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
                 new Color(255,  0, 255, 1));
         Label usernameLabel = new Label("Username", labelStyle);
@@ -176,11 +174,13 @@ public class LoginState implements State {
     public void render(SpriteBatch batch) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.begin();
         stage.act();
         stage.getBatch().begin();
         stage.getBatch().draw(backGround, 0, 0, Sizes.MIN_WIDTH_WINDOW, Sizes.MIN_HEIGHT_WINDOW);
         stage.getBatch().end();
         stage.draw();
+        batch.end();
     }
 
     @Override

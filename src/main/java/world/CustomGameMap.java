@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import entities.Food;
+import entities.factories.FoodFactory;
 import entities.snake.SnakeBody;
 import models.Score;
 import objects.base.Apple;
@@ -30,7 +32,8 @@ public class CustomGameMap extends GameMap {
      * @param manager The GameStateManager which sets the different stages in the game.
      */
     public CustomGameMap(SnakeBody snake, GameStateManager manager) {
-        this("defaultID", "defaultName", "assets/setOfFive.png", snake, manager);
+        this("defaultID", "defaultName", "assets/setOfFive.png", "assets/DefaultBody.png",
+                snake, manager);
     }
 
     /**
@@ -39,11 +42,13 @@ public class CustomGameMap extends GameMap {
      * @param id The ID of the map.
      * @param name The name of the map.
      * @param tileSet The path for the theme (or set of tiles) we want to render.
+     * @param bodytexture The texture path for the snake's body.
      * @param snake The snake for this game.
      * @param manager The GameStateManager which sets the different stages in the game.
      */
-    public CustomGameMap(String id, String name, String tileSet,
+    public CustomGameMap(String id, String name, String tileSet, String bodytexture,
                          SnakeBody snake, GameStateManager manager) {
+        super(bodytexture);
         this.id = id;
         this.name = name;
         this.snake = snake;
@@ -60,13 +65,18 @@ public class CustomGameMap extends GameMap {
      * @param id The ID of the map.
      * @param name The name of the map.
      * @param map The map with all the tile type's numbers.
-     * @param tiles
-     * @param snake
+     * @param tiles Container for the theme of our map's tiles.
+     * @param snake The snake for this game.
      * @param manager The GameStateManager which sets the different stages in the game.
+     * @param food        Food object that snake consumes.
+     * @param score       Score object to keep track of your score.
+     * @param foodFactory FoodFactory factory used to create food.
+     * @param bodyTexture The texture path for the snake's skin.
      */
     public CustomGameMap(String id, String name, int[][][] map, TextureRegion[][] tiles,
-                         SnakeBody snake, GameStateManager manager, Apple apple, String bodyTexture) {
-        super(Sizes.MOVE_TIME, manager, snake, apple, new Score(), bodyTexture);
+                         SnakeBody snake, GameStateManager manager,
+                         Food food, Score score, FoodFactory foodFactory, String bodyTexture) {
+        super(Sizes.MOVE_TIME, manager, snake, foodFactory, food, score, bodyTexture);
         this.id = id;
         this.name = name;
         this.snake = snake;

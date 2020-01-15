@@ -8,6 +8,8 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import entities.Food;
+import entities.factories.FoodFactory;
 import entities.snake.SnakeBody;
 import models.Score;
 import objects.base.Apple;
@@ -51,12 +53,18 @@ public class TiledGameMap extends GameMap {
      *
      * @param manager     The GameStateManager which sets the different stages in the game.
      * @param snake       The snake for this map.
-     * @param apple       Apple object that gets rendered.
      * @param bodyTexture The texture path for the snake's skin.
+     * @param foodFactory FoodFactory factory used to create food.
+     * @param food        Food object that snake consumes.
+     * @param score       Score object to keep track of your score.
+     * @param tiledMap    Takes in libGdx's TiledMap class which can load in a existing file map.
+     * @param tiledMapRenderer       This is used to render the tiledMap.
+     * @param fileName       The string path of the file's name for the map.
      */
-    public TiledGameMap(GameStateManager manager, SnakeBody snake, Apple apple, String bodyTexture,
+    public TiledGameMap(GameStateManager manager, SnakeBody snake, String bodyTexture,
+                        FoodFactory foodFactory, Food food, Score score,
                         TiledMap tiledMap, OrthogonalTiledMapRenderer tiledMapRenderer, String fileName) {
-        super(Sizes.MOVE_TIME, manager, snake, apple, new Score(), bodyTexture);
+        super(Sizes.MOVE_TIME, manager, snake, foodFactory, food, score, bodyTexture);
         this.tiledMap = tiledMap;
         this.tiledMapRenderer = tiledMapRenderer;
         this.fileName = fileName;

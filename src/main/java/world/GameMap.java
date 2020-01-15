@@ -8,13 +8,19 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import entities.Food;
+import entities.factories.AppleFactory;
+import entities.factories.FoodFactory;
+import entities.factories.PowerUpFactory;
 import entities.snake.BodyPart;
 import entities.snake.SnakeBody;
 import models.Coordinate;
+import models.DoubleScore;
 import models.Score;
-import objects.base.Apple;
 import states.GameOverState;
 import states.GameStateManager;
+import states.PausedState;
+import states.PlayStateTwo;
 import utils.Direction;
 import utils.Sizes;
 import utils.TileType;
@@ -24,12 +30,16 @@ import java.util.LinkedList;
 @SuppressWarnings("PMD")
 public abstract class GameMap {
 
-    private float timer = Sizes.MOVE_TIME;
     GameStateManager manager;
+    public static final float DEFAULT_MOVE_TIME = Sizes.MOVE_TIME;
+    private float moveTime = DEFAULT_MOVE_TIME;
+    private float timer = moveTime;
     private SnakeBody snake;
-    private Apple apple;
+    private Food food;
     private Score score;
+    private FoodFactory foodFactory;
     private String bodyTexture;
+    private static double powerUpTimeout = 10;
 
     /**
      * Constructor for the GameMap that sets a default snake body texture, an apple and the snake.
@@ -37,15 +47,21 @@ public abstract class GameMap {
     public GameMap() {
         this.manager = getManager();
         this.snake = getSnake();
-        this.apple = new Apple();
+        this.foodFactory = new AppleFactory();
+        this.food = foodFactory.createFood();
         this.score = new Score();
         this.bodyTexture = "assets/DefaultBody.png";
     }
 
+    /**
+     * Constructor used to pass on a texture path for the snake's body.
+     * @param bodyTexture The texture path for the snake's body.
+     */
     public GameMap(String bodyTexture) {
         this.manager = getManager();
         this.snake = getSnake();
-        this.apple = new Apple();
+        this.foodFactory = new AppleFactory();
+        this.food = foodFactory.createFood();
         this.score = new Score();
         this.bodyTexture = bodyTexture;
     }
@@ -55,15 +71,17 @@ public abstract class GameMap {
      * @param timer The timer for movement and updating.
      * @param manager The GameStateManager which sets the different stages in the game.
      * @param snake The snake for this map.
-     * @param apple Apple object that gets rendered.
+     * @param foodFactory FoodFactory factory used to create food.
+     * @param food Food object that snake consumes.
      * @param score Score object to keep track of your score.
      * @param bodyTexture The texture path for the snake's skin.
      */
-    public GameMap(float timer, GameStateManager manager, SnakeBody snake, Apple apple, Score score, String bodyTexture) {
+    public GameMap(float timer, GameStateManager manager, SnakeBody snake, FoodFactory foodFactory, Food food, Score score, String bodyTexture) {
         this.timer = timer;
         this.manager = manager;
         this.snake = snake;
-        this.apple = apple;
+        this.foodFactory = foodFactory;
+        this.food = food;
         this.score = score;
         this.bodyTexture = bodyTexture;
     }
@@ -82,9 +100,9 @@ public abstract class GameMap {
         TextureRegion[][] textureRegions =
                 TextureRegion.split(def, Sizes.TILE_PIXELS, Sizes.TILE_PIXELS);
 
-        batch.draw(apple.getTexture(),
-                apple.getCoordinate().getCoordinateX() * Sizes.TILE_PIXELS,
-                apple.getCoordinate().getCoordinateY() * Sizes.TILE_PIXELS);
+        batch.draw(food.getTexture(),
+                food.getCoordinate().getCoordinateX() * Sizes.TILE_PIXELS,
+                food.getCoordinate().getCoordinateY() * Sizes.TILE_PIXELS);
 
         renderScore(batch);
 
@@ -139,31 +157,83 @@ public abstract class GameMap {
 
     public abstract GameStateManager getManager();
 
-    public Apple getApple() {
-        return apple;
+    public Food getFood() {
+        return food;
+    }
+
+    public FoodFactory getFoodFactory() {
+        return foodFactory;
     }
 
     public Score getScore() {
         return score;
     }
 
+    public void setScore(Score score) {
+        this.score = score;
+    }
+
+    public void setMoveTime(float moveTime) {
+        this.moveTime = moveTime;
+    }
+
+    public float getTimer() {
+        return timer;
+    }
+
+    public void setTimer(float timer) {
+        this.timer = timer;
+    }
+
+    public void setSnake(SnakeBody snake) {
+        this.snake = snake;
+    }
+
+    public static double getPowerUpTimeout() {
+        return powerUpTimeout;
+    }
+
+    public static void setPowerUpTimeout(double powerUpTimeout) {
+        GameMap.powerUpTimeout = powerUpTimeout;
+    }
+
     /**
      * This method handles the keyboard input for the snake movements.
      */
     public void handleInput() {
-        boolean upPressed = Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyJustPressed(Input.Keys.UP);
+        boolean quitPressed = Gdx.input.isKeyPressed(Input.Keys.Q);
+        if (quitPressed) {    //pushes 'this' state (which is PlayStateTwo here)
+            System.out.println("before restate "+getManager().getStates().toArray().length);
+            this.getManager().reState();
+
+            System.out.println("after restate "+getManager().getStates().toArray().length);
+            this.getManager().setState(new GameOverState(getManager()));
+        }
+        boolean pausePressed = Gdx.input.isKeyPressed(Input.Keys.P);
+        if (pausePressed) {
+            System.out.println("b4 push " + getManager().getStates().toArray().length);
+            this.getManager().pushState(this.getManager().peekState());
+
+            System.out.println("na push " + getManager().getStates().toArray().length);
+            this.getManager().setState(new PausedState(getManager()));
+        }
+        boolean upPressed = Gdx.input.isKeyPressed(Input.Keys.W)
+                || Gdx.input.isKeyJustPressed(Input.Keys.UP);
         if (upPressed) {
             updateDirection(Direction.UP);
         }
-        boolean downPressed = Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyJustPressed(Input.Keys.DOWN);
+        boolean downPressed = Gdx.input.isKeyPressed(Input.Keys.S)
+                || Gdx.input.isKeyJustPressed(Input.Keys.DOWN);
         if (downPressed) {
             updateDirection(Direction.DOWN);
         }
-        boolean leftPressed = Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyJustPressed(Input.Keys.LEFT);
+        boolean leftPressed = Gdx.input.isKeyPressed(Input.Keys.A)
+                || Gdx.input.isKeyJustPressed(Input.Keys.LEFT);
         if (leftPressed) {
             updateDirection(Direction.LEFT);
         }
-        boolean rightPressed = Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyJustPressed(Input.Keys.RIGHT);
+        boolean rightPressed = Gdx.input.isKeyPressed(Input.Keys.D)
+                || Gdx.input.isKeyJustPressed(Input.Keys.RIGHT);
         if (rightPressed) {
             updateDirection(Direction.RIGHT);
         }
@@ -271,11 +341,33 @@ public abstract class GameMap {
      * Checks whether an apple has been eaten or not.
      */
     private void checkAppleEaten() {
-        if (getSnake().getHeadCoord().equals(apple.getCoordinate())) {
-            getScore().add(getApple().getScore());
-            apple = new Apple();
+        if (getSnake().getHeadCoord().equals(getFood().getCoordinate())) {
+            getFood().actionTwo(this);
+            food = foodFactory.createFood();
             checkAppleOnSnake();
-            getSnake().growSnake();
+            if (foodFactory instanceof AppleFactory) {
+                activatePowerUp();
+            }
+        }
+    }
+
+    private void activatePowerUp() {
+        if (getScore().getValue() > Sizes.DEFAULT_SCORE * 10) {
+            foodFactory = new PowerUpFactory();
+        }
+    }
+
+    private void checkPowerUpTimeout() {
+        if (moveTime != DEFAULT_MOVE_TIME || score instanceof DoubleScore) {
+            powerUpTimeout -= Gdx.graphics.getDeltaTime();
+        }
+        if (powerUpTimeout <= 0) {
+            //shapeRenderer.setColor(Color.GREEN); // TODO change color
+            moveTime = DEFAULT_MOVE_TIME;
+            int currScore = score.getValue();
+            score = new Score();
+            score.setValue(currScore);
+            powerUpTimeout = 10;
         }
     }
 
@@ -285,8 +377,8 @@ public abstract class GameMap {
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     private void checkAppleOnSnake() {
         for (BodyPart bp : getSnake().getBodyParts()) {
-            if (bp.getCoordinate().equals(apple.getCoordinate())) {
-                apple = new Apple();
+            if (bp.getCoordinate().equals(food.getCoordinate())) {
+                food = foodFactory.createFood();
             }
         }
     }
@@ -294,8 +386,8 @@ public abstract class GameMap {
     private void updateBadApple() {
         LinkedList<BodyPart> all = getSnake().getBodyParts();
         for (int i = 0; i < all.size(); i++) {
-            if (all.get(i).getCoordinate().equals(apple.getCoordinate())) {
-                apple = new Apple();
+            if (all.get(i).getCoordinate().equals(food.getCoordinate())) {
+                food = foodFactory.createFood();
             }
         }
     }
