@@ -130,7 +130,6 @@ public class SnakeBody {
                     a * Sizes.TILE_PIXELS,
                     b * Sizes.TILE_PIXELS);
         }
-        //map.update(Sizes.MOVE_TIME); //remove TODO
 
 
     }

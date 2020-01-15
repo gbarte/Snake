@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import gamelogic.Score;
+import objects.base.Apple;
 import snake.SnakeBody;
 import states.GameStateManager;
 import utils.Sizes;
@@ -23,26 +25,53 @@ public class CustomGameMap extends GameMap {
     GameStateManager manager;
 
     /**
-     * Constructor for the custom game map.
+     * Constructor for the CustomGameMap class with the minimum required setup.
+     * @param snake The snake for this game.
+     * @param manager The GameStateManager which sets the different stages in the game.
      */
     public CustomGameMap(SnakeBody snake, GameStateManager manager) {
         this("defaultID", "defaultName", "assets/setOfFive.png", snake, manager);
     }
 
     /**
-     * Constructor for the custom game map which takes in the id and name of the map.
-     * @param id The id for the map.
+     * Constructor for the CustomGameMap class which would allow us to pass on specific arguments,
+     * in order to set a specific CustomGameMap.
+     * @param id The ID of the map.
      * @param name The name of the map.
+     * @param tileSet The path for the theme (or set of tiles) we want to render.
+     * @param snake The snake for this game.
+     * @param manager The GameStateManager which sets the different stages in the game.
      */
-    public CustomGameMap(String id, String name, String snakeSkin, SnakeBody snake, GameStateManager manager) {
+    public CustomGameMap(String id, String name, String tileSet,
+                         SnakeBody snake, GameStateManager manager) {
         this.id = id;
         this.name = name;
         this.snake = snake;
         CustomGameMapData customGameMapData =
                 CustomGameMapLoader.loadMap(id, name);
         this.map = customGameMapData.map;
-        Texture texture = new Texture(snakeSkin);
+        Texture texture = new Texture(tileSet);
         tiles = TextureRegion.split(texture, TileType.TILE_SIZE, TileType.TILE_SIZE);
+        this.manager = manager;
+    }
+
+    /**
+     * This constructor is mainly used for testing purposes.
+     * @param id The ID of the map.
+     * @param name The name of the map.
+     * @param map The map with all the tile type's numbers.
+     * @param tiles
+     * @param snake
+     * @param manager The GameStateManager which sets the different stages in the game.
+     */
+    public CustomGameMap(String id, String name, int[][][] map, TextureRegion[][] tiles,
+                         SnakeBody snake, GameStateManager manager, Apple apple, String bodyTexture) {
+        super(Sizes.MOVE_TIME, manager, snake, apple, new Score(), bodyTexture);
+        this.id = id;
+        this.name = name;
+        this.snake = snake;
+        this.map = map;
+        this.tiles = tiles;
         this.manager = manager;
     }
 
@@ -82,8 +111,8 @@ public class CustomGameMap extends GameMap {
 
     @Override
     public TileType getTileTypeByLocation(int layer, float x, float y) {
-        return this.getTileTypeByCoordinate(layer, (int) (x / TileType.TILE_SIZE),
-                getHeight() - (int) (y / TileType.TILE_SIZE) - 1);
+        return this.getTileTypeByCoordinate(layer, Math.round(x / TileType.TILE_SIZE),
+                getHeight() - Math.round(y / TileType.TILE_SIZE) - 1);
     }
 
     @Override
@@ -98,10 +127,12 @@ public class CustomGameMap extends GameMap {
         }
         //check if there's a tile on that layer
         int id = map[layer][getHeight() - row - 1][col];
+
         if (id == 0) {
             layer--;
             id = map[layer][getHeight() - row - 1][col];
         }
+
         TileType toReturn = TileType.getTileTypeById(id);
         return toReturn;
     }

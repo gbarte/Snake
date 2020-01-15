@@ -1,5 +1,6 @@
 package world;
 
+import gamelogic.Coordinate;
 import gamelogic.Score;
 import objects.base.Apple;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +12,7 @@ import utils.Sizes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.when;
 
 //Unnecessary warnings to have getters & setters for objects
 //that'll be mocked anyways and/or won't need getters & setters
@@ -24,11 +26,13 @@ public abstract class GameMapTest {
     private Apple apple;
     private Score score;
     private String bodyTexture;
+    public static final int APPLE_DEFAULT_POSITION = 10;
 
     @BeforeEach
     abstract void init();
 
-    @SuppressWarnings("UseLocaleWithCaseConversions")
+    //This was necessary because PMD didn't realize that this does indeed get called.
+    @SuppressWarnings("PMD.MissingBreakInSwitch")
     void setUp() {
         this.gameMap = getGameMap();
         this.manager = getManager();
@@ -36,6 +40,8 @@ public abstract class GameMapTest {
         this.apple = Mockito.mock(Apple.class);
         this.score = new Score();
         this.bodyTexture = "assets/DefaultBody.png";
+        when(apple.getCoordinate())
+                .thenReturn(new Coordinate(APPLE_DEFAULT_POSITION, APPLE_DEFAULT_POSITION));
     }
 
     public abstract GameMap getGameMap();
@@ -77,5 +83,6 @@ public abstract class GameMapTest {
         assertNotNull(getScore());
         assertEquals(getScore().getValue(), 0);
         assertEquals(getBodyTexture(), "assets/DefaultBody.png");
+        assertEquals(getApple().getCoordinate(), new Coordinate(10, 10));
     }
 }

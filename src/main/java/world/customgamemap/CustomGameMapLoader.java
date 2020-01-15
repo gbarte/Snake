@@ -30,9 +30,7 @@ public class CustomGameMapLoader {
      * @return The generated map of given edge size.
      */
     public static CustomGameMapData generateDefaultMap(String id, String name, int maxEdge) {
-        if (maxEdge > SIZE) {
-            maxEdge = SIZE;
-        }
+
         CustomGameMapData mapData = new CustomGameMapData();
         mapData.id = id;
         mapData.name = name;

@@ -8,6 +8,8 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import gamelogic.Score;
+import objects.base.Apple;
 import snake.SnakeBody;
 import states.GameStateManager;
 import utils.Sizes;
@@ -40,6 +42,24 @@ public class TiledGameMap extends GameMap {
         this.fileName = fileName;
         this.tiledMap = new TmxMapLoader().load(fileName);
         this.tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+        this.snake = snake;
+        this.manager = manager;
+    }
+
+    /**
+     * Constructor (mainly) for testing purposes.
+     *
+     * @param manager     The GameStateManager which sets the different stages in the game.
+     * @param snake       The snake for this map.
+     * @param apple       Apple object that gets rendered.
+     * @param bodyTexture The texture path for the snake's skin.
+     */
+    public TiledGameMap(GameStateManager manager, SnakeBody snake, Apple apple, String bodyTexture,
+                        TiledMap tiledMap, OrthogonalTiledMapRenderer tiledMapRenderer, String fileName) {
+        super(Sizes.MOVE_TIME, manager, snake, apple, new Score(), bodyTexture);
+        this.tiledMap = tiledMap;
+        this.tiledMapRenderer = tiledMapRenderer;
+        this.fileName = fileName;
         this.snake = snake;
         this.manager = manager;
     }

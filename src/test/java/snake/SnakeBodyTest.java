@@ -1,5 +1,6 @@
 package snake;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import gamelogic.Coordinate;
@@ -14,6 +15,7 @@ import utils.Sizes;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -153,6 +155,26 @@ class SnakeBodyTest {
             "RIGHT, 1, 0",
             "LEFT, -1, 0",
             "UP, 0, 1",
+            "DOWN, 0, -1",
+    })
+    void moveSnakeTest(Direction dir, int dx, int dy) {
+        this.snakeBody = new SnakeBody(Sizes.DEFAULT_MINIMUM_MAP_TILES, Sizes.DEFAULT_MINIMUM_MAP_TILES);
+        assertEquals(Direction.RIGHT, snakeBody.getCurrDir());
+        snakeBody.moveSnake(dir);
+
+        Coordinate newHead = new Coordinate(
+                (Sizes.DEFAULT_MINIMUM_MAP_TILES / 2) + dx,
+                (Sizes.DEFAULT_MINIMUM_MAP_TILES / 2) + dy);
+        assertEquals(snakeBody.getHeadCoord(), newHead);
+    }
+
+    //suppress this because redefining a variable is necessary
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+    @ParameterizedTest
+    @CsvSource({
+            "RIGHT, 1, 0",
+            "LEFT, -1, 0",
+            "UP, 0, 1",
             "DOWN, 0, -1"
     }) //DONT ANNOTATE WITH @Test
     void update3BodyPartsPositionTest(Direction dir, int dx, int dy) {
@@ -200,6 +222,7 @@ class SnakeBodyTest {
                 allBP.get(2).getCoordinate());
     }
 
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     @ParameterizedTest
     @CsvSource({
             "RIGHT, -90f",
@@ -211,36 +234,25 @@ class SnakeBodyTest {
         this.snakeBody =
                 new SnakeBody(Sizes.DEFAULT_MINIMUM_MAP_TILES, Sizes.DEFAULT_MINIMUM_MAP_TILES);
         snakeBody.setCurrDir(dir);
-        //SpriteBatch batch = Mockito.mock(SpriteBatch.class);
 
-        /*
-        TextureRegion[][] textureRegions =
-                TextureRegion.split(new Texture("assets/DefaultBody.png"),
-                        Sizes.TILE_PIXELS, Sizes.TILE_PIXELS);
-        TextureRegion head = textureRegions[0][0];
-        TextureRegion body = textureRegions[0][1];
-        */
+        SpriteBatch batch = Mockito.mock(SpriteBatch.class);
 
-        /*
-        TextureRegion[][] textureRegions = Mockito.mock(TextureRegion[][].class);
-        TextureRegion head = Mockito.mock(TextureRegion.class);
-        TextureRegion body = Mockito.mock(TextureRegion.class);
-        when(textureRegions[0][0]).thenReturn(head);
-        when(textureRegions[0][1]).thenReturn(body);
-
-
+        TextureRegion[][] textureRegions = new TextureRegion[1][2];
+        textureRegions[0][0] = Mockito.mock(TextureRegion.class, "head");
+        textureRegions[0][1] = Mockito.mock(TextureRegion.class, "body");
 
         snakeBody.renderSnake(batch, textureRegions);
         int x = snakeBody.getHeadCoord().getCoordinateX() * Sizes.TILE_PIXELS;
         int y = snakeBody.getHeadCoord().getCoordinateY() * Sizes.TILE_PIXELS;
-        verify(batch).draw(any(TextureRegion.class),
+        verify(batch).draw(textureRegions[0][0],
                 x,
                 y,
                 (float) Sizes.TILE_PIXELS / 2, (float) Sizes.TILE_PIXELS / 2,
                 Sizes.TILE_PIXELS, Sizes.TILE_PIXELS, 1, 1,
                 rotation, true);
-        verify(snakeBody.getBodyParts().get(any()), atMost(snakeBody.getBodyParts().size() - 1));
-         */
+        verify(batch, atLeast(snakeBody.getBodyParts().size() - 1)).draw(textureRegions[0][1],
+                snakeBody.getHeadCoord().getCoordinateX() * Sizes.TILE_PIXELS,
+                snakeBody.getHeadCoord().getCoordinateX() * Sizes.TILE_PIXELS);
     }
 
 }

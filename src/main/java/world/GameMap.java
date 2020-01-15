@@ -42,6 +42,31 @@ public abstract class GameMap {
         this.bodyTexture = "assets/DefaultBody.png";
     }
 
+    public GameMap(String bodyTexture) {
+        this.manager = getManager();
+        this.snake = getSnake();
+        this.apple = new Apple();
+        this.score = new Score();
+        this.bodyTexture = bodyTexture;
+    }
+
+    /**
+     * Constructor (mainly) for testing purposes.
+     * @param timer The timer for movement and updating.
+     * @param manager The GameStateManager which sets the different stages in the game.
+     * @param snake The snake for this map.
+     * @param apple Apple object that gets rendered.
+     * @param score Score object to keep track of your score.
+     * @param bodyTexture The texture path for the snake's skin.
+     */
+    public GameMap(float timer, GameStateManager manager, SnakeBody snake, Apple apple, Score score, String bodyTexture) {
+        this.timer = timer;
+        this.manager = manager;
+        this.snake = snake;
+        this.apple = apple;
+        this.score = score;
+        this.bodyTexture = bodyTexture;
+    }
 
     /**
      * Render entities here after subclass renders map.
@@ -91,8 +116,8 @@ public abstract class GameMap {
      * @return The tile's type.
      */
     public TileType getTileTypeByLocation(int layer, float x, float y) {
-        return this.getTileTypeByCoordinate(layer, (int) (x / TileType.TILE_SIZE),
-                (int) (y / TileType.TILE_SIZE));
+        return this.getTileTypeByCoordinate(layer, Math.round(x / TileType.TILE_SIZE),
+                Math.round(y / TileType.TILE_SIZE));
     }
 
     public abstract TileType getTileTypeByCoordinate(int layer, int col, int row);
