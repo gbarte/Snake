@@ -22,7 +22,9 @@ import services.auth.AuthService;
 /**
  * Creates login screen.
  */
-public class LoginState extends State {
+@SuppressWarnings("PMD.BeanMembersShouldSerialize")
+public class LoginState implements State {
+    private GameStateManager stateManager;
     private Stage stage;
     private Skin skin;
     private Label title;
@@ -37,7 +39,7 @@ public class LoginState extends State {
      * @param gameManager which keeps track of the state of the game.
      */
     public LoginState(GameStateManager gameManager) {
-        super(gameManager);
+        this.stateManager = gameManager;
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         skin =  new Skin(Gdx.files.internal("assets/quantum-horizon/skin/quantum-horizon-ui.json"));
@@ -45,54 +47,6 @@ public class LoginState extends State {
         initLogin();
         initSignUp();
         backGround = new Texture("assets/bg.png");
-    }
-
-    public Stage getStage() {
-        return stage;
-    }
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
-    public Skin getSkin() {
-        return skin;
-    }
-
-    public void setSkin(Skin skin) {
-        this.skin = skin;
-    }
-
-    public Label getTitle() {
-        return title;
-    }
-
-    public void setTitle(Label title) {
-        this.title = title;
-    }
-
-    public Texture getBackGround() {
-        return backGround;
-    }
-
-    public void setBackGround(Texture backGround) {
-        this.backGround = backGround;
-    }
-
-    public TextField getUsernameField() {
-        return usernameField;
-    }
-
-    public void setUsernameField(TextField usernameField) {
-        this.usernameField = usernameField;
-    }
-
-    public TextField getPassWordField() {
-        return passWordField;
-    }
-
-    public void setPassWordField(TextField passWordField) {
-        this.passWordField = passWordField;
     }
 
     /**
@@ -120,7 +74,7 @@ public class LoginState extends State {
         signUpButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                gameManager.set(new SignUpState(gameManager));
+                stateManager.setState(new SignUpState(stateManager));
             }
 
             @Override
@@ -172,7 +126,7 @@ public class LoginState extends State {
 
 
                 if (response == AuthResponse.SUCCESS) {
-                    gameManager.set(new MenuState(gameManager));
+                    stateManager.setState(new MenuState(stateManager));
                 } else {
                     // TODO: display failed authentication.
                     failedAuthenticationDialog();

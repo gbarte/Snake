@@ -1,6 +1,6 @@
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import game.SnakeGame;
+import states.SnakeGame;
 import services.auth.AuthService;
 import services.leaderboard.LeaderboardService;
 
