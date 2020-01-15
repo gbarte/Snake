@@ -18,8 +18,8 @@ import services.LeaderboardEntry;
 import services.leaderboard.LeaderboardService;
 
 /**
- * LeaderboardState class
- * Shows a leaderboard of all players playing the game.
+ * LeaderBoardState class
+ * Shows a leaderboard of all players playing the gaming.
  */
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public class LeaderboardState implements State {
@@ -29,9 +29,11 @@ public class LeaderboardState implements State {
     private Label title;
     private Texture backGround;
     private BitmapFont bitmapFont;
+    private Label.LabelStyle labelStyle;
 
     /**
-     * Constructor which creates a new LeaderboardsState within the game.
+     * Constructor which creates a new state within the game.
+     * E.g. Play/Pause/Menu.
      *
      * @param gameManager which keeps track of the state of the game.
      */
@@ -42,9 +44,67 @@ public class LeaderboardState implements State {
         skin =  new Skin(Gdx.files.internal("assets/quantum-horizon/skin/quantum-horizon-ui.json"));
         backGround = new Texture("assets/three.png");
         bitmapFont = new BitmapFont(Gdx.files.internal("assets/font.fnt"));
+        labelStyle = new Label.LabelStyle(bitmapFont,
+                new Color(0, (float) 2.55, 0, 1));
         initReturn();
         initTitle();
         initBoard();
+    }
+
+    public GameStateManager getStateManager() {
+        return stateManager;
+    }
+
+    public void setStateManager(GameStateManager stateManager) {
+        this.stateManager = stateManager;
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public Skin getSkin() {
+        return skin;
+    }
+
+    public void setSkin(Skin skin) {
+        this.skin = skin;
+    }
+
+    public Label getTitle() {
+        return title;
+    }
+
+    public void setTitle(Label title) {
+        this.title = title;
+    }
+
+    public Texture getBackGround() {
+        return backGround;
+    }
+
+    public void setBackGround(Texture backGround) {
+        this.backGround = backGround;
+    }
+
+    public BitmapFont getBitmapFont() {
+        return bitmapFont;
+    }
+
+    public void setBitmapFont(BitmapFont bitmapFont) {
+        this.bitmapFont = bitmapFont;
+    }
+
+    public Label.LabelStyle getLabelStyle() {
+        return labelStyle;
+    }
+
+    public void setLabelStyle(Label.LabelStyle labelStyle) {
+        this.labelStyle = labelStyle;
     }
 
     /**
@@ -52,7 +112,6 @@ public class LeaderboardState implements State {
      */
     private void initReturn() {
         TextButton returnButton = new TextButton("return", skin);
-        //        signUpButton.setPosition(300, 150);
         returnButton.setPosition(350, 50);
         returnButton.addListener(new InputListener() {
             @Override
@@ -74,13 +133,10 @@ public class LeaderboardState implements State {
      * Sets the leaderboard title in the middle of the screen.
      */
     private void initTitle() {
-        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
-                new Color(0, (float) 2.55, 0, 1));
         title = new Label("Leaderboard", labelStyle);
         title.setSize(400, 100);
         title.setPosition(160,650);
         title.setFontScale(2);
-        // title.setAlignment(Align.center);
         stage.addActor(title);
     }
 
@@ -88,7 +144,6 @@ public class LeaderboardState implements State {
      * Adds score to the player..
      */
     private void initBoard() {
-
         LeaderboardService service = new LeaderboardService();
         List<LeaderboardEntry> entries = service.retrieveLeaderboard();
 
@@ -106,7 +161,7 @@ public class LeaderboardState implements State {
      * @param number number which will be shown.
      */
     private void setNumber(int y, String number) {
-        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
+        labelStyle = new Label.LabelStyle(bitmapFont,
                 new Color(0, (float) 2.55, 0, 1));
         Label one = new Label(number, labelStyle);
         one.setSize(100, 100);
@@ -120,7 +175,7 @@ public class LeaderboardState implements State {
      * @param player player which will be shown.
      */
     private void setPlayerRank(int y, String player) {
-        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
+        labelStyle = new Label.LabelStyle(bitmapFont,
                 new Color(0, (float) 2.55, 0, 1));
         Label one = new Label(player, labelStyle);
         one.setSize(100, 100);
@@ -134,7 +189,7 @@ public class LeaderboardState implements State {
      * @param score score which will be shown.
      */
     private void setScore(int y, int score) {
-        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
+        labelStyle = new Label.LabelStyle(bitmapFont,
                 new Color(0, (float) 2.55, 0, 1));
         Label one = new Label(Integer.toString(score), labelStyle);
         one.setSize(100, 100);
