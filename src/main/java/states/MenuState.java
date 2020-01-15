@@ -64,9 +64,7 @@ public class MenuState implements State {
      * Adds the sign out button.
      */
     private void initSignOutButton() {
-        TextButton signOutButton = new TextButton("Sign Out",
-                new Skin(Gdx.files.internal(
-                        "assets/quantum-horizon/skin/quantum-horizon-ui.json")));
+        TextButton signOutButton = new TextButton("Sign Out", skin);
         signOutButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
         signOutButton.setPosition(400 - (signOutButton.getWidth() / 2), 50);
         signOutButton.addListener(new InputListener() {
@@ -162,16 +160,14 @@ public class MenuState implements State {
      * Adds settings button.
      */
     private void initSettingsButton() {
-        TextButton settingsButton = new TextButton("Settings",
-                new Skin(Gdx.files.internal(
-                        "assets/quantum-horizon/skin/quantum-horizon-ui.json")));
+        TextButton settingsButton = new TextButton("Settings", skin);
         settingsButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
         settingsButton.setPosition(400 - (settingsButton.getWidth() / 2), 150);
         settingsButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //                gameManager.set(new SettingsState(gameManager));
-                System.out.println("to settingsstate");
+                //TODO: settingsState
+//                gameManager.set(new SettingsState(gameManager));
             }
 
             @Override
