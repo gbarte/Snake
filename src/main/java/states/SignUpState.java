@@ -20,13 +20,17 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 /**
  * Creates sign up screen.
  */
-public class SignUpState extends State {
+@SuppressWarnings("PMD.BeanMembersShouldSerialize")
+public class SignUpState implements State {
+    private GameStateManager stateManager;
     private Stage stage;
     private Skin skin;
     private Texture background;
-    private TextField username;
-    private TextField password;
+    private TextField usernameField;
+    private TextField passwordField;
     private Skin cloudSkin;
+    private BitmapFont bitmapFont;
+    private Label.LabelStyle labelStyle;
 
     /**
      * Constructor which creates a new state within the game.
@@ -35,64 +39,20 @@ public class SignUpState extends State {
      * @param gameManager which keeps track of the state of the game.
      */
     public SignUpState(GameStateManager gameManager) {
-        super(gameManager);
+        this.stateManager = gameManager;
         stage = new Stage(new ScreenViewport());
         background = new Texture("assets/bg.png");
         Gdx.input.setInputProcessor(stage);
         skin =  new Skin(Gdx.files.internal("assets/quantum-horizon/skin/quantum-horizon-ui.json"));
         cloudSkin = new Skin(Gdx.files.internal("assets/cloud-form/skin/cloud-form-ui.json"));
+        bitmapFont = new BitmapFont(Gdx.files.internal("assets/font.fnt"));
+        labelStyle = new Label.LabelStyle(bitmapFont,
+                new Color(0, 255, 0, 1));
         initTitle();
         initReturn();
         initSignUp();
     }
 
-    public Stage getStage() {
-        return stage;
-    }
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
-    public Skin getSkin() {
-        return skin;
-    }
-
-    public void setSkin(Skin skin) {
-        this.skin = skin;
-    }
-
-    public Texture getBackground() {
-        return background;
-    }
-
-    public void setBackground(Texture background) {
-        this.background = background;
-    }
-
-    public TextField getUsername() {
-        return username;
-    }
-
-    public void setUsername(TextField username) {
-        this.username = username;
-    }
-
-    public TextField getPassword() {
-        return password;
-    }
-
-    public void setPassword(TextField password) {
-        this.password = password;
-    }
-
-    public Skin getCloudSkin() {
-        return cloudSkin;
-    }
-
-    public void setCloudSkin(Skin cloudSkin) {
-        this.cloudSkin = cloudSkin;
-    }
 
     /**
      * Sets title of login screen.
@@ -110,17 +70,41 @@ public class SignUpState extends State {
     }
 
     /**
-     * Sets username and password textfield,
-     * Login and Sign Up buttons.
+     * Sets username and password textfield.
      */
     private void initSignUp() {
+        Label usernameLabel = new Label("Enter a username", labelStyle);
+        usernameLabel.setPosition(340, 279);
+
+        usernameField = new TextField("", cloudSkin);
+        usernameField.setSize(180, 30);
+        usernameField.setPosition(300, 247);
+
+        Label passwordLabel = new Label("Enter a password", labelStyle);
+        passwordLabel.setPosition(340, 229);
+
+        passwordField = new TextField("", cloudSkin);
+        passwordField.setSize(180, 30);
+        passwordField.setPosition(300, 197);
+        passwordField.setPasswordMode(true);
+        passwordField.setPasswordCharacter('*');
+
+        stage.addActor(usernameLabel);
+        stage.addActor(passwordLabel);
+        stage.addActor(usernameField);
+        stage.addActor(passwordField);
+    }
+
+    /**
+     * Creates the Sign Up buttons.
+     */
+    private void initButtons() {
         TextButton signUpButton = new TextButton("Sign up", skin);
-        //        loginButton.setPosition(300, 200);
         signUpButton.setPosition(320, 125);
         signUpButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                gameManager.set(new LoginState(gameManager));
+                stateManager.setState(new LoginState(stateManager));
             }
 
             @Override
@@ -129,30 +113,6 @@ public class SignUpState extends State {
                 return true;
             }
         });
-        BitmapFont bitmapFont = new BitmapFont();
-        // Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, new Color(1, 0, 1, 1));
-        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
-                new Color(255,  0, 255, 1));
-        Label usernameLabel = new Label("Enter a username", labelStyle);
-        usernameLabel.setPosition(340, 279);
-
-        TextField usernameField = new TextField("", cloudSkin);
-        usernameField.setSize(180, 30);
-        usernameField.setPosition(300, 247);
-
-        Label passwordLabel = new Label("Enter a password", labelStyle);
-        passwordLabel.setPosition(340, 229);
-
-        TextField passWordField = new TextField("", cloudSkin);
-        passWordField.setSize(180, 30);
-        passWordField.setPosition(300, 197);
-        passWordField.setPasswordMode(true);
-        passWordField.setPasswordCharacter('*');
-
-        stage.addActor(usernameLabel);
-        stage.addActor(passwordLabel);
-        stage.addActor(usernameField);
-        stage.addActor(passWordField);
         stage.addActor(signUpButton);
     }
 
@@ -166,7 +126,7 @@ public class SignUpState extends State {
         returnButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                gameManager.set(new LoginState(gameManager));
+                stateManager.setState(new LoginState(stateManager));
             }
 
             @Override
