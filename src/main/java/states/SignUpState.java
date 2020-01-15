@@ -26,9 +26,10 @@ public class SignUpState implements State {
     private Stage stage;
     private Skin skin;
     private Texture background;
-    private TextField username;
-    private TextField password;
+    private TextField usernameField;
+    private TextField passwordField;
     private Skin cloudSkin;
+    private Label.LabelStyle labelStyle;
 
     /**
      * Constructor which creates a new state within the game.
@@ -43,9 +44,15 @@ public class SignUpState implements State {
         Gdx.input.setInputProcessor(stage);
         skin =  new Skin(Gdx.files.internal("assets/quantum-horizon/skin/quantum-horizon-ui.json"));
         cloudSkin = new Skin(Gdx.files.internal("assets/cloud-form/skin/cloud-form-ui.json"));
+        BitmapFont bitmapFont = new BitmapFont();
+        labelStyle = new Label.LabelStyle(bitmapFont,
+                new Color(255,  0, 255, 1));
         initTitle();
+        initSignUpUsername();
+        initSignUpPassword();
+        initSignUpButton();
         initReturn();
-        initSignUp();
+
     }
 
 
@@ -54,9 +61,9 @@ public class SignUpState implements State {
      */
     private void initTitle() {
         BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal("assets/font.fnt"));
-        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
+        Label.LabelStyle TitleLabelStyle = new Label.LabelStyle(bitmapFont,
                 new Color(0, 255, 0, 1));
-        Label title = new Label("Lil' Snake", labelStyle);
+        Label title = new Label("Lil' Snake", TitleLabelStyle);
         title.setSize(600, 120);
         title.setPosition(100,550);
         title.setFontScale(3);
@@ -65,12 +72,41 @@ public class SignUpState implements State {
     }
 
     /**
-     * Sets username and password textfield,
-     * Login and Sign Up buttons.
+     * Sets username textfield.
      */
-    private void initSignUp() {
+    private void initSignUpUsername() {
+        Label usernameLabel = new Label("Enter a username", labelStyle);
+
+        usernameLabel.setPosition(340, 279);
+        usernameField = new TextField("", cloudSkin);
+        usernameField.setSize(180, 30);
+        usernameField.setPosition(300, 247);
+
+        stage.addActor(usernameLabel);
+        stage.addActor(usernameField);
+    }
+
+    /**
+     * Sets password textfield.
+     */
+    private void initSignUpPassword() {
+        Label passwordLabel = new Label("Enter a password", labelStyle);
+        passwordLabel.setPosition(340, 229);
+        passwordField = new TextField("", cloudSkin);
+        passwordField.setSize(180, 30);
+        passwordField.setPosition(300, 197);
+        passwordField.setPasswordMode(true);
+        passwordField.setPasswordCharacter('*');
+
+        stage.addActor(passwordLabel);
+        stage.addActor(passwordField);
+    }
+
+    /**
+     * Creates the Sign Up buttons.
+     */
+    private void initSignUpButton() {
         TextButton signUpButton = new TextButton("Sign up", skin);
-        //        loginButton.setPosition(300, 200);
         signUpButton.setPosition(320, 125);
         signUpButton.addListener(new InputListener() {
             @Override
@@ -84,30 +120,6 @@ public class SignUpState implements State {
                 return true;
             }
         });
-        BitmapFont bitmapFont = new BitmapFont();
-        // Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, new Color(1, 0, 1, 1));
-        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
-                new Color(255,  0, 255, 1));
-        Label usernameLabel = new Label("Enter a username", labelStyle);
-        usernameLabel.setPosition(340, 279);
-
-        TextField usernameField = new TextField("", cloudSkin);
-        usernameField.setSize(180, 30);
-        usernameField.setPosition(300, 247);
-
-        Label passwordLabel = new Label("Enter a password", labelStyle);
-        passwordLabel.setPosition(340, 229);
-
-        TextField passWordField = new TextField("", cloudSkin);
-        passWordField.setSize(180, 30);
-        passWordField.setPosition(300, 197);
-        passWordField.setPasswordMode(true);
-        passWordField.setPasswordCharacter('*');
-
-        stage.addActor(usernameLabel);
-        stage.addActor(passwordLabel);
-        stage.addActor(usernameField);
-        stage.addActor(passWordField);
         stage.addActor(signUpButton);
     }
 
@@ -137,7 +149,7 @@ public class SignUpState implements State {
     /**
      * This dialog box is shown when the password is not safe enough.
      */
-    public void incorrectPassworldDialog() {
+    public void invalidPassworldDialog() {
         Dialog dialog = new Dialog("Password not valid", cloudSkin, "dialog") {
             public void result(Object obj) {
                 System.out.println("result " + obj);
