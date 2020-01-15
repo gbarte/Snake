@@ -1,10 +1,9 @@
 package entities.snake;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import java.util.LinkedList;
 import models.Coordinate;
 
-import java.util.LinkedList;
 
 /**
  * Class that defines the snake's body logics.
@@ -90,7 +89,7 @@ public class SnakeBody {
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     public void renderSnake(ShapeRenderer shapeRenderer) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(new Color(Color.GREEN));
+        shapeRenderer.setColor(shapeRenderer.getColor());
         int x = this.headCoord.getCoordinateX();
         int y = this.headCoord.getCoordinateY();
         shapeRenderer.rect(x, y, CELL_SIZE, CELL_SIZE);

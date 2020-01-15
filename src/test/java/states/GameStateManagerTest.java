@@ -1,7 +1,6 @@
 package states;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 
 import java.util.Stack;
 import org.junit.jupiter.api.BeforeEach;

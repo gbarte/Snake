@@ -2,15 +2,21 @@ package states;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import entities.Apple;
+import entities.Food;
+import entities.MushroomPowerUp;
+import entities.factories.AppleFactory;
+import entities.factories.FoodFactory;
+import entities.snake.SnakeBody;
+import models.Coordinate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import entities.snake.SnakeBody;
 
 
 class PlayStateTest {
@@ -56,24 +62,19 @@ class PlayStateTest {
     }
 
     @Test
-    void getTimerTest() {
-        assertEquals(PlayState.MOVE_TIME, play.getTimer());
-    }
-
-    @Test
     void getAppleTest() {
         Apple apple = Mockito.mock(Apple.class);
-        play.setApple(apple);
+        play.setFood(apple);
 
-        assertEquals(play.getApple(), apple);
+        assertEquals(play.getFood(), apple);
     }
 
     @Test
     void setAppleTest() {
         Apple apple2 = Mockito.mock(Apple.class);
-        play.setApple(apple2);
+        play.setFood(apple2);
 
-        assertEquals(play.getApple(), apple2);
+        assertEquals(play.getFood(), apple2);
     }
 
     @Test
@@ -209,7 +210,6 @@ class PlayStateTest {
         assertEquals(SnakeBody.Direction.DOWN, play.getSnake().getCurrDir());
     }
 
-    //Flaky test bellow!
     @Test
     void eatAppleTest() {
         Gdx.input = Mockito.mock(Input.class);
@@ -218,11 +218,22 @@ class PlayStateTest {
         Mockito.when(Gdx.input.isKeyPressed(Input.Keys.S)).thenReturn(false);
         Mockito.when(Gdx.input.isKeyPressed(Input.Keys.D)).thenReturn(false);
 
-        Apple apple = play.getApple();
-        play.update(10);
+        Food food = new Apple();
+        food.setCoordinate(snake.getHeadCoord());
+        play.setFood(food);
 
-        Apple apple2 = play.getApple();
-        assertEquals(apple2.getCoordinate(), apple.getCoordinate());
+        Food food2 = new MushroomPowerUp();
+        food2.setCoordinate(new Coordinate(0, 0));
+
+        FoodFactory foodFactory = Mockito.mock(AppleFactory.class);
+        Mockito.when(foodFactory.createFood()).thenReturn(food2);
+        play.setFoodFactory(foodFactory);
+
+        play.update(10);
+        Food foodAfterEaten = play.getFood();
+
+        assertNotEquals(foodAfterEaten.getCoordinate(), food.getCoordinate());
+        assertEquals(foodAfterEaten.getCoordinate(), food2.getCoordinate());
     }
 
 }

@@ -32,8 +32,7 @@ public class GameOverState implements State {
     private TextField nicknameField;
 
     /**
-     * Constructor which creates a new state within the game.
-     * E.g. Play/Pause/Menu.
+     * Constructor which creates a new GameOverState within the game.
      *
      * @param gameManager which keeps track of the state of the game.
      */

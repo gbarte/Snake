@@ -1,20 +1,22 @@
-package entities;
+package objects.base;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import entities.Food;
+import entities.FoodTest;
+import entities.GoldenApple;
 import entities.snake.SnakeBody;
 import models.Score;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
 import states.PlayState;
 
 
-class AppleTest extends FoodTest {
+public class GoldenAppleTest extends FoodTest {
 
     @Override
     protected Food getFood() {
-        return new Apple();
+        return new GoldenApple();
     }
 
     @Test
@@ -29,11 +31,11 @@ class AppleTest extends FoodTest {
         SnakeBody snake = Mockito.mock(SnakeBody.class);
         Mockito.when(playState.getSnake()).thenReturn(snake);
 
-        Apple apple = new Apple();
+        GoldenApple apple = new GoldenApple();
         apple.action(playState);
 
-        assertEquals(initialScore + Apple.DEFAULT_SCORE, score.getValue());
-        Mockito.verify(snake).growSnake();
+        assertEquals(initialScore + GoldenApple.DEFAULT_SCORE, score.getValue());
+        Mockito.verify(snake).growSnake(2);
     }
 
 }

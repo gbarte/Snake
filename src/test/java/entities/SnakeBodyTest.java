@@ -3,17 +3,16 @@ package entities;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import models.Coordinate;
+import entities.snake.BodyPart;
+import entities.snake.SnakeBody;
 import java.util.LinkedList;
+import models.Coordinate;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import entities.snake.BodyPart;
-import entities.snake.SnakeBody;
 
 
 class SnakeBodyTest {
@@ -163,7 +162,6 @@ class SnakeBodyTest {
         ShapeRenderer shapeRenderer = Mockito.mock(ShapeRenderer.class);
         snakeBody.renderSnake(shapeRenderer);
 
-        Mockito.verify(shapeRenderer).setColor(Mockito.any(Color.class));
         Mockito.verify(shapeRenderer).end();
     }
 

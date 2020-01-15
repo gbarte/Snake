@@ -28,13 +28,10 @@ public class LoginState implements State {
     private Stage stage;
     private Skin skin;
     private Label title;
-    private TextField usernameField;
-    private TextField passWordField;
     private Texture backGround;
 
     /**
-     * Constructor which creates a new state within the game.
-     * E.g. Play/Pause/Menu.
+     * Constructor which creates a new LoginState within the game.
      *
      * @param gameManager which keeps track of the state of the game.
      */

@@ -3,7 +3,8 @@ package states;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
- * Abstract class state.
+ * State interface.
+ * There are all the necessary methods that all states should implement.
  */
 interface State {
 

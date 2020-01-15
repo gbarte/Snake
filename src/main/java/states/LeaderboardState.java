@@ -18,8 +18,8 @@ import services.LeaderboardEntry;
 import services.leaderboard.LeaderboardService;
 
 /**
- * LeaderBoardState class
- * Shows a leaderboard of all players playing the gaming.
+ * LeaderboardState class
+ * Shows a leaderboard of all players playing the game.
  */
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public class LeaderboardState implements State {
@@ -31,8 +31,7 @@ public class LeaderboardState implements State {
     private BitmapFont bitmapFont;
 
     /**
-     * Constructor which creates a new state within the game.
-     * E.g. Play/Pause/Menu.
+     * Constructor which creates a new LeaderboardsState within the game.
      *
      * @param gameManager which keeps track of the state of the game.
      */

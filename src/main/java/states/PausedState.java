@@ -23,8 +23,7 @@ public class PausedState implements State {
     private Texture backGround;
 
     /**
-     * Constructor which creates a new state within the game.
-     * E.g. Play/Pause/Menu.
+     * Constructor which creates a new Pause state within the game.
      *
      * @param gameManager which keeps track of the state of the game.
      */

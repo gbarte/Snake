@@ -30,10 +30,13 @@ public class Score {
     public void subtract(int points) {
         if (value > points) {
             value -= points;
+        } else {
+            value = 0;
         }
     }
 
     public void resetScore() {
         value = 0;
     }
+
 }
