@@ -1,13 +1,13 @@
-package snake;
+package entities.snake;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import gamelogic.Coordinate;
+import models.Coordinate;
 
 import java.util.LinkedList;
 
 /**
- * Class that defines the snake's body logics.
+ * Class that defines the entities.snake's body logics.
  */
 public class SnakeBody {
     public static final int CELL_SIZE = 50;
@@ -20,7 +20,7 @@ public class SnakeBody {
     public enum Direction { LEFT, RIGHT, UP, DOWN }
 
     /**
-     * Constructs a snake with INITIAL_LENGTH amount of bodyparts.
+     * Constructs a entities.snake with INITIAL_LENGTH amount of bodyparts.
      *
      * @param headX - X coordinate of head
      * @param headY - Y coordinate of head
@@ -57,7 +57,7 @@ public class SnakeBody {
     }
 
     /**
-     * Grows the snake body by one body part.
+     * Grows the entities.snake body by one body part.
      */
     public void growSnake() {
         if (bodyParts.size() == 0) {
@@ -71,9 +71,9 @@ public class SnakeBody {
     }
 
     /**
-     * Grows the snake body by a specified number of body parts.
+     * Grows the entities.snake body by a specified number of body parts.
      *
-     * @param length - by how many body parts the snake will be grown
+     * @param length - by how many body parts the entities.snake will be grown
      */
     public void growSnake(int length) {
         for (int i = 0; i < length; i++) {
@@ -82,7 +82,7 @@ public class SnakeBody {
     }
 
     /**
-     * First renders the head of the snake as a rectangle.
+     * First renders the head of the entities.snake as a rectangle.
      * Then loops through the bodyparts and renders those.
      *
      * @param shapeRenderer - ShapeRenderer object

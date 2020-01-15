@@ -1,11 +1,11 @@
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import game.SnakeGame;
+import states.SnakeGame;
 import services.auth.AuthService;
 import services.leaderboard.LeaderboardService;
 
 /**
- * Sets a window for the game and then calls the snake game.
+ * Sets a window for the game and then calls the entities.snake game.
  */
 public class Main {
     /**

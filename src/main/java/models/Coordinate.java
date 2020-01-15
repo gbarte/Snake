@@ -1,4 +1,4 @@
-package gamelogic;
+package models;
 
 import java.util.Objects;
 

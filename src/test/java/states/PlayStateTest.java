@@ -6,11 +6,11 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import objects.base.Apple;
+import entities.Apple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import snake.SnakeBody;
+import entities.snake.SnakeBody;
 
 
 class PlayStateTest {
@@ -128,7 +128,7 @@ class PlayStateTest {
 
     @Test
     void checkHeadHitsBodyTest1() {
-        //here snake of initial length < 3
+        //here entities.snake of initial length < 3
         for (int i = 0; i < snake.getBodyParts().size(); i++) {
             snake.setHeadCoord(snake.getBodyParts().get(i).getCoordinate());
             play.setSnake(snake);
