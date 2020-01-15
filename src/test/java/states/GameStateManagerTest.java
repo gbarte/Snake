@@ -1,9 +1,7 @@
 package states;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 
-import com.badlogic.gdx.Game;
 import java.util.Stack;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +18,7 @@ class GameStateManagerTest {
     @Test
     void push() {
         MenuState menu = Mockito.mock(MenuState.class);
-        stateManager.push(menu);
+        stateManager.pushState(menu);
 
         assertEquals(stateManager.getStates().pop(), menu);
     }
@@ -47,7 +45,7 @@ class GameStateManagerTest {
         states.push(play);
         stateManager.setStates(states);
 
-        stateManager.set(menu);
+        stateManager.setState(menu);
 
         assertEquals(stateManager.getStates().pop(), menu);
     }

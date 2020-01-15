@@ -8,11 +8,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import gamelogic.Coordinate;
-import gamelogic.Score;
+import entities.snake.BodyPart;
+import entities.snake.SnakeBody;
+import models.Coordinate;
+import models.Score;
 import objects.base.Apple;
-import snake.BodyPart;
-import snake.SnakeBody;
 import states.GameOverState;
 import states.GameStateManager;
 import utils.Direction;
@@ -245,7 +245,7 @@ public abstract class GameMap {
                 currentHead.getCoordinateX(),
                 currentHead.getCoordinateY());
         if (currentTile.isCollidable()) {
-            getManager().set(new GameOverState(getManager()));
+            getManager().setState(new GameOverState(getManager()));
         }
     }
 
@@ -261,7 +261,7 @@ public abstract class GameMap {
             for (int i = 1; i < size; i++) {
                 if (getSnake().getBodyParts().get(i).getCoordinate()
                         .equals(getSnake().getHeadCoord())) {
-                    getManager().set(new GameOverState(getManager()));
+                    getManager().setState(new GameOverState(getManager()));
                 }
             }
         }

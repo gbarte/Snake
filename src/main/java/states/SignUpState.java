@@ -21,7 +21,9 @@ import utils.Sizes;
 /**
  * Creates sign up screen.
  */
-public class SignUpState extends State {
+@SuppressWarnings("PMD.BeanMembersShouldSerialize")
+public class SignUpState implements State {
+    private GameStateManager stateManager;
     private Stage stage;
     private Skin skin;
     private Texture background;
@@ -36,7 +38,7 @@ public class SignUpState extends State {
      * @param gameManager which keeps track of the state of the game.
      */
     public SignUpState(GameStateManager gameManager) {
-        super(gameManager);
+        this.stateManager = gameManager;
         stage = new Stage(new ScreenViewport());
         background = new Texture("assets/bg.png");
         Gdx.input.setInputProcessor(stage);
@@ -47,53 +49,6 @@ public class SignUpState extends State {
         initSignUp();
     }
 
-    public Stage getStage() {
-        return stage;
-    }
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
-    public Skin getSkin() {
-        return skin;
-    }
-
-    public void setSkin(Skin skin) {
-        this.skin = skin;
-    }
-
-    public Texture getBackground() {
-        return background;
-    }
-
-    public void setBackground(Texture background) {
-        this.background = background;
-    }
-
-    public TextField getUsername() {
-        return username;
-    }
-
-    public void setUsername(TextField username) {
-        this.username = username;
-    }
-
-    public TextField getPassword() {
-        return password;
-    }
-
-    public void setPassword(TextField password) {
-        this.password = password;
-    }
-
-    public Skin getCloudSkin() {
-        return cloudSkin;
-    }
-
-    public void setCloudSkin(Skin cloudSkin) {
-        this.cloudSkin = cloudSkin;
-    }
 
     /**
      * Sets title of login screen.
@@ -121,7 +76,7 @@ public class SignUpState extends State {
         signUpButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                gameManager.set(new LoginState(gameManager));
+                stateManager.setState(new LoginState(stateManager));
             }
 
             @Override
@@ -147,7 +102,7 @@ public class SignUpState extends State {
         TextField passWordField = new TextField("", cloudSkin);
         passWordField.setSize(180, 30);
         passWordField.setPosition(300, 197);
-        passWordField.isPasswordMode();
+        passWordField.setPasswordMode(true);
         passWordField.setPasswordCharacter('*');
 
         stage.addActor(usernameLabel);
@@ -167,7 +122,7 @@ public class SignUpState extends State {
         returnButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                gameManager.set(new LoginState(gameManager));
+                stateManager.setState(new LoginState(stateManager));
             }
 
             @Override

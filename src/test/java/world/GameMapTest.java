@@ -1,12 +1,12 @@
 package world;
 
-import gamelogic.Coordinate;
-import gamelogic.Score;
+import entities.snake.SnakeBody;
+import models.Coordinate;
+import models.Score;
 import objects.base.Apple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import snake.SnakeBody;
 import states.GameStateManager;
 import utils.Sizes;
 

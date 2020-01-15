@@ -1,24 +1,20 @@
-package game;
+package states;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import states.GameStateManager;
-import states.LeaderboardState;
-import states.LoginState;
-import states.PlayState;
 import utils.Sizes;
+
 
 /**
  * The initialization game class.
  */
 public class SnakeGame extends ApplicationAdapter {
     public static final int WIDTH = Sizes.MIN_WIDTH_WINDOW;
-    public static final int HEIGHT = Sizes.MIN_WIDTH_WINDOW;
+    public static final int HEIGHT = Sizes.MIN_HEIGHT_WINDOW;
 
     public static final String TITLE = "Lil' Snake";
-
     private GameStateManager gameManager;
     private SpriteBatch batch;
 
@@ -27,7 +23,7 @@ public class SnakeGame extends ApplicationAdapter {
         batch = new SpriteBatch();
         gameManager = new GameStateManager();
         Gdx.gl.glClearColor(0, 0, 0, 1);
-        gameManager.push(new LoginState(gameManager));
+        gameManager.pushState(new LoginState(gameManager));
     }
 
     @Override

@@ -1,9 +1,10 @@
-package gamelogic;
+package models;
 
 import java.util.Objects;
 
 /**
  * Coordinate class.
+ *
  */
 public class Coordinate {
     private int coordinateX;

@@ -1,29 +1,17 @@
 package states;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import org.junit.jupiter.api.AfterEach;
+import entities.snake.SnakeBody;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-import snake.SnakeBody;
 import utils.Sizes;
-import world.CustomGameMap;
 import world.GameMap;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.calls;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doCallRealMethod;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 class PlayStateTwoTest {
 
@@ -41,7 +29,7 @@ class PlayStateTwoTest {
                 new SnakeBody(Sizes.DEFAULT_MINIMUM_MAP_TILES, Sizes.DEFAULT_MINIMUM_MAP_TILES);
         this.gameMap = Mockito.mock(GameMap.class);
         this.playStateTwo = new PlayStateTwo(gameStateManager, snakeBody, gameMap);
-        gameStateManager.push(playStateTwo);
+        gameStateManager.pushState(playStateTwo);
     }
 
     @Test

@@ -1,17 +1,18 @@
 package states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import gamelogic.Score;
-import snake.SnakeBody;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import entities.snake.SnakeBody;
 import utils.Sizes;
 import world.CustomGameMap;
 import world.GameMap;
-import world.TiledGameMap;
 
-public class PlayStateTwo extends State {
+public class PlayStateTwo implements State {
 
     OrthographicCamera orthographicCamera;
     GameStateManager gameStateManager;
@@ -25,10 +26,10 @@ public class PlayStateTwo extends State {
      * @param gameManager which keeps track of the state of the game.
      */
     public PlayStateTwo(GameStateManager gameManager) {
-        super(gameManager);
-
-        this.gameStateManager = super.getGameManager();
-        this.orthographicCamera = super.getCamera();
+//
+//        this.gameStateManager = super.getGameManager();
+//        this.orthographicCamera = super.getCamera();
+        orthographicCamera = new OrthographicCamera();
         orthographicCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         orthographicCamera.update();
 
@@ -46,7 +47,6 @@ public class PlayStateTwo extends State {
      */
     public PlayStateTwo(GameStateManager gameStateManager, SnakeBody snake,
                         GameMap gameMap) {
-        super(gameStateManager);
         this.gameStateManager = gameStateManager;
         this.snakeBody = snake;
         this.gameMap = gameMap;
@@ -72,7 +72,6 @@ public class PlayStateTwo extends State {
 
     @Override
     public void dispose() {
-        gameMap.dispose(camera);
         //batch.dispose(); ??not sure if i should dispose
     }
 

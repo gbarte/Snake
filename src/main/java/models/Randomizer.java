@@ -1,5 +1,7 @@
 package gamelogic;
 
+import models.Coordinate;
+
 import java.util.Random;
 
 public class Randomizer {

@@ -1,6 +1,6 @@
-package snake;
+package entities.snake;
 
-import gamelogic.Coordinate;
+import models.Coordinate;
 
 public class BodyPart {
     private Coordinate coordinate;
@@ -14,12 +14,12 @@ public class BodyPart {
      * @param x - New x coordinate of position of bodypart.
      * @param y - New y coordinate of position of bodypart.
      */
-    void updateBodyPartPos(int x, int y) {
+    public void updateBodyPartPos(int x, int y) {
         this.coordinate.setCoordinateX(x);
         this.coordinate.setCoordinateY(y);
     }
 
-    void updateBodyPartPos(Coordinate coordinate) {
+    public void updateBodyPartPos(Coordinate coordinate) {
         int x = coordinate.getCoordinateX();
         int y = coordinate.getCoordinateY();
         this.coordinate = new Coordinate(x, y);

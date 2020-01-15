@@ -2,11 +2,11 @@ package world;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import entities.snake.SnakeBody;
 import objects.base.Apple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import snake.SnakeBody;
 import states.GameStateManager;
 import utils.Sizes;
 
@@ -45,7 +45,7 @@ class TiledGameMapTest extends GameMapTest{
 
     @Override
     public GameMap getGameMap() {
-        return (TiledGameMap) this.tiledGameMap;
+        return this.tiledGameMap;
     }
 
     @Override
