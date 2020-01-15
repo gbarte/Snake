@@ -22,7 +22,7 @@ import services.leaderboard.LeaderboardService;
  * Shows a leaderboard of all players playing the game.
  */
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
-public class LeaderboardState implements State {
+public class LeaderboardState implements IState {
     private GameStateManager stateManager;
     private Stage stage;
     private Skin skin;

@@ -27,7 +27,7 @@ class GameStateManagerTest {
     void pop() {
         MenuState menu = Mockito.mock(MenuState.class);
         PlayState play = Mockito.mock(PlayState.class);
-        Stack<State> states = new Stack<>();
+        Stack<IState> states = new Stack<>();
         states.push(menu);
         states.push(play);
 
@@ -40,7 +40,7 @@ class GameStateManagerTest {
     void set() {
         MenuState menu = Mockito.mock(MenuState.class);
         PlayState play = Mockito.mock(PlayState.class);
-        Stack<State> states = new Stack<>();
+        Stack<IState> states = new Stack<>();
         states.push(menu);
         states.push(play);
         stateManager.setStates(states);
@@ -54,7 +54,7 @@ class GameStateManagerTest {
     void update() {
         MenuState menu = Mockito.mock(MenuState.class);
         PlayState play = Mockito.mock(PlayState.class);
-        Stack<State> states = new Stack<>();
+        Stack<IState> states = new Stack<>();
         states.push(menu);
         states.push(play);
         stateManager.setStates(states);
@@ -67,7 +67,7 @@ class GameStateManagerTest {
     void getStates() {
         MenuState menu = Mockito.mock(MenuState.class);
         PlayState play = Mockito.mock(PlayState.class);
-        Stack<State> states = new Stack<>();
+        Stack<IState> states = new Stack<>();
         states.push(menu);
         states.push(play);
 
@@ -80,7 +80,7 @@ class GameStateManagerTest {
     void setStates() {
         MenuState menu = Mockito.mock(MenuState.class);
         PlayState play = Mockito.mock(PlayState.class);
-        Stack<State> states = new Stack<>();
+        Stack<IState> states = new Stack<>();
         states.push(menu);
         states.push(play);
 

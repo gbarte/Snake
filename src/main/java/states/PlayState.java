@@ -23,7 +23,7 @@ import models.Score;
  * In-game screen.
  */
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
-public class PlayState implements State {
+public class PlayState implements IState {
     private GameStateManager stateManager;
     public static final float DEFAULT_MOVE_TIME = 0.25f;
     private float moveTime = DEFAULT_MOVE_TIME;

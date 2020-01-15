@@ -21,7 +21,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
  * Creates sign up screen.
  */
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
-public class SignUpState implements State {
+public class SignUpState implements IState {
     private GameStateManager stateManager;
     private Stage stage;
     private Skin skin;

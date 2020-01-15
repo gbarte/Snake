@@ -16,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
-public class PausedState implements State {
+public class PausedState implements IState {
     private GameStateManager stateManager;
     private Stage stage;
     private Skin skin;
