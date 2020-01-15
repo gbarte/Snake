@@ -17,6 +17,13 @@ import world.customgamemap.CustomGameMapLoader;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.anyFloat;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doCallRealMethod;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 //Unnecessary warnings to have getters & setters for objects
 //that'll be mocked anyways and/or won't need getters & setters
@@ -159,10 +166,19 @@ public class CustomGameMapTest extends GameMapTest {
     @Test
     void updateTest() {
         /*
-        GameMap gameMap = Mockito.mock(CustomGameMap.class, Mockito.CALLS_REAL_METHODS);
-        gameMap.update(Sizes.MOVE_TIME);
-        verify(gameMap, atLeastOnce()).update(Sizes.MOVE_TIME);
-         */
+        GameMap fake = spy(getGameMap());
+        assertNotNull(getGameMap());
+        doCallRealMethod().when(fake).update(anyFloat());
+        doNothing().when(fake).handleInput();
+        doNothing().when(fake).checkOutOfMap();
+        doNothing().when(fake).checkHeadHitsBody();
+
+        fake.update(Sizes.MOVE_TIME);
+        verify(fake).update(anyFloat());
+        verify(fake).handleInput();
+        verify(fake).checkOutOfMap();
+        verify(fake).checkHeadHitsBody();
+        */
     }
 
     @Test

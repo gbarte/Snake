@@ -103,7 +103,6 @@ public abstract class GameMap {
         updateSnake(delta);
         checkAppleEaten();
         updateBadApple();
-
     }
 
     public abstract void dispose(OrthographicCamera camera);

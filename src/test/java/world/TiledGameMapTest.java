@@ -4,6 +4,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import objects.base.Apple;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import snake.SnakeBody;
 import states.GameStateManager;
@@ -56,4 +57,12 @@ class TiledGameMapTest extends GameMapTest{
     public SnakeBody getSnake() {
         return this.snake;
     }
+
+    @Override
+    @Test
+    void updateTest() {
+        //
+    }
+
+
 }

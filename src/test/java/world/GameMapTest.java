@@ -85,4 +85,7 @@ public abstract class GameMapTest {
         assertEquals(getBodyTexture(), "assets/DefaultBody.png");
         assertEquals(getApple().getCoordinate(), new Coordinate(10, 10));
     }
+
+    @Test
+    abstract void updateTest();
 }
