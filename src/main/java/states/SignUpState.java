@@ -16,6 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import services.auth.AuthService;
+import services.auth.RegistrationResponse;
 import utils.Sizes;
 
 /**
@@ -27,8 +29,6 @@ public class SignUpState implements IState {
     private Stage stage;
     private Skin skin;
     private Texture background;
-    private TextField username;
-    private TextField password;
     private Skin cloudSkin;
 
     /**
@@ -42,7 +42,7 @@ public class SignUpState implements IState {
         stage = new Stage(new ScreenViewport());
         background = new Texture("assets/bg.png");
         Gdx.input.setInputProcessor(stage);
-        skin =  new Skin(Gdx.files.internal("assets/quantum-horizon/skin/quantum-horizon-ui.json"));
+        skin = new Skin(Gdx.files.internal("assets/quantum-horizon/skin/quantum-horizon-ui.json"));
         cloudSkin = new Skin(Gdx.files.internal("assets/cloud-form/skin/cloud-form-ui.json"));
         initTitle();
         initReturn();
@@ -59,7 +59,7 @@ public class SignUpState implements IState {
                 new Color(0, 255, 0, 1));
         Label title = new Label("Lil' Snake", labelStyle);
         title.setSize(600, 120);
-        title.setPosition(100,550);
+        title.setPosition(100, 550);
         title.setFontScale(3);
         title.setAlignment(Align.center);
         stage.addActor(title);
@@ -73,22 +73,11 @@ public class SignUpState implements IState {
         TextButton signUpButton = new TextButton("Sign up", skin);
         //        loginButton.setPosition(300, 200);
         signUpButton.setPosition(320, 125);
-        signUpButton.addListener(new InputListener() {
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                stateManager.setState(new LoginState(stateManager));
-            }
 
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                System.out.println("pressed sign up");
-                return true;
-            }
-        });
         BitmapFont bitmapFont = new BitmapFont();
         // Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, new Color(1, 0, 1, 1));
         Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
-                new Color(255,  0, 255, 1));
+                new Color(255, 0, 255, 1));
         Label usernameLabel = new Label("Enter a username", labelStyle);
         usernameLabel.setPosition(340, 279);
 
@@ -99,16 +88,42 @@ public class SignUpState implements IState {
         Label passwordLabel = new Label("Enter a password", labelStyle);
         passwordLabel.setPosition(340, 229);
 
-        TextField passWordField = new TextField("", cloudSkin);
-        passWordField.setSize(180, 30);
-        passWordField.setPosition(300, 197);
-        passWordField.setPasswordMode(true);
-        passWordField.setPasswordCharacter('*');
+        TextField passwordField = new TextField("", cloudSkin);
+        passwordField.setSize(180, 30);
+        passwordField.setPosition(300, 197);
+        passwordField.setPasswordMode(true);
+        passwordField.setPasswordCharacter('*');
+
+        signUpButton.addListener(new InputListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                AuthService authService = new AuthService();
+                RegistrationResponse response = authService.register(usernameField.getText(), passwordField.getText());
+
+                switch (response) {
+                    case OCCUPIED_NAME:
+                        usernameTakenDialog();
+                        break;
+                    case SHORT_PASSWORD:
+                        passwordTooShortDialog();
+                        break;
+                    case SUCCESS:
+                        stateManager.setState(new LoginState(stateManager));
+                        break;
+                }
+            }
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                System.out.println("pressed sign up");
+                return true;
+            }
+        });
 
         stage.addActor(usernameLabel);
         stage.addActor(passwordLabel);
         stage.addActor(usernameField);
-        stage.addActor(passWordField);
+        stage.addActor(passwordField);
         stage.addActor(signUpButton);
     }
 
@@ -162,6 +177,21 @@ public class SignUpState implements IState {
         dialog.button("OK", true); //sends "true" as the result
         dialog.show(stage);
     }
+
+    /**
+     * This dialog box is shown when the password has less than 8 characters.
+     */
+    public void passwordTooShortDialog() {
+        Dialog dialog = new Dialog("Password too short", cloudSkin, "dialog") {
+            public void result(Object obj) {
+                System.out.println("result " + obj);
+            }
+        };
+        dialog.text("Password should be longer than or equal to 8 characters.");
+        dialog.button("OK", true);
+        dialog.show(stage);
+    }
+
 
     @Override
     public void handleInput() {
