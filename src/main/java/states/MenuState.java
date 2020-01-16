@@ -192,10 +192,10 @@ public class MenuState implements IState {
         BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal("assets/font.fnt"));
         Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
                 new Color(255, 0, 255, 1));
-        Label renderUsername = new Label("Logged in as ...", labelStyle);
+        Label renderUsername = new Label("Logged in as usernameOfJohn", labelStyle);
         renderUsername.setSize(100, 20);
-        renderUsername.setPosition(5,750);
-        renderUsername.setFontScale(2);
+        renderUsername.setPosition(5,775);
+        renderUsername.setFontScale((float) 1);
         stage.addActor(renderUsername);
     }
 
