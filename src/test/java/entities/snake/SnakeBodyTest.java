@@ -173,8 +173,7 @@ class SnakeBodyTest {
             "LEFT, -1, 0",
             "UP, 0, 1",
             "DOWN, 0, -1"
-    })
-    //DONT ANNOTATE WITH @Test
+    }) //DONT ANNOTATE WITH @Test
     void update3BodyPartsPositionTest(Direction dir, int dx, int dy) {
 
         int x = 26;
@@ -203,16 +202,6 @@ class SnakeBodyTest {
         snakeBody.updateBodyPartsPosition(snakeBody.getHeadCoord());
 
         LinkedList<BodyPart> allBP = snakeBody.getBodyParts();
-
-        /*assertEquals(allBP.get(0).getCoordinate(), new Coordinate(26, 26));
-        assertEquals(allBP.get(1).getCoordinate(), snakeBody.getHeadCoord());
-        assertEquals(allBP.get(2).getCoordinate(), two);*/
-
-
-        /*System.out.println("\nindex 0=" + allBP.get(0).getCoordinate().toString());
-        System.out.println("index 1=" + allBP.get(1).getCoordinate().toString());
-        System.out.println("index 2=" + allBP.get(2).getCoordinate().toString());
-        System.out.println("afterHead is " + one.getCoordinate());*/
 
         assertEquals(allBP.get(1).getCoordinate(), allBP.get(0).getCoordinate());
         assertEquals(new Coordinate(allBP.get(1).getCoordinate().getCoordinateX() - dx,
@@ -250,7 +239,10 @@ class SnakeBodyTest {
                 rotation, true);
         verify(batch, atLeast(snakeBody.getBodyParts().size() - 1)).draw(textureRegions[0][1],
                 snakeBody.getHeadCoord().getCoordinateX() * Sizes.TILE_PIXELS,
-                snakeBody.getHeadCoord().getCoordinateX() * Sizes.TILE_PIXELS);
+                snakeBody.getHeadCoord().getCoordinateX() * Sizes.TILE_PIXELS,
+                (float) Sizes.TILE_PIXELS / 2, (float) Sizes.TILE_PIXELS / 2,
+                Sizes.TILE_PIXELS, Sizes.TILE_PIXELS, 1, 1,
+                rotation, true);
     }
 
 }

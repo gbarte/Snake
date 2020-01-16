@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -18,6 +19,7 @@ import models.Score;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public class PausedState implements IState {
+
     private GameStateManager stateManager;
     private Stage stage;
     private Skin skin;
@@ -34,8 +36,8 @@ public class PausedState implements IState {
         this.score = score;
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
-        skin = new Skin(Gdx.files.internal(
-                "assets/quantum-horizon/skin/quantum-horizon-ui.json"));
+        skin = new Skin(
+                Gdx.files.internal("assets/quantum-horizon/skin/quantum-horizon-ui.json"));
         initTitle();
         initResumeButton();
         initRulesButton();
@@ -46,12 +48,23 @@ public class PausedState implements IState {
 
     @Override
     public void handleInput() {
-
+        /*
+        stage.addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode)
+            {
+                if(keycode!=44) {
+                    return false;
+                };
+                return true;
+            }
+        });
+        */
     }
 
     @Override
     public void update(float dt) {
-
+        //handleInput();
     }
 
     @Override
@@ -168,5 +181,6 @@ public class PausedState implements IState {
     public void dispose() {
         backGround.dispose();
     }
+
 }
 

@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import entities.snake.SnakeBody;
 import utils.Sizes;
-import world.CustomGameMap;
 import world.GameMap;
 import world.TiledGameMap;
 
@@ -30,14 +29,15 @@ public class PlayState implements IState {
 
         this.snakeBody =
                 new SnakeBody(Sizes.DEFAULT_MINIMUM_MAP_TILES, Sizes.DEFAULT_MINIMUM_MAP_TILES);
-        gameMap = new CustomGameMap(this.snakeBody, gameManager); //CustomGameMap ipv TiledGameMap
+        gameMap = new TiledGameMap(this.snakeBody, gameManager); //CustomGameMap ipv TiledGameMap
     }
 
     /**
      * This constructor is for testability purposes.
+     *
      * @param gameStateManager The gameManager which keeps track of the state of the game.
-     * @param snake The snake that'll be displayed on the map.
-     * @param gameMap The map that gets instantiated.
+     * @param snake            The snake that'll be displayed on the map.
+     * @param gameMap          The map that gets instantiated.
      */
     public PlayState(GameStateManager gameStateManager, SnakeBody snake,
                      GameMap gameMap) {

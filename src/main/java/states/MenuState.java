@@ -212,11 +212,13 @@ public class MenuState implements IState {
     public void render(SpriteBatch batch) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.begin();
         stage.act();
         stage.getBatch().begin();
         stage.getBatch().draw(background, 0, 0, 800, 800);
         stage.getBatch().end();
         stage.draw();
+        batch.end();
     }
 
     @Override

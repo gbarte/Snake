@@ -50,6 +50,9 @@ public class GameStateManager {
         return states.peek();
     }
 
+    /**
+     * Pushes the current state on top again by peeking for it.
+     */
     public void reState() {
         states.push(states.peek());
     }

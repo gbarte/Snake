@@ -127,7 +127,10 @@ public class SnakeBody {
             int b = curr.getCoordinateY();
             batch.draw(textureRegions[0][1],
                     a * Sizes.TILE_PIXELS,
-                    b * Sizes.TILE_PIXELS);
+                    b * Sizes.TILE_PIXELS,
+                    (float) Sizes.TILE_PIXELS / 2, (float) Sizes.TILE_PIXELS / 2,
+                    Sizes.TILE_PIXELS, Sizes.TILE_PIXELS, 1, 1,
+                    rot, true);
         }
 
 
