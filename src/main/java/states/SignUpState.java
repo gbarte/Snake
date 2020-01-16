@@ -128,7 +128,6 @@ public class SignUpState implements State {
      */
     private void initReturn() {
         TextButton returnButton = new TextButton("return", skin);
-        //        signUpButton.setPosition(300, 150);
         returnButton.setPosition(320, 65);
         returnButton.addListener(new InputListener() {
             @Override
@@ -156,7 +155,7 @@ public class SignUpState implements State {
             }
         };
         dialog.text("Please make sure your password is at least xxx long and contains a number.");
-        dialog.button("OK", true); //sends "true" as the result
+        dialog.button("OK", true);
         dialog.show(stage);
     }
 
@@ -170,7 +169,7 @@ public class SignUpState implements State {
             }
         };
         dialog.text("This username has already been taken, try a new one.");
-        dialog.button("OK", true); //sends "true" as the result
+        dialog.button("OK", true);
         dialog.show(stage);
     }
 

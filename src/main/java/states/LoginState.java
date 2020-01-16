@@ -140,7 +140,6 @@ public class LoginState implements State {
      */
     private void initSignUp() {
         TextButton signUpButton = new TextButton("Sign up", skin);
-        //        signUpButton.setPosition(300, 150);
         signUpButton.setPosition(320, 65);
         signUpButton.addListener(new InputListener() {
             @Override

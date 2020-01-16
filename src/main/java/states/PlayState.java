@@ -143,9 +143,7 @@ public class PlayState implements State {
         checkHeadHitsBody();
         updateSnake(dt);
         isAppleEaten();
-
         checkPowerUpTimeout();
-
     }
 
     /**
@@ -162,7 +160,6 @@ public class PlayState implements State {
         batch.draw(food.getTexture(), foodPos.getCoordinateX(), foodPos.getCoordinateY());
         renderScore(batch);
         batch.end();
-        //Comment out next line if you don't want the grid
         drawGrid();
     }
 
