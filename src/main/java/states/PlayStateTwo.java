@@ -30,7 +30,7 @@ public class PlayStateTwo implements State {
 
         this.snakeBody =
                 new SnakeBody(Sizes.DEFAULT_MINIMUM_MAP_TILES, Sizes.DEFAULT_MINIMUM_MAP_TILES);
-        gameMap = new TiledGameMap(this.snakeBody, gameManager); //CustomGameMap ipv TiledGameMap
+        gameMap = new CustomGameMap(this.snakeBody, gameManager); //CustomGameMap ipv TiledGameMap
     }
 
     /**

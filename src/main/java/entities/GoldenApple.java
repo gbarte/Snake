@@ -48,12 +48,6 @@ public class GoldenApple implements Food {
     }
 
     @Override
-    public void action(PlayState play) {
-        play.getScore().add(DEFAULT_SCORE);
-        play.getSnake().growSnake(2);
-    }
-
-    @Override
     public void actionTwo(GameMap map) {
         map.getScore().add(DEFAULT_SCORE);
         map.getSnake().growSnake(2);

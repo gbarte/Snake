@@ -7,7 +7,6 @@ import entities.Food;
 import entities.factories.FoodFactory;
 import entities.snake.SnakeBody;
 import models.Score;
-import objects.base.Apple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -30,11 +29,9 @@ public class CustomGameMapTest extends GameMapTest {
     String id;
     String name;
     int[][][] map;
-
+    GameStateManager manager;
     private TextureRegion[][] tiles;
     private SnakeBody snake;
-    GameStateManager manager;
-
 
     @Override
     @BeforeEach

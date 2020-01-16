@@ -12,8 +12,6 @@ import world.GameMap;
  */
 public interface Food {
 
-    void action(PlayState play);
-
     void actionTwo(GameMap map);
 
     Coordinate getCoordinate();

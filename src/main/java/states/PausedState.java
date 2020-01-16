@@ -33,6 +33,10 @@ public class PausedState implements State {
         Gdx.input.setInputProcessor(stage);
         skin = new Skin(Gdx.files.internal(
                 "assets/quantum-horizon/skin/quantum-horizon-ui.json"));
+        initTitle();
+        initResumeButton();
+        initRulesButton();
+        initQuitButton();
         backGround = new Texture("assets/bg.png");
     }
 
@@ -44,11 +48,7 @@ public class PausedState implements State {
 
     @Override
     public void update(float dt) {
-        //System.out.println("size of stack=" + stateManager.getStates().size());
-        initTitle();
-        initResumeButton();
-        initRulesButton();
-        initQuitButton();
+
     }
 
     @Override

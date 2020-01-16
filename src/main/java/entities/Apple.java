@@ -45,11 +45,6 @@ public class Apple implements Food {
         this.texture = texture;
     }
 
-    public void action(PlayState play) {
-        play.getScore().add(Apple.DEFAULT_SCORE);
-        play.getSnake().growSnake();
-    }
-
     /**
      * This method takes a map's score and increases it.
      * Afterwards the entities.snake is grown;

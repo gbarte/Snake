@@ -6,19 +6,16 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-
 import entities.Apple;
 import entities.Food;
 import entities.factories.AppleFactory;
 import entities.factories.FoodFactory;
 import entities.factories.PowerUpFactory;
 import entities.snake.BodyPart;
-import entities.snake.SnakeBody;
 import models.Coordinate;
 import models.DoubleScore;
 import models.Score;
 import snake.SnakeBody_BASE_39152;
-import utils.Sizes;
 
 
 /**
@@ -26,8 +23,9 @@ import utils.Sizes;
  */
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public class PlayState implements State {
+    public static final float DEFAULT_MOVE_TIME = 0.25f;
+    private static double powerUpTimeout = 10;
     private GameStateManager stateManager;
-    public static final float DEFAULT_MOVE_TIME = Sizes.MOVE_TIME;
     private float moveTime = DEFAULT_MOVE_TIME;
     private float timer = moveTime;
     private SnakeBody_BASE_39152 snake;
@@ -35,7 +33,6 @@ public class PlayState implements State {
     private Food food;
     private Score score;
     private FoodFactory foodFactory;
-    private static double powerUpTimeout = 10;
 
 
     /**
@@ -169,6 +166,7 @@ public class PlayState implements State {
 
     /**
      * Renders the current score on the screen.
+     *
      * @param batch used for drawing elements.
      */
     private void renderScore(SpriteBatch batch) {
@@ -290,7 +288,7 @@ public class PlayState implements State {
      */
     private void isAppleEaten() {
         if (snake.getHeadCoord().equals(food.getCoordinate())) {
-            food.action(this);
+            //food.action(this);
             food = foodFactory.createFood();
             checkAppleOnSnake();
             if (foodFactory instanceof AppleFactory) {

@@ -45,16 +45,6 @@ public class DoubleScorePowerUp implements Food {
     }
 
     @Override
-    public void action(PlayState play) {
-        play.getShapeRenderer().setColor(Color.RED);
-        int currScore = play.getScore().getValue();
-
-        DoubleScore score = new DoubleScore();
-        score.setValue(currScore);
-        play.setScore(score);
-    }
-
-    @Override
     public void actionTwo(GameMap map) {
         int currScore = map.getScore().getValue();
 
