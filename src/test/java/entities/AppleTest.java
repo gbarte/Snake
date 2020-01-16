@@ -3,7 +3,6 @@ package entities;
 import models.Score;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import snake.SnakeBody_BASE_39152;
 import states.PlayState;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,7 +24,7 @@ class AppleTest extends FoodTest {
         score.setValue(initialScore);
 
         Mockito.when(playState.getScore()).thenReturn(score);
-        SnakeBody_BASE_39152 snake = Mockito.mock(SnakeBody_BASE_39152.class);
+        snake.SnakeBody_BASE_39152 snake = Mockito.mock(snake.SnakeBody_BASE_39152.class);
         Mockito.when(playState.getSnake()).thenReturn(snake);
 
         Apple apple = new Apple();

@@ -3,7 +3,10 @@ package world;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import entities.Food;
+import entities.factories.FoodFactory;
 import entities.snake.SnakeBody;
+import models.Score;
 import objects.base.Apple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,17 +50,22 @@ public class CustomGameMapTest extends GameMapTest {
         TextureRegion[][] textureRegions = new TextureRegion[1][2];
         textureRegions[0][0] = Mockito.mock(TextureRegion.class, "head");
         textureRegions[0][1] = Mockito.mock(TextureRegion.class, "body");
-        Apple fakeApple = Mockito.mock(Apple.class);
+        Food fakeFood = Mockito.mock(Food.class);
+        Score score = new Score();
+        FoodFactory fakeFactory = Mockito.mock(FoodFactory.class);
         String bodyTexture = "assets/DefaultBody.png";
 
         this.tiles = textureRegions;
+
         this.customGameMap = new CustomGameMap(this.id,
                 this.name,
                 this.map,
                 this.tiles,
                 this.snake,
                 this.manager,
-                fakeApple,
+                fakeFood,
+                score,
+                fakeFactory,
                 bodyTexture);
         super.setUp();
     }

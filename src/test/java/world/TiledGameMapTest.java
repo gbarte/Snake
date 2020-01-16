@@ -2,8 +2,10 @@ package world;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import entities.Food;
+import entities.factories.FoodFactory;
 import entities.snake.SnakeBody;
-import objects.base.Apple;
+import models.Score;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -13,7 +15,7 @@ import utils.Sizes;
 //Unnecessary warnings to have getters & setters for objects
 //that'll be mocked anyways and/or won't need getters & setters
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
-class TiledGameMapTest extends GameMapTest{
+class TiledGameMapTest extends GameMapTest {
 
     GameMap tiledGameMap;
     TiledMap tiledMap;
@@ -32,11 +34,18 @@ class TiledGameMapTest extends GameMapTest{
         this.snake
                 = new SnakeBody(Sizes.DEFAULT_MINIMUM_MAP_TILES, Sizes.DEFAULT_MINIMUM_MAP_TILES);
         this.manager = new GameStateManager();
-        Apple temp = Mockito.mock(Apple.class);
+
+        Food fakeFood = Mockito.mock(Food.class);
+        Score score = new Score();
+        FoodFactory fakeFactory = Mockito.mock(FoodFactory.class);
+        String bodyTexture = "assets/DefaultBody.png";
+
         this.tiledGameMap = new TiledGameMap(this.manager,
                 this.snake,
-                temp,
-                "assets/DefaultBody.png",
+                bodyTexture,
+                fakeFactory,
+                fakeFood,
+                score,
                 this.tiledMap,
                 this.tiledMapRenderer,
                 this.fileName);

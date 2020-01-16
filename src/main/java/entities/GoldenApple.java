@@ -3,6 +3,7 @@ package entities;
 import com.badlogic.gdx.graphics.Texture;
 import models.Coordinate;
 import states.PlayState;
+import world.GameMap;
 
 /**
  * Interactive food object of Golden Apple.
@@ -13,7 +14,7 @@ public class GoldenApple implements Food {
 
     public static int DEFAULT_SCORE = 25;
     public static double rarity = 0.2;
-    private static final String texturePath = "assets/appleYellowSmall.png";
+    private static final String texturePath = "assets/goldapple16px.png";
     private Coordinate coordinate;
     private Texture texture;
 
@@ -50,5 +51,11 @@ public class GoldenApple implements Food {
     public void action(PlayState play) {
         play.getScore().add(DEFAULT_SCORE);
         play.getSnake().growSnake(2);
+    }
+
+    @Override
+    public void actionTwo(GameMap map) {
+        map.getScore().add(DEFAULT_SCORE);
+        map.getSnake().growSnake(2);
     }
 }

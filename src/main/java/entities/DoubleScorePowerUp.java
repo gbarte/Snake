@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import models.Coordinate;
 import models.DoubleScore;
 import states.PlayState;
+import world.GameMap;
 
 /**
  * Food object which acts as a power up.
@@ -13,7 +14,7 @@ import states.PlayState;
  */
 public class DoubleScorePowerUp implements Food {
     public static final double rarity = 0.2;
-    private static final String texturePath = "assets/goldenApple.png";
+    private static final String texturePath = "assets/frog16px.png";
     private Coordinate coordinate;
     private Texture texture;
 
@@ -53,4 +54,12 @@ public class DoubleScorePowerUp implements Food {
         play.setScore(score);
     }
 
+    @Override
+    public void actionTwo(GameMap map) {
+        int currScore = map.getScore().getValue();
+
+        DoubleScore score = new DoubleScore();
+        score.setValue(currScore);
+        map.setScore(score);
+    }
 }

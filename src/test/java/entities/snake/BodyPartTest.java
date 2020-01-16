@@ -1,6 +1,5 @@
-package snake;
+package entities.snake;
 
-import entities.snake.BodyPart;
 import models.Coordinate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,8 +43,10 @@ class BodyPartTest {
         bodyPart.updateBodyPartPos(
                 Sizes.DEFAULT_MINIMUM_MAP_TILES / 5,
                 Sizes.DEFAULT_MINIMUM_MAP_TILES / 5);
-        assertEquals(bodyPart.getCoordinate().getCoordinateX(), Sizes.DEFAULT_MINIMUM_MAP_TILES / 5);
-        assertEquals(bodyPart.getCoordinate().getCoordinateY(), Sizes.DEFAULT_MINIMUM_MAP_TILES / 5);
+        assertEquals(bodyPart.getCoordinate().getCoordinateX(),
+                Sizes.DEFAULT_MINIMUM_MAP_TILES / 5);
+        assertEquals(bodyPart.getCoordinate().getCoordinateY(),
+                Sizes.DEFAULT_MINIMUM_MAP_TILES / 5);
     }
 
     @Test
