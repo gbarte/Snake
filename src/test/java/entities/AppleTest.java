@@ -1,14 +1,12 @@
 package entities;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import entities.snake.SnakeBody;
 import models.Score;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
 import snake.SnakeBody_BASE_39152;
 import states.PlayState;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 class AppleTest extends FoodTest {
