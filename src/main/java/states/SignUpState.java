@@ -137,7 +137,7 @@ public class SignUpState implements IState {
     /**
      * This dialog box is shown when the password is not safe enough.
      */
-    public void incorrectPassworldDialog() {
+    public void incorrectPasswordDialog() {
         Dialog dialog = new Dialog("Password not valid", cloudSkin, "dialog") {
             public void result(Object obj) {
                 System.out.println("result " + obj);
@@ -161,6 +161,21 @@ public class SignUpState implements IState {
         dialog.button("OK", true); //sends "true" as the result
         dialog.show(stage);
     }
+
+    /**
+     * This dialog box is shown when the password has less than 8 characters.
+     */
+    public void passwordTooShortDialog() {
+        Dialog dialog = new Dialog("Password too short", cloudSkin, "dialog") {
+            public void result(Object obj) {
+                System.out.println("result " + obj);
+            }
+        };
+        dialog.text("Password should be longer than 8 characters.");
+        dialog.button("OK", true);
+        dialog.show(stage);
+    }
+
 
     @Override
     public void handleInput() {
