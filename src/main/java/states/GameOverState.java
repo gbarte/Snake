@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import models.Score;
+import org.lwjgl.system.CallbackI;
 import services.leaderboard.LeaderboardService;
 
 /**
@@ -205,7 +206,6 @@ public class GameOverState implements IState {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                System.out.println("chose nickname");
                 return true;
             }
         });
@@ -220,8 +220,11 @@ public class GameOverState implements IState {
         checkBox.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                Gdx.graphics.setContinuousRendering(checkBox.isChecked());
-                nicknameField.setDisabled(true);
+                if (checkBox.isChecked()) {
+                    nicknameField.setDisabled(true);
+                } else {
+                    nicknameField.setDisabled(false);
+                }
             }
         });
         checkBox.setPosition(300, 212);
