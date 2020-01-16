@@ -106,12 +106,12 @@ public class LoginState implements IState {
         Label passwordLabel = new Label("Password", labelStyle);
         passwordLabel.setPosition(350, 229);
 
-        TextField passWordField = new TextField("",
+        TextField passwordField = new TextField("",
                 new Skin(Gdx.files.internal("assets/cloud-form/skin/cloud-form-ui.json")));
-        passWordField.setSize(180, 30);
-        passWordField.setPosition(300, 197);
-        passWordField.setPasswordMode(true);
-        passWordField.setPasswordCharacter('*');
+        passwordField.setSize(180, 30);
+        passwordField.setPosition(300, 197);
+        passwordField.setPasswordMode(true);
+        passwordField.setPasswordCharacter('*');
 
         loginButton.addListener(new InputListener() {
             @Override
@@ -119,7 +119,7 @@ public class LoginState implements IState {
 
                 AuthService service = new AuthService();
                 AuthResponse response = service.auth(usernameField.getText(),
-                        passWordField.getText());
+                        passwordField.getText());
 
 
                 if (response == AuthResponse.SUCCESS) {
@@ -142,7 +142,7 @@ public class LoginState implements IState {
         stage.addActor(usernameLabel);
         stage.addActor(passwordLabel);
         stage.addActor(usernameField);
-        stage.addActor(passWordField);
+        stage.addActor(passwordField);
     }
 
     /**
