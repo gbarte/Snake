@@ -1,9 +1,10 @@
 package world;
 
+import entities.Food;
+import entities.factories.FoodFactory;
 import entities.snake.SnakeBody;
 import models.Coordinate;
 import models.Score;
-import objects.base.Apple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -19,14 +20,15 @@ import static org.mockito.Mockito.when;
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public abstract class GameMapTest {
 
-    GameMap gameMap;
-    private float timer = Sizes.MOVE_TIME;
-    GameStateManager manager;
-    private SnakeBody snake;
-    private Apple apple;
-    private Score score;
-    private String bodyTexture;
     public static final int APPLE_DEFAULT_POSITION = 10;
+    GameMap gameMap;
+    GameStateManager manager;
+    private float timer = Sizes.MOVE_TIME;
+    private SnakeBody snake;
+    private Food food;
+    private Score score;
+    private FoodFactory foodFactory;
+    private String bodyTexture;
 
     @BeforeEach
     abstract void init();
@@ -37,10 +39,11 @@ public abstract class GameMapTest {
         this.gameMap = getGameMap();
         this.manager = getManager();
         this.snake = getSnake();
-        this.apple = Mockito.mock(Apple.class);
+        this.food = Mockito.mock(Food.class);
         this.score = new Score();
+        this.foodFactory = Mockito.mock(FoodFactory.class);
         this.bodyTexture = "assets/DefaultBody.png";
-        when(apple.getCoordinate())
+        when(food.getCoordinate())
                 .thenReturn(new Coordinate(APPLE_DEFAULT_POSITION, APPLE_DEFAULT_POSITION));
     }
 
@@ -50,12 +53,12 @@ public abstract class GameMapTest {
 
     public abstract SnakeBody getSnake();
 
-    public Apple getApple() {
-        return apple;
+    public Food getFood() {
+        return food;
     }
 
-    public void setApple(Apple apple) {
-        this.apple = apple;
+    public void setFood(Food food) {
+        this.food = food;
     }
 
     public Score getScore() {
@@ -79,11 +82,11 @@ public abstract class GameMapTest {
         assertNotNull(getGameMap().getSnake());
         assertNotNull(getManager());
         assertNotNull(getSnake().getHeadCoord());
-        assertNotNull(getApple());
+        assertNotNull(getFood());
         assertNotNull(getScore());
         assertEquals(getScore().getValue(), 0);
         assertEquals(getBodyTexture(), "assets/DefaultBody.png");
-        assertEquals(getApple().getCoordinate(), new Coordinate(10, 10));
+        assertEquals(getFood().getCoordinate(), new Coordinate(10, 10));
     }
 
     @Test

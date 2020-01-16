@@ -3,6 +3,7 @@ package entities.snake;
 import models.Coordinate;
 
 public class BodyPart {
+
     private Coordinate coordinate;
 
     public BodyPart(int coordinateX, int coordinateY) {
@@ -19,6 +20,10 @@ public class BodyPart {
         this.coordinate.setCoordinateY(y);
     }
 
+    /**
+     * Update body part's position to a new coordinate
+     * @param coordinate Coordinate object with the new coordinates.
+     */
     public void updateBodyPartPos(Coordinate coordinate) {
         int x = coordinate.getCoordinateX();
         int y = coordinate.getCoordinateY();

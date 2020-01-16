@@ -1,9 +1,8 @@
-package snake;
+package entities.snake;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import entities.snake.BodyPart;
-import entities.snake.SnakeBody;
+import java.util.LinkedList;
 import models.Coordinate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,8 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.verify;
-
-import java.util.LinkedList;
 
 class SnakeBodyTest {
     private transient SnakeBody snakeBody;
@@ -156,7 +153,8 @@ class SnakeBodyTest {
             "DOWN, 0, -1",
     })
     void moveSnakeTest(Direction dir, int dx, int dy) {
-        this.snakeBody = new SnakeBody(Sizes.DEFAULT_MINIMUM_MAP_TILES, Sizes.DEFAULT_MINIMUM_MAP_TILES);
+        this.snakeBody
+                = new SnakeBody(Sizes.DEFAULT_MINIMUM_MAP_TILES, Sizes.DEFAULT_MINIMUM_MAP_TILES);
         assertEquals(Direction.RIGHT, snakeBody.getCurrDir());
         snakeBody.moveSnake(dir);
 
@@ -174,7 +172,8 @@ class SnakeBodyTest {
             "LEFT, -1, 0",
             "UP, 0, 1",
             "DOWN, 0, -1"
-    }) //DONT ANNOTATE WITH @Test
+    })
+    //DONT ANNOTATE WITH @Test
     void update3BodyPartsPositionTest(Direction dir, int dx, int dy) {
 
         int x = 26;

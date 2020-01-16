@@ -52,8 +52,8 @@ public class Apple implements Food {
 
     /**
      * This method takes a map's score and increases it.
-     * Afterwards the snake is grown;
-     * @param map
+     * Afterwards the entities.snake is grown;
+     * @param map The map you pass from which you get all information.
      */
     @Override
     public void actionTwo(GameMap map) {

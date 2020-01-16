@@ -2,11 +2,10 @@ package entities.snake;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import java.util.LinkedList;
 import models.Coordinate;
 import utils.Direction;
 import utils.Sizes;
-
-import java.util.LinkedList;
 
 
 /**
@@ -20,8 +19,6 @@ public class SnakeBody {
     private Coordinate headCoord;
     private LinkedList<BodyPart> bodyParts;
     private Direction currDir;
-
-    //public enum Direction { LEFT, RIGHT, UP, DOWN }
 
     /**
      * Constructs a snake with INITIAL_LENGTH amount of bodyparts.
@@ -78,7 +75,7 @@ public class SnakeBody {
     /**
      * Grows the snake body by a specified number of body parts.
      *
-     * @param length - by how many body parts the snake will be grown
+     * @param length By how many body parts the snake will be grown
      */
     public void growSnake(int length) {
         for (int i = 0; i < length; i++) {
@@ -89,7 +86,8 @@ public class SnakeBody {
     /**
      * This method renders the snake on the map using textures.
      * It also rotates the head in the appropriate direction.
-     * @param batch The sprite batch that got passed on.
+     *
+     * @param batch          The sprite batch that got passed on.
      * @param textureRegions This contains the texture for the head and body.
      */
     public void renderSnake(SpriteBatch batch, TextureRegion[][] textureRegions) {
@@ -138,7 +136,7 @@ public class SnakeBody {
     /**
      * Updates currDir to the given direction.
      *
-     * @param snakeDirection - Updates currDir to this direction
+     * @param snakeDirection Updates the current direction (currDir) to this direction.
      */
     public void moveSnake(Direction snakeDirection) {
         switch (snakeDirection) {

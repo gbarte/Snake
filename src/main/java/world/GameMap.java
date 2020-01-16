@@ -14,18 +14,16 @@ import entities.factories.FoodFactory;
 import entities.factories.PowerUpFactory;
 import entities.snake.BodyPart;
 import entities.snake.SnakeBody;
+import java.util.LinkedList;
 import models.Coordinate;
 import models.DoubleScore;
 import models.Score;
 import states.GameOverState;
 import states.GameStateManager;
 import states.PausedState;
-import states.PlayStateTwo;
 import utils.Direction;
 import utils.Sizes;
 import utils.TileType;
-
-import java.util.LinkedList;
 
 @SuppressWarnings("PMD")
 public abstract class GameMap {
@@ -76,7 +74,8 @@ public abstract class GameMap {
      * @param score Score object to keep track of your score.
      * @param bodyTexture The texture path for the snake's skin.
      */
-    public GameMap(float timer, GameStateManager manager, SnakeBody snake, FoodFactory foodFactory, Food food, Score score, String bodyTexture) {
+    public GameMap(float timer, GameStateManager manager, SnakeBody snake,
+                   FoodFactory foodFactory, Food food, Score score, String bodyTexture) {
         this.timer = timer;
         this.manager = manager;
         this.snake = snake;
@@ -247,8 +246,10 @@ public abstract class GameMap {
         BitmapFont bitmapFont = new BitmapFont();
         bitmapFont.setColor(Color.RED);
         bitmapFont.draw(batch, String.valueOf(score.getValue()),
-                Sizes.DEFAULT_AMOUNT_BORDER_TILES * (Sizes.TILE_PIXELS - Sizes.PADDING_TILE_PIXELS),
-                Sizes.DEFAULT_AMOUNT_BORDER_TILES * (Sizes.TILE_PIXELS - Sizes.PADDING_TILE_PIXELS));
+                Sizes.DEFAULT_AMOUNT_BORDER_TILES
+                        * (Sizes.TILE_PIXELS - Sizes.PADDING_TILE_PIXELS),
+                Sizes.DEFAULT_AMOUNT_BORDER_TILES
+                        * (Sizes.TILE_PIXELS - Sizes.PADDING_TILE_PIXELS));
     }
 
     /**
