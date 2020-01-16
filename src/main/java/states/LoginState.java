@@ -123,6 +123,7 @@ public class LoginState implements IState {
 
 
                 if (response == AuthResponse.SUCCESS) {
+                    SnakeGame.username = usernameField.getText();
                     stateManager.setState(new MenuState(stateManager));
                 } else {
                     // TODO: display failed authentication.
