@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import services.LeaderboardEntry;
 
 
-
 public class LeaderboardTableHandlerTest {
 
     private transient LeaderboardTableHandler tableHandler;

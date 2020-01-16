@@ -4,6 +4,7 @@ package models;
  * The class that handles score recording and operations.
  */
 public class Score {
+
     private int value;
 
     public Score() {

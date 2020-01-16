@@ -4,14 +4,15 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import utils.Sizes;
 
 
 /**
  * The initialization game class.
  */
 public class SnakeGame extends ApplicationAdapter {
-    public static final int WIDTH = 800;
-    public static final int HEIGHT = 800;
+    public static final int WIDTH = Sizes.MIN_WIDTH_WINDOW;
+    public static final int HEIGHT = Sizes.MIN_HEIGHT_WINDOW;
 
     public static final String TITLE = "Lil' Snake";
     private GameStateManager gameManager;
