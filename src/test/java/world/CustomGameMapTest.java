@@ -1,5 +1,8 @@
 package world;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -16,9 +19,6 @@ import states.GameStateManager;
 import utils.Sizes;
 import utils.TileType;
 import world.customgamemap.CustomGameMapLoader;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 //Unnecessary warnings to have getters & setters for objects
 //that'll be mocked anyways and/or won't need getters & setters

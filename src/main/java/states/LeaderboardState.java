@@ -81,7 +81,6 @@ public class LeaderboardState implements IState {
         title.setSize(400, 100);
         title.setPosition(160,650);
         title.setFontScale(2);
-        // title.setAlignment(Align.center);
         stage.addActor(title);
     }
 

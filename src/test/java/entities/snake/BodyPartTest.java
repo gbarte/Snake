@@ -1,11 +1,12 @@
 package entities.snake;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import models.Coordinate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import utils.Sizes;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BodyPartTest {
 

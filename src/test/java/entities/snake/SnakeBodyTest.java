@@ -1,5 +1,11 @@
 package entities.snake;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.verify;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import java.util.LinkedList;
@@ -11,11 +17,6 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mockito;
 import utils.Direction;
 import utils.Sizes;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.verify;
 
 class SnakeBodyTest {
     private transient SnakeBody snakeBody;

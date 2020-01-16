@@ -1,5 +1,9 @@
 package world;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.when;
+
 import entities.Food;
 import entities.factories.FoodFactory;
 import entities.snake.SnakeBody;
@@ -10,10 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import states.GameStateManager;
 import utils.Sizes;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.when;
 
 //Unnecessary warnings to have getters & setters for objects
 //that'll be mocked anyways and/or won't need getters & setters

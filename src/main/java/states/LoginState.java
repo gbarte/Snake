@@ -76,8 +76,6 @@ public class LoginState implements IState {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                // TODO
-                System.out.println("pressed sign up");
                 return true;
             }
         });
@@ -125,7 +123,6 @@ public class LoginState implements IState {
                     SnakeGame.username = usernameField.getText();
                     stateManager.setState(new MenuState(stateManager));
                 } else {
-                    // TODO: display failed authentication.
                     failedAuthenticationDialog();
                 }
 

@@ -57,13 +57,15 @@ public class TiledGameMap extends GameMap {
      * @param foodFactory      FoodFactory factory used to create food.
      * @param food             Food object that snake consumes.
      * @param score            Score object to keep track of your score.
-     * @param tiledMap         Takes in libGdx's TiledMap class which can load in a existing file map.
+     * @param tiledMap         Takes in libGdx's TiledMap class
+     *                         which can load in a existing file map.
      * @param tiledMapRenderer This is used to render the tiledMap.
      * @param fileName         The string path of the file's name for the map.
      */
     public TiledGameMap(GameStateManager manager, SnakeBody snake, String bodyTexture,
                         FoodFactory foodFactory, Food food, Score score,
-                        TiledMap tiledMap, OrthogonalTiledMapRenderer tiledMapRenderer, String fileName) {
+                        TiledMap tiledMap, OrthogonalTiledMapRenderer tiledMapRenderer,
+                        String fileName) {
         super(Sizes.MOVE_TIME, manager, snake, foodFactory, food, score, bodyTexture);
         this.tiledMap = tiledMap;
         this.tiledMapRenderer = tiledMapRenderer;

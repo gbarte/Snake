@@ -1,6 +1,4 @@
-package gamelogic;
-
-import models.Coordinate;
+package models;
 
 import java.util.Random;
 
