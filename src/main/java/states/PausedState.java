@@ -16,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
-public class PausedState implements State {
+public class PausedState implements IState {
     private GameStateManager stateManager;
     private Stage stage;
     private Skin skin;
@@ -55,11 +55,13 @@ public class PausedState implements State {
     public void render(SpriteBatch batch) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.begin();
         stage.act();
         stage.getBatch().begin();
         stage.getBatch().draw(backGround, 0, 0, 800, 800);
         stage.getBatch().end();
         stage.draw();
+        batch.end();
     }
 
     /**

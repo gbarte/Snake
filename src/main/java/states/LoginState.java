@@ -18,12 +18,13 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import services.auth.AuthResponse;
 import services.auth.AuthService;
+import utils.Sizes;
 
 /**
  * Creates login screen.
  */
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
-public class LoginState implements State {
+public class LoginState implements IState {
     private GameStateManager stateManager;
     private Stage stage;
     private Skin skin;
@@ -250,11 +251,13 @@ public class LoginState implements State {
     public void render(SpriteBatch batch) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.begin();
         stage.act();
         stage.getBatch().begin();
-        stage.getBatch().draw(backGround, 0, 0, 800, 800);
+        stage.getBatch().draw(backGround, 0, 0, Sizes.MIN_WIDTH_WINDOW, Sizes.MIN_HEIGHT_WINDOW);
         stage.getBatch().end();
         stage.draw();
+        batch.end();
     }
 
     @Override

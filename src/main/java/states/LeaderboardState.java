@@ -16,13 +16,14 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import java.util.List;
 import services.LeaderboardEntry;
 import services.leaderboard.LeaderboardService;
+import utils.Sizes;
 
 /**
  * LeaderBoardState class
  * Shows a leaderboard of all players playing the gaming.
  */
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
-public class LeaderboardState implements State {
+public class LeaderboardState implements IState {
     private GameStateManager stateManager;
     private Stage stage;
     private Skin skin;
@@ -213,7 +214,7 @@ public class LeaderboardState implements State {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.getBatch().begin();
-        stage.getBatch().draw(backGround, 0, 0, 800, 800);
+        stage.getBatch().draw(backGround, 0, 0, Sizes.MIN_WIDTH_WINDOW, Sizes.MIN_HEIGHT_WINDOW);
         stage.getBatch().end();
         stage.draw();
     }

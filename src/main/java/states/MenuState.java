@@ -19,7 +19,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
  * Creates menu screen.
  */
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
-public class MenuState implements State {
+public class MenuState implements IState {
     private GameStateManager stateManager;
     private static final int BUTTON_WIDTH = 300;
     private static final int BUTTON_HEIGHT = 60;

@@ -9,7 +9,7 @@ import java.util.Stack;
  * Can change a state of the game.
  */
 public class GameStateManager {
-    private Stack<State> states;
+    private Stack<IState> states;
 
     /**
      * Constructor creates a new stack for the states.
@@ -22,7 +22,7 @@ public class GameStateManager {
      * Pushes a new state onto the stack.
      * @param state to be pushed on the stack.
      */
-    public void pushState(State state) {
+    public void pushState(IState state) {
         states.push(state);
     }
 
@@ -37,9 +37,21 @@ public class GameStateManager {
      * Sets new current state.
      * @param state to become the current state.
      */
-    public void setState(State state) {
+    public void setState(IState state) {
         states.pop();
         states.push(state);
+    }
+
+    /**
+     * Peeks for the current state.
+     * @return state that's on top.
+     */
+    public IState peekState() {
+        return states.peek();
+    }
+
+    public void reState() {
+        states.push(states.peek());
     }
 
     /**
@@ -58,11 +70,11 @@ public class GameStateManager {
         states.peek().render(batch);
     }
 
-    public Stack<State> getStates() {
+    public Stack<IState> getStates() {
         return states;
     }
 
-    public void setStates(Stack<State> states) {
+    public void setStates(Stack<IState> states) {
         this.states = states;
     }
 }
