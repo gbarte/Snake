@@ -3,6 +3,7 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import services.auth.AuthService;
 import services.leaderboard.LeaderboardService;
 import states.SnakeGame;
+import utils.Sizes;
 
 /**
  * Sets a window for the game and then calls the snake game.
@@ -31,9 +32,9 @@ public class Main {
 
         Lwjgl3ApplicationConfiguration cfg = new Lwjgl3ApplicationConfiguration();
         cfg.setTitle(SnakeGame.TITLE);
-        cfg.setWindowSizeLimits(SnakeGame.WIDTH, SnakeGame.HEIGHT,
-                SnakeGame.WIDTH, SnakeGame.HEIGHT);
-        cfg.setWindowedMode(SnakeGame.WIDTH, SnakeGame.HEIGHT);
+        cfg.setWindowSizeLimits(Sizes.MIN_WIDTH_WINDOW, Sizes.MIN_HEIGHT_WINDOW,
+                Sizes.MAX_WIDTH_WINDOW, Sizes.MAX_HEIGHT_WINDOW);
+        cfg.setWindowedMode(Sizes.MIN_WIDTH_WINDOW, Sizes.MIN_HEIGHT_WINDOW);
         new Lwjgl3Application(new SnakeGame(), cfg);
     }
 }

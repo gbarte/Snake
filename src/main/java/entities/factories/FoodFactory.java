@@ -5,6 +5,7 @@ import entities.snake.SnakeBody;
 import java.util.Random;
 import models.Coordinate;
 import states.SnakeGame;
+import utils.Sizes;
 
 
 /**
@@ -23,18 +24,16 @@ public abstract class FoodFactory {
      */
     public Coordinate randomCoordinates() {
         Random r = new Random();
-        int minX = 0;
-        int minY = 0;
-        int maxX = SnakeGame.WIDTH / SnakeBody.CELL_SIZE;
-        int maxY = SnakeGame.HEIGHT / SnakeBody.CELL_SIZE;
+        int minX = Sizes.DEFAULT_AMOUNT_BORDER_TILES;
+        int minY = Sizes.DEFAULT_AMOUNT_BORDER_TILES;
+        int maxX = Sizes.DEFAULT_MINIMUM_MAP_TILES - Sizes.DEFAULT_AMOUNT_BORDER_TILES;
+        int maxY = Sizes.DEFAULT_MINIMUM_MAP_TILES - Sizes.DEFAULT_AMOUNT_BORDER_TILES;
+
 
         int x = r.nextInt(maxX - minX) + minX;
         int y = r.nextInt(maxY - minY) + minY;
 
-        int coordinateX = x * SnakeBody.CELL_SIZE;
-        int coordinateY = y * SnakeBody.CELL_SIZE;
-
-        return new Coordinate(coordinateX, coordinateY);
+        return new Coordinate(x, y);
     }
 
 }

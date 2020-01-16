@@ -1,9 +1,8 @@
 package entities;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import models.Coordinate;
-import states.PlayState;
+import world.GameMap;
 
 /**
  * Food object which acts as a power up.
@@ -11,8 +10,9 @@ import states.PlayState;
  *
  */
 public class MushroomPowerUp implements Food {
+
     public static final double rarity = 0.15;
-    private static final String texturePath = "assets/mushroom.png";
+    private static final String texturePath = "assets/mushroom_mario16px.png";
     private Coordinate coordinate;
     private Texture texture;
 
@@ -43,9 +43,7 @@ public class MushroomPowerUp implements Food {
     }
 
     @Override
-    public void action(PlayState play) {
-        play.setMoveTime(PlayState.DEFAULT_MOVE_TIME / 2);
-        play.getShapeRenderer().setColor(Color.PURPLE);
+    public void actionTwo(GameMap map) {
+        map.setMoveTime(map.DEFAULT_MOVE_TIME);
     }
-
 }
