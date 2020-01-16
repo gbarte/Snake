@@ -184,6 +184,20 @@ public class MenuState implements IState {
         stage.addActor(settingsButton);
     }
 
+    /**
+     * Adds "Menu" to the screen.
+     */
+    private void initRenderUsername() {
+        BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal("assets/font.fnt"));
+        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
+                new Color(255, 0, 255, 1));
+        Label renderUsername = new Label("Logged in as ...", labelStyle);
+        renderUsername.setSize(100, 20);
+        renderUsername.setPosition(5,5);
+        renderUsername.setFontScale(2);
+        stage.addActor(renderUsername);
+    }
+
     @Override
     public void handleInput() {
     }
