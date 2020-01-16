@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import utils.Sizes;
 
 /**
  * Creates sign up screen.
@@ -137,7 +138,7 @@ public class SignUpState implements IState {
     /**
      * This dialog box is shown when the password is not safe enough.
      */
-    public void incorrectPassworldDialog() {
+    public void incorrectPasswordDialog() {
         Dialog dialog = new Dialog("Password not valid", cloudSkin, "dialog") {
             public void result(Object obj) {
                 System.out.println("result " + obj);
@@ -178,7 +179,7 @@ public class SignUpState implements IState {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.getBatch().begin();
-        stage.getBatch().draw(background, 0, 0, 800, 800);
+        stage.getBatch().draw(background, 0, 0, Sizes.MIN_WIDTH_WINDOW, Sizes.MIN_HEIGHT_WINDOW);
         stage.getBatch().end();
         stage.draw();
     }
