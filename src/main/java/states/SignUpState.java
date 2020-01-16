@@ -22,7 +22,7 @@ import utils.Sizes;
  * Creates sign up screen.
  */
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
-public class SignUpState implements State {
+public class SignUpState implements IState {
     private GameStateManager stateManager;
     private Stage stage;
     private Skin skin;
@@ -138,7 +138,7 @@ public class SignUpState implements State {
     /**
      * This dialog box is shown when the password is not safe enough.
      */
-    public void incorrectPassworldDialog() {
+    public void incorrectPasswordDialog() {
         Dialog dialog = new Dialog("Password not valid", cloudSkin, "dialog") {
             public void result(Object obj) {
                 System.out.println("result " + obj);

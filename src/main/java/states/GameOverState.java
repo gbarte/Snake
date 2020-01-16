@@ -23,7 +23,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
  * State of the game over game.
  */
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
-public class GameOverState implements State {
+public class GameOverState implements IState {
     private GameStateManager stateManager;
     private Stage stage;
     private Skin skin;

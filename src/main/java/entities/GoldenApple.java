@@ -20,6 +20,7 @@ public class GoldenApple implements Food {
     /**
      * Creates an apple with a predefined texture at Random coordinate in the
      * texture space (Coordinate is multiplied with cell size!).
+     * @param coordinate of the GoldenApple to be placed.
      */
     public GoldenApple(Coordinate coordinate) {
         this.coordinate = coordinate;

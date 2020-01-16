@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  * State interface.
  * There are all the necessary methods that all states should implement.
  */
-interface State {
+interface IState {
 
     void handleInput();
 

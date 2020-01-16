@@ -24,7 +24,7 @@ import utils.Sizes;
  * Creates login screen.
  */
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
-public class LoginState implements State {
+public class LoginState implements IState {
     private GameStateManager stateManager;
     private Stage stage;
     private Skin skin;

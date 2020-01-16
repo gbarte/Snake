@@ -29,7 +29,7 @@ class PlayStateTest {
                 new SnakeBody(Sizes.DEFAULT_MINIMUM_MAP_TILES, Sizes.DEFAULT_MINIMUM_MAP_TILES);
         this.gameMap = Mockito.mock(GameMap.class);
         this.playStateTwo = new PlayState(gameStateManager, snakeBody, gameMap);
-        gameStateManager.pushState(playStateTwo);
+        gameStateManager.pushState((IState) playStateTwo);
     }
 
     @Test

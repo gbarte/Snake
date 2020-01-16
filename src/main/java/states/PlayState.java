@@ -10,7 +10,7 @@ import world.CustomGameMap;
 import world.GameMap;
 import world.TiledGameMap;
 
-public class PlayState implements State {
+public class PlayState implements IState {
 
     OrthographicCamera orthographicCamera;
     GameStateManager gameStateManager;
