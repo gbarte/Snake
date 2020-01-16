@@ -48,5 +48,13 @@ public class SnakeGame extends ApplicationAdapter {
     public void setBatch(SpriteBatch batch) {
         this.batch = batch;
     }
+
+    public static String getUsername() {
+        return username;
+    }
+
+    public static void setUsername(String username) {
+        SnakeGame.username = username;
+    }
 }
 
