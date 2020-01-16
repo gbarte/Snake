@@ -2,7 +2,6 @@ package entities;
 
 import com.badlogic.gdx.graphics.Texture;
 import models.Coordinate;
-import states.PlayState;
 import world.GameMap;
 
 /**

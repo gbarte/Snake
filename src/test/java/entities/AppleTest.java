@@ -1,10 +1,6 @@
 package entities;
 
-import entities.snake.SnakeBody;
-import models.Score;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import states.PlayState;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

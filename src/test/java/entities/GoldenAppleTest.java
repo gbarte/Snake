@@ -5,11 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import entities.Food;
 import entities.FoodTest;
 import entities.GoldenApple;
-import entities.snake.SnakeBody;
-import models.Score;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import states.PlayState;
 
 
 public class GoldenAppleTest extends FoodTest {

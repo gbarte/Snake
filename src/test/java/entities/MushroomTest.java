@@ -1,10 +1,6 @@
 package entities;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import states.PlayState;
 
 
 public class MushroomTest extends FoodTest {
