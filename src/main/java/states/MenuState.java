@@ -43,6 +43,7 @@ public class MenuState implements IState {
         initSettingsButton();
         initLeaderboardButton();
         initSignOutButton();
+        initRenderUsername();
         background = new Texture("assets/bg.png");
     }
 
@@ -185,7 +186,7 @@ public class MenuState implements IState {
     }
 
     /**
-     * Adds "Menu" to the screen.
+     * Adds the username of logged in user to the screen.
      */
     private void initRenderUsername() {
         BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal("assets/font.fnt"));
@@ -193,7 +194,7 @@ public class MenuState implements IState {
                 new Color(255, 0, 255, 1));
         Label renderUsername = new Label("Logged in as ...", labelStyle);
         renderUsername.setSize(100, 20);
-        renderUsername.setPosition(5,5);
+        renderUsername.setPosition(5,750);
         renderUsername.setFontScale(2);
         stage.addActor(renderUsername);
     }
