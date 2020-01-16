@@ -204,12 +204,12 @@ public abstract class GameMap {
         boolean quitPressed = Gdx.input.isKeyPressed(Input.Keys.Q);
         if (quitPressed) {    //pushes 'this' state (which is PlayStateTwo here)
             this.getManager().reState();
-            this.getManager().setState(new GameOverState(getManager()));
+            this.getManager().setState(new GameOverState(getManager(), score));
         }
         boolean pausePressed = Gdx.input.isKeyPressed(Input.Keys.P);
         if (pausePressed) {
             this.getManager().pushState(this.getManager().peekState());
-            this.getManager().setState(new PausedState(getManager()));
+            this.getManager().setState(new PausedState(getManager(), score));
         }
         boolean upPressed = Gdx.input.isKeyPressed(Input.Keys.W)
                 || Gdx.input.isKeyJustPressed(Input.Keys.UP);
@@ -311,7 +311,7 @@ public abstract class GameMap {
                 currentHead.getCoordinateX(),
                 currentHead.getCoordinateY());
         if (currentTile.isCollidable()) {
-            getManager().setState(new GameOverState(getManager()));
+            getManager().setState(new GameOverState(getManager(), score));
         }
     }
 
@@ -327,7 +327,7 @@ public abstract class GameMap {
             for (int i = 1; i < size; i++) {
                 if (getSnake().getBodyParts().get(i).getCoordinate()
                         .equals(getSnake().getHeadCoord())) {
-                    getManager().setState(new GameOverState(getManager()));
+                    getManager().setState(new GameOverState(getManager(), score));
                 }
             }
         }

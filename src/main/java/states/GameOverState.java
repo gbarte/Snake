@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.physics.bullet.softbody.btSoftBody;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -18,6 +19,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import models.Score;
+import services.leaderboard.LeaderboardService;
+
+import javax.swing.text.html.parser.Entity;
 
 /**
  * State of the game over game.
@@ -30,14 +35,16 @@ public class GameOverState implements IState {
     private Texture backGround;
     private CheckBox checkBox;
     private TextField nicknameField;
+    private Score score;
 
     /**
      * Constructor which creates a new GameOverState within the game.
      *
      * @param gameManager which keeps track of the state of the game.
      */
-    public GameOverState(GameStateManager gameManager) {
+    public GameOverState(GameStateManager gameManager, Score score) {
         this.stateManager = gameManager;
+        this.score = score;
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         skin = new Skin(Gdx.files.internal(
@@ -49,6 +56,62 @@ public class GameOverState implements IState {
         initSaveButton();
         initReturnButton();
         backGround = new Texture("assets/bg.png");
+    }
+
+    public GameStateManager getStateManager() {
+        return stateManager;
+    }
+
+    public void setStateManager(GameStateManager stateManager) {
+        this.stateManager = stateManager;
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public Skin getSkin() {
+        return skin;
+    }
+
+    public void setSkin(Skin skin) {
+        this.skin = skin;
+    }
+
+    public Texture getBackGround() {
+        return backGround;
+    }
+
+    public void setBackGround(Texture backGround) {
+        this.backGround = backGround;
+    }
+
+    public CheckBox getCheckBox() {
+        return checkBox;
+    }
+
+    public void setCheckBox(CheckBox checkBox) {
+        this.checkBox = checkBox;
+    }
+
+    public TextField getNicknameField() {
+        return nicknameField;
+    }
+
+    public void setNicknameField(TextField nicknameField) {
+        this.nicknameField = nicknameField;
+    }
+
+    public Score getScore() {
+        return score;
+    }
+
+    public void setScore(Score score) {
+        this.score = score;
     }
 
     @Override
@@ -97,11 +160,11 @@ public class GameOverState implements IState {
         text.setSize(500, 100);
         text.setPosition(270,380);
         text.setFontScale(2);
-        Label score = new Label("100", labelStyle);
-        score.setSize(600, 120);
-        score.setPosition(350,300);
-        score.setFontScale(2);
-        stage.addActor(score);
+        Label points = new Label(Integer.toString(score.getValue()), labelStyle);
+        points.setSize(600, 120);
+        points.setPosition(350,300);
+        points.setFontScale(2);
+        stage.addActor(points);
         stage.addActor(text);
     }
 
@@ -133,12 +196,12 @@ public class GameOverState implements IState {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (checkBox.isChecked()) {
-                    //TODO nickname
-                    System.out.println("pass username");
+                    LeaderboardService ls = new LeaderboardService();
+                    ls.createEntry(nicknameField.getText(), score.getValue());
                     scoreSavedConfirmation();
                 } else {
-                    //TODO anonymous
-                    System.out.println("pass nickname");
+                    LeaderboardService ls = new LeaderboardService();
+                    ls.createEntry(SnakeGame.username, score.getValue());
                     scoreSavedConfirmation();
                 }
             }

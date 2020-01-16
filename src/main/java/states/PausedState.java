@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import models.Score;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public class PausedState implements IState {
@@ -21,14 +22,16 @@ public class PausedState implements IState {
     private Stage stage;
     private Skin skin;
     private Texture backGround;
+    private Score score;
 
     /**
      * Constructor which creates a new Pause state within the game.
      *
      * @param gameManager which keeps track of the state of the game.
      */
-    public PausedState(GameStateManager gameManager) {
+    public PausedState(GameStateManager gameManager, Score score) {
         this.stateManager = gameManager;
+        this.score = score;
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         skin = new Skin(Gdx.files.internal(
@@ -129,7 +132,7 @@ public class PausedState implements IState {
         quitButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                stateManager.setState(new GameOverState(stateManager));
+                stateManager.setState(new GameOverState(stateManager, score));
             }
 
             @Override
