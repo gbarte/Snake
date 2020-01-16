@@ -37,7 +37,7 @@ public abstract class GameMap {
     private Score score;
     private FoodFactory foodFactory;
     private String bodyTexture;
-    private static double powerUpTimeout = 10;
+    private static double powerUpTimeout = Sizes.POWER_UP_TIMEOUT;
 
     /**
      * Constructor for the GameMap that sets a default snake body texture, an apple and the snake.
@@ -120,6 +120,7 @@ public abstract class GameMap {
         updateSnake(delta);
         checkAppleEaten();
         updateBadApple();
+        checkPowerUpTimeout();
     }
 
     public abstract void dispose(OrthographicCamera camera);
@@ -202,18 +203,12 @@ public abstract class GameMap {
     public void handleInput() {
         boolean quitPressed = Gdx.input.isKeyPressed(Input.Keys.Q);
         if (quitPressed) {    //pushes 'this' state (which is PlayStateTwo here)
-            System.out.println("before restate "+getManager().getStates().toArray().length);
             this.getManager().reState();
-
-            System.out.println("after restate "+getManager().getStates().toArray().length);
             this.getManager().setState(new GameOverState(getManager()));
         }
         boolean pausePressed = Gdx.input.isKeyPressed(Input.Keys.P);
         if (pausePressed) {
-            System.out.println("b4 push " + getManager().getStates().toArray().length);
             this.getManager().pushState(this.getManager().peekState());
-
-            System.out.println("na push " + getManager().getStates().toArray().length);
             this.getManager().setState(new PausedState(getManager()));
         }
         boolean upPressed = Gdx.input.isKeyPressed(Input.Keys.W)
@@ -260,7 +255,7 @@ public abstract class GameMap {
     private void updateSnake(float delta) {
         timer -= delta;
         if (timer <= 0) {
-            timer = Sizes.MOVE_TIME;
+            timer = moveTime;
             snake.moveSnake(snake.getCurrDir());
         }
     }
@@ -325,7 +320,7 @@ public abstract class GameMap {
      * If it does, then the state changes to GAME_OVER.
      */
     public void checkHeadHitsBody() {
-        int minLength = 2;
+        int minLength = 3;
         // head can touch tail only if snake has more than 2 bodyparts
         int size = getSnake().getBodyParts().size();
         if (size > minLength) {
@@ -368,7 +363,7 @@ public abstract class GameMap {
             int currScore = score.getValue();
             score = new Score();
             score.setValue(currScore);
-            powerUpTimeout = 10;
+            powerUpTimeout = Sizes.POWER_UP_TIMEOUT;
         }
     }
 

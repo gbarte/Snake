@@ -12,7 +12,6 @@ import entities.Food;
 import entities.factories.FoodFactory;
 import entities.snake.SnakeBody;
 import models.Score;
-import objects.base.Apple;
 import states.GameStateManager;
 import utils.Sizes;
 import utils.TileType;
@@ -35,9 +34,10 @@ public class TiledGameMap extends GameMap {
 
     /**
      * Constructor that takes in a file name for the map.
+     *
      * @param fileName The file's name in string format.
-     * @param snake The snake that gets passed through.
-     * @param manager The game's state manager that's required to manage the game.
+     * @param snake    The snake that gets passed through.
+     * @param manager  The game's state manager that's required to manage the game.
      */
     @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public TiledGameMap(String fileName, SnakeBody snake, GameStateManager manager) {
@@ -51,15 +51,15 @@ public class TiledGameMap extends GameMap {
     /**
      * Constructor (mainly) for testing purposes.
      *
-     * @param manager     The GameStateManager which sets the different stages in the game.
-     * @param snake       The snake for this map.
-     * @param bodyTexture The texture path for the snake's skin.
-     * @param foodFactory FoodFactory factory used to create food.
-     * @param food        Food object that snake consumes.
-     * @param score       Score object to keep track of your score.
-     * @param tiledMap    Takes in libGdx's TiledMap class which can load in a existing file map.
-     * @param tiledMapRenderer       This is used to render the tiledMap.
-     * @param fileName       The string path of the file's name for the map.
+     * @param manager          The GameStateManager which sets the different stages in the game.
+     * @param snake            The snake for this map.
+     * @param bodyTexture      The texture path for the snake's skin.
+     * @param foodFactory      FoodFactory factory used to create food.
+     * @param food             Food object that snake consumes.
+     * @param score            Score object to keep track of your score.
+     * @param tiledMap         Takes in libGdx's TiledMap class which can load in a existing file map.
+     * @param tiledMapRenderer This is used to render the tiledMap.
+     * @param fileName         The string path of the file's name for the map.
      */
     public TiledGameMap(GameStateManager manager, SnakeBody snake, String bodyTexture,
                         FoodFactory foodFactory, Food food, Score score,
@@ -164,6 +164,10 @@ public class TiledGameMap extends GameMap {
         return snake;
     }
 
+    public void setSnake(SnakeBody snake) {
+        this.snake = snake;
+    }
+
     @Override
     public GameStateManager getManager() {
         return manager;
@@ -171,9 +175,5 @@ public class TiledGameMap extends GameMap {
 
     public void setManager(GameStateManager manager) {
         this.manager = manager;
-    }
-
-    public void setSnake(SnakeBody snake) {
-        this.snake = snake;
     }
 }

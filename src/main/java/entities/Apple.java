@@ -2,7 +2,6 @@ package entities;
 
 import com.badlogic.gdx.graphics.Texture;
 import models.Coordinate;
-import states.PlayState;
 import world.GameMap;
 
 
@@ -43,11 +42,6 @@ public class Apple implements Food {
 
     public void setTexture(Texture texture) {
         this.texture = texture;
-    }
-
-    public void action(PlayState play) {
-        play.getScore().add(Apple.DEFAULT_SCORE);
-        play.getSnake().growSnake();
     }
 
     /**

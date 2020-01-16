@@ -144,7 +144,7 @@ public class MenuState implements State {
             @Override
             public void touchUp(InputEvent event, float x, float y,
                                 int pointer, int button) {
-                stateManager.setState(new PlayStateTwo(stateManager));
+                stateManager.setState(new PlayState(stateManager));
             }
 
             @Override

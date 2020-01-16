@@ -2,7 +2,6 @@ package entities;
 
 import com.badlogic.gdx.graphics.Texture;
 import models.Coordinate;
-import states.PlayState;
 import world.GameMap;
 
 
@@ -11,8 +10,6 @@ import world.GameMap;
  * created on the map.
  */
 public interface Food {
-
-    void action(PlayState play);
 
     void actionTwo(GameMap map);
 

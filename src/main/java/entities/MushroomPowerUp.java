@@ -1,9 +1,7 @@
 package entities;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import models.Coordinate;
-import states.PlayState;
 import world.GameMap;
 
 /**
@@ -45,13 +43,7 @@ public class MushroomPowerUp implements Food {
     }
 
     @Override
-    public void action(PlayState play) {
-        play.setMoveTime(PlayState.DEFAULT_MOVE_TIME / 2);
-        play.getShapeRenderer().setColor(Color.PURPLE);
-    }
-
-    @Override
     public void actionTwo(GameMap map) {
-        //
+        map.setMoveTime(map.DEFAULT_MOVE_TIME);
     }
 }

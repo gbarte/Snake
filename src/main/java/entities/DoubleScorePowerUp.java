@@ -1,10 +1,8 @@
 package entities;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import models.Coordinate;
 import models.DoubleScore;
-import states.PlayState;
 import world.GameMap;
 
 /**
@@ -42,16 +40,6 @@ public class DoubleScorePowerUp implements Food {
 
     public void setTexture(Texture texture) {
         this.texture = texture;
-    }
-
-    @Override
-    public void action(PlayState play) {
-        play.getShapeRenderer().setColor(Color.RED);
-        int currScore = play.getScore().getValue();
-
-        DoubleScore score = new DoubleScore();
-        score.setValue(currScore);
-        play.setScore(score);
     }
 
     @Override

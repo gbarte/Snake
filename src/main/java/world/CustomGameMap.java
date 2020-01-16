@@ -8,7 +8,6 @@ import entities.Food;
 import entities.factories.FoodFactory;
 import entities.snake.SnakeBody;
 import models.Score;
-import objects.base.Apple;
 import states.GameStateManager;
 import utils.Sizes;
 import utils.TileType;
@@ -21,14 +20,14 @@ public class CustomGameMap extends GameMap {
     String id;
     String name;
     int[][][] map;
-
+    GameStateManager manager;
     private TextureRegion[][] tiles;
     private SnakeBody snake;
-    GameStateManager manager;
 
     /**
      * Constructor for the CustomGameMap class with the minimum required setup.
-     * @param snake The snake for this game.
+     *
+     * @param snake   The snake for this game.
      * @param manager The GameStateManager which sets the different stages in the game.
      */
     public CustomGameMap(SnakeBody snake, GameStateManager manager) {
@@ -39,12 +38,13 @@ public class CustomGameMap extends GameMap {
     /**
      * Constructor for the CustomGameMap class which would allow us to pass on specific arguments,
      * in order to set a specific CustomGameMap.
-     * @param id The ID of the map.
-     * @param name The name of the map.
-     * @param tileSet The path for the theme (or set of tiles) we want to render.
+     *
+     * @param id          The ID of the map.
+     * @param name        The name of the map.
+     * @param tileSet     The path for the theme (or set of tiles) we want to render.
      * @param bodytexture The texture path for the snake's body.
-     * @param snake The snake for this game.
-     * @param manager The GameStateManager which sets the different stages in the game.
+     * @param snake       The snake for this game.
+     * @param manager     The GameStateManager which sets the different stages in the game.
      */
     public CustomGameMap(String id, String name, String tileSet, String bodytexture,
                          SnakeBody snake, GameStateManager manager) {
@@ -62,12 +62,13 @@ public class CustomGameMap extends GameMap {
 
     /**
      * This constructor is mainly used for testing purposes.
-     * @param id The ID of the map.
-     * @param name The name of the map.
-     * @param map The map with all the tile type's numbers.
-     * @param tiles Container for the theme of our map's tiles.
-     * @param snake The snake for this game.
-     * @param manager The GameStateManager which sets the different stages in the game.
+     *
+     * @param id          The ID of the map.
+     * @param name        The name of the map.
+     * @param map         The map with all the tile type's numbers.
+     * @param tiles       Container for the theme of our map's tiles.
+     * @param snake       The snake for this game.
+     * @param manager     The GameStateManager which sets the different stages in the game.
      * @param food        Food object that snake consumes.
      * @param score       Score object to keep track of your score.
      * @param foodFactory FoodFactory factory used to create food.
