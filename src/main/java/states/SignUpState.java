@@ -137,7 +137,7 @@ public class SignUpState implements IState {
     /**
      * This dialog box is shown when the password is not safe enough.
      */
-    public void incorrectPassworldDialog() {
+    public void incorrectPasswordDialog() {
         Dialog dialog = new Dialog("Password not valid", cloudSkin, "dialog") {
             public void result(Object obj) {
                 System.out.println("result " + obj);
