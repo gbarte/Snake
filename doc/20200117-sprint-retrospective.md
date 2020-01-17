@@ -7,7 +7,7 @@ _The task number refers to the issue number on GitLab._
 |--------|-----------------------------------------|-----------------------------|--------------------------|------|-----------------------|
 | #52    | Gabriele                                | 5                           | 8                        | yes  |
 | #52    | Mihai                                   | 5                           | 4                        | yes  |
-| #53    | Roman                                   | 3                           | 3                        | yes  | 
+| #53    | Roman                                   | 3                           | 3                        | yes  |  I decided to slightly refactor the code for this assignment to have a more clear architecture (#68). I have some doubts about the diagram as we didn't have a lot of examples for it. |
 | #53    | Roman, Mihai, Gabriele, Mirijam, Sanjay | 0.5                         | 0.5                      | yes  |
 | #78    | Mirijam                                 | 2                           | 2.5                      | yes  | Making a retrospective takes more time than I thought it would. |
 
@@ -32,11 +32,14 @@ Requirements:
 | #67    | Mirijam         | 0.5                         | 0.6                      | yes  |
 
 Requirements:
+- The player shall be able to see the top 10 leaderboard of the scores of all players at the end of each game.
+- The game shall save the score of each game.
+- The player shall be able to make their username be the nickname associated with their score by ticking a checkbox.
 
 ## In Game
 | Task   | Assigned to     | Estimated effort (in hours) | Actual effort (in hours) | Done | Notes                 |
 |--------|-----------------|-----------------------------|--------------------------|------|-----------------------|
-| #37    | Gabriele        | 3                           |                          |      |                                                                                                        
+| #37    | Gabriele        | 3                           | 3                        | yes  |                                                                                                        
 | #55    | Mihai           | 4                           | 5                        | yes  |
 | #56    | Mirijam         | 1                           | 1                        | yes  |
 | #57    | Mihai, Gabriele | 2                           | 2                        | yes  |
@@ -45,40 +48,44 @@ Requirements:
 | #64    | Sanjay          | 2                           | 1                        | yes  | A big bug presented itself while testing. Wasn't too hard to fix eventually. |
 
 Requirements:
-- Implement a power up system in the game.
+- The game shall place one food object on the arena.
+- The player shall be able to pause a game that is currently in progress.
+- The player shall be able to stop a game of Snake that is currently in progress.
+- The game shall end when a snake crosses itself.
+- The game shall increase the speed of the snake gradually during gameplay.
+- The game shall contain the following special interactive elements:
+    - a power-up that slows down the snake.
 - The username is visible when navigating the main menu.
-- Player can pause the game, when pressing the P button.
-- Player can quit the game,when pressing the Q button.
-- When the snake's head touches its body, the GameOverState should be invoked.
 
 ## Snake
 | Task   | Assigned to     | Estimated effort (in hours) | Actual effort (in hours) | Done | Notes                 |
 |--------|-----------------|-----------------------------|--------------------------|------|-----------------------|
-| #58    | Sanjay, Mihai   | 3                           |
-| #59    | Sanjay          | 2                           |
+| #58    | Sanjay, Mihai   | 3                           | 3                        | yes  |                       |
 
 ## Miscellaneous
 | Task   | Assigned to | Estimated effort (in hours) | Actual effort (in hours) | Done | Notes                 |
 |--------|-------------|-----------------------------|--------------------------|------|-----------------------|
 | #40    | Mirijam     | 2                           | 2                        | yes  | I had already finished the gameOverBoard, but after that I got to hear that we needed to give the user the possibility to use a nickname. |
 | #60    | Mirijam     | 1                           | 1                        | yes  |
-| #62    | Roman       | 0.25                        | 0.25                     | yes  | 
+| #62    | Roman       | 0.25                        | 0.25                     | yes  | Minor bug with hiding the password's chars was fixed easily. |
 | #74    | Mirijam     | 0.75                        | 0.25                     | yes  | 
-| #77    | Roman       | 1                           | 1                        | 
+| #77    | Roman       | 1                           | 1                        | yes  | Required minor refactoring to make the system work. |
+|        | Roman       |                             | 1                        | yes  | Trying to replicate an issue TA had with running project; everything works fine from the moment project is freshly cloned or downloaded as ZIP from tag. |
 
 Requirements:
 - When starting a new game, a pop up will show the rules of the game.
 - Hide the characters when typed in the password field.
+
 ## Refactoring
 | Task   | Assigned to     | Estimated effort (in hours) | Actual effort (in hours) | Done | Notes                 |
 |--------|-----------------|-----------------------------|--------------------------|------|-----------------------|
-| #68    | Roman           | 2                           | 2                        | yes  |
+| #68    | Roman           | 2                           | 2                        | yes  | The modules were composed to have a more clear architecture. |
 | #72    | Gabriele, Mihai | 0.5                         | 0.5                      | yes  |
 
 ## Testing
 | Task   | Assigned to | Estimated effort (in hours) | Actual effort (in hours) | Done | Notes                 |
 |--------|-------------|-----------------------------|--------------------------|------|-----------------------|
-| #71    | Mihai       | 2                           |
+| #71    | Mihai       | 2                           | 3                        | no   | Issue left for the next spring, because there were unexpected issues with the tests passing on the pipeline. |
 
 
 Project: Snake
@@ -101,5 +108,12 @@ Reaction: Added a new resource package which has a mockito extension that helps 
  Description: Coverage still not very high.
 Reaction: Focus on testing now that (most) code is done and will likely not get refactored over and over again.
 
-## Adjustments for next sprint
+#### Problem 4 Roman
+Description:  I found Exercise 2 and 3 for Assignment 3 very weird and confusing
+I found Exercise 2 and 3 for Assignment 3 very weird.
+Exercise 2 asked us to describe architecture that we used in the project. However, we did not have the task to implement one. So we ended up with something that worked best for our case, but didn't strictly convey practices of MVC or Server-Client architectures.
+Exercise 3 was completely meaningless as it asked us to implement some features, which is something we had to anyway in the sprint.
 
+
+## Adjustments for next sprint
+- We could improve on making better use of issues by updating the progress on them more frequently.
