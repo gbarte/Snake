@@ -1,10 +1,5 @@
-package objects.base;
+package entities;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import entities.Food;
-import entities.FoodTest;
-import entities.GoldenApple;
 import org.junit.jupiter.api.Test;
 
 

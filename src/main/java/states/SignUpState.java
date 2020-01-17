@@ -98,7 +98,8 @@ public class SignUpState implements IState {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 AuthService authService = new AuthService();
-                RegistrationResponse response = authService.register(usernameField.getText(), passwordField.getText());
+                RegistrationResponse response
+                        = authService.register(usernameField.getText(), passwordField.getText());
 
                 switch (response) {
                     case OCCUPIED_NAME:
@@ -110,6 +111,8 @@ public class SignUpState implements IState {
                     case SUCCESS:
                         stateManager.setState(new LoginState(stateManager));
                         break;
+                    default:
+                        //do nothing
                 }
             }
 

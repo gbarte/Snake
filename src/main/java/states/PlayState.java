@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import entities.snake.SnakeBody;
 import utils.Sizes;
+import world.CustomGameMap;
 import world.GameMap;
 import world.TiledGameMap;
 
@@ -29,7 +30,7 @@ public class PlayState implements IState {
 
         this.snakeBody =
                 new SnakeBody(Sizes.DEFAULT_MINIMUM_MAP_TILES, Sizes.DEFAULT_MINIMUM_MAP_TILES);
-        gameMap = new TiledGameMap(this.snakeBody, gameManager); //CustomGameMap ipv TiledGameMap
+        gameMap = new CustomGameMap(this.snakeBody, gameManager); //CustomGameMap ipv TiledGameMap
     }
 
     /**

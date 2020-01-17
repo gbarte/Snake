@@ -47,7 +47,7 @@ public abstract class GameMap {
         this.foodFactory = new AppleFactory();
         this.food = foodFactory.createFood();
         this.score = new Score();
-        this.bodyTexture = "assets/DefaultBody.png";
+        this.bodyTexture = "assets/snake-texture/redBlueBody.png";
     }
 
     /**

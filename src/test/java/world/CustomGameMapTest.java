@@ -50,7 +50,7 @@ public class CustomGameMapTest extends GameMapTest {
         Food fakeFood = Mockito.mock(Food.class);
         Score score = new Score();
         FoodFactory fakeFactory = Mockito.mock(FoodFactory.class);
-        String bodyTexture = "assets/DefaultBody.png";
+        String bodyTexture = "assets/snake-texture/DefaultBody.png";
 
         this.tiles = textureRegions;
 

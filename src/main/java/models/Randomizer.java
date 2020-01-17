@@ -1,5 +1,6 @@
 package models;
 
+import java.util.List;
 import java.util.Random;
 
 public class Randomizer {
@@ -8,6 +9,7 @@ public class Randomizer {
     private int minY;
     private int maxX;
     private int maxY;
+    private List<Coordinate> all;
 
     /**
      * Constructor to create a randomizer.
@@ -16,11 +18,12 @@ public class Randomizer {
      * @param maxX The largest x-value for where the item can be placed.
      * @param maxY The largest y-value for where the item can be placed.
      */
-    public Randomizer(int minX, int minY, int maxX, int maxY) {
+    public Randomizer(int minX, int minY, int maxX, int maxY, List<Coordinate> all) {
         this.minX = minX;
         this.minY = minY;
         this.maxX = maxX;
         this.maxY = maxY;
+        this.all = all;
     }
 
     /**
@@ -85,5 +88,13 @@ public class Randomizer {
 
     public void setMaxY(int maxY) {
         this.maxY = maxY;
+    }
+
+    public List<Coordinate> getAll() {
+        return all;
+    }
+
+    public void setAll(List<Coordinate> all) {
+        this.all = all;
     }
 }

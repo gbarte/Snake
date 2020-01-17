@@ -29,7 +29,7 @@ public class TiledGameMap extends GameMap {
      * Default constructor that will use a pre-defined map.
      */
     public TiledGameMap(SnakeBody snake, GameStateManager manager) {
-        this("assets/def3.tmx", snake, manager);
+        this("maps/tmx/def3.tmx", snake, manager);
     }
 
     /**

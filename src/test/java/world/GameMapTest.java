@@ -23,7 +23,9 @@ public abstract class GameMapTest {
     public static final int APPLE_DEFAULT_POSITION = 10;
     GameMap gameMap;
     GameStateManager manager;
-    private float timer = Sizes.MOVE_TIME;
+    public static final float DEFAULT_MOVE_TIME = Sizes.MOVE_TIME;
+    private float moveTime = DEFAULT_MOVE_TIME;
+    private float timer = moveTime;
     private SnakeBody snake;
     private Food food;
     private Score score;
@@ -42,7 +44,7 @@ public abstract class GameMapTest {
         this.food = Mockito.mock(Food.class);
         this.score = new Score();
         this.foodFactory = Mockito.mock(FoodFactory.class);
-        this.bodyTexture = "assets/DefaultBody.png";
+        this.bodyTexture = "assets/snake-texture/DefaultBody.png";
         when(food.getCoordinate())
                 .thenReturn(new Coordinate(APPLE_DEFAULT_POSITION, APPLE_DEFAULT_POSITION));
     }
@@ -85,7 +87,7 @@ public abstract class GameMapTest {
         assertNotNull(getFood());
         assertNotNull(getScore());
         assertEquals(getScore().getValue(), 0);
-        assertEquals(getBodyTexture(), "assets/DefaultBody.png");
+        assertEquals(getBodyTexture(), "assets/snake-texture/DefaultBody.png");
         assertEquals(getFood().getCoordinate(), new Coordinate(10, 10));
     }
 
