@@ -6,7 +6,7 @@ _The task number refers to the issue number on GitLab._
 | Task   | Assigned to                             | Estimated effort (in hours) | Actual effort (in hours) | Done | Notes                 |
 |--------|-----------------------------------------|-----------------------------|--------------------------|------|-----------------------|
 | #52    | Gabriele                                | 5                           | 8                        | yes  |
-| #52    | Mihai                                   | 5                           | 4                        | yes  |
+| #52    | Mihai                                   | 5                           | 4                        | yes  | It took quite a lot to understand which design patterns we can use in our game. |
 | #53    | Roman                                   | 3                           | 3                        | yes  |  I decided to slightly refactor the code for this assignment to have a more clear architecture (#68). I have some doubts about the diagram as we didn't have a lot of examples for it. |
 | #53    | Roman, Mihai, Gabriele, Mirijam, Sanjay | 0.5                         | 0.5                      | yes  |
 | #78    | Mirijam                                 | 2                           | 2.5                      | yes  | Making a retrospective takes more time than I thought it would. |
@@ -40,9 +40,9 @@ Requirements:
 | Task   | Assigned to     | Estimated effort (in hours) | Actual effort (in hours) | Done | Notes                 |
 |--------|-----------------|-----------------------------|--------------------------|------|-----------------------|
 | #37    | Gabriele        | 3                           | 3                        | yes  |                                                                                                        
-| #55    | Mihai           | 4                           | 5                        | yes  |
+| #55    | Mihai           | 4                           | 5                        | yes  | This one was quite hard to implement since it required understanding of the factory pattern and also think how it would fit in our game. This is why it took longer than anticipated.|
 | #56    | Mirijam         | 1                           | 1                        | yes  |
-| #57    | Mihai, Gabriele | 2                           | 2                        | yes  |
+| #57    | Mihai, Gabriele | 2                           | 2                        | yes  | This was done at the same time issue #55 was completed. |
 | #61    | Mirijam         | 0.5                         | 0.5                      | yes  |
 | #63    | Sanjay          | 2                           | 2.7                      | no   | This couldn't be done until we refactored all the food and powerup elements. Now we have to pass on the information of everything on the map to accurately place food. | 
 | #64    | Sanjay          | 2                           | 1                        | yes  | A big bug presented itself while testing. Wasn't too hard to fix eventually. |
@@ -61,6 +61,11 @@ Requirements:
 | Task   | Assigned to     | Estimated effort (in hours) | Actual effort (in hours) | Done | Notes                 |
 |--------|-----------------|-----------------------------|--------------------------|------|-----------------------|
 | #58    | Sanjay, Mihai   | 3                           | 3                        | yes  |                       |
+| #59    | Sanjay, Mihai   | 2                           |                          | no   | This issue was left for the next sprint because there were too many more important tasks to do this sprint. |
+
+Requirements:
+- Implement the created texture within the game.
+- Create a texture (or multiple) for the snake.
 
 ## Miscellaneous
 | Task   | Assigned to | Estimated effort (in hours) | Actual effort (in hours) | Done | Notes                 |
@@ -80,7 +85,7 @@ Requirements:
 | Task   | Assigned to     | Estimated effort (in hours) | Actual effort (in hours) | Done | Notes                 |
 |--------|-----------------|-----------------------------|--------------------------|------|-----------------------|
 | #68    | Roman           | 2                           | 2                        | yes  | The modules were composed to have a more clear architecture. |
-| #72    | Gabriele, Mihai | 0.5                         | 0.5                      | yes  |
+| #72    | Gabriele, Mihai | 0.5                         | 0.5                      | yes  | It was quite easy to refactor our state class to match the State design pattern (necessary for assignment 3) since we already had all the necessary game logic. |
 
 ## Testing
 | Task   | Assigned to | Estimated effort (in hours) | Actual effort (in hours) | Done | Notes                 |
