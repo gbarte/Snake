@@ -2,8 +2,15 @@ package world;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import entities.Food;
 import entities.factories.FoodFactory;
 import entities.snake.SnakeBody;
@@ -89,6 +96,20 @@ public abstract class GameMapTest {
         assertEquals(getScore().getValue(), 0);
         assertEquals(getBodyTexture(), "assets/snake-texture/DefaultBody.png");
         assertEquals(getFood().getCoordinate(), new Coordinate(10, 10));
+    }
+
+    @Test
+    void renderTest() {
+//        OrthographicCamera camera = Mockito.mock(OrthographicCamera.class);
+//        SpriteBatch batch = Mockito.mock(SpriteBatch.class);
+//        TextureRegion textureRegion = Mockito.mock(TextureRegion.class);
+//        TextureRegion[][] arrayRegion = new TextureRegion[1][2];
+//
+//        arrayRegion[0][0] = textureRegion;
+//        arrayRegion[0][1] = textureRegion;
+//        getGameMap().render(camera, batch, getSnake(), arrayRegion);
+//        verify(camera, never());
+//        verify(batch).draw(any(Texture.class), any(), any());
     }
 
     @Test

@@ -88,15 +88,28 @@ public abstract class GameMap {
      * Render entities here after subclass renders map.
      * @param camera Camera on which to render.
      * @param batch Batch to use.
-     * @param snake Snake that gets passed on, can be null.
+     * @param snake Snake that gets passed on.
      */
     public void render(OrthographicCamera camera, SpriteBatch batch, SnakeBody snake) {
         //render entities here
 
-        this.snake = snake;
         Texture def = new Texture(this.bodyTexture);
         TextureRegion[][] textureRegions =
                 TextureRegion.split(def, Sizes.TILE_PIXELS, Sizes.TILE_PIXELS);
+        this.render(camera, batch, snake, textureRegions);
+
+    }
+
+    /**
+     * This method was mainly made for testing but also renders the entities here.
+     * @param camera Camera on which to render.
+     * @param batch Batch to use.
+     * @param snake Snake that gets passed on.
+     * @param textureRegions The textures that the snake uses.
+     */
+    public void render(OrthographicCamera camera, SpriteBatch batch, SnakeBody snake,
+                       TextureRegion[][] textureRegions) {
+        this.snake = snake;
 
         batch.draw(food.getTexture(),
                 food.getCoordinate().getCoordinateX() * Sizes.TILE_PIXELS,
@@ -105,7 +118,6 @@ public abstract class GameMap {
         renderScore(batch);
 
         snake.renderSnake(batch, textureRegions);
-
     }
 
     /**

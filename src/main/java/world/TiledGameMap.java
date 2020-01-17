@@ -39,11 +39,26 @@ public class TiledGameMap extends GameMap {
      * @param snake    The snake that gets passed through.
      * @param manager  The game's state manager that's required to manage the game.
      */
-    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public TiledGameMap(String fileName, SnakeBody snake, GameStateManager manager) {
         this.fileName = fileName;
         this.tiledMap = new TmxMapLoader().load(fileName);
         this.tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+        this.snake = snake;
+        this.manager = manager;
+    }
+
+    /**
+     * Constructor used to pass on a texture path for the snake's body.
+     *
+     * @param bodyTexture The texture path for the snake's body.
+     */
+    public TiledGameMap(String bodyTexture, TiledMap tiledMap,
+                        OrthogonalTiledMapRenderer tiledMapRenderer,
+                        String fileName, SnakeBody snake, GameStateManager manager) {
+        super(bodyTexture);
+        this.tiledMap = tiledMap;
+        this.tiledMapRenderer = tiledMapRenderer;
+        this.fileName = fileName;
         this.snake = snake;
         this.manager = manager;
     }

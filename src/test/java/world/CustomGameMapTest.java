@@ -2,6 +2,13 @@ package world;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyFloat;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -9,6 +16,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import entities.Food;
 import entities.factories.FoodFactory;
 import entities.snake.SnakeBody;
+import java.util.Arrays;
+import java.util.stream.IntStream;
 import models.Score;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,9 +53,16 @@ public class CustomGameMapTest extends GameMapTest {
         this.name = "defaultName";
         this.map = CustomGameMapLoader.generateDefaultMap(this.id, this.name).map;
 
-        TextureRegion[][] textureRegions = new TextureRegion[1][2];
-        textureRegions[0][0] = Mockito.mock(TextureRegion.class, "head");
-        textureRegions[0][1] = Mockito.mock(TextureRegion.class, "body");
+        TextureRegion fake = Mockito.mock(TextureRegion.class);
+        TextureRegion[][] textureRegions = new TextureRegion[
+                Sizes.DEFAULT_MINIMUM_MAP_TILES][Sizes.DEFAULT_MINIMUM_MAP_TILES];
+        //fill up the array with fake mocks
+        for (int i = 0; i < textureRegions.length; i++) {
+            for (int j = 0; j < textureRegions[0].length; j++) {
+                textureRegions[i][j] = fake;
+            }
+        }
+
         Food fakeFood = Mockito.mock(Food.class);
         Score score = new Score();
         FoodFactory fakeFactory = Mockito.mock(FoodFactory.class);
@@ -150,7 +166,7 @@ public class CustomGameMapTest extends GameMapTest {
 
     })
     void getTileTypeByLocationTest(int layer, float x, float y, int id) {
-        TileType tileType = customGameMap.getTileTypeByLocation(layer, x, y);
+        TileType tileType = getGameMap().getTileTypeByLocation(layer, x, y);
         TileType idTile = TileType.getTileTypeById(id);
         assertEquals(idTile, tileType);
         if (tileType != null) {

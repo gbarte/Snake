@@ -60,6 +60,25 @@ public class CustomGameMap extends GameMap {
     }
 
     /**
+     * Constructor that takes in exactly everything needed for the custom game map.
+     * @param mapData This contains the data for the CustomGameMap such as id, name & map itself.
+     * @param manager The GameStateManager which sets the different stages in the game.
+     * @param tiles Container for the theme of our map's tiles.
+     * @param snake The snake for this game.
+     * @param bodyTexture The texture path for the snake's skin.
+     */
+    public CustomGameMap(CustomGameMapData mapData, GameStateManager manager,
+                         TextureRegion[][] tiles, SnakeBody snake, String bodyTexture) {
+        super(bodyTexture);
+        this.id = mapData.id;
+        this.name = mapData.name;
+        this.map = mapData.map;
+        this.manager = manager;
+        this.tiles = tiles;
+        this.snake = snake;
+    }
+
+    /**
      * This constructor is mainly used for testing purposes.
      *
      * @param id          The ID of the map.
