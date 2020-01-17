@@ -38,7 +38,7 @@ public class PlayState implements IState {
 
         this.snakeBody =
                 new SnakeBody(Sizes.DEFAULT_MINIMUM_MAP_TILES, Sizes.DEFAULT_MINIMUM_MAP_TILES);
-        gameMap = new CustomGameMap(this.snakeBody, gameManager); //CustomGameMap ipv TiledGameMap
+        //gameMap = new CustomGameMap(this.snakeBody, gameManager); //CustomGameMap ipv TiledGameMap
 
         //these are the 'customizable' things path you can pass in (for CustomGameMap)
         //String id, String name, String tileSet, String bodytexture
@@ -48,12 +48,13 @@ public class PlayState implements IState {
                 = TextureRegion.split(texture, TileType.TILE_SIZE, TileType.TILE_SIZE);
         String bodyTexture = "assets/snake-texture/redBlueBody.png";
 
-        //this.gameMap = new CustomGameMap(mapData, gameManager, textureRegions, this.snakeBody, bodyTexture);
+        this.gameMap = new CustomGameMap(mapData, gameManager, textureRegions,
+                this.snakeBody, bodyTexture);
 
 
         //these are the 'customizable' things path you can pass in (for TiledGameMap)
         //String filename, String bodyTexture
-        /*
+
         String fileName = "maps/tmx/def3.tmx";
         TiledMap tiledMap = new TmxMapLoader().load(fileName);
         OrthogonalTiledMapRenderer tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
@@ -61,7 +62,6 @@ public class PlayState implements IState {
         this.gameMap = new TiledGameMap(bodyTexture, tiledMap, tiledMapRenderer, fileName,
                 snakeBody, gameManager);
 
-         */
     }
 
     /**
