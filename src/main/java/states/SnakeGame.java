@@ -10,8 +10,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  * The initialization game class.
  */
 public class SnakeGame extends ApplicationAdapter {
-    public static final int WIDTH = 800;
-    public static final int HEIGHT = 800;
 
     public static final String TITLE = "Lil' Snake";
     public static String username;

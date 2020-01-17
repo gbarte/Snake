@@ -35,9 +35,10 @@ public class PlayState implements IState {
 
     /**
      * This constructor is for testability purposes.
+     *
      * @param gameStateManager The gameManager which keeps track of the state of the game.
-     * @param snake The snake that'll be displayed on the map.
-     * @param gameMap The map that gets instantiated.
+     * @param snake            The snake that'll be displayed on the map.
+     * @param gameMap          The map that gets instantiated.
      */
     public PlayState(GameStateManager gameStateManager, SnakeBody snake,
                      GameMap gameMap) {

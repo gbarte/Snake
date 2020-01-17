@@ -156,11 +156,13 @@ public class LeaderboardState implements IState {
     public void render(SpriteBatch batch) {
         Gdx.gl.glClearColor((float) 0.61, (float) 0.77, (float) 0.65, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.begin();
         stage.act();
         stage.getBatch().begin();
         stage.getBatch().draw(backGround, 0, 0, Sizes.MIN_WIDTH_WINDOW, Sizes.MIN_HEIGHT_WINDOW);
         stage.getBatch().end();
         stage.draw();
+        batch.end();
     }
 
     @Override

@@ -25,10 +25,9 @@ import utils.Direction;
 import utils.Sizes;
 import utils.TileType;
 
-@SuppressWarnings("PMD")
 public abstract class GameMap {
 
-    GameStateManager manager;
+    private GameStateManager manager;
     public static final float DEFAULT_MOVE_TIME = Sizes.MOVE_TIME;
     private float moveTime = DEFAULT_MOVE_TIME;
     private float timer = moveTime;
@@ -48,7 +47,7 @@ public abstract class GameMap {
         this.foodFactory = new AppleFactory();
         this.food = foodFactory.createFood();
         this.score = new Score();
-        this.bodyTexture = "assets/DefaultBody.png";
+        this.bodyTexture = "assets/snake-texture/redBlueBody.png";
     }
 
     /**
@@ -155,14 +154,30 @@ public abstract class GameMap {
 
     public abstract SnakeBody getSnake();
 
+    public void setSnake(SnakeBody snake) {
+        this.snake = snake;
+    }
+
     public abstract GameStateManager getManager();
+
+    public void setManager(GameStateManager manager) {
+        this.manager = manager;
+    }
 
     public Food getFood() {
         return food;
     }
 
+    public void setFood(Food food) {
+        this.food = food;
+    }
+
     public FoodFactory getFoodFactory() {
         return foodFactory;
+    }
+
+    public void setFoodFactory(FoodFactory foodFactory) {
+        this.foodFactory = foodFactory;
     }
 
     public Score getScore() {
@@ -171,6 +186,10 @@ public abstract class GameMap {
 
     public void setScore(Score score) {
         this.score = score;
+    }
+
+    public float getMoveTime() {
+        return moveTime;
     }
 
     public void setMoveTime(float moveTime) {
@@ -185,16 +204,20 @@ public abstract class GameMap {
         this.timer = timer;
     }
 
-    public void setSnake(SnakeBody snake) {
-        this.snake = snake;
-    }
-
     public static double getPowerUpTimeout() {
         return powerUpTimeout;
     }
 
     public static void setPowerUpTimeout(double powerUpTimeout) {
         GameMap.powerUpTimeout = powerUpTimeout;
+    }
+
+    public String getBodyTexture() {
+        return bodyTexture;
+    }
+
+    public void setBodyTexture(String bodyTexture) {
+        this.bodyTexture = bodyTexture;
     }
 
     /**
@@ -239,6 +262,16 @@ public abstract class GameMap {
      */
     public void renderScore(SpriteBatch batch) {
         BitmapFont bitmapFont = new BitmapFont();
+        this.renderScore(batch, bitmapFont);
+    }
+
+    /**
+     * Mainly for testability purposes.
+     * Renders the current score on the screen.
+     * @param batch The batch used for drawing elements.
+     * @param bitmapFont This is used to render the value of the score.
+     */
+    public void renderScore(SpriteBatch batch, BitmapFont bitmapFont) {
         bitmapFont.setColor(Color.RED);
         bitmapFont.draw(batch, String.valueOf(score.getValue()),
                 Sizes.DEFAULT_AMOUNT_BORDER_TILES
@@ -303,15 +336,28 @@ public abstract class GameMap {
 
     /**
      * Checks whether the snake (head) hits the border, // TODO remove comments!!!!!!!
-     * if it hits then the state changes to GAME_OVER.
+     * if it hits then the state changes to GameOverState.
      */
     public void checkOutOfMap() {
         Coordinate currentHead = getSnake().getHeadCoord();
+        GameStateManager manager = getManager();
+        Score score = getScore();
+        this.checkOutOfMap(currentHead, manager, score);
+    }
+
+    /**
+     * Checks whether the snake (head) hits the border,
+     * if it hits then the state changes to GameOverState.
+     * @param currentHead The coordinate of the head.
+     * @param manager The GameStateManager needed to set another state
+     * @param score Current score of your game.
+     */
+    public void checkOutOfMap(Coordinate currentHead, GameStateManager manager, Score score) {
         TileType currentTile = getTileTypeByCoordinate(getLayers(),
                 currentHead.getCoordinateX(),
                 currentHead.getCoordinateY());
         if (currentTile.isCollidable()) {
-            getManager().setState(new GameOverState(getManager(), score));
+            manager.setState(new GameOverState(manager, score));
         }
     }
 

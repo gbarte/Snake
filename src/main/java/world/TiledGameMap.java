@@ -18,18 +18,18 @@ import utils.TileType;
 
 public class TiledGameMap extends GameMap {
 
-    TiledMap tiledMap;
-    OrthogonalTiledMapRenderer tiledMapRenderer;
-    String fileName;
+    private TiledMap tiledMap;
+    private OrthogonalTiledMapRenderer tiledMapRenderer;
+    private String fileName;
 
-    SnakeBody snake;
-    GameStateManager manager;
+    private SnakeBody snake;
+    private GameStateManager manager;
 
     /**
      * Default constructor that will use a pre-defined map.
      */
     public TiledGameMap(SnakeBody snake, GameStateManager manager) {
-        this("assets/def3.tmx", snake, manager);
+        this("maps/tmx/def3.tmx", snake, manager);
     }
 
     /**

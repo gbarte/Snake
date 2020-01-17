@@ -14,13 +14,12 @@ import utils.TileType;
 import world.customgamemap.CustomGameMapData;
 import world.customgamemap.CustomGameMapLoader;
 
-@SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
 public class CustomGameMap extends GameMap {
 
-    String id;
-    String name;
-    int[][][] map;
-    GameStateManager manager;
+    private String id;
+    private String name;
+    private int[][][] map;
+    private GameStateManager manager;
     private TextureRegion[][] tiles;
     private SnakeBody snake;
 
@@ -31,8 +30,8 @@ public class CustomGameMap extends GameMap {
      * @param manager The GameStateManager which sets the different stages in the game.
      */
     public CustomGameMap(SnakeBody snake, GameStateManager manager) {
-        this("defaultID", "defaultName", "assets/setOfFive.png", "assets/DefaultBody.png",
-                snake, manager);
+        this("defaultID", "defaultName", "assets/tile-set/setOfFive.png",
+                "assets/snake-texture/redBlueBody.png", snake, manager);
     }
 
     /**

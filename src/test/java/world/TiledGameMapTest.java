@@ -30,15 +30,15 @@ class TiledGameMapTest extends GameMapTest {
     void init() {
         this.tiledMap = Mockito.mock(TiledMap.class);
         this.tiledMapRenderer = Mockito.mock(OrthogonalTiledMapRenderer.class);
-        this.fileName = "assets/def3.tmx";
+        this.fileName = "maps/tmx/11By11.tmx";
         this.snake
-                = new SnakeBody(Sizes.DEFAULT_MINIMUM_MAP_TILES, Sizes.DEFAULT_MINIMUM_MAP_TILES);
+                = new SnakeBody(11, 11);
         this.manager = new GameStateManager();
 
         Food fakeFood = Mockito.mock(Food.class);
         Score score = new Score();
         FoodFactory fakeFactory = Mockito.mock(FoodFactory.class);
-        String bodyTexture = "assets/DefaultBody.png";
+        String bodyTexture = "assets/snake-texture/DefaultBody.png";
 
         this.tiledGameMap = new TiledGameMap(this.manager,
                 this.snake,

@@ -1,6 +1,8 @@
 package models;
 
+import java.util.List;
 import java.util.Random;
+import utils.Sizes;
 
 public class Randomizer {
 
@@ -8,6 +10,7 @@ public class Randomizer {
     private int minY;
     private int maxX;
     private int maxY;
+    private List<Coordinate> all;
 
     /**
      * Constructor to create a randomizer.
@@ -16,11 +19,12 @@ public class Randomizer {
      * @param maxX The largest x-value for where the item can be placed.
      * @param maxY The largest y-value for where the item can be placed.
      */
-    public Randomizer(int minX, int minY, int maxX, int maxY) {
+    public Randomizer(int minX, int minY, int maxX, int maxY, List<Coordinate> all) {
         this.minX = minX;
         this.minY = minY;
         this.maxX = maxX;
         this.maxY = maxY;
+        this.all = all;
     }
 
     /**
@@ -35,6 +39,17 @@ public class Randomizer {
         int y = r.nextInt(getMaxY() - getMinY()) + getMinY();
         toReturn.setCoordinateX(x);
         toReturn.setCoordinateY(y);
+
+        int maxIter = getMaxX() / 3;
+        while (all.contains(toReturn) && maxIter > 0) {
+            toReturn.setCoordinateX(r.nextInt(getMaxX() - getMinY()) + getMinX());
+            toReturn.setCoordinateY(r.nextInt(getMaxY() - getMinY()) + getMinY());
+            maxIter--;
+        }
+
+        //if after all that the toReturn coordinate still lands on a collidable object
+        //then in the other class (that called this)
+        //replace the tile with the collidable object with food object.
 
         /*
         for (int i = 0; i < 20; i++) {
@@ -85,5 +100,13 @@ public class Randomizer {
 
     public void setMaxY(int maxY) {
         this.maxY = maxY;
+    }
+
+    public List<Coordinate> getAll() {
+        return all;
+    }
+
+    public void setAll(List<Coordinate> all) {
+        this.all = all;
     }
 }
