@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.sql.SQLException;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,9 +11,8 @@ import org.junit.jupiter.api.Test;
 
 public class UsersTableHandlerTest {
 
-    private transient UsersTableHandler tableHandler;
-
     private static String TEST_USERNAME = "username";
+    private transient UsersTableHandler tableHandler;
 
     private void dropCustomTable() {
         try {

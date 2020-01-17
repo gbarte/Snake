@@ -10,10 +10,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  * The initialization game class.
  */
 public class SnakeGame extends ApplicationAdapter {
-    public static final int WIDTH = 800;
-    public static final int HEIGHT = 800;
 
     public static final String TITLE = "Lil' Snake";
+    public static String username;
     private GameStateManager gameManager;
     private SpriteBatch batch;
 
@@ -46,6 +45,14 @@ public class SnakeGame extends ApplicationAdapter {
 
     public void setBatch(SpriteBatch batch) {
         this.batch = batch;
+    }
+
+    public static String getUsername() {
+        return username;
+    }
+
+    public static void setUsername(String username) {
+        SnakeGame.username = username;
     }
 }
 

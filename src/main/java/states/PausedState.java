@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -14,25 +15,29 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import models.Score;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public class PausedState implements IState {
+
     private GameStateManager stateManager;
     private Stage stage;
     private Skin skin;
     private Texture backGround;
+    private Score score;
 
     /**
      * Constructor which creates a new Pause state within the game.
      *
      * @param gameManager which keeps track of the state of the game.
      */
-    public PausedState(GameStateManager gameManager) {
+    public PausedState(GameStateManager gameManager, Score score) {
         this.stateManager = gameManager;
+        this.score = score;
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
-        skin = new Skin(Gdx.files.internal(
-                "assets/quantum-horizon/skin/quantum-horizon-ui.json"));
+        skin = new Skin(
+                Gdx.files.internal("assets/quantum-horizon/skin/quantum-horizon-ui.json"));
         initTitle();
         initResumeButton();
         initRulesButton();
@@ -43,23 +48,36 @@ public class PausedState implements IState {
 
     @Override
     public void handleInput() {
-
+        /*
+        stage.addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode)
+            {
+                if(keycode!=44) {
+                    return false;
+                };
+                return true;
+            }
+        });
+        */
     }
 
     @Override
     public void update(float dt) {
-
+        //handleInput();
     }
 
     @Override
     public void render(SpriteBatch batch) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.begin();
         stage.act();
         stage.getBatch().begin();
         stage.getBatch().draw(backGround, 0, 0, 800, 800);
         stage.getBatch().end();
         stage.draw();
+        batch.end();
     }
 
     /**
@@ -127,7 +145,7 @@ public class PausedState implements IState {
         quitButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                stateManager.setState(new GameOverState(stateManager));
+                stateManager.setState(new GameOverState(stateManager, score));
             }
 
             @Override
@@ -163,5 +181,6 @@ public class PausedState implements IState {
     public void dispose() {
         backGround.dispose();
     }
+
 }
 

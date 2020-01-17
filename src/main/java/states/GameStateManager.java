@@ -43,6 +43,21 @@ public class GameStateManager {
     }
 
     /**
+     * Peeks for the current state.
+     * @return state that's on top.
+     */
+    public IState peekState() {
+        return states.peek();
+    }
+
+    /**
+     * Pushes the current state on top again by peeking for it.
+     */
+    public void reState() {
+        states.push(states.peek());
+    }
+
+    /**
      * Updates the state every dt.
      * @param dt updates every dt
      */

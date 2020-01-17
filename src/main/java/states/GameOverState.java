@@ -18,6 +18,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import models.Score;
+import org.lwjgl.system.CallbackI;
+import services.leaderboard.LeaderboardService;
 
 /**
  * State of the game over game.
@@ -30,14 +33,16 @@ public class GameOverState implements IState {
     private Texture backGround;
     private CheckBox checkBox;
     private TextField nicknameField;
+    private Score score;
 
     /**
      * Constructor which creates a new GameOverState within the game.
      *
      * @param gameManager which keeps track of the state of the game.
      */
-    public GameOverState(GameStateManager gameManager) {
+    public GameOverState(GameStateManager gameManager, Score score) {
         this.stateManager = gameManager;
+        this.score = score;
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         skin = new Skin(Gdx.files.internal(
@@ -49,6 +54,62 @@ public class GameOverState implements IState {
         initSaveButton();
         initReturnButton();
         backGround = new Texture("assets/bg.png");
+    }
+
+    public GameStateManager getStateManager() {
+        return stateManager;
+    }
+
+    public void setStateManager(GameStateManager stateManager) {
+        this.stateManager = stateManager;
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public Skin getSkin() {
+        return skin;
+    }
+
+    public void setSkin(Skin skin) {
+        this.skin = skin;
+    }
+
+    public Texture getBackGround() {
+        return backGround;
+    }
+
+    public void setBackGround(Texture backGround) {
+        this.backGround = backGround;
+    }
+
+    public CheckBox getCheckBox() {
+        return checkBox;
+    }
+
+    public void setCheckBox(CheckBox checkBox) {
+        this.checkBox = checkBox;
+    }
+
+    public TextField getNicknameField() {
+        return nicknameField;
+    }
+
+    public void setNicknameField(TextField nicknameField) {
+        this.nicknameField = nicknameField;
+    }
+
+    public Score getScore() {
+        return score;
+    }
+
+    public void setScore(Score score) {
+        this.score = score;
     }
 
     @Override
@@ -65,11 +126,13 @@ public class GameOverState implements IState {
     public void render(SpriteBatch batch) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.begin();
         stage.act();
         stage.getBatch().begin();
         stage.getBatch().draw(backGround, 0, 0, 800, 800);
         stage.getBatch().end();
         stage.draw();
+        batch.end();
     }
 
     /**
@@ -97,11 +160,11 @@ public class GameOverState implements IState {
         text.setSize(500, 100);
         text.setPosition(270,380);
         text.setFontScale(2);
-        Label score = new Label("100", labelStyle);
-        score.setSize(600, 120);
-        score.setPosition(350,300);
-        score.setFontScale(2);
-        stage.addActor(score);
+        Label points = new Label(Integer.toString(score.getValue()), labelStyle);
+        points.setSize(600, 120);
+        points.setPosition(350,300);
+        points.setFontScale(2);
+        stage.addActor(points);
         stage.addActor(text);
     }
 
@@ -133,19 +196,18 @@ public class GameOverState implements IState {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (checkBox.isChecked()) {
-                    //TODO nickname
-                    System.out.println("pass username");
+                    LeaderboardService ls = new LeaderboardService();
+                    ls.createEntry(nicknameField.getText(), score.getValue());
                     scoreSavedConfirmation();
                 } else {
-                    //TODO anonymous
-                    System.out.println("pass nickname");
+                    LeaderboardService ls = new LeaderboardService();
+                    ls.createEntry(SnakeGame.username, score.getValue());
                     scoreSavedConfirmation();
                 }
             }
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                System.out.println("chose nickname");
                 return true;
             }
         });
@@ -160,8 +222,11 @@ public class GameOverState implements IState {
         checkBox.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                Gdx.graphics.setContinuousRendering(checkBox.isChecked());
-                nicknameField.setDisabled(true);
+                if (checkBox.isChecked()) {
+                    nicknameField.setDisabled(true);
+                } else {
+                    nicknameField.setDisabled(false);
+                }
             }
         });
         checkBox.setPosition(300, 212);
