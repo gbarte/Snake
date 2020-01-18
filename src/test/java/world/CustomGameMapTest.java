@@ -2,27 +2,22 @@ package world;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.anyFloat;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.CALLS_REAL_METHODS;
 import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import entities.Food;
 import entities.factories.FoodFactory;
 import entities.snake.SnakeBody;
-import java.util.Arrays;
-import java.util.stream.IntStream;
-import models.Coordinate;
 import models.Score;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -141,6 +136,33 @@ public class CustomGameMapTest extends GameMapTest {
 
     }
 
+    @Test
+    void badWeatherRenderTest() {
+        //on (5,5)
+
+        int[][][] temp
+                = new int[4][Sizes.DEFAULT_MINIMUM_MAP_TILES][Sizes.DEFAULT_MINIMUM_MAP_TILES];
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 50; j++) {
+                for (int k = 0; k < 50; k++) {
+                    temp[i][j][k] = this.map[i][j][k];
+                }
+            }
+        }
+        this.map = temp;
+        getGameMap().setMap(this.map);
+        this.map[3][44][5] = -2;
+        OrthographicCamera camera = Mockito.mock(OrthographicCamera.class);
+        SpriteBatch batch = Mockito.mock(SpriteBatch.class);
+
+        CustomGameMap spied = spy(getGameMap());
+
+        spied.renderMap(camera, batch);
+        verify(batch).setProjectionMatrix(camera.combined);
+        verify(batch).begin();
+        verify(batch, never()).draw(tiles[0][anyInt()], anyFloat(), anyFloat());
+    }
+
     @ParameterizedTest
     @CsvSource({
             //testLayering
@@ -188,6 +210,8 @@ public class CustomGameMapTest extends GameMapTest {
             assertEquals(idTile.getDamage(), tileType.getDamage());
             assertEquals(idTile.getId(), tileType.getId());
             assertEquals(idTile.isCollidable(), idTile.isCollidable());
+        } else {
+            assertNull(tileType);
         }
     }
 

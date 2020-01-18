@@ -2,15 +2,10 @@ package world;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import entities.Food;
 import entities.factories.FoodFactory;
 import entities.snake.SnakeBody;
@@ -28,9 +23,9 @@ import utils.Sizes;
 public abstract class GameMapTest {
 
     public static final int APPLE_DEFAULT_POSITION = 10;
+    public static final float DEFAULT_MOVE_TIME = Sizes.MOVE_TIME;
     GameMap gameMap;
     GameStateManager manager;
-    public static final float DEFAULT_MOVE_TIME = Sizes.MOVE_TIME;
     private float moveTime = DEFAULT_MOVE_TIME;
     private float timer = moveTime;
     private SnakeBody snake;
@@ -108,4 +103,7 @@ public abstract class GameMapTest {
 
     @Test
     abstract void updateTest();
+
+    @Test
+    abstract void getTileTypeByLocationTest(int layer, float x, float y, int id);
 }
