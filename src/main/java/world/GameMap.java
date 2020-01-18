@@ -36,6 +36,7 @@ public abstract class GameMap {
     private Score score;
     private FoodFactory foodFactory;
     private String bodyTexture;
+    private TextureRegion[][] bodyTextureRegion;
     private static double powerUpTimeout = Sizes.POWER_UP_TIMEOUT;
 
     /**
@@ -48,6 +49,8 @@ public abstract class GameMap {
         this.food = foodFactory.createFood();
         this.score = new Score();
         this.bodyTexture = "assets/snake-texture/redBlueBody.png";
+        this.bodyTextureRegion = TextureRegion
+                .split(new Texture(this.bodyTexture), Sizes.TILE_PIXELS, Sizes.TILE_PIXELS);
     }
 
     /**
@@ -61,6 +64,8 @@ public abstract class GameMap {
         this.food = foodFactory.createFood();
         this.score = new Score();
         this.bodyTexture = bodyTexture;
+        this.bodyTextureRegion = TextureRegion
+                .split(new Texture(bodyTexture), Sizes.TILE_PIXELS, Sizes.TILE_PIXELS);
     }
 
     /**
@@ -74,7 +79,8 @@ public abstract class GameMap {
      * @param bodyTexture The texture path for the snake's skin.
      */
     public GameMap(float timer, GameStateManager manager, SnakeBody snake,
-                   FoodFactory foodFactory, Food food, Score score, String bodyTexture) {
+                   FoodFactory foodFactory, Food food, Score score,
+                   String bodyTexture, TextureRegion[][] bodyTextureRegion) {
         this.timer = timer;
         this.manager = manager;
         this.snake = snake;
@@ -82,6 +88,7 @@ public abstract class GameMap {
         this.food = food;
         this.score = score;
         this.bodyTexture = bodyTexture;
+        this.bodyTextureRegion = bodyTextureRegion;
     }
 
     /**
@@ -93,31 +100,17 @@ public abstract class GameMap {
     public void render(OrthographicCamera camera, SpriteBatch batch, SnakeBody snake) {
         //render entities here
 
-        Texture def = new Texture(this.bodyTexture);
-        TextureRegion[][] textureRegions =
-                TextureRegion.split(def, Sizes.TILE_PIXELS, Sizes.TILE_PIXELS);
-        this.render(camera, batch, snake, textureRegions);
-
-    }
-
-    /**
-     * This method was mainly made for testing but also renders the entities here.
-     * @param camera Camera on which to render.
-     * @param batch Batch to use.
-     * @param snake Snake that gets passed on.
-     * @param textureRegions The textures that the snake uses.
-     */
-    public void render(OrthographicCamera camera, SpriteBatch batch, SnakeBody snake,
-                       TextureRegion[][] textureRegions) {
         this.snake = snake;
+        batch.setProjectionMatrix(camera.combined);
 
-        batch.draw(food.getTexture(),
-                food.getCoordinate().getCoordinateX() * Sizes.TILE_PIXELS,
-                food.getCoordinate().getCoordinateY() * Sizes.TILE_PIXELS);
+        batch.draw(getFood().getTexture(),
+                getFood().getCoordinate().getCoordinateX() * Sizes.TILE_PIXELS,
+                getFood().getCoordinate().getCoordinateY() * Sizes.TILE_PIXELS);
 
         renderScore(batch);
 
-        snake.renderSnake(batch, textureRegions);
+        snake.renderSnake(batch, getBodyTextureRegion());
+
     }
 
     /**
@@ -129,9 +122,8 @@ public abstract class GameMap {
         checkOutOfMap();
         checkHeadHitsBody();
         updateSnake(delta);
-        checkAppleEaten();
-        updateBadApple();
-        checkPowerUpTimeout();
+        //this THIS down here to update all private methods
+        updatePrivateMethods();
     }
 
     public abstract void dispose(OrthographicCamera camera);
@@ -230,6 +222,14 @@ public abstract class GameMap {
 
     public void setBodyTexture(String bodyTexture) {
         this.bodyTexture = bodyTexture;
+    }
+
+    public TextureRegion[][] getBodyTextureRegion() {
+        return bodyTextureRegion;
+    }
+
+    public void setBodyTextureRegion(TextureRegion[][] bodyTextureRegion) {
+        this.bodyTextureRegion = bodyTextureRegion;
     }
 
     /**
@@ -344,6 +344,12 @@ public abstract class GameMap {
         if (!newDir.equals(oppositeDirection)) {
             snake.setCurrDir(newDir);
         }
+    }
+
+    public void updatePrivateMethods() {
+        checkAppleEaten();
+        updateBadApple();
+        checkPowerUpTimeout();
     }
 
     /**

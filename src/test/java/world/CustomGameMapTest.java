@@ -5,12 +5,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyFloat;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.CALLS_REAL_METHODS;
+import static org.mockito.Mockito.atMost;
+import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import entities.Food;
@@ -18,6 +22,7 @@ import entities.factories.FoodFactory;
 import entities.snake.SnakeBody;
 import java.util.Arrays;
 import java.util.stream.IntStream;
+import models.Coordinate;
 import models.Score;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,22 +58,28 @@ public class CustomGameMapTest extends GameMapTest {
         this.name = "defaultName";
         this.map = CustomGameMapLoader.generateDefaultMap(this.id, this.name).map;
 
-        TextureRegion fake = Mockito.mock(TextureRegion.class);
-        TextureRegion[][] textureRegions = new TextureRegion[
+        TextureRegion fake = Mockito.mock(TextureRegion.class, "tiles");
+        TextureRegion[][] fakeTiles = new TextureRegion[
                 Sizes.DEFAULT_MINIMUM_MAP_TILES][Sizes.DEFAULT_MINIMUM_MAP_TILES];
         //fill up the array with fake mocks
-        for (int i = 0; i < textureRegions.length; i++) {
-            for (int j = 0; j < textureRegions[0].length; j++) {
-                textureRegions[i][j] = fake;
+        for (int i = 0; i < fakeTiles.length; i++) {
+            for (int j = 0; j < fakeTiles[0].length; j++) {
+                fakeTiles[i][j] = fake;
             }
         }
+
+        this.tiles = fakeTiles;
 
         Food fakeFood = Mockito.mock(Food.class);
         Score score = new Score();
         FoodFactory fakeFactory = Mockito.mock(FoodFactory.class);
         String bodyTexture = "assets/snake-texture/DefaultBody.png";
 
-        this.tiles = textureRegions;
+        TextureRegion fakeHead = Mockito.mock(TextureRegion.class, "head");
+        TextureRegion fakeBody = Mockito.mock(TextureRegion.class, "body");
+        TextureRegion[][] fakeBodyTextureRegion = new TextureRegion[1][2];
+        fakeBodyTextureRegion[0][0] = fakeHead;
+        fakeBodyTextureRegion[0][1] = fakeBody;
 
         this.customGameMap = new CustomGameMap(this.id,
                 this.name,
@@ -79,7 +90,8 @@ public class CustomGameMapTest extends GameMapTest {
                 fakeFood,
                 score,
                 fakeFactory,
-                bodyTexture);
+                bodyTexture,
+                fakeBodyTextureRegion);
         super.setUp();
     }
 
@@ -119,12 +131,14 @@ public class CustomGameMapTest extends GameMapTest {
         OrthographicCamera camera = Mockito.mock(OrthographicCamera.class);
         SpriteBatch batch = Mockito.mock(SpriteBatch.class);
 
-        /*
-        spy(customGameMap).render(camera, batch, this.snake);
-        customGameMap.render(camera, batch, this.snake);
+        CustomGameMap spied = spy(getGameMap());
+
+        spied.renderMap(camera, batch);
+        verify(batch).setProjectionMatrix(camera.combined);
         verify(batch).begin();
-        verify(batch).draw(tiles[0][anyInt()], anyFloat(), anyFloat());
-        */
+        verify(batch, atMost(this.map.length + this.map[0].length + this.map[0][0].length))
+                .draw(tiles[0][anyInt()], anyFloat(), anyFloat());
+
     }
 
     @ParameterizedTest
@@ -179,20 +193,22 @@ public class CustomGameMapTest extends GameMapTest {
 
     @Test
     void updateTest() {
-        /*
+
         GameMap fake = spy(getGameMap());
         assertNotNull(getGameMap());
         doCallRealMethod().when(fake).update(anyFloat());
         doNothing().when(fake).handleInput();
         doNothing().when(fake).checkOutOfMap();
         doNothing().when(fake).checkHeadHitsBody();
+        doNothing().when(fake).updatePrivateMethods();
 
         fake.update(Sizes.MOVE_TIME);
         verify(fake).update(anyFloat());
         verify(fake).handleInput();
         verify(fake).checkOutOfMap();
         verify(fake).checkHeadHitsBody();
-        */
+        verify(fake).updatePrivateMethods();
+
     }
 
     @Test

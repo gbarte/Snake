@@ -48,8 +48,8 @@ public class PlayState implements IState {
                 = TextureRegion.split(texture, TileType.TILE_SIZE, TileType.TILE_SIZE);
         String bodyTexture = "assets/snake-texture/redBlueBody.png";
 
-        this.gameMap = new CustomGameMap(mapData, gameManager, textureRegions,
-                this.snakeBody, bodyTexture);
+//        this.gameMap = new CustomGameMap(mapData, gameManager, textureRegions,
+//                this.snakeBody, bodyTexture);
 
 
         //these are the 'customizable' things path you can pass in (for TiledGameMap)
@@ -60,8 +60,7 @@ public class PlayState implements IState {
         OrthogonalTiledMapRenderer tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 
         this.gameMap = new TiledGameMap(bodyTexture, tiledMap, tiledMapRenderer, fileName,
-                snakeBody, gameManager);
-
+                this.snakeBody, gameManager);
     }
 
     /**
@@ -71,8 +70,7 @@ public class PlayState implements IState {
      * @param snake            The snake that'll be displayed on the map.
      * @param gameMap          The map that gets instantiated.
      */
-    public PlayState(GameStateManager gameStateManager, SnakeBody snake,
-                     GameMap gameMap) {
+    public PlayState(GameStateManager gameStateManager, SnakeBody snake, GameMap gameMap) {
         this.gameStateManager = gameStateManager;
         this.snakeBody = snake;
         this.gameMap = gameMap;

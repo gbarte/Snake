@@ -2,6 +2,7 @@ package world;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -80,8 +81,8 @@ public class TiledGameMap extends GameMap {
     public TiledGameMap(GameStateManager manager, SnakeBody snake, String bodyTexture,
                         FoodFactory foodFactory, Food food, Score score,
                         TiledMap tiledMap, OrthogonalTiledMapRenderer tiledMapRenderer,
-                        String fileName) {
-        super(Sizes.MOVE_TIME, manager, snake, foodFactory, food, score, bodyTexture);
+                        String fileName, TextureRegion[][] bodyTextureRegion) {
+        super(Sizes.MOVE_TIME, manager, snake, foodFactory, food, score, bodyTexture, bodyTextureRegion);
         this.tiledMap = tiledMap;
         this.tiledMapRenderer = tiledMapRenderer;
         this.fileName = fileName;
@@ -100,6 +101,10 @@ public class TiledGameMap extends GameMap {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
+        renderSuper(camera, batch, snakeBody);
+    }
+
+    public void renderSuper(OrthographicCamera camera, SpriteBatch batch, SnakeBody snakeBody) {
         super.render(camera, batch, this.snake);
         batch.end();
     }

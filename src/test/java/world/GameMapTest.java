@@ -100,16 +100,10 @@ public abstract class GameMapTest {
 
     @Test
     void renderTest() {
-//        OrthographicCamera camera = Mockito.mock(OrthographicCamera.class);
-//        SpriteBatch batch = Mockito.mock(SpriteBatch.class);
-//        TextureRegion textureRegion = Mockito.mock(TextureRegion.class);
-//        TextureRegion[][] arrayRegion = new TextureRegion[1][2];
-//
-//        arrayRegion[0][0] = textureRegion;
-//        arrayRegion[0][1] = textureRegion;
-//        getGameMap().render(camera, batch, getSnake(), arrayRegion);
-//        verify(camera, never());
-//        verify(batch).draw(any(Texture.class), any(), any());
+        OrthographicCamera camera = Mockito.mock(OrthographicCamera.class);
+        SpriteBatch batch = Mockito.mock(SpriteBatch.class);
+
+        getGameMap().render(camera, batch, getSnake());
     }
 
     @Test
