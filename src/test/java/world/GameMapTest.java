@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import states.GameStateManager;
+import states.PlayState;
 import utils.Sizes;
 
 //Unnecessary warnings to have getters & setters for objects
@@ -49,6 +50,8 @@ public abstract class GameMapTest {
         this.bodyTexture = "assets/snake-texture/DefaultBody.png";
         when(food.getCoordinate())
                 .thenReturn(new Coordinate(APPLE_DEFAULT_POSITION, APPLE_DEFAULT_POSITION));
+        PlayState fake = Mockito.mock(PlayState.class);
+        getManager().pushState(fake);
     }
 
     public abstract GameMap getGameMap();

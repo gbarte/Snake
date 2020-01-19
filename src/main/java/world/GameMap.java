@@ -2,6 +2,8 @@ package world;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -236,6 +238,14 @@ public abstract class GameMap {
      * This method handles the keyboard input for the snake movements.
      */
     public void handleInput() {
+        Gdx.input.setInputProcessor(new InputAdapter() {
+            @Override
+            public boolean keyDown(int keycode) {
+                handleInput(keycode, getManager());
+                return false;
+            }
+        });
+        /*
         boolean quitPressed = Gdx.input.isKeyPressed(Input.Keys.Q);
         if (quitPressed) {    //pushes 'this' state (which is PlayStateTwo here)
             this.getManager().reState();
@@ -265,6 +275,47 @@ public abstract class GameMap {
                 || Gdx.input.isKeyJustPressed(Input.Keys.RIGHT);
         if (rightPressed) {
             updateDirection(Direction.RIGHT);
+        }
+        */
+    }
+
+    public void handleInput(int keycode, GameStateManager manager) {
+        switch (keycode) {
+            case Input.Keys.Q:
+                manager.reState();
+                manager.setState(new GameOverState(manager, getScore()));
+                break;
+            case Input.Keys.P:
+                manager.reState();
+                manager.setState(new PausedState(manager, getScore()));
+                break;
+            case Input.Keys.W:
+                updateDirection(Direction.UP);
+                break;
+            case Input.Keys.A:
+                updateDirection(Direction.LEFT);
+                break;
+            case Input.Keys.S:
+                updateDirection(Direction.DOWN);
+                break;
+            case Input.Keys.D:
+                updateDirection(Direction.RIGHT);
+                break;
+            case Input.Keys.UP:
+                updateDirection(Direction.UP);
+                break;
+            case Input.Keys.DOWN:
+                updateDirection(Direction.DOWN);
+                break;
+            case Input.Keys.LEFT:
+                updateDirection(Direction.LEFT);
+                break;
+            case Input.Keys.RIGHT:
+                updateDirection(Direction.RIGHT);
+                break;
+            default:
+                //do nothing
+                break;
         }
     }
 
@@ -300,8 +351,8 @@ public abstract class GameMap {
     private void updateSnake(float delta) {
         timer -= delta;
         if (timer <= 0) {
-            timer = moveTime;
-            snake.moveSnake(snake.getCurrDir());
+            timer = getMoveTime();
+            getSnake().moveSnake(getSnake().getCurrDir());
         }
     }
 
@@ -311,7 +362,7 @@ public abstract class GameMap {
      * @param newDirection - direction in which the user wants to move the snake
      */
     public void updateDirection(Direction newDirection) {
-        Direction current = snake.getCurrDir();
+        Direction current = getSnake().getCurrDir();
         if (!newDirection.equals(current)) {
             switch (current) {
                 case UP:

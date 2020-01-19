@@ -1,6 +1,9 @@
 package states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -49,22 +52,33 @@ public class PausedState implements IState {
     @Override
     public void handleInput() {
         /*
-        stage.addListener(new InputListener() {
+        Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
-            public boolean keyDown(InputEvent event, int keycode)
-            {
-                if(keycode!=44) {
-                    return false;
-                };
-                return true;
+            public boolean keyDown(int keycode) {
+                handleInput(keycode);
+                return false;
             }
         });
         */
     }
 
+    public void handleInput(int keycode) {
+        switch (keycode) {
+            case Input.Keys.P:
+                stateManager.popState();
+                break;
+            case Input.Keys.Q:
+                stateManager.setState(new GameOverState(stateManager, score));
+                break;
+            default:
+                //do nothing
+                break;
+        }
+    }
+
     @Override
     public void update(float dt) {
-        //handleInput();
+        handleInput();
     }
 
     @Override
@@ -167,12 +181,12 @@ public class PausedState implements IState {
                 System.out.println("result " + obj);
             }
         };
-        dialog.text("Use wasd to move the snake.\n"
+        dialog.text("Use 'WASD' to move the snake.\n"
                 + "Eat food to grow your snake.\n"
                 + "Game will end when you either hit yourself or the wall.\n"
                 + "Press p to pause the game.\n"
                 + "Press q to quit the game.\n"
-                + "Enjoy :)");
+                + "Enjoy :) ");
         dialog.button("OK", true);
         dialog.show(stage);
     }
@@ -180,6 +194,8 @@ public class PausedState implements IState {
     @Override
     public void dispose() {
         backGround.dispose();
+        stage.dispose();
+        skin.dispose();
     }
 
 }

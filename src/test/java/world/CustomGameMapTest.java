@@ -3,28 +3,40 @@ package world;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyFloat;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.CALLS_REAL_METHODS;
 import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import entities.Food;
 import entities.factories.FoodFactory;
 import entities.snake.SnakeBody;
+import models.Coordinate;
 import models.Score;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mockito;
+import states.GameOverState;
 import states.GameStateManager;
+import states.PausedState;
+import states.PlayState;
+import utils.Direction;
 import utils.Sizes;
 import utils.TileType;
 import world.customgamemap.CustomGameMapLoader;
@@ -119,6 +131,23 @@ public class CustomGameMapTest extends GameMapTest {
         assertEquals(customGameMap.getHeight(), 50);
         assertEquals(customGameMap.getWidth(), 50);
         assertEquals(customGameMap.getManager(), this.manager);
+
+        getGameMap().setName("fakeName");
+        assertEquals(getGameMap().getName(), "fakeName");
+
+        TextureRegion[][] fake2 = new TextureRegion[1][1];
+        TextureRegion fakeTR = mock(TextureRegion.class);
+        fake2[0][0] = fakeTR;
+        getGameMap().setTiles(fake2);
+        assertEquals(getGameMap().getTiles(), fake2);
+
+        getGameMap().setSnake(new SnakeBody(30, 30));
+        assertEquals(getGameMap().getSnake().getHeadCoord(),
+                new Coordinate(15, 15));
+
+        GameStateManager other = new GameStateManager();
+        getGameMap().setManager(other);
+        assertEquals(getGameMap().getManager(), other);
     }
 
     @Test
@@ -241,4 +270,80 @@ public class CustomGameMapTest extends GameMapTest {
                 = Mockito.mock(OrthographicCamera.class, Mockito.CALLS_REAL_METHODS);
         customGameMap.dispose(camera);
     }
+
+    @Test
+    void pixelWidthTest() {
+        assertEquals(getGameMap().getPixelWidth(),
+                customGameMap.getWidth() * TileType.TILE_SIZE);
+    }
+
+    @Test
+    void pixelHeightTest() {
+        assertEquals(getGameMap().getPixelHeight(),
+                customGameMap.getHeight() * TileType.TILE_SIZE);
+    }
+
+    @Test
+    void handleInputTestQuit() {
+        PlayState fakePlay = Mockito.mock(PlayState.class);
+        GameOverState fakeOver = mock(GameOverState.class);
+        GameStateManager manager = mock(GameStateManager.class);
+        doNothing().when(manager).reState();
+
+        GameMap spies = spy(getGameMap());
+        //spies.handleInput(Input.Keys.Q, manager);
+        //verify(manager).reState();
+        //verify(manager).setState(any(GameOverState.class));
+
+    }
+
+    //TODO fix test
+    @Test
+    void handleInputTestPause() {
+        PlayState fakePlay = Mockito.mock(PlayState.class);
+        GameOverState fakeOver = mock(GameOverState.class);
+        GameStateManager manager = mock(GameStateManager.class, CALLS_REAL_METHODS);
+        doNothing().when(manager).pushState(any(PausedState.class));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "51, UP",
+            "19, UP",
+            "29, LEFT",
+            "21, LEFT",
+            "47, DOWN",
+            "20, DOWN",
+            "32, RIGHT",
+            "22, RIGHT",
+    })
+    void handleInputTest(int keycode, Direction curr) {
+        GameStateManager manager = mock(GameStateManager.class, CALLS_REAL_METHODS);
+        GameMap spies = spy(getGameMap());
+        spies.handleInput(keycode, manager);
+        verify(spies).updateDirection(curr);
+    }
+
+    @Test
+    void renderScoreTest() {
+        SpriteBatch fakeBatch = mock(SpriteBatch.class);
+        BitmapFont fakeFont = mock(BitmapFont.class);
+        doNothing().when(fakeFont).setColor(Color.RED);
+        getGameMap().renderScore(fakeBatch, fakeFont);
+        verify(fakeFont).setColor(Color.RED);
+        verify(fakeFont).draw(fakeBatch, String.valueOf(getScore().getValue()),
+                Sizes.DEFAULT_AMOUNT_BORDER_TILES
+                        * (Sizes.TILE_PIXELS - Sizes.PADDING_TILE_PIXELS),
+                Sizes.DEFAULT_AMOUNT_BORDER_TILES
+                        * (Sizes.TILE_PIXELS - Sizes.PADDING_TILE_PIXELS));
+    }
+
+    /*
+    @Test
+    void updateDirectionTest(Direction newDir, Direction currDir) {
+        GameMap spies = spy(getGameMap());
+        getGameMap().getSnake().setCurrDir(currDir);
+    }
+
+     */
 }

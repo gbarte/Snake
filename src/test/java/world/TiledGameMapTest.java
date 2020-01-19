@@ -216,7 +216,7 @@ class TiledGameMapTest extends GameMapTest {
     }
 
     @Test
-    void setupTest() {
+    void testTiledGameMapSetup() {
         TiledGameMap my = (TiledGameMap) tiledGameMap;
         assertNotNull(my.getTiledMap());
         assertEquals(my.getTiledMap(), this.tiledMap);
