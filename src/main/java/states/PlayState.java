@@ -6,9 +6,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import entities.snake.SnakeBody;
 import utils.Sizes;
 import utils.TileType;
@@ -52,6 +49,7 @@ public class PlayState implements IState {
                 "assets/tile-set/setOfFive.png", bodyTexture, this.snakeBody, gameManager);
 
 
+        //TODO fix/remove
         //these are the 'customizable' things path you can pass in (for TiledGameMap)
         //String filename, String bodyTexture
 
@@ -85,7 +83,7 @@ public class PlayState implements IState {
 
     @Override
     public void render(SpriteBatch batch) {
-        Gdx.gl.glClearColor(1, 0, 0, 1); //this changes the background color, number between 0-1
+        Gdx.gl.glClearColor(1, 0, 0, 1); //changes the background color, number between 0-1
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         gameMap.render(orthographicCamera, batch, snakeBody);

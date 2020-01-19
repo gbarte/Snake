@@ -1,6 +1,9 @@
 package entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import models.Coordinate;
 import world.GameMap;
 
@@ -48,8 +51,10 @@ public class GoldenApple implements Food {
     }
 
     @Override
-    public void actionTwo(GameMap map) {
-        map.getScore().add(DEFAULT_SCORE);
+    public void action(GameMap map) {
+        int before = map.getScore().getValue();
+        map.getScore().add(GoldenApple.DEFAULT_SCORE);
         map.getSnake().growSnake(2);
+        assert map.getScore().getValue() == before + GoldenApple.DEFAULT_SCORE;
     }
 }

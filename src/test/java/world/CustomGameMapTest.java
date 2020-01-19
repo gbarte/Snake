@@ -148,6 +148,10 @@ public class CustomGameMapTest extends GameMapTest {
         GameStateManager other = new GameStateManager();
         getGameMap().setManager(other);
         assertEquals(getGameMap().getManager(), other);
+
+        String newId = "notDefault";
+        getGameMap().setId(newId);
+        assertEquals(getGameMap().getId(), newId);
     }
 
     @Test
@@ -282,68 +286,4 @@ public class CustomGameMapTest extends GameMapTest {
         assertEquals(getGameMap().getPixelHeight(),
                 customGameMap.getHeight() * TileType.TILE_SIZE);
     }
-
-    @Test
-    void handleInputTestQuit() {
-        PlayState fakePlay = Mockito.mock(PlayState.class);
-        GameOverState fakeOver = mock(GameOverState.class);
-        GameStateManager manager = mock(GameStateManager.class);
-        doNothing().when(manager).reState();
-
-        GameMap spies = spy(getGameMap());
-        //spies.handleInput(Input.Keys.Q, manager);
-        //verify(manager).reState();
-        //verify(manager).setState(any(GameOverState.class));
-
-    }
-
-    //TODO fix test
-    @Test
-    void handleInputTestPause() {
-        PlayState fakePlay = Mockito.mock(PlayState.class);
-        GameOverState fakeOver = mock(GameOverState.class);
-        GameStateManager manager = mock(GameStateManager.class, CALLS_REAL_METHODS);
-        doNothing().when(manager).pushState(any(PausedState.class));
-    }
-
-    @ParameterizedTest
-    @CsvSource({
-            "51, UP",
-            "19, UP",
-            "29, LEFT",
-            "21, LEFT",
-            "47, DOWN",
-            "20, DOWN",
-            "32, RIGHT",
-            "22, RIGHT",
-    })
-    void handleInputTest(int keycode, Direction curr) {
-        GameStateManager manager = mock(GameStateManager.class, CALLS_REAL_METHODS);
-        GameMap spies = spy(getGameMap());
-        spies.handleInput(keycode, manager);
-        verify(spies).updateDirection(curr);
-    }
-
-    @Test
-    void renderScoreTest() {
-        SpriteBatch fakeBatch = mock(SpriteBatch.class);
-        BitmapFont fakeFont = mock(BitmapFont.class);
-        doNothing().when(fakeFont).setColor(Color.RED);
-        getGameMap().renderScore(fakeBatch, fakeFont);
-        verify(fakeFont).setColor(Color.RED);
-        verify(fakeFont).draw(fakeBatch, String.valueOf(getScore().getValue()),
-                Sizes.DEFAULT_AMOUNT_BORDER_TILES
-                        * (Sizes.TILE_PIXELS - Sizes.PADDING_TILE_PIXELS),
-                Sizes.DEFAULT_AMOUNT_BORDER_TILES
-                        * (Sizes.TILE_PIXELS - Sizes.PADDING_TILE_PIXELS));
-    }
-
-    /*
-    @Test
-    void updateDirectionTest(Direction newDir, Direction currDir) {
-        GameMap spies = spy(getGameMap());
-        getGameMap().getSnake().setCurrDir(currDir);
-    }
-
-     */
 }

@@ -2,7 +2,6 @@ package models;
 
 import java.util.List;
 import java.util.Random;
-import utils.Sizes;
 
 public class Randomizer {
 
@@ -14,6 +13,7 @@ public class Randomizer {
 
     /**
      * Constructor to create a randomizer.
+     *
      * @param minX The smallest x-value for where the item can be placed.
      * @param minY The smallest y-value for where the item can be placed.
      * @param maxX The largest x-value for where the item can be placed.
@@ -29,11 +29,12 @@ public class Randomizer {
 
     /**
      * Method that outputs a random coordinate that also takes obstacles into account.
+     *
      * @return
      */
     public Coordinate getRandomCoordinate() {
         Random r = new Random();
-        Coordinate toReturn = new Coordinate(minX, minY);
+        Coordinate toReturn = new Coordinate(getMinX(), getMinY());
 
         int x = r.nextInt(getMaxX() - getMinY()) + getMinX();
         int y = r.nextInt(getMaxY() - getMinY()) + getMinY();
@@ -41,7 +42,7 @@ public class Randomizer {
         toReturn.setCoordinateY(y);
 
         int maxIter = getMaxX() / 3;
-        while (all.contains(toReturn) && maxIter > 0) {
+        while (getAll().contains(toReturn) && maxIter > 0) {
             toReturn.setCoordinateX(r.nextInt(getMaxX() - getMinY()) + getMinX());
             toReturn.setCoordinateY(r.nextInt(getMaxY() - getMinY()) + getMinY());
             maxIter--;

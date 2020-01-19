@@ -2,9 +2,17 @@ package world;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.CALLS_REAL_METHODS;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import entities.Food;
 import entities.factories.FoodFactory;
@@ -13,9 +21,14 @@ import models.Coordinate;
 import models.Score;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mockito;
+import states.GameOverState;
 import states.GameStateManager;
+import states.PausedState;
 import states.PlayState;
+import utils.Direction;
 import utils.Sizes;
 
 //Unnecessary warnings to have getters & setters for objects
@@ -109,4 +122,72 @@ public abstract class GameMapTest {
 
     @Test
     abstract void getTileTypeByLocationTest(int layer, float x, float y, int id);
+
+    @Test
+    void handleInputTestQuit() {
+        /*
+        PlayState fakePlay = Mockito.mock(PlayState.class);
+        GameOverState fakeOver = mock(GameOverState.class);
+        GameStateManager manager = mock(GameStateManager.class);
+        doNothing().when(manager).reState();
+
+        GameMap spies = spy(getGameMap());
+        spies.handleInput(Input.Keys.Q, manager);
+        verify(manager).reState();
+        verify(manager).setState(any(GameOverState.class));
+        */
+
+    }
+
+    //TODO fix test
+    @Test
+    void handleInputTestPause() {
+        /*
+        PlayState fakePlay = Mockito.mock(PlayState.class);
+        GameOverState fakeOver = mock(GameOverState.class);
+        GameStateManager manager = mock(GameStateManager.class, CALLS_REAL_METHODS);
+        doNothing().when(manager).pushState(any(PausedState.class));
+        */
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "51, UP",
+            "19, UP",
+            "29, LEFT",
+            "21, LEFT",
+            "47, DOWN",
+            "20, DOWN",
+            "32, RIGHT",
+            "22, RIGHT",
+    })
+    void handleInputTest(int keycode, Direction curr) {
+        GameStateManager manager = mock(GameStateManager.class, CALLS_REAL_METHODS);
+        GameMap spies = spy(getGameMap());
+        spies.handleInput(keycode, manager);
+        verify(spies).updateDirection(curr);
+    }
+
+    @Test
+    void renderScoreTest() {
+        SpriteBatch fakeBatch = mock(SpriteBatch.class);
+        BitmapFont fakeFont = mock(BitmapFont.class);
+        doNothing().when(fakeFont).setColor(Color.RED);
+        getGameMap().renderScore(fakeBatch, fakeFont);
+        verify(fakeFont).setColor(Color.RED);
+        verify(fakeFont).draw(fakeBatch, String.valueOf(getScore().getValue()),
+                Sizes.DEFAULT_AMOUNT_BORDER_TILES
+                        * (Sizes.TILE_PIXELS - Sizes.PADDING_TILE_PIXELS),
+                Sizes.DEFAULT_AMOUNT_BORDER_TILES
+                        * (Sizes.TILE_PIXELS - Sizes.PADDING_TILE_PIXELS));
+    }
+
+    /*
+    @Test
+    void updateDirectionTest(Direction newDir, Direction currDir) {
+        GameMap spies = spy(getGameMap());
+        getGameMap().getSnake().setCurrDir(currDir);
+    }
+
+     */
 }

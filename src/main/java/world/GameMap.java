@@ -245,38 +245,6 @@ public abstract class GameMap {
                 return false;
             }
         });
-        /*
-        boolean quitPressed = Gdx.input.isKeyPressed(Input.Keys.Q);
-        if (quitPressed) {    //pushes 'this' state (which is PlayStateTwo here)
-            this.getManager().reState();
-            this.getManager().setState(new GameOverState(getManager(), score));
-        }
-        boolean pausePressed = Gdx.input.isKeyPressed(Input.Keys.P);
-        if (pausePressed) {
-            this.getManager().pushState(this.getManager().peekState());
-            this.getManager().setState(new PausedState(getManager(), score));
-        }
-        boolean upPressed = Gdx.input.isKeyPressed(Input.Keys.W)
-                || Gdx.input.isKeyJustPressed(Input.Keys.UP);
-        if (upPressed) {
-            updateDirection(Direction.UP);
-        }
-        boolean downPressed = Gdx.input.isKeyPressed(Input.Keys.S)
-                || Gdx.input.isKeyJustPressed(Input.Keys.DOWN);
-        if (downPressed) {
-            updateDirection(Direction.DOWN);
-        }
-        boolean leftPressed = Gdx.input.isKeyPressed(Input.Keys.A)
-                || Gdx.input.isKeyJustPressed(Input.Keys.LEFT);
-        if (leftPressed) {
-            updateDirection(Direction.LEFT);
-        }
-        boolean rightPressed = Gdx.input.isKeyPressed(Input.Keys.D)
-                || Gdx.input.isKeyJustPressed(Input.Keys.RIGHT);
-        if (rightPressed) {
-            updateDirection(Direction.RIGHT);
-        }
-        */
     }
 
     public void handleInput(int keycode, GameStateManager manager) {
@@ -453,7 +421,7 @@ public abstract class GameMap {
      */
     private void checkAppleEaten() {
         if (getSnake().getHeadCoord().equals(getFood().getCoordinate())) {
-            getFood().actionTwo(this);
+            getFood().action(this);
             food = foodFactory.createFood();
             checkAppleOnSnake();
             if (foodFactory instanceof AppleFactory) {
@@ -474,7 +442,7 @@ public abstract class GameMap {
         }
         if (powerUpTimeout <= 0) {
             //shapeRenderer.setColor(Color.GREEN); // TODO change color
-            moveTime = DEFAULT_MOVE_TIME;
+            setMoveTime(DEFAULT_MOVE_TIME);
             int currScore = score.getValue();
             score = new Score();
             score.setValue(currScore);
