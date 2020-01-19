@@ -51,7 +51,7 @@ public class Apple implements Food {
      * @param map The map you pass from which you get all information.
      */
     @Override
-    public void actionTwo(GameMap map) {
+    public void action(GameMap map) {
         map.getScore().add(Apple.DEFAULT_SCORE);
         map.getSnake().growSnake();
     }

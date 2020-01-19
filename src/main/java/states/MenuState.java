@@ -238,12 +238,12 @@ public class MenuState implements IState {
                 System.out.println("result " + obj);
             }
         };
-        dialog.text("Use wasd to move the snake.\n"
+        dialog.text("Use 'WASD' to move the snake.\n"
                 + "Eat food to grow your snake.\n"
                 + "Game will end when you either hit yourself or the wall.\n"
                 + "Press p to pause the game.\n"
                 + "Press q to quit the game.\n"
-                + "Enjoy :)");
+                + "Enjoy :) ");
         dialog.button("OK", true);
         dialog.show(stage);
     }

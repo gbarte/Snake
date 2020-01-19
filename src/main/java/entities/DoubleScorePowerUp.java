@@ -8,9 +8,9 @@ import world.GameMap;
 /**
  * Food object which acts as a power up.
  * Main purpose of it is to double the score in the game.
- *
  */
 public class DoubleScorePowerUp implements Food {
+
     public static final double rarity = 0.2;
     private static final String texturePath = "assets/frog16px.png";
     private Coordinate coordinate;
@@ -30,12 +30,12 @@ public class DoubleScorePowerUp implements Food {
         return coordinate;
     }
 
-    public Texture getTexture() {
-        return texture;
-    }
-
     public void setCoordinate(Coordinate coordinate) {
         this.coordinate = coordinate;
+    }
+
+    public Texture getTexture() {
+        return texture;
     }
 
     public void setTexture(Texture texture) {
@@ -43,7 +43,7 @@ public class DoubleScorePowerUp implements Food {
     }
 
     @Override
-    public void actionTwo(GameMap map) {
+    public void action(GameMap map) {
         int currScore = map.getScore().getValue();
 
         DoubleScore score = new DoubleScore();
