@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import entities.Food;
 import entities.factories.FoodFactory;
 import entities.snake.SnakeBody;
+import java.util.List;
+import models.Coordinate;
 import models.Score;
 import states.GameStateManager;
 import utils.Sizes;
@@ -57,6 +59,7 @@ public class CustomGameMap extends GameMap {
         Texture texture = new Texture(tileSet);
         tiles = TextureRegion.split(texture, TileType.TILE_SIZE, TileType.TILE_SIZE);
         this.manager = manager;
+        super.fillList(getObstacles());
     }
 
     /**
@@ -73,13 +76,15 @@ public class CustomGameMap extends GameMap {
      * @param foodFactory FoodFactory factory used to create food.
      * @param bodyTexture The texture path for the snake's skin.
      * @param bodyTextureRegion The textureRegion for our snake's texture.
+     * @param obstacles        List of all the coordinates of obstacles.
      */
     public CustomGameMap(String id, String name, int[][][] map, TextureRegion[][] tiles,
                          SnakeBody snake, GameStateManager manager,
                          Food food, Score score, FoodFactory foodFactory,
-                         String bodyTexture, TextureRegion[][] bodyTextureRegion) {
+                         String bodyTexture, TextureRegion[][] bodyTextureRegion,
+                         List<Coordinate> obstacles) {
         super(Sizes.MOVE_TIME, manager, snake, foodFactory, food, score,
-                bodyTexture, bodyTextureRegion);
+                bodyTexture, bodyTextureRegion, obstacles);
         this.id = id;
         this.name = name;
         this.snake = snake;

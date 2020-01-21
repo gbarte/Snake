@@ -25,6 +25,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import entities.Food;
 import entities.factories.FoodFactory;
 import entities.snake.SnakeBody;
+import java.util.ArrayList;
+import java.util.List;
 import models.Coordinate;
 import models.Score;
 import org.junit.jupiter.api.BeforeEach;
@@ -88,6 +90,8 @@ public class CustomGameMapTest extends GameMapTest {
         fakeBodyTextureRegion[0][0] = fakeHead;
         fakeBodyTextureRegion[0][1] = fakeBody;
 
+        List<Coordinate> obstacles = new ArrayList<>();
+
         this.customGameMap = new CustomGameMap(this.id,
                 this.name,
                 this.map,
@@ -98,7 +102,8 @@ public class CustomGameMapTest extends GameMapTest {
                 score,
                 fakeFactory,
                 bodyTexture,
-                fakeBodyTextureRegion);
+                fakeBodyTextureRegion,
+                obstacles);
         super.setUp();
     }
 

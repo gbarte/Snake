@@ -2,6 +2,7 @@ package models;
 
 import java.util.List;
 import java.util.Random;
+import utils.Sizes;
 
 public class Randomizer {
 
@@ -41,7 +42,7 @@ public class Randomizer {
         toReturn.setCoordinateX(x);
         toReturn.setCoordinateY(y);
 
-        int maxIter = getMaxX() / 3;
+        int maxIter = (int) (1.5 * getAll().size());
         while (getAll().contains(toReturn) && maxIter > 0) {
             toReturn.setCoordinateX(r.nextInt(getMaxX() - getMinY()) + getMinX());
             toReturn.setCoordinateY(r.nextInt(getMaxY() - getMinY()) + getMinY());

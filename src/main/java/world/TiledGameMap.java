@@ -12,6 +12,8 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import entities.Food;
 import entities.factories.FoodFactory;
 import entities.snake.SnakeBody;
+import java.util.List;
+import models.Coordinate;
 import models.Score;
 import states.GameStateManager;
 import utils.Sizes;
@@ -48,6 +50,7 @@ public class TiledGameMap extends GameMap {
         this.tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         this.snake = snake;
         this.manager = manager;
+        super.fillList(getObstacles());
     }
 
     /**
@@ -63,12 +66,15 @@ public class TiledGameMap extends GameMap {
      *                         which can load in a existing file map.
      * @param tiledMapRenderer This is used to render the tiledMap.
      * @param fileName         The string path of the file's name for the map.
+     * @param obstacles        List of all the coordinates of obstacles.
      */
     public TiledGameMap(GameStateManager manager, SnakeBody snake, String bodyTexture,
                         FoodFactory foodFactory, Food food, Score score,
                         TiledMap tiledMap, OrthogonalTiledMapRenderer tiledMapRenderer,
-                        String fileName, TextureRegion[][] bodyTextureRegion) {
-        super(Sizes.MOVE_TIME, manager, snake, foodFactory, food, score, bodyTexture, bodyTextureRegion);
+                        String fileName, TextureRegion[][] bodyTextureRegion,
+                        List<Coordinate> obstacles) {
+        super(Sizes.MOVE_TIME, manager, snake, foodFactory, food, score,
+                bodyTexture, bodyTextureRegion, obstacles);
         this.tiledMap = tiledMap;
         this.tiledMapRenderer = tiledMapRenderer;
         this.fileName = fileName;

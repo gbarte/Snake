@@ -3,7 +3,6 @@ package world;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -16,7 +15,9 @@ import entities.factories.FoodFactory;
 import entities.factories.PowerUpFactory;
 import entities.snake.BodyPart;
 import entities.snake.SnakeBody;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import models.Coordinate;
 import models.DoubleScore;
 import models.Score;
@@ -34,9 +35,10 @@ public abstract class GameMap {
     private float moveTime = DEFAULT_MOVE_TIME;
     private float timer = moveTime;
     private SnakeBody snake;
+    private List<Coordinate> obstacles;
+    private FoodFactory foodFactory;
     private Food food;
     private Score score;
-    private FoodFactory foodFactory;
     private String bodyTexture;
     private TextureRegion[][] bodyTextureRegion;
     private static double powerUpTimeout = Sizes.POWER_UP_TIMEOUT;
@@ -47,6 +49,7 @@ public abstract class GameMap {
     public GameMap() {
         this.manager = getManager();
         this.snake = getSnake();
+        this.obstacles = new ArrayList<>();
         this.foodFactory = new AppleFactory();
         this.food = foodFactory.createFood();
         this.score = new Score();
@@ -62,6 +65,7 @@ public abstract class GameMap {
     public GameMap(String bodyTexture) {
         this.manager = getManager();
         this.snake = getSnake();
+        this.obstacles = new ArrayList<>();
         this.foodFactory = new AppleFactory();
         this.food = foodFactory.createFood();
         this.score = new Score();
@@ -82,7 +86,8 @@ public abstract class GameMap {
      */
     public GameMap(float timer, GameStateManager manager, SnakeBody snake,
                    FoodFactory foodFactory, Food food, Score score,
-                   String bodyTexture, TextureRegion[][] bodyTextureRegion) {
+                   String bodyTexture, TextureRegion[][] bodyTextureRegion,
+                   List<Coordinate> obstacles) {
         this.timer = timer;
         this.manager = manager;
         this.snake = snake;
@@ -91,6 +96,7 @@ public abstract class GameMap {
         this.score = score;
         this.bodyTexture = bodyTexture;
         this.bodyTextureRegion = bodyTextureRegion;
+        this.obstacles = obstacles;
     }
 
     /**
@@ -158,16 +164,24 @@ public abstract class GameMap {
         return this.getHeight() * TileType.TILE_SIZE;
     }
 
+    public abstract GameStateManager getManager();
+
+    public void setManager(GameStateManager manager) {
+        this.manager = manager;
+    }
+
     public abstract SnakeBody getSnake();
 
     public void setSnake(SnakeBody snake) {
         this.snake = snake;
     }
 
-    public abstract GameStateManager getManager();
+    public List<Coordinate> getObstacles() {
+        return obstacles;
+    }
 
-    public void setManager(GameStateManager manager) {
-        this.manager = manager;
+    public void setObstacles(List<Coordinate> obstacles) {
+        this.obstacles = obstacles;
     }
 
     public Food getFood() {
@@ -422,7 +436,7 @@ public abstract class GameMap {
     private void checkAppleEaten() {
         if (getSnake().getHeadCoord().equals(getFood().getCoordinate())) {
             getFood().action(this);
-            food = foodFactory.createFood();
+            food = foodFactory.createFood(getObstacles());
             checkAppleOnSnake();
             if (foodFactory instanceof AppleFactory) {
                 activatePowerUp();
@@ -457,7 +471,7 @@ public abstract class GameMap {
     private void checkAppleOnSnake() {
         for (BodyPart bp : getSnake().getBodyParts()) {
             if (bp.getCoordinate().equals(food.getCoordinate())) {
-                food = foodFactory.createFood();
+                food = foodFactory.createFood(getObstacles());
             }
         }
     }
@@ -466,7 +480,25 @@ public abstract class GameMap {
         LinkedList<BodyPart> all = getSnake().getBodyParts();
         for (int i = 0; i < all.size(); i++) {
             if (all.get(i).getCoordinate().equals(food.getCoordinate())) {
-                food = foodFactory.createFood();
+                food = foodFactory.createFood(getObstacles());
+            }
+        }
+        Coordinate bad = getFood().getCoordinate();
+        if (getTileTypeByCoordinate(getLayers(), bad.getCoordinateX(), bad.getCoordinateY())
+                .isCollidable()) {
+            setFood(foodFactory.createFood(getObstacles()));
+        }
+    }
+
+    public void fillList(List<Coordinate> list) {
+        int start = Sizes.DEFAULT_AMOUNT_BORDER_TILES;
+        int finish = Sizes.DEFAULT_MINIMUM_MAP_TILES-Sizes.DEFAULT_AMOUNT_BORDER_TILES;
+        for (int i = start; i < finish; i++) {
+            for (int j = start; j < finish; j++) {
+                TileType currentTile = getTileTypeByCoordinate(getLayers(), i, j);
+                if (currentTile.isCollidable()) {
+                    list.add(new Coordinate(i, j));
+                }
             }
         }
     }

@@ -34,7 +34,7 @@ public class Main {
         cfg.setTitle(SnakeGame.TITLE);
         cfg.setWindowSizeLimits(Sizes.MIN_WIDTH_WINDOW, Sizes.MIN_HEIGHT_WINDOW,
                 Sizes.MAX_WIDTH_WINDOW, Sizes.MAX_HEIGHT_WINDOW);
-        cfg.setWindowedMode(Sizes.MIN_WIDTH_WINDOW, Sizes.MIN_HEIGHT_WINDOW);
+        cfg.setWindowedMode(Sizes.WINDOWED_MODE_WIDTH, Sizes.WINDOWED_MODE_HEIGHT);
         new Lwjgl3Application(new SnakeGame(), cfg);
     }
 }

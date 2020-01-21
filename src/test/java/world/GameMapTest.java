@@ -123,33 +123,6 @@ public abstract class GameMapTest {
     @Test
     abstract void getTileTypeByLocationTest(int layer, float x, float y, int id);
 
-    @Test
-    void handleInputTestQuit() {
-        /*
-        PlayState fakePlay = Mockito.mock(PlayState.class);
-        GameOverState fakeOver = mock(GameOverState.class);
-        GameStateManager manager = mock(GameStateManager.class);
-        doNothing().when(manager).reState();
-
-        GameMap spies = spy(getGameMap());
-        spies.handleInput(Input.Keys.Q, manager);
-        verify(manager).reState();
-        verify(manager).setState(any(GameOverState.class));
-        */
-
-    }
-
-    //TODO fix test
-    @Test
-    void handleInputTestPause() {
-        /*
-        PlayState fakePlay = Mockito.mock(PlayState.class);
-        GameOverState fakeOver = mock(GameOverState.class);
-        GameStateManager manager = mock(GameStateManager.class, CALLS_REAL_METHODS);
-        doNothing().when(manager).pushState(any(PausedState.class));
-        */
-    }
-
     @ParameterizedTest
     @CsvSource({
             "51, UP",
