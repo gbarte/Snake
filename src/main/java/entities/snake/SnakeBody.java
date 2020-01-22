@@ -64,7 +64,7 @@ public class SnakeBody {
     public void growSnake() {
         if (bodyParts.size() == 0) {
             bodyParts.add(new BodyPart(headCoord.getCoordinateX(), headCoord.getCoordinateY()));
-        } else if (bodyParts.size() > 0) {
+        } else {
             int tailID = bodyParts.size() - 1;
             BodyPart tail = bodyParts.get(tailID);
             Coordinate tailCoord = tail.getCoordinate();
@@ -115,8 +115,9 @@ public class SnakeBody {
                 (float) Sizes.TILE_PIXELS / 2, (float) Sizes.TILE_PIXELS / 2,
                 Sizes.TILE_PIXELS, Sizes.TILE_PIXELS, 1, 1,
                 rot, true);
-        //originX is amount of pixels away from origin
-        //originX takes from the MIDDLE OF the square tile away
+
+        // originX is amount of pixels away from origin
+        // originX takes from the MIDDLE OF the square tile away
         //so if the first x, y take from bottom (left,right) corner of the square tile,
         // originX will take from middle
 
@@ -170,13 +171,11 @@ public class SnakeBody {
      */
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     public void updateBodyPartsPosition(Coordinate coordinate) {
-        if (bodyParts.size() > 0) {
-            for (BodyPart bp : bodyParts) {
-                int currX = bp.getCoordinate().getCoordinateX();
-                int currY = bp.getCoordinate().getCoordinateY();
-                bp.updateBodyPartPos(coordinate);
-                coordinate = new Coordinate(currX, currY);
-            }
+        for (BodyPart bp : bodyParts) {
+            int currX = bp.getCoordinate().getCoordinateX();
+            int currY = bp.getCoordinate().getCoordinateY();
+            bp.updateBodyPartPos(coordinate);
+            coordinate = new Coordinate(currX, currY);
         }
     }
 
