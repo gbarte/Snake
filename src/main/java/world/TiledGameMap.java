@@ -43,7 +43,8 @@ public class TiledGameMap extends GameMap {
      * @param snake    The snake that gets passed through.
      * @param manager  The game's state manager that's required to manage the game.
      */
-    public TiledGameMap(String bodyTexture, String fileName, SnakeBody snake, GameStateManager manager) {
+    public TiledGameMap(String bodyTexture, String fileName, SnakeBody snake,
+                        GameStateManager manager) {
         super(bodyTexture);
         this.fileName = fileName;
         this.tiledMap = new TmxMapLoader().load(fileName);

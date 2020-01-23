@@ -262,6 +262,13 @@ public abstract class GameMap {
         });
     }
 
+    /**
+     * This method handles the input and what to do with it.
+     * The split was mainly made for testability purposes such that,
+     * the libGDX functionality is separate from the testable parts.
+     * @param keycode The keycode indicates which key is pressed.
+     * @param manager The manager needed if any other state needs to be instantiated.
+     */
     public void handleInput(int keycode, GameStateManager manager) {
         switch (keycode) {
             case Input.Keys.Q:
@@ -371,6 +378,11 @@ public abstract class GameMap {
         }
     }
 
+    /**
+     * This method is called from the update method.
+     * It's used to update private methods.
+     * This split was mainly made for testability purposes.
+     */
     public void updatePrivateMethods() {
         checkAppleEaten();
         updateBadApple();
@@ -484,6 +496,10 @@ public abstract class GameMap {
         }
     }
 
+    /**
+     * This method is called to fill up the list with the coordinates of all the obstacles.
+     * @param list The list to fill up.
+     */
     public void fillList(List<Coordinate> list) {
         int start = Sizes.DEFAULT_AMOUNT_BORDER_TILES;
         int finish = Sizes.DEFAULT_MINIMUM_MAP_TILES - Sizes.DEFAULT_AMOUNT_BORDER_TILES;

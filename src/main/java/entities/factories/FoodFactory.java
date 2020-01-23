@@ -45,6 +45,12 @@ public abstract class FoodFactory {
         return new Coordinate(x, y);
     }
 
+    /**
+     * This method is used to generate a random coordinate,
+     * which also takes the obstacles into consideration.
+     * @param obstacles List of obstacles coordinates.
+     * @return A random coordinate.
+     */
     public Coordinate randomCoordinates(List<Coordinate> obstacles) {
         Randomizer randomizer = new Randomizer(Sizes.DEFAULT_AMOUNT_BORDER_TILES,
                 Sizes.DEFAULT_AMOUNT_BORDER_TILES,

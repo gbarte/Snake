@@ -102,17 +102,23 @@ public class CustomGameMap extends GameMap {
         spriteBatch.end();
     }
 
-    public void renderMap(OrthographicCamera camera, SpriteBatch spriteBatch) {
-        spriteBatch.setProjectionMatrix(camera.combined);
+    /**
+     * This method is called from the main render method and is used to render the map.
+     * The split was mainly made for testability purposes.
+     * @param camera The OrthographicCamera needed for the projectionMatrix.
+     * @param batch SpriteBatch in which to render.
+     */
+    public void renderMap(OrthographicCamera camera, SpriteBatch batch) {
+        batch.setProjectionMatrix(camera.combined);
 
-        spriteBatch.begin();
+        batch.begin();
 
         for (int layer = 0; layer < getLayers(); layer++) {
             for (int row = 0; row < getHeight(); row++) {
                 for (int col = 0; col < getWidth(); col++) {
                     TileType type = this.getTileTypeByCoordinate(layer, col, row);
                     if (type != null) {
-                        spriteBatch.draw(this.tiles[0][type.getId() - 1], (col * TileType.TILE_SIZE),
+                        batch.draw(this.tiles[0][type.getId() - 1], (col * TileType.TILE_SIZE),
                                 (row * TileType.TILE_SIZE));
                     }
                 }

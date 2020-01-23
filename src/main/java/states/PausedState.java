@@ -58,6 +58,10 @@ public class PausedState implements IState {
     public void handleInput() {
     }
 
+    /**
+     * This method is used to unpause or quit the game using keyboard input.
+     * @param keycode The keycode indicates which key is pressed.
+     */
     public void handleInput(int keycode) {
         switch (keycode) {
             case Input.Keys.P:

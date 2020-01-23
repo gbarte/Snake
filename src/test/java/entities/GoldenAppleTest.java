@@ -22,12 +22,13 @@ public class GoldenAppleTest extends FoodTest {
 
     @Test
     void appleActionTest() {
-        GameMap fakeMap = mock(GameMap.class);
-        SnakeBody snakeBody = mock(SnakeBody.class);
-        GoldenApple goldenApple = new GoldenApple();
         Score score = new Score();
         int initial = 30;
         score.setValue(initial);
+
+        GameMap fakeMap = mock(GameMap.class);
+        SnakeBody snakeBody = mock(SnakeBody.class);
+        GoldenApple goldenApple = new GoldenApple();
         when(fakeMap.getScore()).thenReturn(score);
         when(fakeMap.getSnake()).thenReturn(snakeBody);
 
