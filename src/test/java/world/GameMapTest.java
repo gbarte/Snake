@@ -3,11 +3,15 @@ package world;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.intThat;
 import static org.mockito.Mockito.CALLS_REAL_METHODS;
+import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.graphics.Color;
@@ -17,19 +21,20 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import entities.Food;
 import entities.factories.FoodFactory;
 import entities.snake.SnakeBody;
+import java.util.List;
 import models.Coordinate;
 import models.Score;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.mockito.ArgumentMatcher;
 import org.mockito.Mockito;
-import states.GameOverState;
 import states.GameStateManager;
-import states.PausedState;
 import states.PlayState;
 import utils.Direction;
 import utils.Sizes;
+import utils.TileType;
 
 //Unnecessary warnings to have getters & setters for objects
 //that'll be mocked anyways and/or won't need getters & setters
@@ -147,19 +152,70 @@ public abstract class GameMapTest {
         BitmapFont fakeFont = mock(BitmapFont.class);
         doNothing().when(fakeFont).setColor(Color.RED);
         getGameMap().renderScore(fakeBatch, fakeFont);
-        verify(fakeFont).setColor(Color.RED);
-        verify(fakeFont).draw(fakeBatch, String.valueOf(getScore().getValue()),
-                Sizes.DEFAULT_AMOUNT_BORDER_TILES
-                        * (Sizes.TILE_PIXELS - Sizes.PADDING_TILE_PIXELS),
-                Sizes.DEFAULT_AMOUNT_BORDER_TILES
-                        * (Sizes.TILE_PIXELS - Sizes.PADDING_TILE_PIXELS));
+        verify(fakeFont).setColor(Color.CORAL);
+        verify(fakeFont).draw(fakeBatch, "Score: " + getScore().getValue(),
+                Sizes.DEFAULT_AMOUNT_BORDER_TILES * Sizes.TILE_PIXELS,
+                Sizes.DEFAULT_AMOUNT_BORDER_TILES * Sizes.TILE_PIXELS);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "UP, UP",
+            "RIGHT, UP",
+            "UP, LEFT",
+            "LEFT, DOWN",
+            "DOWN, RIGHT",
+    })
+    void updateDirectionTest(Direction currDir, Direction newDir) {
+        GameMap spies = spy(getGameMap());
+        getGameMap().getSnake().setCurrDir(currDir);
+        spies.updateDirection(newDir);
+        verify(spies).updateDirection(newDir);
+    }
+
+    @Test
+    void checkOutOfMapTestNotCollidable() {
+        Coordinate currentHead = new Coordinate(26, 25);
+        GameMap spies = spy(getGameMap());
+        GameStateManager managerSpy = spy(getManager());
+
+        spies.checkOutOfMap(currentHead, managerSpy, getScore(), TileType.WHITETILE);
+        verifyZeroInteractions(managerSpy);
     }
 
     /*
     @Test
-    void updateDirectionTest(Direction newDir, Direction currDir) {
+    void fillListTest() { //TODO remove comments!!!
+        int start = Sizes.DEFAULT_AMOUNT_BORDER_TILES;
+        int finish = Sizes.DEFAULT_MINIMUM_MAP_TILES - Sizes.DEFAULT_AMOUNT_BORDER_TILES;
+
         GameMap spies = spy(getGameMap());
-        getGameMap().getSnake().setCurrDir(currDir);
+
+        ArgumentMatcher<Integer> layer = new ArgumentMatcher<>() {
+            @Override
+            public boolean matches(Integer argument) {
+                if (argument >= 0 && argument < 2) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        };
+
+        ArgumentMatcher<Integer> colRow = argument -> {
+            if (argument >= 0 && argument < getGameMap().getHeight()) {
+                return true;
+            } else {
+                return false;
+            }
+        };
+
+        when(spies.getTileTypeByCoordinate(intThat(layer), intThat(colRow), intThat(colRow)))
+                .thenReturn(TileType.DARKBLUEWALL);
+        List<Coordinate> fakeList = mock(List.class);
+        spies.fillList(fakeList);
+
+        verify(fakeList, atMost((finish - start) * (finish - start))).add(any(Coordinate.class));
     }
 
      */

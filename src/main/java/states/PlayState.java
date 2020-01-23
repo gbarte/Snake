@@ -26,7 +26,7 @@ public class PlayState implements IState {
      * Constructor which creates a new state within the game.
      * E.g. Play/Pause/Menu.
      *
-     * @param gameManager which keeps track of the state of the game.
+     * @param gameManager Manager which keeps track of the state of the game.
      */
     public PlayState(GameStateManager gameManager) {
         orthographicCamera = new OrthographicCamera();
@@ -82,7 +82,7 @@ public class PlayState implements IState {
 
     @Override
     public void render(SpriteBatch batch) {
-        Gdx.gl.glClearColor(1, 0, 0, 1); //changes the background color, number between 0-1
+        Gdx.gl.glClearColor(0, 0, 1, 1); //changes the background color, number between 0-1
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         gameMap.render(orthographicCamera, batch, snakeBody);

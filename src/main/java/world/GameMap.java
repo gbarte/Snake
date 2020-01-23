@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import entities.Food;
 import entities.factories.AppleFactory;
 import entities.factories.FoodFactory;
@@ -272,26 +273,18 @@ public abstract class GameMap {
                 manager.setState(new PausedState(manager, getScore()));
                 break;
             case Input.Keys.W:
-                updateDirection(Direction.UP);
-                break;
-            case Input.Keys.A:
-                updateDirection(Direction.LEFT);
-                break;
-            case Input.Keys.S:
-                updateDirection(Direction.DOWN);
-                break;
-            case Input.Keys.D:
-                updateDirection(Direction.RIGHT);
-                break;
             case Input.Keys.UP:
                 updateDirection(Direction.UP);
                 break;
-            case Input.Keys.DOWN:
-                updateDirection(Direction.DOWN);
-                break;
+            case Input.Keys.A:
             case Input.Keys.LEFT:
                 updateDirection(Direction.LEFT);
                 break;
+            case Input.Keys.S:
+            case Input.Keys.DOWN:
+                updateDirection(Direction.DOWN);
+                break;
+            case Input.Keys.D:
             case Input.Keys.RIGHT:
                 updateDirection(Direction.RIGHT);
                 break;
@@ -306,7 +299,7 @@ public abstract class GameMap {
      * @param batch used for drawing elements.
      */
     public void renderScore(SpriteBatch batch) {
-        BitmapFont bitmapFont = new BitmapFont();
+        BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal("assets/font.fnt"));
         this.renderScore(batch, bitmapFont);
     }
 
@@ -317,12 +310,11 @@ public abstract class GameMap {
      * @param bitmapFont This is used to render the value of the score.
      */
     public void renderScore(SpriteBatch batch, BitmapFont bitmapFont) {
-        bitmapFont.setColor(Color.RED);
-        bitmapFont.draw(batch, String.valueOf(score.getValue()),
-                Sizes.DEFAULT_AMOUNT_BORDER_TILES
-                        * (Sizes.TILE_PIXELS - Sizes.PADDING_TILE_PIXELS),
-                Sizes.DEFAULT_AMOUNT_BORDER_TILES
-                        * (Sizes.TILE_PIXELS - Sizes.PADDING_TILE_PIXELS));
+        bitmapFont.setColor(Color.CORAL);
+        bitmapFont.newFontCache();
+        bitmapFont.draw(batch, "Score: " + score.getValue(),
+                Sizes.DEFAULT_AMOUNT_BORDER_TILES * Sizes.TILE_PIXELS,
+                Sizes.DEFAULT_AMOUNT_BORDER_TILES * Sizes.TILE_PIXELS);
     }
 
     /**
@@ -393,7 +385,10 @@ public abstract class GameMap {
         Coordinate currentHead = getSnake().getHeadCoord();
         GameStateManager manager = getManager();
         Score score = getScore();
-        this.checkOutOfMap(currentHead, manager, score);
+        TileType currentTile = getTileTypeByCoordinate(getLayers(),
+                currentHead.getCoordinateX(),
+                currentHead.getCoordinateY());
+        this.checkOutOfMap(currentHead, manager, score, currentTile);
     }
 
     /**
@@ -403,10 +398,8 @@ public abstract class GameMap {
      * @param manager The GameStateManager needed to set another state
      * @param score Current score of your game.
      */
-    public void checkOutOfMap(Coordinate currentHead, GameStateManager manager, Score score) {
-        TileType currentTile = getTileTypeByCoordinate(getLayers(),
-                currentHead.getCoordinateX(),
-                currentHead.getCoordinateY());
+    public void checkOutOfMap(Coordinate currentHead, GameStateManager manager, Score score,
+                              TileType currentTile) {
         if (currentTile.isCollidable()) {
             manager.setState(new GameOverState(manager, score));
         }
@@ -418,7 +411,7 @@ public abstract class GameMap {
      */
     public void checkHeadHitsBody() {
         int minLength = 3;
-        // head can touch tail only if snake has more than 2 bodyparts
+        // head can touch tail only if snake has more than 3 bodyparts
         int size = getSnake().getBodyParts().size();
         if (size > minLength) {
             for (int i = 1; i < size; i++) {
@@ -476,23 +469,24 @@ public abstract class GameMap {
         }
     }
 
+    //suppressing this warning because it thinks that badFood gets redefined.
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     private void updateBadApple() {
         LinkedList<BodyPart> all = getSnake().getBodyParts();
+        Coordinate foodCoordinate = getFood().getCoordinate();
+        boolean badFood = getTileTypeByCoordinate(getLayers(),
+                foodCoordinate.getCoordinateX(), foodCoordinate.getCoordinateY()).isCollidable();
         for (int i = 0; i < all.size(); i++) {
-            if (all.get(i).getCoordinate().equals(food.getCoordinate())) {
-                food = foodFactory.createFood(getObstacles());
+            if (all.get(i).getCoordinate().equals(food.getCoordinate()) || badFood) {
+                setFood(foodFactory.createFood(getObstacles()));
+                break;
             }
-        }
-        Coordinate bad = getFood().getCoordinate();
-        if (getTileTypeByCoordinate(getLayers(), bad.getCoordinateX(), bad.getCoordinateY())
-                .isCollidable()) {
-            setFood(foodFactory.createFood(getObstacles()));
         }
     }
 
     public void fillList(List<Coordinate> list) {
         int start = Sizes.DEFAULT_AMOUNT_BORDER_TILES;
-        int finish = Sizes.DEFAULT_MINIMUM_MAP_TILES-Sizes.DEFAULT_AMOUNT_BORDER_TILES;
+        int finish = Sizes.DEFAULT_MINIMUM_MAP_TILES - Sizes.DEFAULT_AMOUNT_BORDER_TILES;
         for (int i = start; i < finish; i++) {
             for (int j = start; j < finish; j++) {
                 TileType currentTile = getTileTypeByCoordinate(getLayers(), i, j);
