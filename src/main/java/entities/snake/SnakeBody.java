@@ -160,6 +160,8 @@ public class SnakeBody {
                 headCoord.subtractFromY(1);
                 updateBodyPartsPosition(headCoord);
                 break;
+            default:
+                break;
         }
     }
 

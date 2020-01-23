@@ -179,7 +179,7 @@ public class GameOverState implements IState {
      */
     private void initNickname() {
         BitmapFont bitmapFont = new BitmapFont();
-        Label.LabelStyle smallLabelStyle= new Label.LabelStyle(bitmapFont,
+        Label.LabelStyle smallLabelStyle = new Label.LabelStyle(bitmapFont,
                 new Color(255,  0, 255, 1));
         Label nicknameLabel = new Label("Enter a nickname", smallLabelStyle);
         nicknameLabel.setPosition(340, 279);
