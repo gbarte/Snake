@@ -3,6 +3,7 @@ package world.customgamemap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
+import java.util.Random;
 import utils.Sizes;
 import utils.TileType;
 
@@ -19,7 +20,8 @@ public class CustomGameMapLoader {
      * @return The generated map of 50 by 50 tiles.
      */
     public static CustomGameMapData generateDefaultMap(String id, String name) {
-        return generateDefaultMap(id, name, SIZE);
+        CustomGameMapData mapData = new CustomGameMapData();
+        return generateDefaultMap(id, name, SIZE, mapData);
     }
 
     /**
@@ -27,11 +29,12 @@ public class CustomGameMapLoader {
      * @param id The id of the map to generate.
      * @param name The name of the map to generate.
      * @param maxEdge The maximum size of the map's edge, in the amount of tiles on each edge.
+     * @param mapData The data of the map.
      * @return The generated map of given edge size.
      */
-    public static CustomGameMapData generateDefaultMap(String id, String name, int maxEdge) {
+    public static CustomGameMapData generateDefaultMap(String id, String name, int maxEdge,
+                                                       CustomGameMapData mapData) {
 
-        CustomGameMapData mapData = new CustomGameMapData();
         mapData.id = id;
         mapData.name = name;
         mapData.map = new int[2][maxEdge][maxEdge]; //change the dimensions of the layer!!!if needed

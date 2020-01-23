@@ -1,6 +1,7 @@
 package states;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 
 import java.util.Stack;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +18,7 @@ class GameStateManagerTest {
 
     @Test
     void push() {
-        MenuState menu = Mockito.mock(MenuState.class);
+        MenuState menu = mock(MenuState.class);
         stateManager.pushState(menu);
 
         assertEquals(stateManager.getStates().pop(), menu);
@@ -25,8 +26,8 @@ class GameStateManagerTest {
 
     @Test
     void pop() {
-        MenuState menu = Mockito.mock(MenuState.class);
-        PlayState play = Mockito.mock(PlayState.class);
+        MenuState menu = mock(MenuState.class);
+        PlayState play = mock(PlayState.class);
         Stack<IState> states = new Stack<>();
         states.push(menu);
         states.push(play);
@@ -38,8 +39,8 @@ class GameStateManagerTest {
 
     @Test
     void set() {
-        MenuState menu = Mockito.mock(MenuState.class);
-        PlayState play = Mockito.mock(PlayState.class);
+        MenuState menu = mock(MenuState.class);
+        PlayState play = mock(PlayState.class);
         Stack<IState> states = new Stack<>();
         states.push(menu);
         states.push(play);
@@ -52,8 +53,8 @@ class GameStateManagerTest {
 
     @Test
     void update() {
-        MenuState menu = Mockito.mock(MenuState.class);
-        PlayState play = Mockito.mock(PlayState.class);
+        MenuState menu = mock(MenuState.class);
+        PlayState play = mock(PlayState.class);
         Stack<IState> states = new Stack<>();
         states.push(menu);
         states.push(play);
@@ -65,8 +66,8 @@ class GameStateManagerTest {
 
     @Test
     void getStates() {
-        MenuState menu = Mockito.mock(MenuState.class);
-        PlayState play = Mockito.mock(PlayState.class);
+        MenuState menu = mock(MenuState.class);
+        PlayState play = mock(PlayState.class);
         Stack<IState> states = new Stack<>();
         states.push(menu);
         states.push(play);
@@ -78,13 +79,35 @@ class GameStateManagerTest {
 
     @Test
     void setStates() {
-        MenuState menu = Mockito.mock(MenuState.class);
-        PlayState play = Mockito.mock(PlayState.class);
+        MenuState menu = mock(MenuState.class);
+        PlayState play = mock(PlayState.class);
         Stack<IState> states = new Stack<>();
         states.push(menu);
         states.push(play);
 
         stateManager.setStates(states);
         assertEquals(stateManager.getStates().size(), states.size());
+    }
+
+    @Test
+    void reStateTest() {
+        PlayState playState = mock(PlayState.class);
+        stateManager.pushState(playState);
+
+        stateManager.reState();
+        assertEquals(stateManager.getStates().size(), 2);
+        assertEquals(stateManager.peekState(), playState);
+    }
+
+    @Test
+    void popTest() {
+        PlayState playState = mock(PlayState.class);
+        MenuState menuState = mock(MenuState.class);
+        stateManager.pushState(playState);
+        stateManager.pushState(menuState);
+
+        stateManager.popState();
+        assertEquals(stateManager.peekState(), playState);
+        assertEquals(stateManager.getStates().size(), 1);
     }
 }

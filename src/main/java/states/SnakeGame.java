@@ -4,17 +4,15 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import utils.Sizes;
 
 
 /**
  * The initialization game class.
  */
 public class SnakeGame extends ApplicationAdapter {
-    public static final int WIDTH = Sizes.MIN_WIDTH_WINDOW;
-    public static final int HEIGHT = Sizes.MIN_HEIGHT_WINDOW;
 
     public static final String TITLE = "Lil' Snake";
+    public static String username;
     private GameStateManager gameManager;
     private SpriteBatch batch;
 
@@ -47,6 +45,14 @@ public class SnakeGame extends ApplicationAdapter {
 
     public void setBatch(SpriteBatch batch) {
         this.batch = batch;
+    }
+
+    public static String getUsername() {
+        return username;
+    }
+
+    public static void setUsername(String username) {
+        SnakeGame.username = username;
     }
 }
 

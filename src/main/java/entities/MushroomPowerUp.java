@@ -6,7 +6,7 @@ import world.GameMap;
 
 /**
  * Food object which acts as a power up.
- * Main purpose of it is to increase the speed of the snake in the game.
+ * Main purpose of it is to decrease the speed of the snake in the game.
  *
  */
 public class MushroomPowerUp implements Food {
@@ -43,7 +43,7 @@ public class MushroomPowerUp implements Food {
     }
 
     @Override
-    public void actionTwo(GameMap map) {
-        map.setMoveTime(map.DEFAULT_MOVE_TIME);
+    public void action(GameMap map) {
+        map.setMoveTime(1.5f * GameMap.DEFAULT_MOVE_TIME);
     }
 }

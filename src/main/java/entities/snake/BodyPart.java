@@ -21,7 +21,7 @@ public class BodyPart {
     }
 
     /**
-     * Update body part's position to a new coordinate
+     * Update body part's position to a new coordinate.
      * @param coordinate Coordinate object with the new coordinates.
      */
     public void updateBodyPartPos(Coordinate coordinate) {

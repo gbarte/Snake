@@ -43,6 +43,7 @@ public class MenuState implements IState {
         initSettingsButton();
         initLeaderboardButton();
         initSignOutButton();
+        initRenderUsername();
         background = new Texture("assets/bg.png");
     }
 
@@ -180,6 +181,20 @@ public class MenuState implements IState {
         stage.addActor(settingsButton);
     }
 
+    /**
+     * Adds the username of logged in user to the screen.
+     */
+    private void initRenderUsername() {
+        BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal("assets/font.fnt"));
+        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
+                new Color(255, 0, 255, 1));
+        Label renderUsername = new Label("Logged in as " + SnakeGame.username, labelStyle);
+        renderUsername.setSize(100, 20);
+        renderUsername.setPosition(5,775);
+        renderUsername.setFontScale((float) 1);
+        stage.addActor(renderUsername);
+    }
+
     @Override
     public void handleInput() {
     }
@@ -193,11 +208,13 @@ public class MenuState implements IState {
     public void render(SpriteBatch batch) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.begin();
         stage.act();
         stage.getBatch().begin();
         stage.getBatch().draw(background, 0, 0, 800, 800);
         stage.getBatch().end();
         stage.draw();
+        batch.end();
     }
 
     @Override
@@ -217,12 +234,12 @@ public class MenuState implements IState {
                 System.out.println("result " + obj);
             }
         };
-        dialog.text("Use wasd to move the snake.\n"
+        dialog.text("Use 'WASD' to move the snake.\n"
                 + "Eat food to grow your snake.\n"
                 + "Game will end when you either hit yourself or the wall.\n"
                 + "Press p to pause the game.\n"
                 + "Press q to quit the game.\n"
-                + "Enjoy :)");
+                + "Enjoy :) ");
         dialog.button("OK", true);
         dialog.show(stage);
     }

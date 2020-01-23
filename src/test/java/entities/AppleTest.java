@@ -1,9 +1,14 @@
 package entities;
 
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import entities.snake.SnakeBody;
+import models.Score;
+import org.junit.jupiter.api.Test;
+import world.GameMap;
 
 class AppleTest extends FoodTest {
 
@@ -13,24 +18,19 @@ class AppleTest extends FoodTest {
     }
 
     @Test
-    void appleActionTest() { // TODO fix tests!!
-        /*
-        PlayState playState = Mockito.mock(PlayState.class);
-
+    void appleActionTest() {
+        GameMap fakeMap = mock(GameMap.class);
+        SnakeBody snakeBody = mock(SnakeBody.class);
+        Apple goldenApple = new Apple();
         Score score = new Score();
-        int initialScore = 20;
-        score.setValue(initialScore);
+        int initial = 30;
+        score.setValue(initial);
+        when(fakeMap.getScore()).thenReturn(score);
+        when(fakeMap.getSnake()).thenReturn(snakeBody);
 
-        Mockito.when(playState.getScore()).thenReturn(score);
-        SnakeBody snake = Mockito.mock(SnakeBody.class);
-        Mockito.when(playState.getSnake()).thenReturn(snake);
-
-        Apple apple = new Apple();
-        apple.action(playState);
-
-        assertEquals(initialScore + Apple.DEFAULT_SCORE, score.getValue());
-        Mockito.verify(snake).growSnake();
-         */
+        goldenApple.action(fakeMap);
+        assertEquals(score.getValue(), initial + Apple.DEFAULT_SCORE);
+        verify(fakeMap.getSnake()).growSnake();
     }
 
 }

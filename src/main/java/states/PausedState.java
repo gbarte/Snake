@@ -1,11 +1,15 @@
 package states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -14,25 +18,29 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import models.Score;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public class PausedState implements IState {
+
     private GameStateManager stateManager;
     private Stage stage;
     private Skin skin;
     private Texture backGround;
+    private Score score;
 
     /**
      * Constructor which creates a new Pause state within the game.
      *
      * @param gameManager which keeps track of the state of the game.
      */
-    public PausedState(GameStateManager gameManager) {
+    public PausedState(GameStateManager gameManager, Score score) {
         this.stateManager = gameManager;
+        this.score = score;
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
-        skin = new Skin(Gdx.files.internal(
-                "assets/quantum-horizon/skin/quantum-horizon-ui.json"));
+        skin = new Skin(
+                Gdx.files.internal("assets/quantum-horizon/skin/quantum-horizon-ui.json"));
         initTitle();
         initResumeButton();
         initRulesButton();
@@ -43,12 +51,34 @@ public class PausedState implements IState {
 
     @Override
     public void handleInput() {
+        /*
+        Gdx.input.setInputProcessor(new InputAdapter() {
+            @Override
+            public boolean keyDown(int keycode) {
+                handleInput(keycode);
+                return false;
+            }
+        });
+        */
+    }
 
+    public void handleInput(int keycode) {
+        switch (keycode) {
+            case Input.Keys.P:
+                stateManager.popState();
+                break;
+            case Input.Keys.Q:
+                stateManager.setState(new GameOverState(stateManager, score));
+                break;
+            default:
+                //do nothing
+                break;
+        }
     }
 
     @Override
     public void update(float dt) {
-
+        handleInput();
     }
 
     @Override
@@ -129,7 +159,7 @@ public class PausedState implements IState {
         quitButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                stateManager.setState(new GameOverState(stateManager));
+                stateManager.setState(new GameOverState(stateManager, score));
             }
 
             @Override
@@ -151,12 +181,12 @@ public class PausedState implements IState {
                 System.out.println("result " + obj);
             }
         };
-        dialog.text("Use wasd to move the snake.\n"
+        dialog.text("Use 'WASD' to move the snake.\n"
                 + "Eat food to grow your snake.\n"
                 + "Game will end when you either hit yourself or the wall.\n"
                 + "Press p to pause the game.\n"
                 + "Press q to quit the game.\n"
-                + "Enjoy :)");
+                + "Enjoy :) ");
         dialog.button("OK", true);
         dialog.show(stage);
     }
@@ -164,6 +194,9 @@ public class PausedState implements IState {
     @Override
     public void dispose() {
         backGround.dispose();
+        stage.dispose();
+        skin.dispose();
     }
+
 }
 

@@ -1,5 +1,10 @@
 package states;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.verify;
+
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import entities.snake.SnakeBody;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,11 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import utils.Sizes;
 import world.GameMap;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.verify;
 
 class PlayStateTest {
 
