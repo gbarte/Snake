@@ -51,15 +51,7 @@ public class PausedState implements IState {
 
     @Override
     public void handleInput() {
-        /*
-        Gdx.input.setInputProcessor(new InputAdapter() {
-            @Override
-            public boolean keyDown(int keycode) {
-                handleInput(keycode);
-                return false;
-            }
-        });
-        */
+
     }
 
     public void handleInput(int keycode) {
@@ -71,7 +63,6 @@ public class PausedState implements IState {
                 stateManager.setState(new GameOverState(stateManager, score));
                 break;
             default:
-                //do nothing
                 break;
         }
     }

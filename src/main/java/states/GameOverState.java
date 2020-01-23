@@ -19,7 +19,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import models.Score;
-import org.lwjgl.system.CallbackI;
 import services.leaderboard.LeaderboardService;
 
 /**
@@ -184,7 +183,6 @@ public class GameOverState implements IState {
                 new Color(255,  0, 255, 1));
         Label nicknameLabel = new Label("Enter a nickname", smallLabelStyle);
         nicknameLabel.setPosition(340, 279);
-
         nicknameField = new TextField("",
                 new Skin(Gdx.files.internal("assets/cloud-form/skin/cloud-form-ui.json")));
         nicknameField.setSize(200, 30);

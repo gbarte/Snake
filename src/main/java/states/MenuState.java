@@ -125,7 +125,7 @@ public class MenuState implements IState {
             @Override
             public boolean touchDown(InputEvent event, float x, float y,
                                      int pointer, int button) {
-                System.out.println("pressed play");
+                System.out.println("pressed game rules");
                 return true;
             }
         });
@@ -167,14 +167,12 @@ public class MenuState implements IState {
         settingsButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //TODO: settingsState
-//                gameManager.set(new SettingsState(gameManager));
+                //TODO
             }
 
             @Override
             public boolean touchDown(
                     InputEvent event, float x, float y, int pointer, int button) {
-                System.out.println("pressed settings");
                 return true;
             }
         });

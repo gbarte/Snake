@@ -111,6 +111,25 @@ public class SignUpState implements IState {
     private void initSignUpButton() {
         TextButton signUpButton = new TextButton("Sign up", skin);
         signUpButton.setPosition(320, 125);
+        signUpButton.addListener(new InputListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                AuthService authService = new AuthService();
+                RegistrationResponse response
+                        = authService.register(usernameField.getText(), passwordField.getText());
+                switch (response) {
+                    case OCCUPIED_NAME:
+                        usernameTakenDialog();
+                        break;
+                    case SHORT_PASSWORD:
+                        passwordTooShortDialog();
+                        break;
+                    case SUCCESS:
+                        stateManager.setState(new LoginState(stateManager));
+                        break;
+                    default:
+                }
+            }
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -135,26 +154,10 @@ public class SignUpState implements IState {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                // TODO
-                System.out.println("pressed return");
                 return true;
             }
         });
         stage.addActor(returnButton);
-    }
-
-    /**
-     * This dialog box is shown when the password is not safe enough.
-     */
-    public void incorrectPasswordDialog() {
-        Dialog dialog = new Dialog("Password not valid", cloudSkin, "dialog") {
-            public void result(Object obj) {
-                System.out.println("result " + obj);
-            }
-        };
-        dialog.text("Please make sure your password is at least xxx long and contains a number.");
-        dialog.button("OK", true);
-        dialog.show(stage);
     }
 
     /**
