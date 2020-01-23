@@ -2,6 +2,7 @@ package entities;
 
 import com.badlogic.gdx.graphics.Texture;
 import models.Coordinate;
+import utils.Sizes;
 import world.GameMap;
 
 
@@ -10,7 +11,7 @@ import world.GameMap;
  */
 public class Apple implements Food {
 
-    public static final int DEFAULT_SCORE = 10;
+    public static final int DEFAULT_SCORE = Sizes.DEFAULT_SCORE;
     private static final String texturePath = "assets/redapple16px.png";
     public Coordinate coordinate;
     private Texture texture;
