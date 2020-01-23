@@ -39,9 +39,9 @@ public class TiledGameMap extends GameMap {
      * Constructor that takes in a file name for the map.
      *
      * @param bodyTexture The texture path for the snake's body.
-     * @param fileName The file's name in string format.
-     * @param snake    The snake that gets passed through.
-     * @param manager  The game's state manager that's required to manage the game.
+     * @param fileName    The file's name in string format.
+     * @param snake       The snake that gets passed through.
+     * @param manager     The game's state manager that's required to manage the game.
      */
     public TiledGameMap(String bodyTexture, String fileName, SnakeBody snake,
                         GameStateManager manager) {

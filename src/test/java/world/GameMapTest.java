@@ -3,7 +3,6 @@ package world;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.intThat;
 import static org.mockito.Mockito.CALLS_REAL_METHODS;
 import static org.mockito.Mockito.atMost;
@@ -175,48 +174,44 @@ public abstract class GameMapTest {
 
     @Test
     void checkOutOfMapTestNotCollidable() {
-        Coordinate currentHead = new Coordinate(26, 25);
         GameMap spies = spy(getGameMap());
         GameStateManager managerSpy = spy(getManager());
 
-        spies.checkOutOfMap(currentHead, managerSpy, getScore(), TileType.WHITETILE);
+        spies.checkOutOfMap(managerSpy, getScore(), TileType.WHITETILE);
         verifyZeroInteractions(managerSpy);
     }
 
-    /*
+
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     @Test
-    void fillListTest() { //TODO remove comments!!!
-        int start = Sizes.DEFAULT_AMOUNT_BORDER_TILES;
-        int finish = Sizes.DEFAULT_MINIMUM_MAP_TILES - Sizes.DEFAULT_AMOUNT_BORDER_TILES;
+    void fillListTest() {
 
-        GameMap spies = spy(getGameMap());
+        //This test only works with CustomGameMap because in TiledGameMap some
+        //LibGdx libraries are called that throw NullPointerExceptions.
+        if (getGameMap() instanceof CustomGameMap) {
+            GameMap spies = spy(getGameMap());
 
-        ArgumentMatcher<Integer> layer = new ArgumentMatcher<>() {
-            @Override
-            public boolean matches(Integer argument) {
-                if (argument >= 0 && argument < 2) {
-                    return true;
-                } else {
-                    return false;
+            ArgumentMatcher<Integer> layer = new ArgumentMatcher<>() {
+                @Override
+                public boolean matches(Integer argument) {
+                    return argument <= getGameMap().getLayers();
                 }
-            }
-        };
+            };
 
-        ArgumentMatcher<Integer> colRow = argument -> {
-            if (argument >= 0 && argument < getGameMap().getHeight()) {
-                return true;
-            } else {
-                return false;
-            }
-        };
+            ArgumentMatcher<Integer> colRow = argument -> {
+                return argument >= 0 && argument < getGameMap().getHeight();
+            };
 
-        when(spies.getTileTypeByCoordinate(intThat(layer), intThat(colRow), intThat(colRow)))
-                .thenReturn(TileType.DARKBLUEWALL);
-        List<Coordinate> fakeList = mock(List.class);
-        spies.fillList(fakeList);
+            when(spies.getTileTypeByCoordinate(intThat(layer), intThat(colRow), intThat(colRow)))
+                    .thenReturn(TileType.DARKBLUEWALL);
+            List<Coordinate> fakeList = mock(List.class);
+            spies.fillList(fakeList);
 
-        verify(fakeList, atMost((finish - start) * (finish - start))).add(any(Coordinate.class));
+            int start = Sizes.DEFAULT_AMOUNT_BORDER_TILES;
+            int finish = Sizes.DEFAULT_MINIMUM_MAP_TILES - Sizes.DEFAULT_AMOUNT_BORDER_TILES;
+            verify(fakeList, atMost((finish - start) * (finish - start)))
+                    .add(any(Coordinate.class));
+        }
     }
 
-     */
 }
