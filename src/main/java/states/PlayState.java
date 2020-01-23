@@ -28,7 +28,7 @@ public class PlayState implements IState {
      *
      * @param gameManager Manager which keeps track of the state of the game.
      */
-    public PlayState(GameStateManager gameManager) {
+    public PlayState(GameStateManager gameManager, String id) {
         orthographicCamera = new OrthographicCamera();
         orthographicCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         orthographicCamera.update();
@@ -39,7 +39,7 @@ public class PlayState implements IState {
 
         //these are the 'customizable' things path you can pass in (for CustomGameMap)
         //String id, String name, String tileSet, String bodytexture
-        CustomGameMapData mapData = CustomGameMapLoader.loadMap("defaultID", "defaultName");
+        CustomGameMapData mapData = CustomGameMapLoader.loadMap(id, "defaultName");
         Texture texture = new Texture("assets/tile-set/setOfFive.png");
         TextureRegion[][] textureRegions
                 = TextureRegion.split(texture, TileType.TILE_SIZE, TileType.TILE_SIZE);

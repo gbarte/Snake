@@ -143,7 +143,7 @@ public class MenuState implements IState {
             @Override
             public void touchUp(InputEvent event, float x, float y,
                                 int pointer, int button) {
-                stateManager.setState(new PlayState(stateManager));
+                stateManager.setState(new LevelState(stateManager));
             }
 
             @Override

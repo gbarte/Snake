@@ -64,9 +64,9 @@ public class SignUpState implements IState {
      */
     private void initTitle() {
         BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal("assets/font.fnt"));
-        Label.LabelStyle TitleLabelStyle = new Label.LabelStyle(bitmapFont,
+        Label.LabelStyle titleLabelStyle = new Label.LabelStyle(bitmapFont,
                 new Color(0, 255, 0, 1));
-        Label title = new Label("Lil' Snake", TitleLabelStyle);
+        Label title = new Label("Lil' Snake", titleLabelStyle);
         title.setSize(600, 120);
         title.setPosition(100, 550);
         title.setFontScale(3);
