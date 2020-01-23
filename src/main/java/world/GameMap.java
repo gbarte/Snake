@@ -3,20 +3,22 @@ package world;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import entities.Food;
 import entities.factories.AppleFactory;
 import entities.factories.FoodFactory;
 import entities.factories.PowerUpFactory;
 import entities.snake.BodyPart;
 import entities.snake.SnakeBody;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import models.Coordinate;
 import models.DoubleScore;
 import models.Score;
@@ -34,9 +36,10 @@ public abstract class GameMap {
     private float moveTime = DEFAULT_MOVE_TIME;
     private float timer = moveTime;
     private SnakeBody snake;
+    private List<Coordinate> obstacles;
+    private FoodFactory foodFactory;
     private Food food;
     private Score score;
-    private FoodFactory foodFactory;
     private String bodyTexture;
     private TextureRegion[][] bodyTextureRegion;
     private static double powerUpTimeout = Sizes.POWER_UP_TIMEOUT;
@@ -47,6 +50,7 @@ public abstract class GameMap {
     public GameMap() {
         this.manager = getManager();
         this.snake = getSnake();
+        this.obstacles = new ArrayList<>();
         this.foodFactory = new AppleFactory();
         this.food = foodFactory.createFood();
         this.score = new Score();
@@ -62,6 +66,7 @@ public abstract class GameMap {
     public GameMap(String bodyTexture) {
         this.manager = getManager();
         this.snake = getSnake();
+        this.obstacles = new ArrayList<>();
         this.foodFactory = new AppleFactory();
         this.food = foodFactory.createFood();
         this.score = new Score();
@@ -82,7 +87,8 @@ public abstract class GameMap {
      */
     public GameMap(float timer, GameStateManager manager, SnakeBody snake,
                    FoodFactory foodFactory, Food food, Score score,
-                   String bodyTexture, TextureRegion[][] bodyTextureRegion) {
+                   String bodyTexture, TextureRegion[][] bodyTextureRegion,
+                   List<Coordinate> obstacles) {
         this.timer = timer;
         this.manager = manager;
         this.snake = snake;
@@ -91,6 +97,7 @@ public abstract class GameMap {
         this.score = score;
         this.bodyTexture = bodyTexture;
         this.bodyTextureRegion = bodyTextureRegion;
+        this.obstacles = obstacles;
     }
 
     /**
@@ -158,16 +165,24 @@ public abstract class GameMap {
         return this.getHeight() * TileType.TILE_SIZE;
     }
 
+    public abstract GameStateManager getManager();
+
+    public void setManager(GameStateManager manager) {
+        this.manager = manager;
+    }
+
     public abstract SnakeBody getSnake();
 
     public void setSnake(SnakeBody snake) {
         this.snake = snake;
     }
 
-    public abstract GameStateManager getManager();
+    public List<Coordinate> getObstacles() {
+        return obstacles;
+    }
 
-    public void setManager(GameStateManager manager) {
-        this.manager = manager;
+    public void setObstacles(List<Coordinate> obstacles) {
+        this.obstacles = obstacles;
     }
 
     public Food getFood() {
@@ -247,6 +262,13 @@ public abstract class GameMap {
         });
     }
 
+    /**
+     * This method handles the input and what to do with it.
+     * The split was mainly made for testability purposes such that,
+     * the libGDX functionality is separate from the testable parts.
+     * @param keycode The keycode indicates which key is pressed.
+     * @param manager The manager needed if any other state needs to be instantiated.
+     */
     public void handleInput(int keycode, GameStateManager manager) {
         switch (keycode) {
             case Input.Keys.Q:
@@ -258,26 +280,18 @@ public abstract class GameMap {
                 manager.setState(new PausedState(manager, getScore()));
                 break;
             case Input.Keys.W:
-                updateDirection(Direction.UP);
-                break;
-            case Input.Keys.A:
-                updateDirection(Direction.LEFT);
-                break;
-            case Input.Keys.S:
-                updateDirection(Direction.DOWN);
-                break;
-            case Input.Keys.D:
-                updateDirection(Direction.RIGHT);
-                break;
             case Input.Keys.UP:
                 updateDirection(Direction.UP);
                 break;
-            case Input.Keys.DOWN:
-                updateDirection(Direction.DOWN);
-                break;
+            case Input.Keys.A:
             case Input.Keys.LEFT:
                 updateDirection(Direction.LEFT);
                 break;
+            case Input.Keys.S:
+            case Input.Keys.DOWN:
+                updateDirection(Direction.DOWN);
+                break;
+            case Input.Keys.D:
             case Input.Keys.RIGHT:
                 updateDirection(Direction.RIGHT);
                 break;
@@ -292,7 +306,7 @@ public abstract class GameMap {
      * @param batch used for drawing elements.
      */
     public void renderScore(SpriteBatch batch) {
-        BitmapFont bitmapFont = new BitmapFont();
+        BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal("assets/font.fnt"));
         this.renderScore(batch, bitmapFont);
     }
 
@@ -303,12 +317,11 @@ public abstract class GameMap {
      * @param bitmapFont This is used to render the value of the score.
      */
     public void renderScore(SpriteBatch batch, BitmapFont bitmapFont) {
-        bitmapFont.setColor(Color.RED);
-        bitmapFont.draw(batch, String.valueOf(score.getValue()),
-                Sizes.DEFAULT_AMOUNT_BORDER_TILES
-                        * (Sizes.TILE_PIXELS - Sizes.PADDING_TILE_PIXELS),
-                Sizes.DEFAULT_AMOUNT_BORDER_TILES
-                        * (Sizes.TILE_PIXELS - Sizes.PADDING_TILE_PIXELS));
+        bitmapFont.setColor(Color.CORAL);
+        bitmapFont.newFontCache();
+        bitmapFont.draw(batch, "Score: " + score.getValue(),
+                Sizes.DEFAULT_AMOUNT_BORDER_TILES * Sizes.TILE_PIXELS,
+                Sizes.DEFAULT_AMOUNT_BORDER_TILES * Sizes.TILE_PIXELS);
     }
 
     /**
@@ -365,6 +378,11 @@ public abstract class GameMap {
         }
     }
 
+    /**
+     * This method is called from the update method.
+     * It's used to update private methods.
+     * This split was mainly made for testability purposes.
+     */
     public void updatePrivateMethods() {
         checkAppleEaten();
         updateBadApple();
@@ -379,7 +397,10 @@ public abstract class GameMap {
         Coordinate currentHead = getSnake().getHeadCoord();
         GameStateManager manager = getManager();
         Score score = getScore();
-        this.checkOutOfMap(currentHead, manager, score);
+        TileType currentTile = getTileTypeByCoordinate(getLayers(),
+                currentHead.getCoordinateX(),
+                currentHead.getCoordinateY());
+        this.checkOutOfMap(currentHead, manager, score, currentTile);
     }
 
     /**
@@ -389,10 +410,8 @@ public abstract class GameMap {
      * @param manager The GameStateManager needed to set another state
      * @param score Current score of your game.
      */
-    public void checkOutOfMap(Coordinate currentHead, GameStateManager manager, Score score) {
-        TileType currentTile = getTileTypeByCoordinate(getLayers(),
-                currentHead.getCoordinateX(),
-                currentHead.getCoordinateY());
+    public void checkOutOfMap(Coordinate currentHead, GameStateManager manager, Score score,
+                              TileType currentTile) {
         if (currentTile.isCollidable()) {
             manager.setState(new GameOverState(manager, score));
         }
@@ -404,7 +423,7 @@ public abstract class GameMap {
      */
     public void checkHeadHitsBody() {
         int minLength = 3;
-        // head can touch tail only if snake has more than 2 bodyparts
+        // head can touch tail only if snake has more than 3 bodyparts
         int size = getSnake().getBodyParts().size();
         if (size > minLength) {
             for (int i = 1; i < size; i++) {
@@ -422,7 +441,7 @@ public abstract class GameMap {
     private void checkAppleEaten() {
         if (getSnake().getHeadCoord().equals(getFood().getCoordinate())) {
             getFood().action(this);
-            food = foodFactory.createFood();
+            food = foodFactory.createFood(getObstacles());
             checkAppleOnSnake();
             if (foodFactory instanceof AppleFactory) {
                 activatePowerUp();
@@ -457,16 +476,39 @@ public abstract class GameMap {
     private void checkAppleOnSnake() {
         for (BodyPart bp : getSnake().getBodyParts()) {
             if (bp.getCoordinate().equals(food.getCoordinate())) {
-                food = foodFactory.createFood();
+                food = foodFactory.createFood(getObstacles());
             }
         }
     }
 
+    //suppressing this warning because it thinks that badFood gets redefined.
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     private void updateBadApple() {
         LinkedList<BodyPart> all = getSnake().getBodyParts();
+        Coordinate foodCoordinate = getFood().getCoordinate();
+        boolean badFood = getTileTypeByCoordinate(getLayers(),
+                foodCoordinate.getCoordinateX(), foodCoordinate.getCoordinateY()).isCollidable();
         for (int i = 0; i < all.size(); i++) {
-            if (all.get(i).getCoordinate().equals(food.getCoordinate())) {
-                food = foodFactory.createFood();
+            if (all.get(i).getCoordinate().equals(food.getCoordinate()) || badFood) {
+                setFood(foodFactory.createFood(getObstacles()));
+                break;
+            }
+        }
+    }
+
+    /**
+     * This method is called to fill up the list with the coordinates of all the obstacles.
+     * @param list The list to fill up.
+     */
+    public void fillList(List<Coordinate> list) {
+        int start = Sizes.DEFAULT_AMOUNT_BORDER_TILES;
+        int finish = Sizes.DEFAULT_MINIMUM_MAP_TILES - Sizes.DEFAULT_AMOUNT_BORDER_TILES;
+        for (int i = start; i < finish; i++) {
+            for (int j = start; j < finish; j++) {
+                TileType currentTile = getTileTypeByCoordinate(getLayers(), i, j);
+                if (currentTile.isCollidable()) {
+                    list.add(new Coordinate(i, j));
+                }
             }
         }
     }

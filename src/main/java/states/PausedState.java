@@ -3,13 +3,11 @@ package states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -46,14 +44,24 @@ public class PausedState implements IState {
         initRulesButton();
         initQuitButton();
         backGround = new Texture("assets/bg.png");
+        stage.addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                handleInput(keycode);
+                return false;
+            }
+        });
     }
 
 
     @Override
     public void handleInput() {
-
     }
 
+    /**
+     * This method is used to unpause or quit the game using keyboard input.
+     * @param keycode The keycode indicates which key is pressed.
+     */
     public void handleInput(int keycode) {
         switch (keycode) {
             case Input.Keys.P:
