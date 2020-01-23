@@ -115,12 +115,12 @@ public class LevelState implements IState {
     private void initLevelTwoButton() {
         TextButton levelTwoButton = new TextButton("Level two", skin);
         levelTwoButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-        levelTwoButton.setPosition(400 - (levelTwoButton.getWidth() / 2), 150);
+        levelTwoButton.setPosition(400 - (levelTwoButton.getWidth() / 2), 250);
         levelTwoButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y,
                                 int pointer, int button) {
-                //TODO: level two
+                stateManager.setState(new PlayState(stateManager, "TiledGameMap obs.tmx"));
             }
 
             @Override
@@ -139,12 +139,12 @@ public class LevelState implements IState {
     private void initLevelThreeButton() {
         TextButton levelThreeButton = new TextButton("Level three", skin);
         levelThreeButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-        levelThreeButton.setPosition(400 - (levelThreeButton.getWidth() / 2), 250);
+        levelThreeButton.setPosition(400 - (levelThreeButton.getWidth() / 2), 150);
         levelThreeButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y,
                                 int pointer, int button) {
-                //TODO: Level three
+                stateManager.setState(new PlayState(stateManager, "TiledGameMap obs2.tmx"));
             }
 
             @Override
