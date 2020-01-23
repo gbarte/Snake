@@ -1,6 +1,8 @@
 package entities;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import models.Coordinate;
 import utils.Sizes;
 import world.GameMap;
@@ -23,19 +25,21 @@ public class Apple implements Food {
      */
     public Apple(Coordinate coordinate) {
         this.coordinate = coordinate;
-        this.texture = new Texture(texturePath);
     }
 
     public Apple() {
 
     }
 
-    public Coordinate getCoordinate() {
-        return coordinate;
+    public void render(SpriteBatch batch) {
+        this.texture = new Texture(texturePath);
+        batch.draw(texture,
+                coordinate.getCoordinateX() * Sizes.TILE_PIXELS,
+                coordinate.getCoordinateY() * Sizes.TILE_PIXELS);
     }
 
-    public Texture getTexture() {
-        return texture;
+    public Coordinate getCoordinate() {
+        return coordinate;
     }
 
     public void setCoordinate(Coordinate coordinate) {
@@ -44,6 +48,10 @@ public class Apple implements Food {
 
     public void setTexture(Texture texture) {
         this.texture = texture;
+    }
+
+    public Texture getTexture() {
+        return this.texture;
     }
 
     /**

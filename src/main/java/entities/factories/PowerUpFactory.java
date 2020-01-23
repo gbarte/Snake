@@ -7,8 +7,6 @@ import entities.MushroomPowerUp;
 import java.util.List;
 import java.util.Random;
 import models.Coordinate;
-import models.Randomizer;
-import utils.Sizes;
 
 
 /**

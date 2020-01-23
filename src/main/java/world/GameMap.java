@@ -122,9 +122,7 @@ public abstract class GameMap {
         this.snake = snake;
         batch.setProjectionMatrix(camera.combined);
 
-        batch.draw(getFood().getTexture(),
-                getFood().getCoordinate().getCoordinateX() * Sizes.TILE_PIXELS,
-                getFood().getCoordinate().getCoordinateY() * Sizes.TILE_PIXELS);
+        food.render(batch);
 
         renderScore(batch);
 
@@ -457,7 +455,7 @@ public abstract class GameMap {
     }
 
     private void activatePowerUp() {
-        if (getScore().getValue() > Sizes.DEFAULT_SCORE * 10) {
+        if (getScore().getValue() > Sizes.POWER_UP_ACTIVATION) {
             foodFactory = new PowerUpFactory();
         }
     }
