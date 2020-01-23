@@ -19,15 +19,18 @@ class AppleTest extends FoodTest {
 
     @Test
     void appleActionTest() {
-        GameMap fakeMap = mock(GameMap.class);
-        SnakeBody snakeBody = mock(SnakeBody.class);
-        Apple goldenApple = new Apple();
+
         Score score = new Score();
         int initial = 30;
         score.setValue(initial);
+
+
+        GameMap fakeMap = mock(GameMap.class);
+        SnakeBody snakeBody = mock(SnakeBody.class);
         when(fakeMap.getScore()).thenReturn(score);
         when(fakeMap.getSnake()).thenReturn(snakeBody);
 
+        Apple goldenApple = new Apple();
         goldenApple.action(fakeMap);
         assertEquals(score.getValue(), initial + Apple.DEFAULT_SCORE);
         verify(fakeMap.getSnake()).growSnake();

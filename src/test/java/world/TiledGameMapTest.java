@@ -23,6 +23,9 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import entities.Food;
 import entities.factories.FoodFactory;
 import entities.snake.SnakeBody;
+import java.util.ArrayList;
+import java.util.List;
+import models.Coordinate;
 import models.Score;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -70,6 +73,8 @@ class TiledGameMapTest extends GameMapTest {
         fakeBodyTextureRegion[0][0] = fakeHead;
         fakeBodyTextureRegion[0][1] = fakeBody;
 
+        List<Coordinate> obstacles = new ArrayList<>();
+
         this.tiledGameMap = new TiledGameMap(this.manager,
                 this.snake,
                 bodyTexture,
@@ -79,7 +84,8 @@ class TiledGameMapTest extends GameMapTest {
                 this.tiledMap,
                 this.tiledMapRenderer,
                 this.fileName,
-                fakeBodyTextureRegion);
+                fakeBodyTextureRegion,
+                obstacles);
         setUpMapCells();
         super.setUp();
     }

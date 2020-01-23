@@ -2,8 +2,10 @@ package entities.factories;
 
 import entities.Food;
 import entities.snake.SnakeBody;
+import java.util.List;
 import java.util.Random;
 import models.Coordinate;
+import models.Randomizer;
 import states.SnakeGame;
 import utils.Sizes;
 
@@ -16,6 +18,13 @@ import utils.Sizes;
 public abstract class FoodFactory {
 
     public abstract Food createFood();
+
+    /**
+     * Use this to create food that doesn't spawn on top of the obstacles in the game.
+     * @param obstacles List of all the coordinates where food can't spawn (excludes border).
+     * @return Food object that isn't on top of any obstacles in the game.
+     */
+    public abstract Food createFood(List<Coordinate> obstacles);
 
     /**
      * Randomly chooses an x and y coordinate to be used as
@@ -34,6 +43,21 @@ public abstract class FoodFactory {
         int y = r.nextInt(maxY - minY) + minY;
 
         return new Coordinate(x, y);
+    }
+
+    /**
+     * This method is used to generate a random coordinate,
+     * which also takes the obstacles into consideration.
+     * @param obstacles List of obstacles coordinates.
+     * @return A random coordinate.
+     */
+    public Coordinate randomCoordinates(List<Coordinate> obstacles) {
+        Randomizer randomizer = new Randomizer(Sizes.DEFAULT_AMOUNT_BORDER_TILES,
+                Sizes.DEFAULT_AMOUNT_BORDER_TILES,
+                Sizes.DEFAULT_MINIMUM_MAP_TILES - Sizes.DEFAULT_AMOUNT_BORDER_TILES,
+                Sizes.DEFAULT_MINIMUM_MAP_TILES - Sizes.DEFAULT_AMOUNT_BORDER_TILES, obstacles);
+        Coordinate coordinate = randomizer.getRandomCoordinate();
+        return coordinate;
     }
 
 }

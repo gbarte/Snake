@@ -23,10 +23,6 @@ public class DoubleScorePowerUpTest extends FoodTest {
     @Test
     void actionTest() {
 
-        GameMap fakeMap = mock(GameMap.class, CALLS_REAL_METHODS);
-
-        DoubleScorePowerUp powerUp = new DoubleScorePowerUp();
-
         Score score = new Score();
         int initial = 30;
         score.setValue(initial);
@@ -34,8 +30,11 @@ public class DoubleScorePowerUpTest extends FoodTest {
         DoubleScore ds = new DoubleScore();
         ds.setValue(initial);
 
+        GameMap fakeMap = mock(GameMap.class, CALLS_REAL_METHODS);
+
         when(fakeMap.getScore()).thenReturn(score);
 
+        DoubleScorePowerUp powerUp = new DoubleScorePowerUp();
         powerUp.action(fakeMap);
 
         when(fakeMap.getScore()).thenReturn(ds);

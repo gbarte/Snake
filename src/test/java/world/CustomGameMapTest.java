@@ -3,10 +3,8 @@ package world;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyFloat;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.CALLS_REAL_METHODS;
 import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.doNothing;
@@ -14,17 +12,15 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import entities.Food;
 import entities.factories.FoodFactory;
 import entities.snake.SnakeBody;
+import java.util.ArrayList;
+import java.util.List;
 import models.Coordinate;
 import models.Score;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,11 +28,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mockito;
-import states.GameOverState;
 import states.GameStateManager;
-import states.PausedState;
-import states.PlayState;
-import utils.Direction;
 import utils.Sizes;
 import utils.TileType;
 import world.customgamemap.CustomGameMapLoader;
@@ -88,6 +80,8 @@ public class CustomGameMapTest extends GameMapTest {
         fakeBodyTextureRegion[0][0] = fakeHead;
         fakeBodyTextureRegion[0][1] = fakeBody;
 
+        List<Coordinate> obstacles = new ArrayList<>();
+
         this.customGameMap = new CustomGameMap(this.id,
                 this.name,
                 this.map,
@@ -98,7 +92,8 @@ public class CustomGameMapTest extends GameMapTest {
                 score,
                 fakeFactory,
                 bodyTexture,
-                fakeBodyTextureRegion);
+                fakeBodyTextureRegion,
+                obstacles);
         super.setUp();
     }
 
