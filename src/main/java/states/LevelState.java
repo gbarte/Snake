@@ -1,6 +1,7 @@
 package states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,15 +16,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class LevelState implements IState {
-    private GameStateManager stateManager;
     private static final int BUTTON_WIDTH = 300;
     private static final int BUTTON_HEIGHT = 60;
+    private GameStateManager stateManager;
     private Stage stage;
     private Skin skin;
     private Texture background;
 
     /**
      * Creates menu screen.
+     *
      * @param gameManager which keeps track of the state of the game.
      */
     public LevelState(GameStateManager gameManager) {
@@ -38,6 +40,13 @@ public class LevelState implements IState {
         initLevelThreeButton();
         initReturnButton();
         background = new Texture("assets/bg.png");
+        stage.addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                handleInput(keycode);
+                return false;
+            }
+        });
     }
 
     public GameStateManager getStateManager() {
@@ -81,7 +90,7 @@ public class LevelState implements IState {
                 new Color(255, 0, 255, 1));
         Label menuTitle = new Label("Select level", labelStyle);
         menuTitle.setSize(600, 120);
-        menuTitle.setPosition(280,620);
+        menuTitle.setPosition(280, 620);
         menuTitle.setFontScale(1);
         stage.addActor(menuTitle);
     }
@@ -96,7 +105,8 @@ public class LevelState implements IState {
         levelOneButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                stateManager.setState(new PlayState(stateManager, "defaultID"));
+                stateManager.setState(new PlayState(stateManager, "defaultID", "defaultName",
+                        "assets/tile-set/setOfFive.png", "assets/snake-texture/DefaultBody.png"));
             }
 
             @Override
@@ -120,7 +130,8 @@ public class LevelState implements IState {
             @Override
             public void touchUp(InputEvent event, float x, float y,
                                 int pointer, int button) {
-                stateManager.setState(new PlayState(stateManager, "TiledGameMap obs.tmx"));
+                stateManager.setState(new PlayState(stateManager, "maps/tmx/obs.tmx",
+                        "assets/snake-texture/redBlueBody.png"));
             }
 
             @Override
@@ -144,7 +155,8 @@ public class LevelState implements IState {
             @Override
             public void touchUp(InputEvent event, float x, float y,
                                 int pointer, int button) {
-                stateManager.setState(new PlayState(stateManager, "TiledGameMap obs2.tmx"));
+                stateManager.setState(new PlayState(stateManager, "maps/tmx/obs2.tmx",
+                        "assets/snake-texture/ourSnake.png"));
             }
 
             @Override
@@ -184,6 +196,30 @@ public class LevelState implements IState {
 
     @Override
     public void handleInput() {
+    }
+
+    /**
+     * This method is used to choose map using keyboard input.
+     *
+     * @param keycode The keycode indicates which key is pressed.
+     */
+    public void handleInput(int keycode) {
+        switch (keycode) {
+            case Input.Keys.NUM_1:
+                stateManager.setState(new PlayState(stateManager, "defaultID", "defaultName",
+                        "assets/tile-set/setOfFive.png", "assets/snake-texture/DefaultBody.png"));
+                break;
+            case Input.Keys.NUM_2:
+                stateManager.setState(new PlayState(stateManager, "maps/tmx/obs.tmx",
+                        "assets/snake-texture/redBlueBody.png"));
+                break;
+            case Input.Keys.NUM_3:
+                stateManager.setState(new PlayState(stateManager, "maps/tmx/obs2.tmx",
+                        "assets/snake-texture/ourSnake.png"));
+                break;
+            default:
+                break;
+        }
     }
 
     @Override

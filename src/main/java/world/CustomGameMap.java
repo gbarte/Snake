@@ -65,18 +65,18 @@ public class CustomGameMap extends GameMap {
     /**
      * This constructor is mainly used for testing purposes.
      *
-     * @param id          The ID of the map.
-     * @param name        The name of the map.
-     * @param map         The map with all the tile type's numbers.
-     * @param tiles       Container for the theme of our map's tiles.
-     * @param snake       The snake for this game.
-     * @param manager     The GameStateManager which sets the different stages in the game.
-     * @param food        Food object that snake consumes.
-     * @param score       Score object to keep track of your score.
-     * @param foodFactory FoodFactory factory used to create food.
-     * @param bodyTexture The texture path for the snake's skin.
+     * @param id                The ID of the map.
+     * @param name              The name of the map.
+     * @param map               The map with all the tile type's numbers.
+     * @param tiles             Container for the theme of our map's tiles.
+     * @param snake             The snake for this game.
+     * @param manager           The GameStateManager which sets the different stages in the game.
+     * @param food              Food object that snake consumes.
+     * @param score             Score object to keep track of your score.
+     * @param foodFactory       FoodFactory factory used to create food.
+     * @param bodyTexture       The texture path for the snake's skin.
      * @param bodyTextureRegion The textureRegion for our snake's texture.
-     * @param obstacles        List of all the coordinates of obstacles.
+     * @param obstacles         List of all the coordinates of obstacles.
      */
     public CustomGameMap(String id, String name, int[][][] map, TextureRegion[][] tiles,
                          SnakeBody snake, GameStateManager manager,
@@ -105,8 +105,9 @@ public class CustomGameMap extends GameMap {
     /**
      * This method is called from the main render method and is used to render the map.
      * The split was mainly made for testability purposes.
+     *
      * @param camera The OrthographicCamera needed for the projectionMatrix.
-     * @param batch SpriteBatch in which to render.
+     * @param batch  SpriteBatch in which to render.
      */
     public void renderMap(OrthographicCamera camera, SpriteBatch batch) {
         batch.setProjectionMatrix(camera.combined);
