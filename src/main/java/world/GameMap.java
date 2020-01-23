@@ -298,9 +298,8 @@ public abstract class GameMap {
             case Input.Keys.RIGHT:
                 updateDirection(Direction.RIGHT);
                 break;
-            default:
-                //do nothing
-                break;
+            //We don't write a default in this case because if another key is pressed you don't care.
+            //It also increases the complexity of the code for no reason.
         }
     }
 
@@ -427,15 +426,11 @@ public abstract class GameMap {
      * If it does, then the state changes to GAME_OVER.
      */
     public void checkHeadHitsBody() {
-        int minLength = 3;
-        // head can touch tail only if snake has more than 3 bodyparts
         int size = getSnake().getBodyParts().size();
-        if (size > minLength) {
-            for (int i = 1; i < size; i++) {
-                if (getSnake().getBodyParts().get(i).getCoordinate()
-                        .equals(getSnake().getHeadCoord())) {
-                    getManager().setState(new GameOverState(getManager(), score));
-                }
+        for (int i = 1; i < size; i++) {
+            if (getSnake().getBodyParts().get(i).getCoordinate()
+                    .equals(getSnake().getHeadCoord())) {
+                getManager().setState(new GameOverState(getManager(), score));
             }
         }
     }

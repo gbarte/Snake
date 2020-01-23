@@ -1,10 +1,7 @@
 package world;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.ArgumentMatchers.anyFloat;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.doNothing;
@@ -12,16 +9,24 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
+import static world.customgamemap.CustomGameMapLoader.PATH;
 
+import com.badlogic.gdx.*;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.GdxNativesLoader;
+import entities.DoubleScorePowerUp;
 import entities.Food;
+import entities.factories.AppleFactory;
 import entities.factories.FoodFactory;
+import entities.factories.PowerUpFactory;
 import entities.snake.SnakeBody;
 import java.util.ArrayList;
 import java.util.List;
 import models.Coordinate;
+import models.DoubleScore;
 import models.Score;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,6 +36,7 @@ import org.mockito.Mockito;
 import states.GameStateManager;
 import utils.Sizes;
 import utils.TileType;
+import world.customgamemap.CustomGameMapData;
 import world.customgamemap.CustomGameMapLoader;
 
 //Unnecessary warnings to have getters & setters for objects
@@ -69,9 +75,9 @@ public class CustomGameMapTest extends GameMapTest {
 
         this.tiles = fakeTiles;
 
-        Food fakeFood = Mockito.mock(Food.class);
+        Food fakeFood = new AppleFactory().createFood();
         Score score = new Score();
-        FoodFactory fakeFactory = Mockito.mock(FoodFactory.class);
+        FoodFactory fakeFactory = new AppleFactory();
         String bodyTexture = "assets/snake-texture/DefaultBody.png";
 
         TextureRegion fakeHead = Mockito.mock(TextureRegion.class, "head");
@@ -281,4 +287,88 @@ public class CustomGameMapTest extends GameMapTest {
         assertEquals(getGameMap().getPixelHeight(),
                 customGameMap.getHeight() * TileType.TILE_SIZE);
     }
+
+    @Test
+    void powerUpFactoryTimeoutTest() {
+        FoodFactory foodFactory = new PowerUpFactory();
+        Gdx.graphics = mock(Graphics.class);
+        SnakeBody snake = customGameMap.getSnake();
+
+        customGameMap.setFood(foodFactory.createFood());
+        Food food = customGameMap.getFood();
+        snake.setHeadCoord(food.getCoordinate());
+        customGameMap.updatePrivateMethods();
+
+        customGameMap.setFood(foodFactory.createFood());
+        Food food2 = customGameMap.getFood();
+        snake.setHeadCoord(food2.getCoordinate());
+        customGameMap.updatePrivateMethods();
+
+        customGameMap.setFood(foodFactory.createFood());
+        Food food3 = customGameMap.getFood();
+        snake.setHeadCoord(food3.getCoordinate());
+        //Time out the powerUp
+        GameMap.setPowerUpTimeout(-1);
+        customGameMap.updatePrivateMethods();
+
+        //Power Up timed out so everything should be back to normal.
+        assertEquals(GameMap.getPowerUpTimeout(), Sizes.POWER_UP_TIMEOUT);
+        assertFalse(customGameMap.getScore() instanceof DoubleScore);
+    }
+
+    @Test
+    void switchToPowerUpFactoryTest() {
+        SnakeBody snake = customGameMap.getSnake();
+        Food food = customGameMap.getFood();
+
+        //Set snake and food coordinates the same so they collide
+        snake.setHeadCoord(food.getCoordinate());
+        //Update the game
+        customGameMap.updatePrivateMethods();
+
+        assertTrue(customGameMap.getFoodFactory() instanceof AppleFactory);
+
+        //Set high value and check that the factory type has changed.
+        customGameMap.getScore().setValue(10000);
+        customGameMap.updatePrivateMethods();
+
+        Food food2 = customGameMap.getFood();
+        //Collide snake and food so that new instance is created
+        snake.setHeadCoord(food2.getCoordinate());
+        customGameMap.updatePrivateMethods();
+
+        assertTrue(customGameMap.getFoodFactory() instanceof PowerUpFactory);
+        assertNotEquals(food2.getCoordinate(), customGameMap.getFood().getCoordinate());
+
+    }
+
+    @Test
+    void powerUpTimesOutTest() {
+        SnakeBody snake = customGameMap.getSnake();
+        Food food = customGameMap.getFood();
+        snake.setHeadCoord(food.getCoordinate());
+        customGameMap.checkHeadHitsBody();
+        customGameMap.updatePrivateMethods();
+
+        customGameMap.getScore().setValue(10000);
+        customGameMap.updatePrivateMethods();
+
+        Food food2 = customGameMap.getFood();
+        snake.setHeadCoord(food2.getCoordinate());
+        customGameMap.updatePrivateMethods();
+
+        if(food2 instanceof DoubleScorePowerUp) {
+            assertTrue(customGameMap.getScore() instanceof DoubleScore);
+        }
+
+        Food food3 = customGameMap.getFood();
+        snake.setHeadCoord(food3.getCoordinate());
+        GameMap.setPowerUpTimeout(-1);
+        customGameMap.updatePrivateMethods();
+
+        assertTrue(customGameMap.getFoodFactory() instanceof PowerUpFactory);
+        assertFalse(customGameMap.getScore() instanceof DoubleScore);
+    }
+
+
 }

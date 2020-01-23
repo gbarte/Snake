@@ -160,8 +160,8 @@ public class SnakeBody {
                 headCoord.subtractFromY(1);
                 updateBodyPartsPosition(headCoord);
                 break;
-            default:
-                break;
+            //We don't write a default in this case because if another key is pressed you don't care.
+            //It also increases the complexity of the code for no reason.
         }
     }
 
