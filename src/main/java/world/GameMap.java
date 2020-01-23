@@ -325,7 +325,6 @@ public abstract class GameMap {
      */
     public void renderScore(SpriteBatch batch, BitmapFont bitmapFont) {
         bitmapFont.setColor(Color.CORAL);
-        bitmapFont.newFontCache();
         bitmapFont.draw(batch, "Score: " + score.getValue(),
                 Sizes.DEFAULT_AMOUNT_BORDER_TILES * Sizes.TILE_PIXELS,
                 Sizes.DEFAULT_AMOUNT_BORDER_TILES * Sizes.TILE_PIXELS);
