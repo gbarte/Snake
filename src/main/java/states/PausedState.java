@@ -71,7 +71,6 @@ public class PausedState implements IState {
                 stateManager.setState(new GameOverState(stateManager, score));
                 break;
             default:
-                //do nothing
                 break;
         }
     }
