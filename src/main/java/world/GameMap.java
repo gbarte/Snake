@@ -311,7 +311,7 @@ public abstract class GameMap {
      *
      * @param batch used for drawing elements.
      */
-    public void renderScore(SpriteBatch batch) {
+    private void renderScore(SpriteBatch batch) {
         BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal("assets/font.fnt"));
         this.renderScore(batch, bitmapFont);
     }
