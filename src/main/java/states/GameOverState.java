@@ -199,7 +199,7 @@ public class GameOverState implements IState {
         saveButton.setPosition(300, 145);saveButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if (checkBox.isChecked()) {
+                if (!checkBox.isChecked()) {
                     LeaderboardService ls = new LeaderboardService();
                     ls.createEntry(nicknameField.getText(), score.getValue());
                     scoreSavedConfirmation();
