@@ -32,7 +32,7 @@ public class CustomGameMap extends GameMap {
      * @param manager The GameStateManager which sets the different stages in the game.
      */
     public CustomGameMap(SnakeBody snake, GameStateManager manager) {
-        this("defaultID", "defaultName", "assets/tile-set/setOfFive.png",
+        this("defaultID", "defaultName", "assets/tile-set/setOfFiveGameTheme.png",
                 "assets/snake-texture/redBlueBody.png", snake, manager);
     }
 

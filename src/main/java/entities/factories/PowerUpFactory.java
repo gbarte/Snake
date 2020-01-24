@@ -7,8 +7,6 @@ import entities.MushroomPowerUp;
 import java.util.List;
 import java.util.Random;
 import models.Coordinate;
-import models.Randomizer;
-import utils.Sizes;
 
 
 /**
@@ -25,7 +23,8 @@ public class PowerUpFactory extends FoodFactory {
 
         if (num <= MushroomPowerUp.rarity) {
             return new MushroomPowerUp(randomCoordinates());
-        } else if (num <= DoubleScorePowerUp.rarity + MushroomPowerUp.rarity) {
+        }
+        if (num <= DoubleScorePowerUp.rarity + MushroomPowerUp.rarity) {
             return new DoubleScorePowerUp(randomCoordinates());
         }
         return new AppleFactory().createFood();
@@ -44,7 +43,8 @@ public class PowerUpFactory extends FoodFactory {
 
         if (num <= MushroomPowerUp.rarity) {
             return new MushroomPowerUp(randomCoordinates(obstacles));
-        } else if (num <= DoubleScorePowerUp.rarity + MushroomPowerUp.rarity) {
+        }
+        if (num <= DoubleScorePowerUp.rarity + MushroomPowerUp.rarity) {
             return new DoubleScorePowerUp(randomCoordinates(obstacles));
         }
         return new AppleFactory().createFood();

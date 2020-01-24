@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import states.utils.GameRulesDialog;
 import states.utils.RendererHandler;
+import utils.Sizes;
 
 /**
  * Creates menu screen.
@@ -67,7 +68,7 @@ public class MenuState implements IState {
     private void initSignOutButton() {
         TextButton signOutButton = new TextButton("Sign Out", skin);
         signOutButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-        signOutButton.setPosition(400 - (signOutButton.getWidth() / 2), 150);
+        signOutButton.setPosition(400 - (signOutButton.getWidth() / 2), 50);
         signOutButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
@@ -90,7 +91,7 @@ public class MenuState implements IState {
     private void initLeaderboardButton() {
         TextButton leaderboardButton = new TextButton("Leaderboard", skin);
         leaderboardButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-        leaderboardButton.setPosition(400 - (leaderboardButton.getWidth() / 2), 250);
+        leaderboardButton.setPosition(400 - (leaderboardButton.getWidth() / 2), 150);
         leaderboardButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y,
@@ -114,7 +115,7 @@ public class MenuState implements IState {
     private void initRulesButton() {
         TextButton rulesButton = new TextButton("Rules", skin);
         rulesButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-        rulesButton.setPosition(400 - (rulesButton.getWidth() / 2), 350);
+        rulesButton.setPosition(400 - (rulesButton.getWidth() / 2), 250);
         rulesButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y,
@@ -138,7 +139,7 @@ public class MenuState implements IState {
     private void initPlayButton() {
         TextButton playButton = new TextButton("Start Game", skin);
         playButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-        playButton.setPosition(400 - (playButton.getWidth() / 2), 450);
+        playButton.setPosition(400 - (playButton.getWidth() / 2), 350);
         playButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y,
@@ -191,6 +192,5 @@ public class MenuState implements IState {
         skin.dispose();
         stage.dispose();
     }
-
 
 }
