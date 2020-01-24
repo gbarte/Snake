@@ -11,7 +11,7 @@ public class UsersTableHandler {
     public static final String TABLE_NAME = "users";
 
     private transient DatabaseHandler db;
-    private transient boolean isTest = false;
+    private transient boolean isTest;
 
     /**
      * Constructor for the class.
