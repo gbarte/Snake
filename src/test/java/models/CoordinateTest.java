@@ -34,37 +34,30 @@ class CoordinateTest {
     }
 
     @Test
-    void testEquals() {
+    void testEqualsTrue() {
         Coordinate coordinate = new Coordinate(20, 25);
         Coordinate coordinate2 = new Coordinate(20, 25);
         assertEquals(coordinate, coordinate2);
     }
 
     @Test
-    void testEquals2() {
+    void testEqualsFalseX() {
         Coordinate coordinate = new Coordinate(20, 25);
         Coordinate coordinate2 = new Coordinate(25, 25);
         assertFalse(coordinate.equals(coordinate2));
     }
 
     @Test
-    void testEquals3() {
+    void testEqualsReferenceTrue() {
         Coordinate coordinate = new Coordinate(20, 25);
         Coordinate coordinate2 = coordinate;
         assertEquals(coordinate, coordinate2);
     }
 
     @Test
-    void testEquals4() {
+    void testEqualsFalseY() {
         Coordinate coordinate = new Coordinate(20, 25);
         Coordinate coordinate2 = new Coordinate(20, 35);
-        assertFalse(coordinate.equals(coordinate2));
-    }
-
-    @Test
-    void testEquals5() {
-        Coordinate coordinate = new Coordinate(20, 25);
-        Coordinate coordinate2 = new Coordinate(25, 25);
         assertFalse(coordinate.equals(coordinate2));
     }
 
