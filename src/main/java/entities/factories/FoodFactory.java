@@ -56,8 +56,7 @@ public abstract class FoodFactory {
                 Sizes.DEFAULT_AMOUNT_BORDER_TILES,
                 Sizes.DEFAULT_MINIMUM_MAP_TILES - Sizes.DEFAULT_AMOUNT_BORDER_TILES,
                 Sizes.DEFAULT_MINIMUM_MAP_TILES - Sizes.DEFAULT_AMOUNT_BORDER_TILES, obstacles);
-        Coordinate coordinate = randomizer.getRandomCoordinate();
-        return coordinate;
+        return randomizer.getRandomCoordinate();
     }
 
 }

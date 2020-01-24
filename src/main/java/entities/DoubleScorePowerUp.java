@@ -1,8 +1,10 @@
 package entities;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import models.Coordinate;
 import models.DoubleScore;
+import utils.Sizes;
 import world.GameMap;
 
 /**
@@ -19,11 +21,22 @@ public class DoubleScorePowerUp implements Food {
 
     public DoubleScorePowerUp(Coordinate coordinate) {
         this.coordinate = coordinate;
-        this.texture = new Texture(texturePath);
     }
 
     public DoubleScorePowerUp() {
 
+    }
+
+    /**
+     * Method used to render this apple one the screen with
+     * an powerUp texture.
+     * @param batch to draw on
+     */
+    public void render(SpriteBatch batch) {
+        this.texture = new Texture(texturePath);
+        batch.draw(texture,
+                coordinate.getCoordinateX() * Sizes.TILE_PIXELS,
+                coordinate.getCoordinateY() * Sizes.TILE_PIXELS);
     }
 
     public Coordinate getCoordinate() {
@@ -34,12 +47,12 @@ public class DoubleScorePowerUp implements Food {
         this.coordinate = coordinate;
     }
 
-    public Texture getTexture() {
-        return texture;
-    }
-
     public void setTexture(Texture texture) {
         this.texture = texture;
+    }
+
+    public Texture getTexture() {
+        return this.texture;
     }
 
     @Override

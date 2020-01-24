@@ -22,12 +22,12 @@ class SnakeBodyTest {
     private transient SnakeBody snakeBody;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         snakeBody = new SnakeBody(800, 800);
     }
 
     @Test
-    public void constructorTest() {
+    void constructorTest() {
         snakeBody = new SnakeBody(800, 800);
         assertEquals(2, snakeBody.getBodyParts().size());
     }

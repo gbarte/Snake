@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import utils.Sizes;
 
 /**
  * Creates menu screen.
@@ -212,6 +213,9 @@ public class MenuState implements IState {
         };
         dialog.text("Use 'WASD' to move the snake.\n"
                 + "Eat food to grow your snake.\n"
+                + "PowerUps activated after score of" + Sizes.POWER_UP_ACTIVATION + "\n"
+                + "Mushroom slows down the speed of the snake for 10 s\n"
+                + "Frog doubles your points for next 10 seconds\n"
                 + "Game will end when you either hit yourself or the wall.\n"
                 + "Press p to pause the game.\n"
                 + "Press q to quit the game.\n"
