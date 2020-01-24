@@ -21,5 +21,6 @@ public class Sizes {
     public static final int BUTTON_WIDTH = 300;
     public static final int BUTTON_HEIGHT = 60;
     public static final int POWER_UP_TIMEOUT = 10;
+    public static final int POWER_UP_ACTIVATION = 70;
 
 }

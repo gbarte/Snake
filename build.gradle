@@ -77,9 +77,9 @@ jacocoTestCoverageVerification {
             includes = ['nl.tudelft.cse.sem.*']
 
             limit {
-                counter = 'LINE'
+                counter = 'BRANCH'
                 value = 'TOTALCOUNT'
-                maximum = 0.3
+                minimum = 0.5
             }
         }
     }
@@ -111,3 +111,5 @@ tasks.withType(SpotBugsTask) {
 wrapper {
     distributionType = Wrapper.DistributionType.ALL
 }
+
+
