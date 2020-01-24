@@ -40,7 +40,7 @@ public class MenuState implements IState {
         initTitle();
         initRulesButton();
         initPlayButton();
-        initSettingsButton();
+        initPlayButton();
         initLeaderboardButton();
         initSignOutButton();
         initRenderUsername();
