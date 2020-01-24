@@ -17,6 +17,8 @@ import models.Score;
 import states.utils.GameRulesDialog;
 import states.utils.RendererHandler;
 
+/*Suppressing this warning because we don't need getters and
+    setters for UI elements. */
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public class PausedState implements IState {
 

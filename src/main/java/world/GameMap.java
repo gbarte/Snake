@@ -300,7 +300,8 @@ public abstract class GameMap {
                 break;
                 /* We don't write a default in this case because if another key is
                 pressed we don't care. https://stackoverflow.com/a/5241196/11213998
-                It also increases the complexity of the code for no reason. **/
+                It also increases the complexity of the code for no reason.
+                http://errorprone.info/bugpattern/UnnecessaryDefaultInEnumSwitch**/
         }
     }
 
@@ -365,7 +366,8 @@ public abstract class GameMap {
                     /* We don't write a default in this case because if another key is
                     pressed we don't care. https://stackoverflow.com/a/5241196/11213998
                     There are only 4 directions the snake can go to.
-                    It also increases the complexity of the code for no reason. **/
+                    It also increases the complexity of the code for no reason.
+                    http://errorprone.info/bugpattern/UnnecessaryDefaultInEnumSwitch**/
             }
         }
     }
