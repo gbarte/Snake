@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameOverState.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">template</a> &gt; <a href="index.source.html" class="el_package">states</a> &gt; <span class="el_source">GameOverState.java</span></div><h1>GameOverState.java</h1><pre class="source lang-java linenums">package states;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import models.Score;
+import services.leaderboard.LeaderboardService;
+import states.utils.RendererHandler;
+
+/**
+ * State of the game over game.
+ */
+/*Suppressing this warning because we don't need getters and
+    setters for UI elements. */
+@SuppressWarnings(&quot;PMD.BeanMembersShouldSerialize&quot;)
+public class GameOverState implements IState {
+    private GameStateManager stateManager;
+    private Stage stage;
+    private Skin skin;
+    private Texture background;
+    private CheckBox checkBox;
+    private TextField nicknameField;
+    private Score score;
+    private Label.LabelStyle labelStyle;
+
+    /**
+     * Constructor which creates a new GameOverState within the game.
+     *
+     * @param gameManager which keeps track of the state of the game.
+     */
+<span class="nc" id="L46">    public GameOverState(GameStateManager gameManager, Score score) {</span>
+<span class="nc" id="L47">        this.stateManager = gameManager;</span>
+<span class="nc" id="L48">        this.score = score;</span>
+<span class="nc" id="L49">        stage = new Stage(new ScreenViewport());</span>
+<span class="nc" id="L50">        Gdx.input.setInputProcessor(stage);</span>
+<span class="nc" id="L51">        skin = new Skin(Gdx.files.internal(</span>
+                &quot;assets/quantum-horizon/skin/quantum-horizon-ui.json&quot;));
+<span class="nc" id="L53">        BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal(&quot;assets/font.fnt&quot;));</span>
+<span class="nc" id="L54">        labelStyle = new Label.LabelStyle(bitmapFont,</span>
+                new Color(0, 255, 0, 1));
+<span class="nc" id="L56">        initTitle();</span>
+<span class="nc" id="L57">        initScore();</span>
+<span class="nc" id="L58">        initCheckBox();</span>
+<span class="nc" id="L59">        initNickname();</span>
+<span class="nc" id="L60">        initSaveButton();</span>
+<span class="nc" id="L61">        initReturnButton();</span>
+<span class="nc" id="L62">        background = new Texture(&quot;assets/bg.png&quot;);</span>
+<span class="nc" id="L63">    }</span>
+
+    public GameStateManager getStateManager() {
+<span class="nc" id="L66">        return stateManager;</span>
+    }
+
+    public void setStateManager(GameStateManager stateManager) {
+<span class="nc" id="L70">        this.stateManager = stateManager;</span>
+<span class="nc" id="L71">    }</span>
+
+    public Stage getStage() {
+<span class="nc" id="L74">        return stage;</span>
+    }
+
+    public void setStage(Stage stage) {
+<span class="nc" id="L78">        this.stage = stage;</span>
+<span class="nc" id="L79">    }</span>
+
+    public Skin getSkin() {
+<span class="nc" id="L82">        return skin;</span>
+    }
+
+    public void setSkin(Skin skin) {
+<span class="nc" id="L86">        this.skin = skin;</span>
+<span class="nc" id="L87">    }</span>
+
+    public Texture getBackground() {
+<span class="nc" id="L90">        return background;</span>
+    }
+
+    public void setBackground(Texture background) {
+<span class="nc" id="L94">        this.background = background;</span>
+<span class="nc" id="L95">    }</span>
+
+    public CheckBox getCheckBox() {
+<span class="nc" id="L98">        return checkBox;</span>
+    }
+
+    public void setCheckBox(CheckBox checkBox) {
+<span class="nc" id="L102">        this.checkBox = checkBox;</span>
+<span class="nc" id="L103">    }</span>
+
+    public TextField getNicknameField() {
+<span class="nc" id="L106">        return nicknameField;</span>
+    }
+
+    public void setNicknameField(TextField nicknameField) {
+<span class="nc" id="L110">        this.nicknameField = nicknameField;</span>
+<span class="nc" id="L111">    }</span>
+
+    public Score getScore() {
+<span class="nc" id="L114">        return score;</span>
+    }
+
+    public void setScore(Score score) {
+<span class="nc" id="L118">        this.score = score;</span>
+<span class="nc" id="L119">    }</span>
+
+    public Label.LabelStyle getLabelStyle() {
+<span class="nc" id="L122">        return labelStyle;</span>
+    }
+
+    public void setLabelStyle(Label.LabelStyle labelStyle) {
+<span class="nc" id="L126">        this.labelStyle = labelStyle;</span>
+<span class="nc" id="L127">    }</span>
+
+    @Override
+    public void handleInput() {
+
+<span class="nc" id="L132">    }</span>
+
+    @Override
+    public void update(float dt) {
+
+<span class="nc" id="L137">    }</span>
+
+    @Override
+    public void render(SpriteBatch batch) {
+<span class="nc" id="L141">        RendererHandler.render(batch, stage, background);</span>
+<span class="nc" id="L142">    }</span>
+
+    /**
+     * Adds &quot;Game Over&quot; to the screen.
+     */
+    private void initTitle() {
+<span class="nc" id="L148">        Label gameOverTitle = new Label(&quot;GAME OVER&quot;, labelStyle);</span>
+<span class="nc" id="L149">        gameOverTitle.setSize(600, 120);</span>
+<span class="nc" id="L150">        gameOverTitle.setPosition(200,620);</span>
+<span class="nc" id="L151">        gameOverTitle.setFontScale(2);</span>
+<span class="nc" id="L152">        stage.addActor(gameOverTitle);</span>
+<span class="nc" id="L153">    }</span>
+
+    /**
+     * Adds score to the screen.
+     */
+    private void initScore() {
+<span class="nc" id="L159">        Label text = new Label(&quot;Score:&quot;, labelStyle);</span>
+<span class="nc" id="L160">        text.setSize(500, 100);</span>
+<span class="nc" id="L161">        text.setPosition(270,380);</span>
+<span class="nc" id="L162">        text.setFontScale(2);</span>
+<span class="nc" id="L163">        Label points = new Label(Integer.toString(score.getValue()), labelStyle);</span>
+<span class="nc" id="L164">        points.setSize(600, 120);</span>
+<span class="nc" id="L165">        points.setPosition(350,300);</span>
+<span class="nc" id="L166">        points.setFontScale(2);</span>
+<span class="nc" id="L167">        stage.addActor(points);</span>
+<span class="nc" id="L168">        stage.addActor(text);</span>
+<span class="nc" id="L169">    }</span>
+
+    /**
+     * Lets player choose a nickname to display with his score
+     * or user can leave empty if he wants to use his username.
+     */
+    private void initNickname() {
+<span class="nc" id="L176">        BitmapFont bitmapFont = new BitmapFont();</span>
+<span class="nc" id="L177">        Label.LabelStyle smallLabelStyle = new Label.LabelStyle(bitmapFont,</span>
+                new Color(255,  0, 255, 1));
+<span class="nc" id="L179">        Label nicknameLabel = new Label(&quot;Enter a nickname&quot;, smallLabelStyle);</span>
+<span class="nc" id="L180">        nicknameLabel.setPosition(340, 279);</span>
+<span class="nc" id="L181">        nicknameField = new TextField(&quot;&quot;,</span>
+<span class="nc" id="L182">                new Skin(Gdx.files.internal(&quot;assets/cloud-form/skin/cloud-form-ui.json&quot;)));</span>
+<span class="nc" id="L183">        nicknameField.setSize(200, 30);</span>
+<span class="nc" id="L184">        nicknameField.setPosition(300, 247);</span>
+<span class="nc" id="L185">        stage.addActor(nicknameLabel);</span>
+<span class="nc" id="L186">        stage.addActor(nicknameField);</span>
+<span class="nc" id="L187">    }</span>
+
+    /**
+     * Creates the save button.
+     */
+    private void initSaveButton() {
+<span class="nc" id="L193">        TextButton saveButton = new TextButton(&quot;Save score&quot;, skin);</span>
+<span class="nc" id="L194">        saveButton.setPosition(300, 145);saveButton.addListener(new InputListener() {</span>
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+<span class="nc bnc" id="L197" title="All 2 branches missed.">                if (!checkBox.isChecked()) {</span>
+<span class="nc" id="L198">                    LeaderboardService ls = new LeaderboardService();</span>
+<span class="nc" id="L199">                    ls.createEntry(nicknameField.getText(), score.getValue());</span>
+<span class="nc" id="L200">                    scoreSavedConfirmation();</span>
+<span class="nc" id="L201">                } else {</span>
+<span class="nc" id="L202">                    LeaderboardService ls = new LeaderboardService();</span>
+<span class="nc" id="L203">                    ls.createEntry(SnakeGame.getUsername(), score.getValue());</span>
+<span class="nc" id="L204">                    scoreSavedConfirmation();</span>
+                }
+<span class="nc" id="L206">            }</span>
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+<span class="nc" id="L210">                return true;</span>
+            }
+        });
+<span class="nc" id="L213">        stage.addActor(saveButton);</span>
+<span class="nc" id="L214">    }</span>
+
+    /**
+     * Creates a checkbox.
+     */
+    private void initCheckBox() {
+<span class="nc" id="L220">        checkBox = new CheckBox(&quot;Use username&quot;, skin);</span>
+<span class="nc" id="L221">        checkBox.addListener(new ChangeListener() {</span>
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+<span class="nc bnc" id="L224" title="All 2 branches missed.">                if (checkBox.isChecked()) {</span>
+<span class="nc" id="L225">                    nicknameField.setDisabled(true);</span>
+                } else {
+<span class="nc" id="L227">                    nicknameField.setDisabled(false);</span>
+                }
+<span class="nc" id="L229">            }</span>
+        });
+<span class="nc" id="L231">        checkBox.setPosition(300, 212);</span>
+<span class="nc" id="L232">        checkBox.scaleBy(0.5f);</span>
+<span class="nc" id="L233">        stage.addActor(checkBox);</span>
+<span class="nc" id="L234">    }</span>
+
+    /**
+     * Button which leads to the menu.
+     */
+    private void initReturnButton() {
+<span class="nc" id="L240">        TextButton returnButton = new TextButton(&quot;Return to menu&quot;, skin);</span>
+<span class="nc" id="L241">        returnButton.setPosition(275, 75);</span>
+<span class="nc" id="L242">        returnButton.addListener(new InputListener() {</span>
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+<span class="nc" id="L245">                stateManager.setState(new MenuState(stateManager));</span>
+<span class="nc" id="L246">            }</span>
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+<span class="nc" id="L250">                return true;</span>
+            }
+        });
+<span class="nc" id="L253">        stage.addActor(returnButton);</span>
+<span class="nc" id="L254">    }</span>
+
+    @Override
+    public void dispose() {
+<span class="nc" id="L258">        background.dispose();</span>
+<span class="nc" id="L259">        stage.dispose();</span>
+<span class="nc" id="L260">        skin.dispose();</span>
+<span class="nc" id="L261">    }</span>
+
+    /**
+     * This dialog box is shown when the user has saved the score.
+     */
+    private void scoreSavedConfirmation() {
+<span class="nc" id="L267">        Skin uiSkin = new Skin(Gdx.files.internal(&quot;assets/cloud-form/skin/cloud-form-ui.json&quot;));</span>
+<span class="nc" id="L268">        Dialog dialog = new Dialog(&quot;Saved score&quot;, uiSkin, &quot;dialog&quot;) {</span>
+            public void result(Object obj) {
+<span class="nc" id="L270">                System.out.println(&quot;result &quot; + obj);</span>
+<span class="nc" id="L271">            }</span>
+        };
+<span class="nc" id="L273">        dialog.text(&quot;Score has successfully been saved.&quot;);</span>
+<span class="nc" id="L274">        dialog.button(&quot;OK&quot;, true).addListener(new ChangeListener() {</span>
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+<span class="nc" id="L277">                stateManager.setState(new MenuState(stateManager));</span>
+<span class="nc" id="L278">            }</span>
+        });
+<span class="nc" id="L280">        dialog.show(stage);</span>
+<span class="nc" id="L281">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

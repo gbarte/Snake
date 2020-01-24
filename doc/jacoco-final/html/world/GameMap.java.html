@@ -1,0 +1,526 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameMap.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">template</a> &gt; <a href="index.source.html" class="el_package">world</a> &gt; <span class="el_source">GameMap.java</span></div><h1>GameMap.java</h1><pre class="source lang-java linenums">package world;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import entities.Food;
+import entities.factories.AppleFactory;
+import entities.factories.FoodFactory;
+import entities.factories.PowerUpFactory;
+import entities.snake.BodyPart;
+import entities.snake.SnakeBody;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import models.Coordinate;
+import models.DoubleScore;
+import models.Score;
+import states.GameOverState;
+import states.GameStateManager;
+import states.PausedState;
+import utils.Direction;
+import utils.Sizes;
+import utils.TileType;
+
+public abstract class GameMap {
+
+    public static final float DEFAULT_MOVE_TIME = Sizes.MOVE_TIME;
+<span class="fc" id="L34">    private static double powerUpTimeout = Sizes.POWER_UP_TIMEOUT;</span>
+    private GameStateManager manager;
+<span class="pc" id="L36">    private float moveTime = DEFAULT_MOVE_TIME;</span>
+<span class="pc" id="L37">    private float timer = moveTime;</span>
+    private SnakeBody snake;
+    private List&lt;Coordinate&gt; obstacles;
+    private FoodFactory foodFactory;
+    private Food food;
+    private Score score;
+    private String bodyTexture;
+    private TextureRegion[][] bodyTextureRegion;
+
+    /**
+     * Constructor for the GameMap that sets a default snake body texture, an apple and the snake.
+     */
+<span class="nc" id="L49">    public GameMap() {</span>
+<span class="nc" id="L50">        this.manager = getManager();</span>
+<span class="nc" id="L51">        this.snake = getSnake();</span>
+<span class="nc" id="L52">        this.obstacles = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L53">        this.foodFactory = new AppleFactory();</span>
+<span class="nc" id="L54">        this.food = foodFactory.createFood();</span>
+<span class="nc" id="L55">        this.score = new Score();</span>
+<span class="nc" id="L56">        this.bodyTexture = &quot;assets/snake-texture/redBlueBody.png&quot;;</span>
+<span class="nc" id="L57">        this.bodyTextureRegion = TextureRegion</span>
+<span class="nc" id="L58">                .split(new Texture(this.bodyTexture), Sizes.TILE_PIXELS, Sizes.TILE_PIXELS);</span>
+<span class="nc" id="L59">    }</span>
+
+    /**
+     * Constructor used to pass on a texture path for the snake's body.
+     *
+     * @param bodyTexture The texture path for the snake's body.
+     */
+<span class="nc" id="L66">    public GameMap(String bodyTexture) {</span>
+<span class="nc" id="L67">        this.manager = getManager();</span>
+<span class="nc" id="L68">        this.snake = getSnake();</span>
+<span class="nc" id="L69">        this.obstacles = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L70">        this.foodFactory = new AppleFactory();</span>
+<span class="nc" id="L71">        this.food = foodFactory.createFood();</span>
+<span class="nc" id="L72">        this.score = new Score();</span>
+<span class="nc" id="L73">        this.bodyTexture = bodyTexture;</span>
+<span class="nc" id="L74">        this.bodyTextureRegion = TextureRegion</span>
+<span class="nc" id="L75">                .split(new Texture(bodyTexture), Sizes.TILE_PIXELS, Sizes.TILE_PIXELS);</span>
+<span class="nc" id="L76">    }</span>
+
+    /**
+     * Constructor (mainly) for testing purposes.
+     *
+     * @param timer       The timer for movement and updating.
+     * @param manager     The GameStateManager which sets the different stages in the game.
+     * @param snake       The snake for this map.
+     * @param foodFactory FoodFactory factory used to create food.
+     * @param food        Food object that snake consumes.
+     * @param score       Score object to keep track of your score.
+     * @param bodyTexture The texture path for the snake's skin.
+     */
+    public GameMap(float timer, GameStateManager manager, SnakeBody snake,
+                   FoodFactory foodFactory, Food food, Score score,
+                   String bodyTexture, TextureRegion[][] bodyTextureRegion,
+<span class="fc" id="L92">                   List&lt;Coordinate&gt; obstacles) {</span>
+<span class="fc" id="L93">        this.timer = timer;</span>
+<span class="fc" id="L94">        this.manager = manager;</span>
+<span class="fc" id="L95">        this.snake = snake;</span>
+<span class="fc" id="L96">        this.foodFactory = foodFactory;</span>
+<span class="fc" id="L97">        this.food = food;</span>
+<span class="fc" id="L98">        this.score = score;</span>
+<span class="fc" id="L99">        this.bodyTexture = bodyTexture;</span>
+<span class="fc" id="L100">        this.bodyTextureRegion = bodyTextureRegion;</span>
+<span class="fc" id="L101">        this.obstacles = obstacles;</span>
+<span class="fc" id="L102">    }</span>
+
+    public static double getPowerUpTimeout() {
+<span class="fc" id="L105">        return powerUpTimeout;</span>
+    }
+
+    public static void setPowerUpTimeout(double powerUpTimeout) {
+<span class="fc" id="L109">        GameMap.powerUpTimeout = powerUpTimeout;</span>
+<span class="fc" id="L110">    }</span>
+
+    /**
+     * Render entities here after subclass renders map.
+     *
+     * @param camera Camera on which to render.
+     * @param batch  Batch to use.
+     * @param snake  Snake that gets passed on.
+     */
+    public void render(OrthographicCamera camera, SpriteBatch batch, SnakeBody snake) {
+        //render entities here
+
+<span class="nc" id="L122">        this.snake = snake;</span>
+<span class="nc" id="L123">        batch.setProjectionMatrix(camera.combined);</span>
+
+<span class="nc" id="L125">        food.render(batch);</span>
+
+<span class="nc" id="L127">        renderScore(batch);</span>
+
+<span class="nc" id="L129">        snake.renderSnake(batch, getBodyTextureRegion());</span>
+
+<span class="nc" id="L131">    }</span>
+
+    /**
+     * Update method for the snake.
+     *
+     * @param delta The delta time it takes to update the snake.
+     */
+    public void update(float delta) {
+<span class="fc" id="L139">        handleInput();</span>
+<span class="fc" id="L140">        checkOutOfMap();</span>
+<span class="fc" id="L141">        checkHeadHitsBody();</span>
+<span class="fc" id="L142">        updateSnake(delta);</span>
+        //this THIS down here to update all private methods
+<span class="fc" id="L144">        updatePrivateMethods();</span>
+<span class="fc" id="L145">    }</span>
+
+    public abstract void dispose(OrthographicCamera camera);
+
+    /**
+     * With this you can get a tile by the pixel-position within the game's given layer.
+     *
+     * @param layer The layer on which the pixel is.
+     * @param x     The position of the pixel on the x-axis.
+     * @param y     The position of the pixel on the y-axis.
+     * @return The tile's type.
+     */
+    public TileType getTileTypeByLocation(int layer, float x, float y) {
+<span class="fc" id="L158">        return this.getTileTypeByCoordinate(layer, Math.round(x / TileType.TILE_SIZE),</span>
+<span class="fc" id="L159">                Math.round(y / TileType.TILE_SIZE));</span>
+    }
+
+    public abstract TileType getTileTypeByCoordinate(int layer, int col, int row);
+
+    public abstract int getWidth();
+
+    public abstract int getHeight();
+
+    public abstract int getLayers();
+
+    public int getPixelWidth() {
+<span class="fc" id="L171">        return this.getWidth() * TileType.TILE_SIZE;</span>
+    }
+
+    public int getPixelHeight() {
+<span class="fc" id="L175">        return this.getHeight() * TileType.TILE_SIZE;</span>
+    }
+
+    public abstract GameStateManager getManager();
+
+    public void setManager(GameStateManager manager) {
+<span class="nc" id="L181">        this.manager = manager;</span>
+<span class="nc" id="L182">    }</span>
+
+    public abstract SnakeBody getSnake();
+
+    public void setSnake(SnakeBody snake) {
+<span class="nc" id="L187">        this.snake = snake;</span>
+<span class="nc" id="L188">    }</span>
+
+    public List&lt;Coordinate&gt; getObstacles() {
+<span class="fc" id="L191">        return obstacles;</span>
+    }
+
+    public void setObstacles(List&lt;Coordinate&gt; obstacles) {
+<span class="nc" id="L195">        this.obstacles = obstacles;</span>
+<span class="nc" id="L196">    }</span>
+
+    public Food getFood() {
+<span class="fc" id="L199">        return food;</span>
+    }
+
+    public void setFood(Food food) {
+<span class="fc" id="L203">        this.food = food;</span>
+<span class="fc" id="L204">    }</span>
+
+    public FoodFactory getFoodFactory() {
+<span class="fc" id="L207">        return foodFactory;</span>
+    }
+
+    public void setFoodFactory(FoodFactory foodFactory) {
+<span class="nc" id="L211">        this.foodFactory = foodFactory;</span>
+<span class="nc" id="L212">    }</span>
+
+    public Score getScore() {
+<span class="fc" id="L215">        return score;</span>
+    }
+
+    public void setScore(Score score) {
+<span class="fc" id="L219">        this.score = score;</span>
+<span class="fc" id="L220">    }</span>
+
+    public float getMoveTime() {
+<span class="fc" id="L223">        return moveTime;</span>
+    }
+
+    public void setMoveTime(float moveTime) {
+<span class="fc" id="L227">        this.moveTime = moveTime;</span>
+<span class="fc" id="L228">    }</span>
+
+    public float getTimer() {
+<span class="nc" id="L231">        return timer;</span>
+    }
+
+    public void setTimer(float timer) {
+<span class="nc" id="L235">        this.timer = timer;</span>
+<span class="nc" id="L236">    }</span>
+
+    public String getBodyTexture() {
+<span class="nc" id="L239">        return bodyTexture;</span>
+    }
+
+    public void setBodyTexture(String bodyTexture) {
+<span class="nc" id="L243">        this.bodyTexture = bodyTexture;</span>
+<span class="nc" id="L244">    }</span>
+
+    public TextureRegion[][] getBodyTextureRegion() {
+<span class="nc" id="L247">        return bodyTextureRegion;</span>
+    }
+
+    public void setBodyTextureRegion(TextureRegion[][] bodyTextureRegion) {
+<span class="nc" id="L251">        this.bodyTextureRegion = bodyTextureRegion;</span>
+<span class="nc" id="L252">    }</span>
+
+    /**
+     * This method handles the keyboard input for the snake movements.
+     */
+    public void handleInput() {
+<span class="nc" id="L258">        Gdx.input.setInputProcessor(new InputAdapter() {</span>
+            @Override
+            public boolean keyDown(int keycode) {
+<span class="nc" id="L261">                handleInput(keycode, getManager());</span>
+<span class="nc" id="L262">                return false;</span>
+            }
+        });
+<span class="nc" id="L265">    }</span>
+
+    /**
+     * This method handles the input and what to do with it.
+     * The split was mainly made for testability purposes such that,
+     * the libGDX functionality is separate from the testable parts.
+     *
+     * @param keycode The keycode indicates which key is pressed.
+     * @param manager The manager needed if any other state needs to be instantiated.
+     */
+    public void handleInput(int keycode, GameStateManager manager) {
+<span class="pc bpc" id="L276" title="3 of 7 branches missed.">        switch (keycode) {</span>
+            case Input.Keys.Q:
+<span class="nc" id="L278">                manager.reState();</span>
+<span class="nc" id="L279">                manager.setState(new GameOverState(manager, getScore()));</span>
+<span class="nc" id="L280">                break;</span>
+            case Input.Keys.P:
+<span class="nc" id="L282">                manager.reState();</span>
+<span class="nc" id="L283">                manager.setState(new PausedState(manager, getScore()));</span>
+<span class="nc" id="L284">                break;</span>
+            case Input.Keys.W:
+            case Input.Keys.UP:
+<span class="fc" id="L287">                updateDirection(Direction.UP);</span>
+<span class="fc" id="L288">                break;</span>
+            case Input.Keys.A:
+            case Input.Keys.LEFT:
+<span class="fc" id="L291">                updateDirection(Direction.LEFT);</span>
+<span class="fc" id="L292">                break;</span>
+            case Input.Keys.S:
+            case Input.Keys.DOWN:
+<span class="fc" id="L295">                updateDirection(Direction.DOWN);</span>
+<span class="fc" id="L296">                break;</span>
+            case Input.Keys.D:
+            case Input.Keys.RIGHT:
+<span class="fc" id="L299">                updateDirection(Direction.RIGHT);</span>
+                break;
+                /* We don't write a default in this case because if another key is
+                pressed we don't care. https://stackoverflow.com/a/5241196/11213998
+                It also increases the complexity of the code for no reason.
+                http://errorprone.info/bugpattern/UnnecessaryDefaultInEnumSwitch**/
+        }
+<span class="fc" id="L306">    }</span>
+
+    /**
+     * Renders the current score on the screen.
+     *
+     * @param batch used for drawing elements.
+     */
+    private void renderScore(SpriteBatch batch) {
+<span class="nc" id="L314">        BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal(&quot;assets/font.fnt&quot;));</span>
+<span class="nc" id="L315">        this.renderScore(batch, bitmapFont);</span>
+<span class="nc" id="L316">    }</span>
+
+    /**
+     * Mainly for testability purposes.
+     * Renders the current score on the screen.
+     *
+     * @param batch      The batch used for drawing elements.
+     * @param bitmapFont This is used to render the value of the score.
+     */
+    public void renderScore(SpriteBatch batch, BitmapFont bitmapFont) {
+<span class="fc" id="L326">        bitmapFont.setColor(Color.CORAL);</span>
+<span class="fc" id="L327">        bitmapFont.draw(batch, &quot;Score: &quot; + score.getValue(),</span>
+                Sizes.DEFAULT_AMOUNT_BORDER_TILES * Sizes.TILE_PIXELS,
+                Sizes.DEFAULT_AMOUNT_BORDER_TILES * Sizes.TILE_PIXELS);
+<span class="fc" id="L330">    }</span>
+
+    /**
+     * Moves the snake every MOVE_TIME.
+     *
+     * @param delta - time interval between each step
+     */
+    private void updateSnake(float delta) {
+<span class="fc" id="L338">        timer -= delta;</span>
+<span class="pc bpc" id="L339" title="1 of 2 branches missed.">        if (timer &lt;= 0) {</span>
+<span class="fc" id="L340">            timer = getMoveTime();</span>
+<span class="fc" id="L341">            getSnake().moveSnake(getSnake().getCurrDir());</span>
+        }
+<span class="fc" id="L343">    }</span>
+
+    /**
+     * Updates the direction by calling updateIfNotOpposite.
+     *
+     * @param newDirection - direction in which the user wants to move the snake
+     */
+    public void updateDirection(Direction newDirection) {
+<span class="fc" id="L351">        Direction current = getSnake().getCurrDir();</span>
+<span class="fc bfc" id="L352" title="All 2 branches covered.">        if (!newDirection.equals(current)) {</span>
+<span class="pc bpc" id="L353" title="1 of 5 branches missed.">            switch (current) {</span>
+                case UP:
+<span class="fc" id="L355">                    updateIfNotOpposite(newDirection, Direction.DOWN);</span>
+<span class="fc" id="L356">                    break;</span>
+                case DOWN:
+<span class="fc" id="L358">                    updateIfNotOpposite(newDirection, Direction.UP);</span>
+<span class="fc" id="L359">                    break;</span>
+                case LEFT:
+<span class="fc" id="L361">                    updateIfNotOpposite(newDirection, Direction.RIGHT);</span>
+<span class="fc" id="L362">                    break;</span>
+                case RIGHT:
+<span class="fc" id="L364">                    updateIfNotOpposite(newDirection, Direction.LEFT);</span>
+                    break;
+                    /* We don't write a default in this case because if another key is
+                    pressed we don't care. https://stackoverflow.com/a/5241196/11213998
+                    There are only 4 directions the snake can go to.
+                    It also increases the complexity of the code for no reason.
+                    http://errorprone.info/bugpattern/UnnecessaryDefaultInEnumSwitch**/
+            }
+        }
+<span class="fc" id="L373">    }</span>
+
+    /**
+     * Updates the position if newDir does not equal opposite direction,
+     * this would mean that the snakes moves to itself.
+     *
+     * @param newDir            - Direction the snake wants to move to.
+     * @param oppositeDirection - Direction snake comes from.
+     */
+    private void updateIfNotOpposite(Direction newDir,
+                                     Direction oppositeDirection) {
+<span class="fc bfc" id="L384" title="All 2 branches covered.">        if (!newDir.equals(oppositeDirection)) {</span>
+<span class="fc" id="L385">            snake.setCurrDir(newDir);</span>
+        }
+<span class="fc" id="L387">    }</span>
+
+    /**
+     * This method is called from the update method.
+     * It's used to update private methods.
+     * This split was mainly made for testability purposes.
+     */
+    public void updatePrivateMethods() {
+<span class="fc" id="L395">        checkAppleEaten();</span>
+<span class="fc" id="L396">        updateBadApple();</span>
+<span class="fc" id="L397">        checkPowerUpTimeout();</span>
+<span class="fc" id="L398">    }</span>
+
+    /**
+     * Checks whether the snake (head) hits the border,
+     * if it hits then the state changes to GameOverState.
+     */
+    public void checkOutOfMap() {
+<span class="nc" id="L405">        Coordinate currentHead = getSnake().getHeadCoord();</span>
+<span class="nc" id="L406">        GameStateManager manager = getManager();</span>
+<span class="nc" id="L407">        Score score = getScore();</span>
+<span class="nc" id="L408">        TileType currentTile = getTileTypeByCoordinate(getLayers(),</span>
+<span class="nc" id="L409">                currentHead.getCoordinateX(),</span>
+<span class="nc" id="L410">                currentHead.getCoordinateY());</span>
+<span class="nc" id="L411">        this.checkOutOfMap(manager, score, currentTile);</span>
+<span class="nc" id="L412">    }</span>
+
+    /**
+     * Checks whether the snake (head) hits the border,
+     * if it hits then the state changes to GameOverState.
+     *
+     * @param manager The GameStateManager needed to set another state
+     * @param score   Current score of your game.
+     */
+    public void checkOutOfMap(GameStateManager manager, Score score,
+                              TileType currentTile) {
+<span class="pc bpc" id="L423" title="1 of 2 branches missed.">        if (currentTile.isCollidable()) {</span>
+<span class="nc" id="L424">            manager.setState(new GameOverState(manager, score));</span>
+        }
+<span class="fc" id="L426">    }</span>
+
+    /**
+     * Checks whether the snake head hits the body.
+     * If it does, then the state changes to GAME_OVER.
+     */
+    public void checkHeadHitsBody() {
+<span class="fc" id="L433">        int minLength = 3;</span>
+        // head can touch tail only if snake has more than 2 bodyParts
+<span class="fc" id="L435">        int size = getSnake().getBodyParts().size();</span>
+<span class="pc bpc" id="L436" title="1 of 2 branches missed.">        if (size &gt; minLength) {</span>
+<span class="nc bnc" id="L437" title="All 2 branches missed.">            for (int i = 1; i &lt; size; i++) {</span>
+<span class="nc" id="L438">                if (getSnake().getBodyParts().get(i).getCoordinate()</span>
+<span class="nc bnc" id="L439" title="All 2 branches missed.">                        .equals(getSnake().getHeadCoord())) {</span>
+<span class="nc" id="L440">                    getManager().setState(new GameOverState(getManager(), score));</span>
+                }
+            }
+        }
+<span class="fc" id="L444">    }</span>
+
+    /**
+     * Checks whether an apple has been eaten or not.
+     */
+    private void checkAppleEaten() {
+<span class="fc bfc" id="L450" title="All 2 branches covered.">        if (getSnake().getHeadCoord().equals(getFood().getCoordinate())) {</span>
+<span class="fc" id="L451">            getFood().action(this);</span>
+<span class="fc" id="L452">            food = foodFactory.createFood(getObstacles());</span>
+<span class="fc" id="L453">            checkAppleOnSnake();</span>
+<span class="fc bfc" id="L454" title="All 2 branches covered.">            if (foodFactory instanceof AppleFactory) {</span>
+<span class="fc" id="L455">                activatePowerUp();</span>
+            }
+        }
+<span class="fc" id="L458">    }</span>
+
+    private void activatePowerUp() {
+<span class="fc bfc" id="L461" title="All 2 branches covered.">        if (getScore().getValue() &gt; Sizes.POWER_UP_ACTIVATION) {</span>
+<span class="fc" id="L462">            foodFactory = new PowerUpFactory();</span>
+        }
+<span class="fc" id="L464">    }</span>
+
+    private void checkPowerUpTimeout() {
+<span class="pc bpc" id="L467" title="1 of 4 branches missed.">        if (moveTime != DEFAULT_MOVE_TIME || score instanceof DoubleScore) {</span>
+<span class="fc" id="L468">            powerUpTimeout -= Gdx.graphics.getDeltaTime();</span>
+        }
+<span class="fc bfc" id="L470" title="All 2 branches covered.">        if (powerUpTimeout &lt;= 0) {</span>
+            //shapeRenderer.setColor(Color.GREEN); // TODO change color
+<span class="fc" id="L472">            setMoveTime(DEFAULT_MOVE_TIME);</span>
+<span class="fc" id="L473">            int currScore = score.getValue();</span>
+<span class="fc" id="L474">            score = new Score();</span>
+<span class="fc" id="L475">            score.setValue(currScore);</span>
+<span class="fc" id="L476">            powerUpTimeout = Sizes.POWER_UP_TIMEOUT;</span>
+        }
+<span class="fc" id="L478">    }</span>
+
+    /**
+     * Checks whether the snakebody is over an apple or not.
+     */
+    @SuppressWarnings(&quot;PMD.DataflowAnomalyAnalysis&quot;)
+    private void checkAppleOnSnake() {
+<span class="fc bfc" id="L485" title="All 2 branches covered.">        for (BodyPart bp : getSnake().getBodyParts()) {</span>
+<span class="pc bpc" id="L486" title="1 of 2 branches missed.">            if (bp.getCoordinate().equals(food.getCoordinate())) {</span>
+<span class="nc" id="L487">                food = foodFactory.createFood(getObstacles());</span>
+            }
+<span class="fc" id="L489">        }</span>
+<span class="fc" id="L490">    }</span>
+
+    //suppressing this warning because it thinks that badFood gets redefined.
+    @SuppressWarnings(&quot;PMD.DataflowAnomalyAnalysis&quot;)
+    private void updateBadApple() {
+<span class="fc" id="L495">        LinkedList&lt;BodyPart&gt; all = getSnake().getBodyParts();</span>
+<span class="fc" id="L496">        Coordinate foodCoordinate = getFood().getCoordinate();</span>
+<span class="fc" id="L497">        boolean badFood = getTileTypeByCoordinate(getLayers(),</span>
+<span class="fc" id="L498">                foodCoordinate.getCoordinateX(), foodCoordinate.getCoordinateY()).isCollidable();</span>
+<span class="fc bfc" id="L499" title="All 2 branches covered.">        for (int i = 0; i &lt; all.size(); i++) {</span>
+<span class="pc bpc" id="L500" title="2 of 4 branches missed.">            if (all.get(i).getCoordinate().equals(food.getCoordinate()) || badFood) {</span>
+<span class="nc" id="L501">                setFood(foodFactory.createFood(getObstacles()));</span>
+<span class="nc" id="L502">                break;</span>
+            }
+        }
+<span class="fc" id="L505">    }</span>
+
+    /**
+     * This method is called to fill up the list with the coordinates of all the obstacles.
+     *
+     * @param list The list to fill up.
+     */
+    public void fillList(List&lt;Coordinate&gt; list) {
+<span class="fc" id="L513">        int start = Sizes.DEFAULT_AMOUNT_BORDER_TILES;</span>
+<span class="fc" id="L514">        int finish = Sizes.DEFAULT_MINIMUM_MAP_TILES - Sizes.DEFAULT_AMOUNT_BORDER_TILES;</span>
+<span class="fc bfc" id="L515" title="All 2 branches covered.">        for (int i = start; i &lt; finish; i++) {</span>
+<span class="fc bfc" id="L516" title="All 2 branches covered.">            for (int j = start; j &lt; finish; j++) {</span>
+<span class="fc" id="L517">                TileType currentTile = getTileTypeByCoordinate(getLayers(), i, j);</span>
+<span class="pc bpc" id="L518" title="1 of 2 branches missed.">                if (currentTile.isCollidable()) {</span>
+<span class="fc" id="L519">                    list.add(new Coordinate(i, j));</span>
+                }
+            }
+        }
+<span class="fc" id="L523">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomGameMapLoader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">template</a> &gt; <a href="index.source.html" class="el_package">world.customgamemap</a> &gt; <span class="el_source">CustomGameMapLoader.java</span></div><h1>CustomGameMapLoader.java</h1><pre class="source lang-java linenums">package world.customgamemap;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.Json;
+import java.util.Random;
+import utils.Sizes;
+import utils.TileType;
+
+<span class="nc" id="L10">public class CustomGameMapLoader {</span>
+
+<span class="fc" id="L12">    private static Json json = new Json();</span>
+    private static final int SIZE = Sizes.DEFAULT_MINIMUM_MAP_TILES;
+    public static final String PATH = &quot;maps/&quot;;
+
+    /**
+     * Generate a custom game map using without specifying the maximum size of the map.
+     * @param id The id of the map to generate.
+     * @param name The name of the map to generate.
+     * @return The generated map of 50 by 50 tiles.
+     */
+    public static CustomGameMapData generateDefaultMap(String id, String name) {
+<span class="fc" id="L23">        CustomGameMapData mapData = new CustomGameMapData();</span>
+<span class="fc" id="L24">        return generateDefaultMap(id, name, SIZE, mapData);</span>
+    }
+
+    /**
+     * Generate a custom game map using by specifying the maximum size of the map.
+     * @param id The id of the map to generate.
+     * @param name The name of the map to generate.
+     * @param maxEdge The maximum size of the map's edge, in the amount of tiles on each edge.
+     * @param mapData The data of the map.
+     * @return The generated map of given edge size.
+     */
+    public static CustomGameMapData generateDefaultMap(String id, String name, int maxEdge,
+                                                       CustomGameMapData mapData) {
+
+<span class="fc" id="L38">        mapData.id = id;</span>
+<span class="fc" id="L39">        mapData.name = name;</span>
+<span class="fc" id="L40">        mapData.map = new int[2][maxEdge][maxEdge]; //change the dimensions of the layer!!!if needed</span>
+
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        for (int row = 0; row &lt; maxEdge; row++) {</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">            for (int col = 0; col &lt; maxEdge; col++) {</span>
+<span class="fc bfc" id="L44" title="All 8 branches covered.">                if ((col &lt;= 1 || col &gt; mapData.map[0][row].length - 3)</span>
+                        || (row &lt;= 1 || row &gt; mapData.map[0].length - 3)) {
+<span class="fc" id="L46">                    mapData.map[0][row][col] = TileType.DARKBLUEWALL.getId();</span>
+                } else {
+<span class="fc" id="L48">                    mapData.map[0][row][col] = TileType.WHITETILE.getId();</span>
+                }
+            }
+        }
+
+<span class="fc" id="L53">        return mapData;</span>
+    }
+
+    /**
+     * Use this to load in a map.
+     * If the map already exists then it'll be loaded from the existing files in the maps folder.
+     * Otherwise it'll be created and saved.
+     * @param id The id of the map.
+     * @param name The name of the map.
+     * @return A custom game map's data.
+     */
+    public static CustomGameMapData loadMap(String id, String name) {
+<span class="nc" id="L65">        Gdx.files.local(PATH).file().mkdirs();</span>
+<span class="nc" id="L66">        FileHandle file = Gdx.files.local(PATH + id + &quot;.map&quot;);</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">        if (file.exists()) {</span>
+<span class="nc" id="L68">            CustomGameMapData data = json.fromJson(CustomGameMapData.class, file.readString());</span>
+<span class="nc" id="L69">            return data;</span>
+        } else {
+<span class="nc" id="L71">            CustomGameMapData data = generateDefaultMap(id, name);</span>
+<span class="nc" id="L72">            saveMap(data.id, data.name, data.map);</span>
+<span class="nc" id="L73">            return data;</span>
+        }
+    }
+
+    private static void saveMap(String id, String name, int[][][] map) {
+<span class="nc" id="L78">        CustomGameMapData data = new CustomGameMapData();</span>
+<span class="nc" id="L79">        data.id = id;</span>
+<span class="nc" id="L80">        data.name = name;</span>
+<span class="nc" id="L81">        data.map = map;</span>
+
+        //if the folder doesn't exist, you create it
+<span class="nc" id="L84">        Gdx.files.local(PATH).file().mkdirs();</span>
+<span class="nc" id="L85">        FileHandle file = Gdx.files.local(PATH + id + &quot;.map&quot;);</span>
+<span class="nc" id="L86">        file.writeString(json.prettyPrint(data), false); //false cz u wanna overwrite ipv append</span>
+<span class="nc" id="L87">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

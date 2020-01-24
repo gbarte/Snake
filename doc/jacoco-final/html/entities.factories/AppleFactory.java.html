@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AppleFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">template</a> &gt; <a href="index.source.html" class="el_package">entities.factories</a> &gt; <span class="el_source">AppleFactory.java</span></div><h1>AppleFactory.java</h1><pre class="source lang-java linenums">package entities.factories;
+
+import entities.Apple;
+import entities.Food;
+import entities.GoldenApple;
+import java.util.List;
+import java.util.Random;
+import models.Coordinate;
+import models.Randomizer;
+import utils.Sizes;
+
+/**
+ * Apple Factory to create Apple/Golden Apple objects.
+ * Takes part of the factory method pattern.
+ * Main purpose of it is to provide apples with random coordinates.
+ *
+ */
+<span class="fc" id="L18">public class AppleFactory extends FoodFactory {</span>
+
+    @Override
+    public Food createFood() {
+<span class="fc" id="L22">        Random random = new Random();</span>
+<span class="fc" id="L23">        double num = random.nextDouble();</span>
+
+<span class="fc" id="L25">        Coordinate coordinate = randomCoordinates();</span>
+
+<span class="fc bfc" id="L27" title="All 2 branches covered.">        if (num &lt;= GoldenApple.rarity) {</span>
+<span class="fc" id="L28">            return new GoldenApple(coordinate);</span>
+        }
+<span class="fc" id="L30">        return new Apple(coordinate);</span>
+    }
+
+    /**
+     * Use this to create food that doesn't spawn on top of the obstacles in the game.
+     *
+     * @param obstacles List of all the coordinates where food can't spawn (excludes border).
+     * @return Food object that isn't on top of any obstacles in the game.
+     */
+    @Override
+    public Food createFood(List&lt;Coordinate&gt; obstacles) {
+<span class="fc" id="L41">        Random random = new Random();</span>
+<span class="fc" id="L42">        double num = random.nextDouble();</span>
+
+<span class="fc" id="L44">        Coordinate coordinate = randomCoordinates(obstacles);</span>
+
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        if (num &lt;= GoldenApple.rarity) {</span>
+<span class="fc" id="L47">            return new GoldenApple(coordinate);</span>
+        }
+<span class="fc" id="L49">        return new Apple(coordinate);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
