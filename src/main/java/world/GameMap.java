@@ -363,8 +363,10 @@ public abstract class GameMap {
                 case RIGHT:
                     updateIfNotOpposite(newDirection, Direction.LEFT);
                     break;
-                default:
-                    // nothing happens
+                    /* We don't write a default in this case because if another key is
+                    pressed we don't care. https://stackoverflow.com/a/5241196/11213998
+                    There are only 4 directions the snake can go to.
+                    It also increases the complexity of the code for no reason. **/
             }
         }
     }
@@ -427,11 +429,15 @@ public abstract class GameMap {
      * If it does, then the state changes to GAME_OVER.
      */
     public void checkHeadHitsBody() {
+        int minLength = 3;
+        // head can touch tail only if snake has more than 2 bodyParts
         int size = getSnake().getBodyParts().size();
-        for (int i = 1; i < size; i++) {
-            if (getSnake().getBodyParts().get(i).getCoordinate()
-                    .equals(getSnake().getHeadCoord())) {
-                getManager().setState(new GameOverState(getManager(), score));
+        if (size > minLength) {
+            for (int i = 1; i < size; i++) {
+                if (getSnake().getBodyParts().get(i).getCoordinate()
+                        .equals(getSnake().getHeadCoord())) {
+                    getManager().setState(new GameOverState(getManager(), score));
+                }
             }
         }
     }
