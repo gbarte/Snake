@@ -106,7 +106,7 @@ public class LevelState implements IState {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 stateManager.setState(new PlayState(stateManager, "defaultID", "defaultName",
-                        "assets/tile-set/setOfFive.png", "assets/snake-texture/DefaultBody.png"));
+                        "assets/tile-set/vaporWaveSet2.png", "assets/snake-texture/DefaultBody.png"));
             }
 
             @Override
@@ -131,7 +131,7 @@ public class LevelState implements IState {
             public void touchUp(InputEvent event, float x, float y,
                                 int pointer, int button) {
                 stateManager.setState(new PlayState(stateManager, "maps/tmx/obs.tmx",
-                        "assets/snake-texture/redBlueBody.png"));
+                        "assets/snake-texture/rainbowBody.png"));
             }
 
             @Override
@@ -156,7 +156,7 @@ public class LevelState implements IState {
             public void touchUp(InputEvent event, float x, float y,
                                 int pointer, int button) {
                 stateManager.setState(new PlayState(stateManager, "maps/tmx/obs2.tmx",
-                        "assets/snake-texture/ourSnake.png"));
+                        "assets/snake-texture/redBlueBody.png"));
             }
 
             @Override
@@ -207,15 +207,16 @@ public class LevelState implements IState {
         switch (keycode) {
             case Input.Keys.NUM_1:
                 stateManager.setState(new PlayState(stateManager, "defaultID", "defaultName",
-                        "assets/tile-set/setOfFive.png", "assets/snake-texture/DefaultBody.png"));
+                        "assets/tile-set/vaporWaveSet2.png",
+                        "assets/snake-texture/DefaultBody.png"));
                 break;
             case Input.Keys.NUM_2:
                 stateManager.setState(new PlayState(stateManager, "maps/tmx/obs.tmx",
-                        "assets/snake-texture/redBlueBody.png"));
+                        "assets/snake-texture/rainbowBody.png"));
                 break;
             case Input.Keys.NUM_3:
                 stateManager.setState(new PlayState(stateManager, "maps/tmx/obs2.tmx",
-                        "assets/snake-texture/ourSnake.png"));
+                        "assets/snake-texture/redBlueBody.png"));
                 break;
             default:
                 break;
