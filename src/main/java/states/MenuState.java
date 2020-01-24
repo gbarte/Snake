@@ -20,6 +20,8 @@ import utils.Sizes;
 /**
  * Creates menu screen.
  */
+/*Suppressing this warning because we don't need getters and
+    setters for UI elements. */
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public class MenuState implements IState {
     private GameStateManager stateManager;

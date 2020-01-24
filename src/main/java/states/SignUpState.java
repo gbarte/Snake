@@ -21,6 +21,8 @@ import states.utils.RendererHandler;
 /**
  * Creates sign up screen.
  */
+/*Suppressing this warning because we don't need getters and
+    setters for UI elements. */
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public class SignUpState implements IState {
     private GameStateManager stateManager;

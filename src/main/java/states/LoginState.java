@@ -24,6 +24,8 @@ import utils.Sizes;
 /**
  * Creates login screen.
  */
+/*Suppressing this warning because we don't need getters and
+    setters for UI elements. */
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public class LoginState implements IState {
     private GameStateManager stateManager;

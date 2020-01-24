@@ -23,6 +23,8 @@ import utils.Sizes;
  * LeaderBoardState class
  * Shows a leaderboard of all players playing the gaming.
  */
+/*Suppressing this warning because we don't need getters and
+    setters for UI elements. */
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public class LeaderboardState implements IState {
     private GameStateManager stateManager;

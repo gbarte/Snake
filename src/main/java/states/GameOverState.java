@@ -25,6 +25,8 @@ import states.utils.RendererHandler;
 /**
  * State of the game over game.
  */
+/*Suppressing this warning because we don't need getters and
+    setters for UI elements. */
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public class GameOverState implements IState {
     private GameStateManager stateManager;
