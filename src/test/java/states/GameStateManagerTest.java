@@ -111,8 +111,4 @@ class GameStateManagerTest {
         assertEquals(stateManager.getStates().size(), 1);
     }
 
-    @Test
-    void renderTest() {
-        //
-    }
 }

@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import states.utils.RendererHandler;
 
 public class LevelState implements IState {
     private static final int BUTTON_WIDTH = 300;
@@ -106,8 +107,8 @@ public class LevelState implements IState {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 stateManager.setState(new PlayState(stateManager, "defaultID", "defaultName",
-                        "assets/tile-set/vaporWaveSet2.png"
-                        , "assets/snake-texture/DefaultBody.png"));
+                        "assets/tile-set/vaporWaveSet2.png",
+                        "assets/snake-texture/DefaultBody.png"));
             }
 
             @Override
@@ -231,15 +232,7 @@ public class LevelState implements IState {
 
     @Override
     public void render(SpriteBatch batch) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.begin();
-        stage.act();
-        stage.getBatch().begin();
-        stage.getBatch().draw(background, 0, 0, 800, 800);
-        stage.getBatch().end();
-        stage.draw();
-        batch.end();
+        RendererHandler.render(batch, stage, background);
     }
 
     @Override

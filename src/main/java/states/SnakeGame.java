@@ -12,9 +12,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class SnakeGame extends ApplicationAdapter {
 
     public static final String TITLE = "Lil' Snake";
-    public static String username;
     private GameStateManager gameManager;
     private SpriteBatch batch;
+    private static String username;
 
     @Override
     public void create() {

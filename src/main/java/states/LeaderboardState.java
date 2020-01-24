@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import java.util.List;
 import services.LeaderboardEntry;
 import services.leaderboard.LeaderboardService;
+import states.utils.RendererHandler;
 import utils.Sizes;
 
 /**
@@ -28,7 +29,7 @@ public class LeaderboardState implements IState {
     private Stage stage;
     private Skin skin;
     private Label title;
-    private Texture backGround;
+    private Texture background;
     private BitmapFont bitmapFont;
     private Label.LabelStyle labelStyle;
 
@@ -43,7 +44,7 @@ public class LeaderboardState implements IState {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         skin =  new Skin(Gdx.files.internal("assets/quantum-horizon/skin/quantum-horizon-ui.json"));
-        backGround = new Texture("assets/three.png");
+        background = new Texture("assets/three.png");
         bitmapFont = new BitmapFont(Gdx.files.internal("assets/font.fnt"));
         labelStyle = new Label.LabelStyle(bitmapFont,
                 new Color(0, (float) 2.55, 0, 1));
@@ -84,12 +85,12 @@ public class LeaderboardState implements IState {
         this.title = title;
     }
 
-    public Texture getBackGround() {
-        return backGround;
+    public Texture getBackground() {
+        return background;
     }
 
-    public void setBackGround(Texture backGround) {
-        this.backGround = backGround;
+    public void setBackground(Texture background) {
+        this.background = background;
     }
 
     public BitmapFont getBitmapFont() {
@@ -209,15 +210,8 @@ public class LeaderboardState implements IState {
 
     @Override
     public void render(SpriteBatch batch) {
+        RendererHandler.render(batch, stage, background);
         Gdx.gl.glClearColor((float) 0.61, (float) 0.77, (float) 0.65, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.begin();
-        stage.act();
-        stage.getBatch().begin();
-        stage.getBatch().draw(backGround, 0, 0, Sizes.MIN_WIDTH_WINDOW, Sizes.MIN_HEIGHT_WINDOW);
-        stage.getBatch().end();
-        stage.draw();
-        batch.end();
     }
 
     @Override
