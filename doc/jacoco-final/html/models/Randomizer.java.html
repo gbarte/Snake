@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Randomizer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">template</a> &gt; <a href="index.source.html" class="el_package">models</a> &gt; <span class="el_source">Randomizer.java</span></div><h1>Randomizer.java</h1><pre class="source lang-java linenums">package models;
+
+import java.util.List;
+import java.util.Random;
+
+public class Randomizer {
+
+    private int minX;
+    private int minY;
+    private int maxX;
+    private int maxY;
+    private List&lt;Coordinate&gt; all;
+
+    /**
+     * Constructor to create a randomizer.
+     *
+     * @param minX The smallest x-value for where the item can be placed.
+     * @param minY The smallest y-value for where the item can be placed.
+     * @param maxX The largest x-value for where the item can be placed.
+     * @param maxY The largest y-value for where the item can be placed.
+     */
+<span class="fc" id="L22">    public Randomizer(int minX, int minY, int maxX, int maxY, List&lt;Coordinate&gt; all) {</span>
+<span class="fc" id="L23">        this.minX = minX;</span>
+<span class="fc" id="L24">        this.minY = minY;</span>
+<span class="fc" id="L25">        this.maxX = maxX;</span>
+<span class="fc" id="L26">        this.maxY = maxY;</span>
+<span class="fc" id="L27">        this.all = all;</span>
+<span class="fc" id="L28">    }</span>
+
+    /**
+     * Method that outputs a random coordinate that also takes obstacles into account.
+     *
+     * @return
+     */
+    public Coordinate getRandomCoordinate() {
+<span class="fc" id="L36">        Random r = new Random();</span>
+<span class="fc" id="L37">        Coordinate toReturn = new Coordinate(getMinX(), getMinY());</span>
+
+<span class="fc" id="L39">        int x = r.nextInt(getMaxX() - getMinY()) + getMinX();</span>
+<span class="fc" id="L40">        int y = r.nextInt(getMaxY() - getMinY()) + getMinY();</span>
+<span class="fc" id="L41">        toReturn.setCoordinateX(x);</span>
+<span class="fc" id="L42">        toReturn.setCoordinateY(y);</span>
+
+<span class="fc" id="L44">        int maxIter = (int) (1.5 * getAll().size());</span>
+<span class="fc bfc" id="L45" title="All 4 branches covered.">        while (getAll().contains(toReturn) &amp;&amp; maxIter &gt; 0) {</span>
+<span class="fc" id="L46">            toReturn.setCoordinateX(r.nextInt(getMaxX() - getMinY()) + getMinX());</span>
+<span class="fc" id="L47">            toReturn.setCoordinateY(r.nextInt(getMaxY() - getMinY()) + getMinY());</span>
+<span class="fc" id="L48">            maxIter--;</span>
+        }
+
+
+<span class="fc" id="L52">        return toReturn;</span>
+    }
+
+    public int getMinX() {
+<span class="fc" id="L56">        return minX;</span>
+    }
+
+    public void setMinX(int minX) {
+<span class="nc" id="L60">        this.minX = minX;</span>
+<span class="nc" id="L61">    }</span>
+
+    public int getMinY() {
+<span class="fc" id="L64">        return minY;</span>
+    }
+
+    public void setMinY(int minY) {
+<span class="nc" id="L68">        this.minY = minY;</span>
+<span class="nc" id="L69">    }</span>
+
+    public int getMaxX() {
+<span class="fc" id="L72">        return maxX;</span>
+    }
+
+    public void setMaxX(int maxX) {
+<span class="nc" id="L76">        this.maxX = maxX;</span>
+<span class="nc" id="L77">    }</span>
+
+    public int getMaxY() {
+<span class="fc" id="L80">        return maxY;</span>
+    }
+
+    public void setMaxY(int maxY) {
+<span class="nc" id="L84">        this.maxY = maxY;</span>
+<span class="nc" id="L85">    }</span>
+
+    public List&lt;Coordinate&gt; getAll() {
+<span class="fc" id="L88">        return all;</span>
+    }
+
+    public void setAll(List&lt;Coordinate&gt; all) {
+<span class="nc" id="L92">        this.all = all;</span>
+<span class="nc" id="L93">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

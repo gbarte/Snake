@@ -44,10 +44,9 @@ $ https://gitlab.ewi.tudelft.nl/cse2115/2019-2020/SN/sem-group-10/template.git
     - `Gradle JVM` choose `12`
 2) Run `Main.java`;
     - MacOS may throw an error. In this case, use `-XstartOnFirstThread` VM option for the configuration.
-3) Use auth credentials:
-    - username: john
-    - password: 12345678
-4) Use WASD to control the snake.
+3) Register a new user
+4) Use credentials from Step 3 for authentication
+5) Use WASD to control the snake.
 
 ## Reports
 
@@ -82,7 +81,8 @@ There is a Gitlabs CI pipeline that contains 3 stages:
 
 ## Built With
 - [Gradle](http://gradle.org) - Dependency Management
-- [JUnit](https://junit.org/junit5/), [Mockito](https://site.mockito.org) & [PowerMock](https://github.com/powermock/powermock/wiki) - Unit Tests
+- [JUnit](https://junit.org/junit5/), [Mockito](https://site.mockito.org) - Unit Tests
+- [SQLite](http://sqlite.org) - database
 
 ## Developers
 

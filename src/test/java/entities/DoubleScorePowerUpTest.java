@@ -1,6 +1,16 @@
 package entities;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.CALLS_REAL_METHODS;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import models.DoubleScore;
+import models.Score;
 import org.junit.jupiter.api.Test;
+import world.GameMap;
 
 
 public class DoubleScorePowerUpTest extends FoodTest {
@@ -11,29 +21,27 @@ public class DoubleScorePowerUpTest extends FoodTest {
     }
 
     @Test
-    void mushroomActionTest() { //TODO test this!!!
-        /*
-        PlayState playState = Mockito.mock(PlayState.class);
-        ShapeRenderer shapeRenderer = Mockito.mock(ShapeRenderer.class);
-        Mockito.when(playState.getShapeRenderer()).thenReturn(shapeRenderer);
+    void actionTest() {
 
-        Score score = new DoubleScore();
-        int initialScore = 30;
-        score.setValue(initialScore);
-        Mockito.when(playState.getScore()).thenReturn(score);
+        Score score = new Score();
+        int initial = 30;
+        score.setValue(initial);
+
+        DoubleScore ds = new DoubleScore();
+        ds.setValue(initial);
+
+        GameMap fakeMap = mock(GameMap.class, CALLS_REAL_METHODS);
+
+        when(fakeMap.getScore()).thenReturn(score);
 
         DoubleScorePowerUp powerUp = new DoubleScorePowerUp();
-        powerUp.action(playState);
+        powerUp.action(fakeMap);
 
-        SnakeBody snake = Mockito.mock(SnakeBody.class);
-        Mockito.when(playState.getSnake()).thenReturn(snake);
-        Apple apple = new Apple();
-        apple.action(playState);
+        when(fakeMap.getScore()).thenReturn(ds);
 
-        Mockito.verify(shapeRenderer).setColor(Color.RED);
-        assertEquals(initialScore + Apple.DEFAULT_SCORE * 2, score.getValue());
-
-         */
+        verify(fakeMap).setScore(any(DoubleScore.class));
+        assertEquals(fakeMap.getScore().getClass(), ds.getClass());
+        assertEquals(fakeMap.getScore().getValue(), initial);
     }
 
 }

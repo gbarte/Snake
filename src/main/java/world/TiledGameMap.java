@@ -2,6 +2,7 @@ package world;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -11,6 +12,8 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import entities.Food;
 import entities.factories.FoodFactory;
 import entities.snake.SnakeBody;
+import java.util.List;
+import models.Coordinate;
 import models.Score;
 import states.GameStateManager;
 import utils.Sizes;
@@ -29,23 +32,26 @@ public class TiledGameMap extends GameMap {
      * Default constructor that will use a pre-defined map.
      */
     public TiledGameMap(SnakeBody snake, GameStateManager manager) {
-        this("maps/tmx/def3.tmx", snake, manager);
+        this("assets/snake-texture/redBlueBody.png", "maps/tmx/def3.tmx", snake, manager);
     }
 
     /**
      * Constructor that takes in a file name for the map.
      *
-     * @param fileName The file's name in string format.
-     * @param snake    The snake that gets passed through.
-     * @param manager  The game's state manager that's required to manage the game.
+     * @param bodyTexture The texture path for the snake's body.
+     * @param fileName    The file's name in string format.
+     * @param snake       The snake that gets passed through.
+     * @param manager     The game's state manager that's required to manage the game.
      */
-    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
-    public TiledGameMap(String fileName, SnakeBody snake, GameStateManager manager) {
+    public TiledGameMap(String bodyTexture, String fileName, SnakeBody snake,
+                        GameStateManager manager) {
+        super(bodyTexture);
         this.fileName = fileName;
         this.tiledMap = new TmxMapLoader().load(fileName);
         this.tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         this.snake = snake;
         this.manager = manager;
+        super.fillList(getObstacles());
     }
 
     /**
@@ -61,12 +67,15 @@ public class TiledGameMap extends GameMap {
      *                         which can load in a existing file map.
      * @param tiledMapRenderer This is used to render the tiledMap.
      * @param fileName         The string path of the file's name for the map.
+     * @param obstacles        List of all the coordinates of obstacles.
      */
     public TiledGameMap(GameStateManager manager, SnakeBody snake, String bodyTexture,
                         FoodFactory foodFactory, Food food, Score score,
                         TiledMap tiledMap, OrthogonalTiledMapRenderer tiledMapRenderer,
-                        String fileName) {
-        super(Sizes.MOVE_TIME, manager, snake, foodFactory, food, score, bodyTexture);
+                        String fileName, TextureRegion[][] bodyTextureRegion,
+                        List<Coordinate> obstacles) {
+        super(Sizes.MOVE_TIME, manager, snake, foodFactory, food, score,
+                bodyTexture, bodyTextureRegion, obstacles);
         this.tiledMap = tiledMap;
         this.tiledMapRenderer = tiledMapRenderer;
         this.fileName = fileName;
@@ -85,6 +94,10 @@ public class TiledGameMap extends GameMap {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
+        renderSuper(camera, batch, snakeBody);
+    }
+
+    public void renderSuper(OrthographicCamera camera, SpriteBatch batch, SnakeBody snakeBody) {
         super.render(camera, batch, this.snake);
         batch.end();
     }

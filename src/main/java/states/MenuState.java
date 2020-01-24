@@ -9,15 +9,19 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import states.utils.GameRulesDialog;
+import states.utils.RendererHandler;
+import utils.Sizes;
 
 /**
  * Creates menu screen.
  */
+/*Suppressing this warning because we don't need getters and
+    setters for UI elements. */
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public class MenuState implements IState {
     private GameStateManager stateManager;
@@ -40,7 +44,6 @@ public class MenuState implements IState {
         initTitle();
         initRulesButton();
         initPlayButton();
-        initSettingsButton();
         initLeaderboardButton();
         initSignOutButton();
         initRenderUsername();
@@ -65,9 +68,7 @@ public class MenuState implements IState {
      * Adds the sign out button.
      */
     private void initSignOutButton() {
-        TextButton signOutButton = new TextButton("Sign Out",
-                new Skin(Gdx.files.internal(
-                        "assets/quantum-horizon/skin/quantum-horizon-ui.json")));
+        TextButton signOutButton = new TextButton("Sign Out", skin);
         signOutButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
         signOutButton.setPosition(400 - (signOutButton.getWidth() / 2), 50);
         signOutButton.addListener(new InputListener() {
@@ -92,7 +93,7 @@ public class MenuState implements IState {
     private void initLeaderboardButton() {
         TextButton leaderboardButton = new TextButton("Leaderboard", skin);
         leaderboardButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-        leaderboardButton.setPosition(400 - (leaderboardButton.getWidth() / 2), 250);
+        leaderboardButton.setPosition(400 - (leaderboardButton.getWidth() / 2), 150);
         leaderboardButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y,
@@ -116,18 +117,18 @@ public class MenuState implements IState {
     private void initRulesButton() {
         TextButton rulesButton = new TextButton("Rules", skin);
         rulesButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-        rulesButton.setPosition(400 - (rulesButton.getWidth() / 2), 350);
+        rulesButton.setPosition(400 - (rulesButton.getWidth() / 2), 250);
         rulesButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y,
                                 int pointer, int button) {
-                gameRulesDialog();
+                GameRulesDialog.display(stage);
             }
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y,
                                      int pointer, int button) {
-                System.out.println("pressed play");
+                System.out.println("pressed game rules");
                 return true;
             }
         });
@@ -140,12 +141,12 @@ public class MenuState implements IState {
     private void initPlayButton() {
         TextButton playButton = new TextButton("Start Game", skin);
         playButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-        playButton.setPosition(400 - (playButton.getWidth() / 2), 450);
+        playButton.setPosition(400 - (playButton.getWidth() / 2), 350);
         playButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y,
                                 int pointer, int button) {
-                stateManager.setState(new PlayState(stateManager));
+                stateManager.setState(new LevelState(stateManager));
             }
 
             @Override
@@ -160,39 +161,13 @@ public class MenuState implements IState {
     }
 
     /**
-     * Adds settings button.
-     */
-    private void initSettingsButton() {
-        TextButton settingsButton = new TextButton("Settings",
-                new Skin(Gdx.files.internal(
-                        "assets/quantum-horizon/skin/quantum-horizon-ui.json")));
-        settingsButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-        settingsButton.setPosition(400 - (settingsButton.getWidth() / 2), 150);
-        settingsButton.addListener(new InputListener() {
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //                gameManager.set(new SettingsState(gameManager));
-                System.out.println("to settingsstate");
-            }
-
-            @Override
-            public boolean touchDown(
-                    InputEvent event, float x, float y, int pointer, int button) {
-                System.out.println("pressed settings");
-                return true;
-            }
-        });
-        stage.addActor(settingsButton);
-    }
-
-    /**
      * Adds the username of logged in user to the screen.
      */
     private void initRenderUsername() {
         BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal("assets/font.fnt"));
         Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
                 new Color(255, 0, 255, 1));
-        Label renderUsername = new Label("Logged in as " + SnakeGame.username, labelStyle);
+        Label renderUsername = new Label("Logged in as " + SnakeGame.getUsername(), labelStyle);
         renderUsername.setSize(100, 20);
         renderUsername.setPosition(5,775);
         renderUsername.setFontScale((float) 1);
@@ -210,15 +185,7 @@ public class MenuState implements IState {
 
     @Override
     public void render(SpriteBatch batch) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.begin();
-        stage.act();
-        stage.getBatch().begin();
-        stage.getBatch().draw(background, 0, 0, 800, 800);
-        stage.getBatch().end();
-        stage.draw();
-        batch.end();
+        RendererHandler.render(batch, stage, background);
     }
 
     @Override
@@ -227,26 +194,5 @@ public class MenuState implements IState {
         skin.dispose();
         stage.dispose();
     }
-
-    /**
-     * This dialog box is shown when the user wants to start the game.
-     */
-    public void gameRulesDialog() {
-        Skin uiSkin = new Skin(Gdx.files.internal("assets/cloud-form/skin/cloud-form-ui.json"));
-        Dialog dialog = new Dialog("Rules", uiSkin, "dialog") {
-            public void result(Object obj) {
-                System.out.println("result " + obj);
-            }
-        };
-        dialog.text("Use wasd to move the snake.\n"
-                + "Eat food to grow your snake.\n"
-                + "Game will end when you either hit yourself or the wall.\n"
-                + "Press p to pause the game.\n"
-                + "Press q to quit the game.\n"
-                + "Enjoy :)");
-        dialog.button("OK", true);
-        dialog.show(stage);
-    }
-
 
 }

@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomGameMap.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">template</a> &gt; <a href="index.source.html" class="el_package">world</a> &gt; <span class="el_source">CustomGameMap.java</span></div><h1>CustomGameMap.java</h1><pre class="source lang-java linenums">package world;
+
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import entities.Food;
+import entities.factories.FoodFactory;
+import entities.snake.SnakeBody;
+import java.util.List;
+import models.Coordinate;
+import models.Score;
+import states.GameStateManager;
+import utils.Sizes;
+import utils.TileType;
+import world.customgamemap.CustomGameMapData;
+import world.customgamemap.CustomGameMapLoader;
+
+public class CustomGameMap extends GameMap {
+
+    private String id;
+    private String name;
+    private int[][][] map;
+    private GameStateManager manager;
+    private TextureRegion[][] tiles;
+    private SnakeBody snake;
+
+    /**
+     * Constructor for the CustomGameMap class with the minimum required setup.
+     *
+     * @param snake   The snake for this game.
+     * @param manager The GameStateManager which sets the different stages in the game.
+     */
+    public CustomGameMap(SnakeBody snake, GameStateManager manager) {
+<span class="nc" id="L35">        this(&quot;defaultID&quot;, &quot;defaultName&quot;, &quot;assets/tile-set/setOfFiveGameTheme.png&quot;,</span>
+                &quot;assets/snake-texture/redBlueBody.png&quot;, snake, manager);
+<span class="nc" id="L37">    }</span>
+
+    /**
+     * Constructor for the CustomGameMap class which would allow us to pass on arguments,
+     * in order to set a specific CustomGameMap, tiles texture set and snake's body texture.
+     *
+     * @param id          The ID of the map.
+     * @param name        The name of the map.
+     * @param tileSet     The path for the theme (or set of tiles) we want to render.
+     * @param bodytexture The texture path for the snake's body.
+     * @param snake       The snake for this game.
+     * @param manager     The GameStateManager which sets the different stages in the game.
+     */
+    public CustomGameMap(String id, String name, String tileSet, String bodytexture,
+                         SnakeBody snake, GameStateManager manager) {
+<span class="nc" id="L52">        super(bodytexture);</span>
+<span class="nc" id="L53">        this.id = id;</span>
+<span class="nc" id="L54">        this.name = name;</span>
+<span class="nc" id="L55">        this.snake = snake;</span>
+<span class="nc" id="L56">        CustomGameMapData customGameMapData =</span>
+<span class="nc" id="L57">                CustomGameMapLoader.loadMap(id, name);</span>
+<span class="nc" id="L58">        this.map = customGameMapData.map;</span>
+<span class="nc" id="L59">        Texture texture = new Texture(tileSet);</span>
+<span class="nc" id="L60">        tiles = TextureRegion.split(texture, TileType.TILE_SIZE, TileType.TILE_SIZE);</span>
+<span class="nc" id="L61">        this.manager = manager;</span>
+<span class="nc" id="L62">        super.fillList(getObstacles());</span>
+<span class="nc" id="L63">    }</span>
+
+    /**
+     * This constructor is mainly used for testing purposes.
+     *
+     * @param id                The ID of the map.
+     * @param name              The name of the map.
+     * @param map               The map with all the tile type's numbers.
+     * @param tiles             Container for the theme of our map's tiles.
+     * @param snake             The snake for this game.
+     * @param manager           The GameStateManager which sets the different stages in the game.
+     * @param food              Food object that snake consumes.
+     * @param score             Score object to keep track of your score.
+     * @param foodFactory       FoodFactory factory used to create food.
+     * @param bodyTexture       The texture path for the snake's skin.
+     * @param bodyTextureRegion The textureRegion for our snake's texture.
+     * @param obstacles         List of all the coordinates of obstacles.
+     */
+    public CustomGameMap(String id, String name, int[][][] map, TextureRegion[][] tiles,
+                         SnakeBody snake, GameStateManager manager,
+                         Food food, Score score, FoodFactory foodFactory,
+                         String bodyTexture, TextureRegion[][] bodyTextureRegion,
+                         List&lt;Coordinate&gt; obstacles) {
+<span class="fc" id="L86">        super(Sizes.MOVE_TIME, manager, snake, foodFactory, food, score,</span>
+                bodyTexture, bodyTextureRegion, obstacles);
+<span class="fc" id="L88">        this.id = id;</span>
+<span class="fc" id="L89">        this.name = name;</span>
+<span class="fc" id="L90">        this.snake = snake;</span>
+<span class="fc" id="L91">        this.map = map;</span>
+<span class="fc" id="L92">        this.tiles = tiles;</span>
+<span class="fc" id="L93">        this.manager = manager;</span>
+<span class="fc" id="L94">    }</span>
+
+    @Override
+    public void render(OrthographicCamera camera, SpriteBatch spriteBatch, SnakeBody snake) {
+<span class="nc" id="L98">        renderMap(camera, spriteBatch);</span>
+        //after rendering map up here^ u wanna render entities on the map
+        //which is what u do in the super class GameMap
+<span class="nc" id="L101">        super.render(camera, spriteBatch, this.snake);</span>
+<span class="nc" id="L102">        spriteBatch.end();</span>
+<span class="nc" id="L103">    }</span>
+
+    /**
+     * This method is called from the main render method and is used to render the map.
+     * The split was mainly made for testability purposes.
+     *
+     * @param camera The OrthographicCamera needed for the projectionMatrix.
+     * @param batch  SpriteBatch in which to render.
+     */
+    public void renderMap(OrthographicCamera camera, SpriteBatch batch) {
+<span class="fc" id="L113">        batch.setProjectionMatrix(camera.combined);</span>
+
+<span class="fc" id="L115">        batch.begin();</span>
+
+<span class="fc bfc" id="L117" title="All 2 branches covered.">        for (int layer = 0; layer &lt; getLayers(); layer++) {</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">            for (int row = 0; row &lt; getHeight(); row++) {</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">                for (int col = 0; col &lt; getWidth(); col++) {</span>
+<span class="fc" id="L120">                    TileType type = this.getTileTypeByCoordinate(layer, col, row);</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">                    if (type != null) {</span>
+<span class="fc" id="L122">                        batch.draw(this.tiles[0][type.getId() - 1], (col * TileType.TILE_SIZE),</span>
+                                (row * TileType.TILE_SIZE));
+                    }
+                }
+            }
+        }
+<span class="fc" id="L128">    }</span>
+
+    @Override
+    public void update(float delta) {
+<span class="fc" id="L132">        super.update(delta);</span>
+<span class="fc" id="L133">    }</span>
+
+    @Override
+    public void dispose(OrthographicCamera camera) {
+
+<span class="fc" id="L138">    }</span>
+
+    @Override
+    public TileType getTileTypeByLocation(int layer, float x, float y) {
+<span class="fc" id="L142">        return this.getTileTypeByCoordinate(layer, Math.round(x / TileType.TILE_SIZE),</span>
+<span class="fc" id="L143">                getHeight() - Math.round(y / TileType.TILE_SIZE) - 1);</span>
+    }
+
+    @Override
+    public TileType getTileTypeByCoordinate(int layer, int col, int row) {
+        //check if its out of bounds first
+<span class="fc bfc" id="L149" title="All 8 branches covered.">        if (col &lt; 0 || col &gt;= getWidth() || row &lt; 0 || row &gt;= getHeight()) {</span>
+<span class="fc" id="L150">            return null;</span>
+        }
+        //check if layer isn't out of bounds
+<span class="fc bfc" id="L153" title="All 4 branches covered.">        if (layer &gt;= getLayers() || layer &lt; 0) {</span>
+<span class="fc" id="L154">            layer = getLayers() - 1;</span>
+        }
+        //check if there's a tile on that layer
+<span class="fc" id="L157">        int id = map[layer][getHeight() - row - 1][col];</span>
+
+<span class="fc bfc" id="L159" title="All 2 branches covered.">        if (id == 0) {</span>
+<span class="fc" id="L160">            layer--;</span>
+<span class="fc" id="L161">            id = map[layer][getHeight() - row - 1][col];</span>
+        }
+
+<span class="fc" id="L164">        TileType toReturn = TileType.getTileTypeById(id);</span>
+<span class="fc" id="L165">        return toReturn;</span>
+    }
+
+    @Override
+    public int getWidth() {
+<span class="fc" id="L170">        return map[0][0].length;</span>
+    }
+
+    @Override
+    public int getHeight() {
+<span class="fc" id="L175">        return map[0].length;</span>
+    }
+
+    @Override
+    public int getLayers() {
+<span class="fc" id="L180">        return map.length;</span>
+    }
+
+    public String getId() {
+<span class="fc" id="L184">        return id;</span>
+    }
+
+    public void setId(String id) {
+<span class="fc" id="L188">        this.id = id;</span>
+<span class="fc" id="L189">    }</span>
+
+    public String getName() {
+<span class="fc" id="L192">        return name;</span>
+    }
+
+    public void setName(String name) {
+<span class="fc" id="L196">        this.name = name;</span>
+<span class="fc" id="L197">    }</span>
+
+    public int[][][] getMap() {
+<span class="fc" id="L200">        return map;</span>
+    }
+
+    public void setMap(int[][][] map) {
+<span class="fc" id="L204">        this.map = map;</span>
+<span class="fc" id="L205">    }</span>
+
+    public TextureRegion[][] getTiles() {
+<span class="fc" id="L208">        return tiles;</span>
+    }
+
+    public void setTiles(TextureRegion[][] tiles) {
+<span class="fc" id="L212">        this.tiles = tiles;</span>
+<span class="fc" id="L213">    }</span>
+
+    public SnakeBody getSnake() {
+<span class="fc" id="L216">        return snake;</span>
+    }
+
+    public void setSnake(SnakeBody snake) {
+<span class="fc" id="L220">        this.snake = snake;</span>
+<span class="fc" id="L221">    }</span>
+
+    public GameStateManager getManager() {
+<span class="fc" id="L224">        return manager;</span>
+    }
+
+    public void setManager(GameStateManager manager) {
+<span class="fc" id="L228">        this.manager = manager;</span>
+<span class="fc" id="L229">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

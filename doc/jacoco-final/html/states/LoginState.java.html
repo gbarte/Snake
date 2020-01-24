@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LoginState.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">template</a> &gt; <a href="index.source.html" class="el_package">states</a> &gt; <span class="el_source">LoginState.java</span></div><h1>LoginState.java</h1><pre class="source lang-java linenums">package states;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import services.auth.AuthResponse;
+import services.auth.AuthService;
+import states.utils.RendererHandler;
+import utils.Sizes;
+
+/**
+ * Creates login screen.
+ */
+/*Suppressing this warning because we don't need getters and
+    setters for UI elements. */
+@SuppressWarnings(&quot;PMD.BeanMembersShouldSerialize&quot;)
+public class LoginState implements IState {
+    private GameStateManager stateManager;
+    private Stage stage;
+    private Skin skin;
+    private Label title;
+    private TextField usernameField;
+    private TextField passwordField;
+    private Texture background;
+    private BitmapFont bitmapFont;
+    private Label.LabelStyle labelStyle;
+
+    /**
+     * Constructor which creates a new state within the game.
+     * E.g. Play/Pause/Menu.
+     *
+     * @param gameManager which keeps track of the state of the game.
+     */
+<span class="nc" id="L47">    public LoginState(GameStateManager gameManager) {</span>
+<span class="nc" id="L48">        this.stateManager = gameManager;</span>
+<span class="nc" id="L49">        stage = new Stage(new ScreenViewport());</span>
+<span class="nc" id="L50">        Gdx.input.setInputProcessor(stage);</span>
+<span class="nc" id="L51">        skin =  new Skin(Gdx.files.internal(&quot;assets/quantum-horizon/skin/quantum-horizon-ui.json&quot;));</span>
+<span class="nc" id="L52">        bitmapFont = new BitmapFont();</span>
+<span class="nc" id="L53">        labelStyle = new Label.LabelStyle(bitmapFont,</span>
+                new Color(255,  0, 255, 1));
+<span class="nc" id="L55">        title = RendererHandler.initTitle(stage);</span>
+<span class="nc" id="L56">        initLogin();</span>
+<span class="nc" id="L57">        initPasswordField();</span>
+<span class="nc" id="L58">        initButtons();</span>
+<span class="nc" id="L59">        initSignUp();</span>
+<span class="nc" id="L60">        background = new Texture(&quot;assets/bg.png&quot;);</span>
+<span class="nc" id="L61">    }</span>
+
+    public Stage getStage() {
+<span class="nc" id="L64">        return stage;</span>
+    }
+
+    public void setStage(Stage stage) {
+<span class="nc" id="L68">        this.stage = stage;</span>
+<span class="nc" id="L69">    }</span>
+
+    public Skin getSkin() {
+<span class="nc" id="L72">        return skin;</span>
+    }
+
+    public void setSkin(Skin skin) {
+<span class="nc" id="L76">        this.skin = skin;</span>
+<span class="nc" id="L77">    }</span>
+
+    public Label getTitle() {
+<span class="nc" id="L80">        return title;</span>
+    }
+
+    public void setTitle(Label title) {
+<span class="nc" id="L84">        this.title = title;</span>
+<span class="nc" id="L85">    }</span>
+
+    public Texture getBackground() {
+<span class="nc" id="L88">        return background;</span>
+    }
+
+    public void setBackground(Texture background) {
+<span class="nc" id="L92">        this.background = background;</span>
+<span class="nc" id="L93">    }</span>
+
+    public TextField getUsernameField() {
+<span class="nc" id="L96">        return usernameField;</span>
+    }
+
+    public void setUsernameField(TextField usernameField) {
+<span class="nc" id="L100">        this.usernameField = usernameField;</span>
+<span class="nc" id="L101">    }</span>
+
+    public TextField getPasswordField() {
+<span class="nc" id="L104">        return passwordField;</span>
+    }
+
+    public void setPasswordField(TextField passWordField) {
+<span class="nc" id="L108">        this.passwordField = passWordField;</span>
+<span class="nc" id="L109">    }</span>
+
+    public BitmapFont getBitmapFont() {
+<span class="nc" id="L112">        return bitmapFont;</span>
+    }
+
+    public void setBitmapFont(BitmapFont bitmapFont) {
+<span class="nc" id="L116">        this.bitmapFont = bitmapFont;</span>
+<span class="nc" id="L117">    }</span>
+
+    public Label.LabelStyle getLabelStyle() {
+<span class="nc" id="L120">        return labelStyle;</span>
+    }
+
+    public void setLabelStyle(Label.LabelStyle labelStyle) {
+<span class="nc" id="L124">        this.labelStyle = labelStyle;</span>
+<span class="nc" id="L125">    }</span>
+
+    /**
+     * Sets up Sign Up button.
+     */
+    private void initSignUp() {
+<span class="nc" id="L131">        TextButton signUpButton = new TextButton(&quot;Sign up&quot;, skin);</span>
+<span class="nc" id="L132">        signUpButton.setPosition(320, 65);</span>
+<span class="nc" id="L133">        signUpButton.addListener(new InputListener() {</span>
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+<span class="nc" id="L136">                stateManager.setState(new SignUpState(stateManager));</span>
+<span class="nc" id="L137">            }</span>
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+<span class="nc" id="L141">                return true;</span>
+            }
+        });
+<span class="nc" id="L144">        stage.addActor(signUpButton);</span>
+<span class="nc" id="L145">    }</span>
+
+    /**
+     * Sets username textfield,
+     * Login and Sign Up buttons.
+     */
+    private void initLogin() {
+<span class="nc" id="L152">        Label usernameLabel = new Label(&quot;Username&quot;, labelStyle);</span>
+<span class="nc" id="L153">        usernameLabel.setPosition(350, 279);</span>
+<span class="nc" id="L154">        usernameField = new TextField(&quot;&quot;,</span>
+<span class="nc" id="L155">                new Skin(Gdx.files.internal(&quot;assets/cloud-form/skin/cloud-form-ui.json&quot;)));</span>
+<span class="nc" id="L156">        usernameField.setSize(180, 30);</span>
+<span class="nc" id="L157">        usernameField.setPosition(300, 247);</span>
+<span class="nc" id="L158">        stage.addActor(usernameLabel);</span>
+<span class="nc" id="L159">        stage.addActor(usernameField);</span>
+<span class="nc" id="L160">    }</span>
+
+    /**
+     * Login and Sign Up buttons.
+     */
+    private void initButtons() {
+<span class="nc" id="L166">        TextButton loginButton = new TextButton(&quot;Login&quot;, skin);</span>
+<span class="nc" id="L167">        loginButton.setPosition(325, 125);</span>
+<span class="nc" id="L168">        loginButton.addListener(new InputListener() {</span>
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+<span class="nc" id="L171">                AuthService service = new AuthService();</span>
+<span class="nc" id="L172">                AuthResponse response = service.auth(usernameField.getText(),</span>
+<span class="nc" id="L173">                        passwordField.getText());</span>
+
+<span class="nc bnc" id="L175" title="All 2 branches missed.">                if (response == AuthResponse.SUCCESS) {</span>
+<span class="nc" id="L176">                    SnakeGame.setUsername(usernameField.getText());</span>
+<span class="nc" id="L177">                    stateManager.setState(new MenuState(stateManager));</span>
+                } else {
+<span class="nc" id="L179">                    failedAuthenticationDialog();</span>
+                }
+<span class="nc" id="L181">            }</span>
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+<span class="nc" id="L185">                System.out.println(&quot;pressed sign in&quot;);</span>
+<span class="nc" id="L186">                return true;</span>
+            }
+        });
+<span class="nc" id="L189">        stage.addActor(loginButton);</span>
+<span class="nc" id="L190">    }</span>
+
+    /**
+     * Sets the password textfield.
+     */
+    private void initPasswordField() {
+<span class="nc" id="L196">        Label passwordLabel = new Label(&quot;Password&quot;, labelStyle);</span>
+<span class="nc" id="L197">        passwordLabel.setPosition(350, 229);</span>
+
+<span class="nc" id="L199">        passwordField = new TextField(&quot;&quot;,</span>
+<span class="nc" id="L200">                new Skin(Gdx.files.internal(&quot;assets/cloud-form/skin/cloud-form-ui.json&quot;)));</span>
+<span class="nc" id="L201">        passwordField.setSize(180, 30);</span>
+<span class="nc" id="L202">        passwordField.setPosition(300, 197);</span>
+<span class="nc" id="L203">        passwordField.setPasswordMode(true);</span>
+<span class="nc" id="L204">        passwordField.setPasswordCharacter('*');</span>
+<span class="nc" id="L205">        stage.addActor(passwordLabel);</span>
+<span class="nc" id="L206">        stage.addActor(usernameField);</span>
+<span class="nc" id="L207">        stage.addActor(passwordField);</span>
+<span class="nc" id="L208">    }</span>
+
+    /**
+     * This dialog box is shown when the authentication fails.
+     */
+    private void failedAuthenticationDialog() {
+<span class="nc" id="L214">        Skin uiSkin = new Skin(Gdx.files.internal(&quot;assets/cloud-form/skin/cloud-form-ui.json&quot;));</span>
+<span class="nc" id="L215">        Dialog dialog = new Dialog(&quot;Username taken&quot;, uiSkin, &quot;dialog&quot;) {</span>
+            public void result(Object obj) {
+<span class="nc" id="L217">                System.out.println(&quot;result &quot; + obj);</span>
+<span class="nc" id="L218">            }</span>
+        };
+<span class="nc" id="L220">        dialog.text(&quot;Incorrect username or password, please try again.&quot;);</span>
+<span class="nc" id="L221">        dialog.button(&quot;OK&quot;, true); //sends &quot;true&quot; as the result</span>
+<span class="nc" id="L222">        dialog.show(stage);</span>
+<span class="nc" id="L223">    }</span>
+
+
+    @Override
+    public void handleInput() {
+
+<span class="nc" id="L229">    }</span>
+
+    @Override
+    public void update(float dt) {
+
+<span class="nc" id="L234">    }</span>
+
+    @Override
+    public void render(SpriteBatch batch) {
+<span class="nc" id="L238">        RendererHandler.render(batch, stage, background);</span>
+<span class="nc" id="L239">    }</span>
+
+    @Override
+    public void dispose() {
+<span class="nc" id="L243">        background.dispose();</span>
+<span class="nc" id="L244">        skin.dispose();</span>
+<span class="nc" id="L245">        stage.dispose();</span>
+<span class="nc" id="L246">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

@@ -19,21 +19,24 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import models.Score;
-import org.lwjgl.system.CallbackI;
 import services.leaderboard.LeaderboardService;
+import states.utils.RendererHandler;
 
 /**
  * State of the game over game.
  */
+/*Suppressing this warning because we don't need getters and
+    setters for UI elements. */
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public class GameOverState implements IState {
     private GameStateManager stateManager;
     private Stage stage;
     private Skin skin;
-    private Texture backGround;
+    private Texture background;
     private CheckBox checkBox;
     private TextField nicknameField;
     private Score score;
+    private Label.LabelStyle labelStyle;
 
     /**
      * Constructor which creates a new GameOverState within the game.
@@ -47,13 +50,16 @@ public class GameOverState implements IState {
         Gdx.input.setInputProcessor(stage);
         skin = new Skin(Gdx.files.internal(
                 "assets/quantum-horizon/skin/quantum-horizon-ui.json"));
+        BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal("assets/font.fnt"));
+        labelStyle = new Label.LabelStyle(bitmapFont,
+                new Color(0, 255, 0, 1));
         initTitle();
         initScore();
         initCheckBox();
         initNickname();
         initSaveButton();
         initReturnButton();
-        backGround = new Texture("assets/bg.png");
+        background = new Texture("assets/bg.png");
     }
 
     public GameStateManager getStateManager() {
@@ -80,12 +86,12 @@ public class GameOverState implements IState {
         this.skin = skin;
     }
 
-    public Texture getBackGround() {
-        return backGround;
+    public Texture getBackground() {
+        return background;
     }
 
-    public void setBackGround(Texture backGround) {
-        this.backGround = backGround;
+    public void setBackground(Texture background) {
+        this.background = background;
     }
 
     public CheckBox getCheckBox() {
@@ -112,6 +118,14 @@ public class GameOverState implements IState {
         this.score = score;
     }
 
+    public Label.LabelStyle getLabelStyle() {
+        return labelStyle;
+    }
+
+    public void setLabelStyle(Label.LabelStyle labelStyle) {
+        this.labelStyle = labelStyle;
+    }
+
     @Override
     public void handleInput() {
 
@@ -124,24 +138,13 @@ public class GameOverState implements IState {
 
     @Override
     public void render(SpriteBatch batch) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.begin();
-        stage.act();
-        stage.getBatch().begin();
-        stage.getBatch().draw(backGround, 0, 0, 800, 800);
-        stage.getBatch().end();
-        stage.draw();
-        batch.end();
+        RendererHandler.render(batch, stage, background);
     }
 
     /**
      * Adds "Game Over" to the screen.
      */
     private void initTitle() {
-        BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal("assets/font.fnt"));
-        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
-                new Color(255, 0, 255, 1));
         Label gameOverTitle = new Label("GAME OVER", labelStyle);
         gameOverTitle.setSize(600, 120);
         gameOverTitle.setPosition(200,620);
@@ -153,9 +156,6 @@ public class GameOverState implements IState {
      * Adds score to the screen.
      */
     private void initScore() {
-        BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal("assets/font.fnt"));
-        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
-                new Color(0, 255, 0, 1));
         Label text = new Label("Score:", labelStyle);
         text.setSize(500, 100);
         text.setPosition(270,380);
@@ -174,11 +174,10 @@ public class GameOverState implements IState {
      */
     private void initNickname() {
         BitmapFont bitmapFont = new BitmapFont();
-        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
+        Label.LabelStyle smallLabelStyle = new Label.LabelStyle(bitmapFont,
                 new Color(255,  0, 255, 1));
-        Label nicknameLabel = new Label("Enter a nickname", labelStyle);
+        Label nicknameLabel = new Label("Enter a nickname", smallLabelStyle);
         nicknameLabel.setPosition(340, 279);
-
         nicknameField = new TextField("",
                 new Skin(Gdx.files.internal("assets/cloud-form/skin/cloud-form-ui.json")));
         nicknameField.setSize(200, 30);
@@ -195,13 +194,13 @@ public class GameOverState implements IState {
         saveButton.setPosition(300, 145);saveButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if (checkBox.isChecked()) {
+                if (!checkBox.isChecked()) {
                     LeaderboardService ls = new LeaderboardService();
                     ls.createEntry(nicknameField.getText(), score.getValue());
                     scoreSavedConfirmation();
                 } else {
                     LeaderboardService ls = new LeaderboardService();
-                    ls.createEntry(SnakeGame.username, score.getValue());
+                    ls.createEntry(SnakeGame.getUsername(), score.getValue());
                     scoreSavedConfirmation();
                 }
             }
@@ -248,7 +247,6 @@ public class GameOverState implements IState {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                System.out.println("chose nickname");
                 return true;
             }
         });
@@ -257,23 +255,22 @@ public class GameOverState implements IState {
 
     @Override
     public void dispose() {
-        backGround.dispose();
+        background.dispose();
         stage.dispose();
         skin.dispose();
-
     }
 
     /**
      * This dialog box is shown when the user has saved the score.
      */
-    public void scoreSavedConfirmation() {
+    private void scoreSavedConfirmation() {
         Skin uiSkin = new Skin(Gdx.files.internal("assets/cloud-form/skin/cloud-form-ui.json"));
         Dialog dialog = new Dialog("Saved score", uiSkin, "dialog") {
             public void result(Object obj) {
                 System.out.println("result " + obj);
             }
         };
-        dialog.text("Score has succesfully been saved.");
+        dialog.text("Score has successfully been saved.");
         dialog.button("OK", true).addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {

@@ -1,6 +1,13 @@
 package entities;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.CALLS_REAL_METHODS;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import org.junit.jupiter.api.Test;
+import world.GameMap;
 
 
 public class MushroomTest extends FoodTest {
@@ -12,17 +19,13 @@ public class MushroomTest extends FoodTest {
 
     @Test
     void mushroomActionTest() {
-        /*
-        PlayState playState = Mockito.mock(PlayState.class);
-        MushroomPowerUp mushroom = new MushroomPowerUp();
-        ShapeRenderer shapeRenderer = Mockito.mock(ShapeRenderer.class);
-        Mockito.when(playState.getShapeRenderer()).thenReturn(shapeRenderer);
+        GameMap fakeMap = mock(GameMap.class, CALLS_REAL_METHODS);
+        MushroomPowerUp powerUp = new MushroomPowerUp();
+        when(fakeMap.getMoveTime()).thenReturn(GameMap.DEFAULT_MOVE_TIME);
 
-        mushroom.action(playState);
+        powerUp.action(fakeMap);
 
-        Mockito.verify(shapeRenderer).setColor(Color.PURPLE);
-        Mockito.verify(playState).setMoveTime(PlayState.DEFAULT_MOVE_TIME / 2);
-         */
+        verify(fakeMap).setMoveTime(1.5f * GameMap.DEFAULT_MOVE_TIME);
     }
 
 }

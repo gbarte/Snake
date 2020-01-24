@@ -1,6 +1,7 @@
 package entities;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import models.Coordinate;
 import world.GameMap;
 
@@ -11,14 +12,16 @@ import world.GameMap;
  */
 public interface Food {
 
-    void actionTwo(GameMap map);
+    void action(GameMap map);
 
     Coordinate getCoordinate();
 
-    Texture getTexture();
-
     void setCoordinate(Coordinate coordinate);
 
+    void render(SpriteBatch batch);
+
     void setTexture(Texture texture);
+
+    Texture getTexture();
 
 }

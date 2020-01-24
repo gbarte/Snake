@@ -12,25 +12,48 @@ import world.TiledGameMap;
 
 public class PlayState implements IState {
 
-    OrthographicCamera orthographicCamera;
-    GameStateManager gameStateManager;
-    SnakeBody snakeBody;
-    GameMap gameMap;
+    private OrthographicCamera orthographicCamera;
+    private GameStateManager gameStateManager;
+    private SnakeBody snakeBody;
+    private GameMap gameMap;
 
     /**
-     * Constructor which creates a new state within the game.
-     * E.g. Play/Pause/Menu.
+     * This constructor is used to call the CustomGameMap class.
      *
-     * @param gameManager which keeps track of the state of the game.
+     * @param gameManager Manager which keeps track of the state of the game.
+     * @param id          The ID of the map.
+     * @param name        The name of the map.
+     * @param tileSet     The path for the theme (or set of tiles) we want to render.
+     * @param bodyTexture Path to the body's texture.
      */
-    public PlayState(GameStateManager gameManager) {
+    public PlayState(GameStateManager gameManager, String id, String name, String tileSet,
+                     String bodyTexture) {
         orthographicCamera = new OrthographicCamera();
         orthographicCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         orthographicCamera.update();
 
         this.snakeBody =
                 new SnakeBody(Sizes.DEFAULT_MINIMUM_MAP_TILES, Sizes.DEFAULT_MINIMUM_MAP_TILES);
-        gameMap = new CustomGameMap(this.snakeBody, gameManager); //CustomGameMap ipv TiledGameMap
+
+        this.gameMap = new CustomGameMap(id, name,
+                tileSet, bodyTexture, this.snakeBody, gameManager);
+    }
+
+    /**
+     * This constructor is used to call a new TiledGameMap.
+     *
+     * @param gameManager Manager which keeps track of the state of the game.
+     * @param fileName    File path to the map.
+     * @param bodyTexture Path to the body's texture.
+     */
+    public PlayState(GameStateManager gameManager, String fileName, String bodyTexture) {
+        orthographicCamera = new OrthographicCamera();
+        orthographicCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        orthographicCamera.update();
+
+        this.snakeBody =
+                new SnakeBody(Sizes.DEFAULT_MINIMUM_MAP_TILES, Sizes.DEFAULT_MINIMUM_MAP_TILES);
+        this.gameMap = new TiledGameMap(bodyTexture, fileName, snakeBody, gameManager);
     }
 
     /**
@@ -40,8 +63,7 @@ public class PlayState implements IState {
      * @param snake            The snake that'll be displayed on the map.
      * @param gameMap          The map that gets instantiated.
      */
-    public PlayState(GameStateManager gameStateManager, SnakeBody snake,
-                     GameMap gameMap) {
+    public PlayState(GameStateManager gameStateManager, SnakeBody snake, GameMap gameMap) {
         this.gameStateManager = gameStateManager;
         this.snakeBody = snake;
         this.gameMap = gameMap;
@@ -59,7 +81,7 @@ public class PlayState implements IState {
 
     @Override
     public void render(SpriteBatch batch) {
-        Gdx.gl.glClearColor(1, 0, 0, 1); //this changes the background color, number between 0-1
+        Gdx.gl.glClearColor(0, 0, 1, 1); //changes the background color, number between 0-1
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         gameMap.render(orthographicCamera, batch, snakeBody);

@@ -2,7 +2,6 @@ package states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -14,22 +13,26 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import services.auth.AuthService;
 import services.auth.RegistrationResponse;
-import utils.Sizes;
+import states.utils.RendererHandler;
 
 /**
  * Creates sign up screen.
  */
+/*Suppressing this warning because we don't need getters and
+    setters for UI elements. */
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public class SignUpState implements IState {
     private GameStateManager stateManager;
     private Stage stage;
     private Skin skin;
     private Texture background;
+    private TextField usernameField;
+    private TextField passwordField;
     private Skin cloudSkin;
+    private Label.LabelStyle labelStyle;
 
     /**
      * Constructor which creates a new state within the game.
@@ -44,63 +47,60 @@ public class SignUpState implements IState {
         Gdx.input.setInputProcessor(stage);
         skin = new Skin(Gdx.files.internal("assets/quantum-horizon/skin/quantum-horizon-ui.json"));
         cloudSkin = new Skin(Gdx.files.internal("assets/cloud-form/skin/cloud-form-ui.json"));
-        initTitle();
-        initReturn();
-        initSignUp();
-    }
-
-
-    /**
-     * Sets title of login screen.
-     */
-    private void initTitle() {
-        BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal("assets/font.fnt"));
-        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
-                new Color(0, 255, 0, 1));
-        Label title = new Label("Lil' Snake", labelStyle);
-        title.setSize(600, 120);
-        title.setPosition(100, 550);
-        title.setFontScale(3);
-        title.setAlignment(Align.center);
-        stage.addActor(title);
-    }
-
-    /**
-     * Sets username and password textfield,
-     * Login and Sign Up buttons.
-     */
-    private void initSignUp() {
-        TextButton signUpButton = new TextButton("Sign up", skin);
-        //        loginButton.setPosition(300, 200);
-        signUpButton.setPosition(320, 125);
-
         BitmapFont bitmapFont = new BitmapFont();
-        // Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont, new Color(1, 0, 1, 1));
-        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
-                new Color(255, 0, 255, 1));
-        Label usernameLabel = new Label("Enter a username", labelStyle);
-        usernameLabel.setPosition(340, 279);
+        labelStyle = new Label.LabelStyle(bitmapFont,
+                new Color(255,  0, 255, 1));
+        RendererHandler.initTitle(stage);
+        initSignUpUsername();
+        initSignUpPassword();
+        initSignUpButton();
+        initReturn();
 
-        TextField usernameField = new TextField("", cloudSkin);
+    }
+
+    /**
+     * Sets username textfield.
+     */
+    private void initSignUpUsername() {
+        Label usernameLabel = new Label("Enter a username", labelStyle);
+
+        usernameLabel.setPosition(340, 279);
+        usernameField = new TextField("", cloudSkin);
         usernameField.setSize(180, 30);
         usernameField.setPosition(300, 247);
 
+        stage.addActor(usernameLabel);
+        stage.addActor(usernameField);
+    }
+
+    /**
+     * Sets password textfield.
+     */
+    private void initSignUpPassword() {
         Label passwordLabel = new Label("Enter a password", labelStyle);
         passwordLabel.setPosition(340, 229);
-
-        TextField passwordField = new TextField("", cloudSkin);
+        passwordField = new TextField("", cloudSkin);
         passwordField.setSize(180, 30);
         passwordField.setPosition(300, 197);
         passwordField.setPasswordMode(true);
         passwordField.setPasswordCharacter('*');
 
+        stage.addActor(passwordLabel);
+        stage.addActor(passwordField);
+    }
+
+    /**
+     * Creates the Sign Up buttons.
+     */
+    private void initSignUpButton() {
+        TextButton signUpButton = new TextButton("Sign up", skin);
+        signUpButton.setPosition(320, 125);
         signUpButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 AuthService authService = new AuthService();
                 RegistrationResponse response
                         = authService.register(usernameField.getText(), passwordField.getText());
-
                 switch (response) {
                     case OCCUPIED_NAME:
                         usernameTakenDialog();
@@ -112,7 +112,6 @@ public class SignUpState implements IState {
                         stateManager.setState(new LoginState(stateManager));
                         break;
                     default:
-                        //do nothing
                 }
             }
 
@@ -122,11 +121,6 @@ public class SignUpState implements IState {
                 return true;
             }
         });
-
-        stage.addActor(usernameLabel);
-        stage.addActor(passwordLabel);
-        stage.addActor(usernameField);
-        stage.addActor(passwordField);
         stage.addActor(signUpButton);
     }
 
@@ -135,7 +129,6 @@ public class SignUpState implements IState {
      */
     private void initReturn() {
         TextButton returnButton = new TextButton("return", skin);
-        //        signUpButton.setPosition(300, 150);
         returnButton.setPosition(320, 65);
         returnButton.addListener(new InputListener() {
             @Override
@@ -145,8 +138,6 @@ public class SignUpState implements IState {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                // TODO
-                System.out.println("pressed return");
                 return true;
             }
         });
@@ -154,37 +145,23 @@ public class SignUpState implements IState {
     }
 
     /**
-     * This dialog box is shown when the password is not safe enough.
-     */
-    public void incorrectPasswordDialog() {
-        Dialog dialog = new Dialog("Password not valid", cloudSkin, "dialog") {
-            public void result(Object obj) {
-                System.out.println("result " + obj);
-            }
-        };
-        dialog.text("Please make sure your password is at least xxx long and contains a number.");
-        dialog.button("OK", true); //sends "true" as the result
-        dialog.show(stage);
-    }
-
-    /**
      * This dialog box is shown when the username is has already been taken.
      */
-    public void usernameTakenDialog() {
+    private void usernameTakenDialog() {
         Dialog dialog = new Dialog("Username taken", cloudSkin, "dialog") {
             public void result(Object obj) {
                 System.out.println("result " + obj);
             }
         };
         dialog.text("This username has already been taken, try a new one.");
-        dialog.button("OK", true); //sends "true" as the result
+        dialog.button("OK", true);
         dialog.show(stage);
     }
 
     /**
      * This dialog box is shown when the password has less than 8 characters.
      */
-    public void passwordTooShortDialog() {
+    private void passwordTooShortDialog() {
         Dialog dialog = new Dialog("Password too short", cloudSkin, "dialog") {
             public void result(Object obj) {
                 System.out.println("result " + obj);
@@ -208,15 +185,7 @@ public class SignUpState implements IState {
 
     @Override
     public void render(SpriteBatch batch) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.begin();
-        stage.act();
-        stage.getBatch().begin();
-        stage.getBatch().draw(background, 0, 0, Sizes.MIN_WIDTH_WINDOW, Sizes.MIN_HEIGHT_WINDOW);
-        stage.getBatch().end();
-        stage.draw();
-        batch.end();
+        RendererHandler.render(batch, stage, background);
     }
 
     @Override

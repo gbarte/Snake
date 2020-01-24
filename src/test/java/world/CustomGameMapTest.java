@@ -1,14 +1,36 @@
 package world;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyFloat;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.atMost;
+import static org.mockito.Mockito.doCallRealMethod;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import entities.DoubleScorePowerUp;
 import entities.Food;
+import entities.factories.AppleFactory;
 import entities.factories.FoodFactory;
+import entities.factories.PowerUpFactory;
 import entities.snake.SnakeBody;
+import java.util.ArrayList;
+import java.util.List;
+import models.Coordinate;
+import models.DoubleScore;
 import models.Score;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,15 +66,30 @@ public class CustomGameMapTest extends GameMapTest {
         this.name = "defaultName";
         this.map = CustomGameMapLoader.generateDefaultMap(this.id, this.name).map;
 
-        TextureRegion[][] textureRegions = new TextureRegion[1][2];
-        textureRegions[0][0] = Mockito.mock(TextureRegion.class, "head");
-        textureRegions[0][1] = Mockito.mock(TextureRegion.class, "body");
-        Food fakeFood = Mockito.mock(Food.class);
+        TextureRegion fake = Mockito.mock(TextureRegion.class, "tiles");
+        TextureRegion[][] fakeTiles = new TextureRegion[
+                Sizes.DEFAULT_MINIMUM_MAP_TILES][Sizes.DEFAULT_MINIMUM_MAP_TILES];
+        //fill up the array with fake mocks
+        for (int i = 0; i < fakeTiles.length; i++) {
+            for (int j = 0; j < fakeTiles[0].length; j++) {
+                fakeTiles[i][j] = fake;
+            }
+        }
+
+        this.tiles = fakeTiles;
+
+        Food fakeFood = new AppleFactory().createFood();
         Score score = new Score();
-        FoodFactory fakeFactory = Mockito.mock(FoodFactory.class);
+        FoodFactory fakeFactory = new AppleFactory();
         String bodyTexture = "assets/snake-texture/DefaultBody.png";
 
-        this.tiles = textureRegions;
+        TextureRegion fakeHead = Mockito.mock(TextureRegion.class, "head");
+        TextureRegion fakeBody = Mockito.mock(TextureRegion.class, "body");
+        TextureRegion[][] fakeBodyTextureRegion = new TextureRegion[1][2];
+        fakeBodyTextureRegion[0][0] = fakeHead;
+        fakeBodyTextureRegion[0][1] = fakeBody;
+
+        List<Coordinate> obstacles = new ArrayList<>();
 
         this.customGameMap = new CustomGameMap(this.id,
                 this.name,
@@ -63,7 +100,9 @@ public class CustomGameMapTest extends GameMapTest {
                 fakeFood,
                 score,
                 fakeFactory,
-                bodyTexture);
+                bodyTexture,
+                fakeBodyTextureRegion,
+                obstacles);
         super.setUp();
     }
 
@@ -96,6 +135,27 @@ public class CustomGameMapTest extends GameMapTest {
         assertEquals(customGameMap.getHeight(), 50);
         assertEquals(customGameMap.getWidth(), 50);
         assertEquals(customGameMap.getManager(), this.manager);
+
+        getGameMap().setName("fakeName");
+        assertEquals(getGameMap().getName(), "fakeName");
+
+        TextureRegion[][] fake2 = new TextureRegion[1][1];
+        TextureRegion fakeTR = mock(TextureRegion.class);
+        fake2[0][0] = fakeTR;
+        getGameMap().setTiles(fake2);
+        assertEquals(getGameMap().getTiles(), fake2);
+
+        getGameMap().setSnake(new SnakeBody(30, 30));
+        assertEquals(getGameMap().getSnake().getHeadCoord(),
+                new Coordinate(15, 15));
+
+        GameStateManager other = new GameStateManager();
+        getGameMap().setManager(other);
+        assertEquals(getGameMap().getManager(), other);
+
+        String newId = "notDefault";
+        getGameMap().setId(newId);
+        assertEquals(getGameMap().getId(), newId);
     }
 
     @Test
@@ -103,12 +163,41 @@ public class CustomGameMapTest extends GameMapTest {
         OrthographicCamera camera = Mockito.mock(OrthographicCamera.class);
         SpriteBatch batch = Mockito.mock(SpriteBatch.class);
 
-        /*
-        spy(customGameMap).render(camera, batch, this.snake);
-        customGameMap.render(camera, batch, this.snake);
+        CustomGameMap spied = spy(getGameMap());
+
+        spied.renderMap(camera, batch);
+        verify(batch).setProjectionMatrix(camera.combined);
         verify(batch).begin();
-        verify(batch).draw(tiles[0][anyInt()], anyFloat(), anyFloat());
-        */
+        verify(batch, atMost(this.map.length + this.map[0].length + this.map[0][0].length))
+                .draw(tiles[0][anyInt()], anyFloat(), anyFloat());
+
+    }
+
+    @Test
+    void badWeatherRenderTest() {
+        //on (5,5)
+
+        int[][][] temp
+                = new int[4][Sizes.DEFAULT_MINIMUM_MAP_TILES][Sizes.DEFAULT_MINIMUM_MAP_TILES];
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 50; j++) {
+                for (int k = 0; k < 50; k++) {
+                    temp[i][j][k] = this.map[i][j][k];
+                }
+            }
+        }
+        this.map = temp;
+        getGameMap().setMap(this.map);
+        this.map[3][44][5] = -2;
+        OrthographicCamera camera = Mockito.mock(OrthographicCamera.class);
+        SpriteBatch batch = Mockito.mock(SpriteBatch.class);
+
+        CustomGameMap spied = spy(getGameMap());
+
+        spied.renderMap(camera, batch);
+        verify(batch).setProjectionMatrix(camera.combined);
+        verify(batch).begin();
+        verify(batch, never()).draw(tiles[0][anyInt()], anyFloat(), anyFloat());
     }
 
     @ParameterizedTest
@@ -150,7 +239,7 @@ public class CustomGameMapTest extends GameMapTest {
 
     })
     void getTileTypeByLocationTest(int layer, float x, float y, int id) {
-        TileType tileType = customGameMap.getTileTypeByLocation(layer, x, y);
+        TileType tileType = getGameMap().getTileTypeByLocation(layer, x, y);
         TileType idTile = TileType.getTileTypeById(id);
         assertEquals(idTile, tileType);
         if (tileType != null) {
@@ -158,25 +247,29 @@ public class CustomGameMapTest extends GameMapTest {
             assertEquals(idTile.getDamage(), tileType.getDamage());
             assertEquals(idTile.getId(), tileType.getId());
             assertEquals(idTile.isCollidable(), idTile.isCollidable());
+        } else {
+            assertNull(tileType);
         }
     }
 
     @Test
     void updateTest() {
-        /*
+
         GameMap fake = spy(getGameMap());
         assertNotNull(getGameMap());
         doCallRealMethod().when(fake).update(anyFloat());
         doNothing().when(fake).handleInput();
         doNothing().when(fake).checkOutOfMap();
         doNothing().when(fake).checkHeadHitsBody();
+        doNothing().when(fake).updatePrivateMethods();
 
         fake.update(Sizes.MOVE_TIME);
         verify(fake).update(anyFloat());
         verify(fake).handleInput();
         verify(fake).checkOutOfMap();
         verify(fake).checkHeadHitsBody();
-        */
+        verify(fake).updatePrivateMethods();
+
     }
 
     @Test
@@ -185,4 +278,101 @@ public class CustomGameMapTest extends GameMapTest {
                 = Mockito.mock(OrthographicCamera.class, Mockito.CALLS_REAL_METHODS);
         customGameMap.dispose(camera);
     }
+
+    @Test
+    void pixelWidthTest() {
+        assertEquals(getGameMap().getPixelWidth(),
+                customGameMap.getWidth() * TileType.TILE_SIZE);
+    }
+
+    @Test
+    void pixelHeightTest() {
+        assertEquals(getGameMap().getPixelHeight(),
+                customGameMap.getHeight() * TileType.TILE_SIZE);
+    }
+
+    // Integration tests below
+    @Test
+    void powerUpFactoryTimeoutTest() {
+        FoodFactory foodFactory = new PowerUpFactory();
+        Gdx.graphics = mock(Graphics.class);
+        SnakeBody snake = customGameMap.getSnake();
+
+        customGameMap.setFood(foodFactory.createFood());
+        Food food = customGameMap.getFood();
+        snake.setHeadCoord(food.getCoordinate());
+        customGameMap.updatePrivateMethods();
+
+        customGameMap.setFood(foodFactory.createFood());
+        Food food2 = customGameMap.getFood();
+        snake.setHeadCoord(food2.getCoordinate());
+        customGameMap.updatePrivateMethods();
+
+        customGameMap.setFood(foodFactory.createFood());
+        Food food3 = customGameMap.getFood();
+        snake.setHeadCoord(food3.getCoordinate());
+        //Time out the powerUp
+        GameMap.setPowerUpTimeout(-1);
+        customGameMap.updatePrivateMethods();
+
+        //Power Up timed out so everything should be back to normal.
+        assertEquals(GameMap.getPowerUpTimeout(), Sizes.POWER_UP_TIMEOUT);
+        assertFalse(customGameMap.getScore() instanceof DoubleScore);
+    }
+
+    @Test
+    void switchToPowerUpFactoryTest() {
+        SnakeBody snake = customGameMap.getSnake();
+        Food food = customGameMap.getFood();
+
+        //Set snake and food coordinates the same so they collide
+        snake.setHeadCoord(food.getCoordinate());
+        //Update the game
+        customGameMap.updatePrivateMethods();
+
+        assertTrue(customGameMap.getFoodFactory() instanceof AppleFactory);
+
+        //Set high value and check that the factory type has changed.
+        customGameMap.getScore().setValue(10000);
+        customGameMap.updatePrivateMethods();
+
+        Food food2 = customGameMap.getFood();
+        //Collide snake and food so that new instance is created
+        snake.setHeadCoord(food2.getCoordinate());
+        customGameMap.updatePrivateMethods();
+
+        assertTrue(customGameMap.getFoodFactory() instanceof PowerUpFactory);
+        assertNotEquals(food2.getCoordinate(), customGameMap.getFood().getCoordinate());
+
+    }
+
+    @Test
+    void powerUpTimesOutTest() {
+        SnakeBody snake = customGameMap.getSnake();
+        Food food = customGameMap.getFood();
+        snake.setHeadCoord(food.getCoordinate());
+        customGameMap.checkHeadHitsBody();
+        customGameMap.updatePrivateMethods();
+
+        customGameMap.getScore().setValue(10000);
+        customGameMap.updatePrivateMethods();
+
+        Food food2 = customGameMap.getFood();
+        snake.setHeadCoord(food2.getCoordinate());
+        customGameMap.updatePrivateMethods();
+
+        if (food2 instanceof DoubleScorePowerUp) {
+            assertTrue(customGameMap.getScore() instanceof DoubleScore);
+        }
+
+        Food food3 = customGameMap.getFood();
+        snake.setHeadCoord(food3.getCoordinate());
+        GameMap.setPowerUpTimeout(-1);
+        customGameMap.updatePrivateMethods();
+
+        assertTrue(customGameMap.getFoodFactory() instanceof PowerUpFactory);
+        assertFalse(customGameMap.getScore() instanceof DoubleScore);
+    }
+
+
 }

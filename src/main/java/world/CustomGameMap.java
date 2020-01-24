@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import entities.Food;
 import entities.factories.FoodFactory;
 import entities.snake.SnakeBody;
+import java.util.List;
+import models.Coordinate;
 import models.Score;
 import states.GameStateManager;
 import utils.Sizes;
@@ -30,13 +32,13 @@ public class CustomGameMap extends GameMap {
      * @param manager The GameStateManager which sets the different stages in the game.
      */
     public CustomGameMap(SnakeBody snake, GameStateManager manager) {
-        this("defaultID", "defaultName", "assets/tile-set/setOfFive.png",
+        this("defaultID", "defaultName", "assets/tile-set/setOfFiveGameTheme.png",
                 "assets/snake-texture/redBlueBody.png", snake, manager);
     }
 
     /**
-     * Constructor for the CustomGameMap class which would allow us to pass on specific arguments,
-     * in order to set a specific CustomGameMap.
+     * Constructor for the CustomGameMap class which would allow us to pass on arguments,
+     * in order to set a specific CustomGameMap, tiles texture set and snake's body texture.
      *
      * @param id          The ID of the map.
      * @param name        The name of the map.
@@ -57,26 +59,32 @@ public class CustomGameMap extends GameMap {
         Texture texture = new Texture(tileSet);
         tiles = TextureRegion.split(texture, TileType.TILE_SIZE, TileType.TILE_SIZE);
         this.manager = manager;
+        super.fillList(getObstacles());
     }
 
     /**
      * This constructor is mainly used for testing purposes.
      *
-     * @param id          The ID of the map.
-     * @param name        The name of the map.
-     * @param map         The map with all the tile type's numbers.
-     * @param tiles       Container for the theme of our map's tiles.
-     * @param snake       The snake for this game.
-     * @param manager     The GameStateManager which sets the different stages in the game.
-     * @param food        Food object that snake consumes.
-     * @param score       Score object to keep track of your score.
-     * @param foodFactory FoodFactory factory used to create food.
-     * @param bodyTexture The texture path for the snake's skin.
+     * @param id                The ID of the map.
+     * @param name              The name of the map.
+     * @param map               The map with all the tile type's numbers.
+     * @param tiles             Container for the theme of our map's tiles.
+     * @param snake             The snake for this game.
+     * @param manager           The GameStateManager which sets the different stages in the game.
+     * @param food              Food object that snake consumes.
+     * @param score             Score object to keep track of your score.
+     * @param foodFactory       FoodFactory factory used to create food.
+     * @param bodyTexture       The texture path for the snake's skin.
+     * @param bodyTextureRegion The textureRegion for our snake's texture.
+     * @param obstacles         List of all the coordinates of obstacles.
      */
     public CustomGameMap(String id, String name, int[][][] map, TextureRegion[][] tiles,
                          SnakeBody snake, GameStateManager manager,
-                         Food food, Score score, FoodFactory foodFactory, String bodyTexture) {
-        super(Sizes.MOVE_TIME, manager, snake, foodFactory, food, score, bodyTexture);
+                         Food food, Score score, FoodFactory foodFactory,
+                         String bodyTexture, TextureRegion[][] bodyTextureRegion,
+                         List<Coordinate> obstacles) {
+        super(Sizes.MOVE_TIME, manager, snake, foodFactory, food, score,
+                bodyTexture, bodyTextureRegion, obstacles);
         this.id = id;
         this.name = name;
         this.snake = snake;
@@ -87,26 +95,36 @@ public class CustomGameMap extends GameMap {
 
     @Override
     public void render(OrthographicCamera camera, SpriteBatch spriteBatch, SnakeBody snake) {
-        spriteBatch.setProjectionMatrix(camera.combined);
+        renderMap(camera, spriteBatch);
+        //after rendering map up here^ u wanna render entities on the map
+        //which is what u do in the super class GameMap
+        super.render(camera, spriteBatch, this.snake);
+        spriteBatch.end();
+    }
 
-        spriteBatch.begin();
+    /**
+     * This method is called from the main render method and is used to render the map.
+     * The split was mainly made for testability purposes.
+     *
+     * @param camera The OrthographicCamera needed for the projectionMatrix.
+     * @param batch  SpriteBatch in which to render.
+     */
+    public void renderMap(OrthographicCamera camera, SpriteBatch batch) {
+        batch.setProjectionMatrix(camera.combined);
+
+        batch.begin();
 
         for (int layer = 0; layer < getLayers(); layer++) {
             for (int row = 0; row < getHeight(); row++) {
                 for (int col = 0; col < getWidth(); col++) {
                     TileType type = this.getTileTypeByCoordinate(layer, col, row);
                     if (type != null) {
-                        spriteBatch.draw(tiles[0][type.getId() - 1], (col * TileType.TILE_SIZE),
+                        batch.draw(this.tiles[0][type.getId() - 1], (col * TileType.TILE_SIZE),
                                 (row * TileType.TILE_SIZE));
-
                     }
                 }
             }
         }
-        //after rendering map up here^ u wanna render entities on the map
-        //which is what u do in the super class GameMap
-        super.render(camera, spriteBatch, this.snake);
-        spriteBatch.end();
     }
 
     @Override

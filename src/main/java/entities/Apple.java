@@ -1,7 +1,10 @@
 package entities;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import models.Coordinate;
+import utils.Sizes;
 import world.GameMap;
 
 
@@ -10,7 +13,7 @@ import world.GameMap;
  */
 public class Apple implements Food {
 
-    public static final int DEFAULT_SCORE = 10;
+    public static final int DEFAULT_SCORE = Sizes.DEFAULT_SCORE;
     private static final String texturePath = "assets/redapple16px.png";
     public Coordinate coordinate;
     private Texture texture;
@@ -22,19 +25,26 @@ public class Apple implements Food {
      */
     public Apple(Coordinate coordinate) {
         this.coordinate = coordinate;
-        this.texture = new Texture(texturePath);
     }
 
     public Apple() {
 
     }
 
-    public Coordinate getCoordinate() {
-        return coordinate;
+    /**
+     * Method used to render this apple one the screen with
+     * an apple texture.
+     * @param batch to draw on
+     */
+    public void render(SpriteBatch batch) {
+        this.texture = new Texture(texturePath);
+        batch.draw(texture,
+                coordinate.getCoordinateX() * Sizes.TILE_PIXELS,
+                coordinate.getCoordinateY() * Sizes.TILE_PIXELS);
     }
 
-    public Texture getTexture() {
-        return texture;
+    public Coordinate getCoordinate() {
+        return coordinate;
     }
 
     public void setCoordinate(Coordinate coordinate) {
@@ -45,13 +55,17 @@ public class Apple implements Food {
         this.texture = texture;
     }
 
+    public Texture getTexture() {
+        return this.texture;
+    }
+
     /**
      * This method takes a map's score and increases it.
      * Afterwards the entities.snake is grown;
      * @param map The map you pass from which you get all information.
      */
     @Override
-    public void actionTwo(GameMap map) {
+    public void action(GameMap map) {
         map.getScore().add(Apple.DEFAULT_SCORE);
         map.getSnake().growSnake();
     }

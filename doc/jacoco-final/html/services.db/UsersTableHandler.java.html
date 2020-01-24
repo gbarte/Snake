@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UsersTableHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">template</a> &gt; <a href="index.source.html" class="el_package">services.db</a> &gt; <span class="el_source">UsersTableHandler.java</span></div><h1>UsersTableHandler.java</h1><pre class="source lang-java linenums">package services.db;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+
+public class UsersTableHandler {
+
+    public static final String TABLE_NAME = &quot;users&quot;;
+
+    private transient DatabaseHandler db;
+    private transient boolean isTest;
+
+    /**
+     * Constructor for the class.
+     * @param isTest indicates if the testing table should be used.
+     */
+<span class="fc" id="L20">    public UsersTableHandler(boolean isTest) {</span>
+
+<span class="fc" id="L22">        db = new DatabaseHandler();</span>
+<span class="fc" id="L23">        db.connect(isTest);</span>
+<span class="fc" id="L24">        this.isTest = isTest;</span>
+
+        try {
+<span class="fc bfc" id="L27" title="All 2 branches covered.">            if (!db.getConnection().getMetaData().getTables(null, null, TABLE_NAME, null).next()) {</span>
+<span class="fc" id="L28">                configureTableSchema();</span>
+            }
+<span class="nc" id="L30">        } catch (SQLException e) {</span>
+<span class="nc" id="L31">            e.printStackTrace();</span>
+        } finally {
+<span class="fc" id="L33">            db.close();</span>
+        }
+
+<span class="fc" id="L36">    }</span>
+
+
+    /**
+     * The method that inserts a new user into the database.
+     * @param username - name of the user.
+     * @param passHash - hashed password value.
+     */
+    public void createUser(String username, String passHash) {
+
+<span class="fc" id="L46">        db.connect(isTest);</span>
+
+<span class="fc" id="L48">        String query = &quot;INSERT INTO users (username, password) &quot;</span>
+                + &quot;VALUES (?, ?)&quot;;
+
+        try {
+
+<span class="fc" id="L53">            PreparedStatement preparedStatement = db.getConnection().prepareStatement(query);</span>
+
+<span class="fc" id="L55">            preparedStatement.setString(1, username);</span>
+<span class="fc" id="L56">            preparedStatement.setString(2, passHash);</span>
+
+<span class="fc" id="L58">            preparedStatement.executeUpdate();</span>
+<span class="fc" id="L59">            preparedStatement.close();</span>
+
+<span class="fc" id="L61">            System.out.println(&quot;User was added&quot;);</span>
+
+<span class="nc" id="L63">        } catch (SQLException e) {</span>
+<span class="nc" id="L64">            e.printStackTrace();</span>
+        } finally {
+<span class="fc" id="L66">            db.close();</span>
+        }
+
+<span class="fc" id="L69">    }</span>
+
+    /**
+     * Retrieve user by username from the table.
+     * @param username - name of the user.
+     * @return Map object that contains password and username.
+     */
+    @SuppressWarnings(&quot;PMD&quot;)
+    public Map&lt;String, String&gt; getUser(String username) {
+
+<span class="fc" id="L79">        db.connect(isTest);</span>
+
+<span class="fc" id="L81">        String query = &quot;SELECT * FROM users WHERE username=? LIMIT 1&quot;;</span>
+
+<span class="fc" id="L83">        ResultSet queryResult = null;</span>
+<span class="fc" id="L84">        PreparedStatement preparedStatement = null;</span>
+
+        try {
+
+<span class="fc" id="L88">            preparedStatement = db.getConnection().prepareStatement(query);</span>
+<span class="fc" id="L89">            preparedStatement.setString(1, username);</span>
+
+<span class="fc" id="L91">            queryResult = preparedStatement.executeQuery();</span>
+
+<span class="fc bfc" id="L93" title="All 2 branches covered.">            if (queryResult.next()) {</span>
+<span class="fc" id="L94">                String hash = queryResult.getString(&quot;password&quot;);</span>
+<span class="fc" id="L95">                System.out.println(hash);</span>
+
+<span class="fc" id="L97">                Map&lt;String, String&gt; result = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L98">                result.put(&quot;username&quot;, username);</span>
+<span class="fc" id="L99">                result.put(&quot;hash&quot;, hash);</span>
+
+<span class="fc" id="L101">                queryResult.close();</span>
+<span class="fc" id="L102">                preparedStatement.close();</span>
+<span class="fc" id="L103">                db.close();</span>
+<span class="fc" id="L104">                return result;</span>
+            }
+
+
+<span class="nc" id="L108">        } catch (SQLException e) {</span>
+<span class="nc" id="L109">            e.printStackTrace();</span>
+        } finally {
+<span class="fc" id="L111">            db.close();</span>
+        }
+
+<span class="fc" id="L114">        return null;</span>
+    }
+
+
+    /**
+     * Clears out all users in the table.
+     */
+    public void clear() {
+<span class="fc" id="L122">        db.clearTable(TABLE_NAME);</span>
+<span class="fc" id="L123">    }</span>
+
+    /**
+     * Configure schema for the table.
+     */
+    private void configureTableSchema() {
+<span class="fc" id="L129">        db.connect(isTest);</span>
+<span class="fc" id="L130">        String query = &quot;CREATE TABLE &quot; + TABLE_NAME</span>
+                + &quot;(id INTEGER PRIMARY KEY AUTOINCREMENT,&quot;
+                + &quot;username VARCHAR(50) UNIQUE,&quot;
+                + &quot;password VARCHAR(50))&quot;;
+
+<span class="fc" id="L135">        db.configureSchema(query);</span>
+<span class="fc" id="L136">        db.close();</span>
+<span class="fc" id="L137">    }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

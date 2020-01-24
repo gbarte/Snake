@@ -2,6 +2,7 @@ package world;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,7 +15,9 @@ import entities.factories.FoodFactory;
 import entities.factories.PowerUpFactory;
 import entities.snake.BodyPart;
 import entities.snake.SnakeBody;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import models.Coordinate;
 import models.DoubleScore;
 import models.Score;
@@ -27,16 +30,18 @@ import utils.TileType;
 
 public abstract class GameMap {
 
-    private GameStateManager manager;
     public static final float DEFAULT_MOVE_TIME = Sizes.MOVE_TIME;
+    private static double powerUpTimeout = Sizes.POWER_UP_TIMEOUT;
+    private GameStateManager manager;
     private float moveTime = DEFAULT_MOVE_TIME;
     private float timer = moveTime;
     private SnakeBody snake;
+    private List<Coordinate> obstacles;
+    private FoodFactory foodFactory;
     private Food food;
     private Score score;
-    private FoodFactory foodFactory;
     private String bodyTexture;
-    private static double powerUpTimeout = Sizes.POWER_UP_TIMEOUT;
+    private TextureRegion[][] bodyTextureRegion;
 
     /**
      * Constructor for the GameMap that sets a default snake body texture, an apple and the snake.
@@ -44,37 +49,47 @@ public abstract class GameMap {
     public GameMap() {
         this.manager = getManager();
         this.snake = getSnake();
+        this.obstacles = new ArrayList<>();
         this.foodFactory = new AppleFactory();
         this.food = foodFactory.createFood();
         this.score = new Score();
         this.bodyTexture = "assets/snake-texture/redBlueBody.png";
+        this.bodyTextureRegion = TextureRegion
+                .split(new Texture(this.bodyTexture), Sizes.TILE_PIXELS, Sizes.TILE_PIXELS);
     }
 
     /**
      * Constructor used to pass on a texture path for the snake's body.
+     *
      * @param bodyTexture The texture path for the snake's body.
      */
     public GameMap(String bodyTexture) {
         this.manager = getManager();
         this.snake = getSnake();
+        this.obstacles = new ArrayList<>();
         this.foodFactory = new AppleFactory();
         this.food = foodFactory.createFood();
         this.score = new Score();
         this.bodyTexture = bodyTexture;
+        this.bodyTextureRegion = TextureRegion
+                .split(new Texture(bodyTexture), Sizes.TILE_PIXELS, Sizes.TILE_PIXELS);
     }
 
     /**
      * Constructor (mainly) for testing purposes.
-     * @param timer The timer for movement and updating.
-     * @param manager The GameStateManager which sets the different stages in the game.
-     * @param snake The snake for this map.
+     *
+     * @param timer       The timer for movement and updating.
+     * @param manager     The GameStateManager which sets the different stages in the game.
+     * @param snake       The snake for this map.
      * @param foodFactory FoodFactory factory used to create food.
-     * @param food Food object that snake consumes.
-     * @param score Score object to keep track of your score.
+     * @param food        Food object that snake consumes.
+     * @param score       Score object to keep track of your score.
      * @param bodyTexture The texture path for the snake's skin.
      */
     public GameMap(float timer, GameStateManager manager, SnakeBody snake,
-                   FoodFactory foodFactory, Food food, Score score, String bodyTexture) {
+                   FoodFactory foodFactory, Food food, Score score,
+                   String bodyTexture, TextureRegion[][] bodyTextureRegion,
+                   List<Coordinate> obstacles) {
         this.timer = timer;
         this.manager = manager;
         this.snake = snake;
@@ -82,34 +97,42 @@ public abstract class GameMap {
         this.food = food;
         this.score = score;
         this.bodyTexture = bodyTexture;
+        this.bodyTextureRegion = bodyTextureRegion;
+        this.obstacles = obstacles;
+    }
+
+    public static double getPowerUpTimeout() {
+        return powerUpTimeout;
+    }
+
+    public static void setPowerUpTimeout(double powerUpTimeout) {
+        GameMap.powerUpTimeout = powerUpTimeout;
     }
 
     /**
      * Render entities here after subclass renders map.
+     *
      * @param camera Camera on which to render.
-     * @param batch Batch to use.
-     * @param snake Snake that gets passed on, can be null.
+     * @param batch  Batch to use.
+     * @param snake  Snake that gets passed on.
      */
     public void render(OrthographicCamera camera, SpriteBatch batch, SnakeBody snake) {
         //render entities here
 
         this.snake = snake;
-        Texture def = new Texture(this.bodyTexture);
-        TextureRegion[][] textureRegions =
-                TextureRegion.split(def, Sizes.TILE_PIXELS, Sizes.TILE_PIXELS);
+        batch.setProjectionMatrix(camera.combined);
 
-        batch.draw(food.getTexture(),
-                food.getCoordinate().getCoordinateX() * Sizes.TILE_PIXELS,
-                food.getCoordinate().getCoordinateY() * Sizes.TILE_PIXELS);
+        food.render(batch);
 
         renderScore(batch);
 
-        snake.renderSnake(batch, textureRegions);
+        snake.renderSnake(batch, getBodyTextureRegion());
 
     }
 
     /**
      * Update method for the snake.
+     *
      * @param delta The delta time it takes to update the snake.
      */
     public void update(float delta) {
@@ -117,18 +140,18 @@ public abstract class GameMap {
         checkOutOfMap();
         checkHeadHitsBody();
         updateSnake(delta);
-        checkAppleEaten();
-        updateBadApple();
-        checkPowerUpTimeout();
+        //this THIS down here to update all private methods
+        updatePrivateMethods();
     }
 
     public abstract void dispose(OrthographicCamera camera);
 
     /**
      * With this you can get a tile by the pixel-position within the game's given layer.
+     *
      * @param layer The layer on which the pixel is.
-     * @param x The position of the pixel on the x-axis.
-     * @param y The position of the pixel on the y-axis.
+     * @param x     The position of the pixel on the x-axis.
+     * @param y     The position of the pixel on the y-axis.
      * @return The tile's type.
      */
     public TileType getTileTypeByLocation(int layer, float x, float y) {
@@ -152,16 +175,24 @@ public abstract class GameMap {
         return this.getHeight() * TileType.TILE_SIZE;
     }
 
+    public abstract GameStateManager getManager();
+
+    public void setManager(GameStateManager manager) {
+        this.manager = manager;
+    }
+
     public abstract SnakeBody getSnake();
 
     public void setSnake(SnakeBody snake) {
         this.snake = snake;
     }
 
-    public abstract GameStateManager getManager();
+    public List<Coordinate> getObstacles() {
+        return obstacles;
+    }
 
-    public void setManager(GameStateManager manager) {
-        this.manager = manager;
+    public void setObstacles(List<Coordinate> obstacles) {
+        this.obstacles = obstacles;
     }
 
     public Food getFood() {
@@ -204,14 +235,6 @@ public abstract class GameMap {
         this.timer = timer;
     }
 
-    public static double getPowerUpTimeout() {
-        return powerUpTimeout;
-    }
-
-    public static void setPowerUpTimeout(double powerUpTimeout) {
-        GameMap.powerUpTimeout = powerUpTimeout;
-    }
-
     public String getBodyTexture() {
         return bodyTexture;
     }
@@ -220,64 +243,90 @@ public abstract class GameMap {
         this.bodyTexture = bodyTexture;
     }
 
+    public TextureRegion[][] getBodyTextureRegion() {
+        return bodyTextureRegion;
+    }
+
+    public void setBodyTextureRegion(TextureRegion[][] bodyTextureRegion) {
+        this.bodyTextureRegion = bodyTextureRegion;
+    }
+
     /**
      * This method handles the keyboard input for the snake movements.
      */
     public void handleInput() {
-        boolean quitPressed = Gdx.input.isKeyPressed(Input.Keys.Q);
-        if (quitPressed) {    //pushes 'this' state (which is PlayStateTwo here)
-            this.getManager().reState();
-            this.getManager().setState(new GameOverState(getManager(), score));
-        }
-        boolean pausePressed = Gdx.input.isKeyPressed(Input.Keys.P);
-        if (pausePressed) {
-            this.getManager().pushState(this.getManager().peekState());
-            this.getManager().setState(new PausedState(getManager(), score));
-        }
-        boolean upPressed = Gdx.input.isKeyPressed(Input.Keys.W)
-                || Gdx.input.isKeyJustPressed(Input.Keys.UP);
-        if (upPressed) {
-            updateDirection(Direction.UP);
-        }
-        boolean downPressed = Gdx.input.isKeyPressed(Input.Keys.S)
-                || Gdx.input.isKeyJustPressed(Input.Keys.DOWN);
-        if (downPressed) {
-            updateDirection(Direction.DOWN);
-        }
-        boolean leftPressed = Gdx.input.isKeyPressed(Input.Keys.A)
-                || Gdx.input.isKeyJustPressed(Input.Keys.LEFT);
-        if (leftPressed) {
-            updateDirection(Direction.LEFT);
-        }
-        boolean rightPressed = Gdx.input.isKeyPressed(Input.Keys.D)
-                || Gdx.input.isKeyJustPressed(Input.Keys.RIGHT);
-        if (rightPressed) {
-            updateDirection(Direction.RIGHT);
+        Gdx.input.setInputProcessor(new InputAdapter() {
+            @Override
+            public boolean keyDown(int keycode) {
+                handleInput(keycode, getManager());
+                return false;
+            }
+        });
+    }
+
+    /**
+     * This method handles the input and what to do with it.
+     * The split was mainly made for testability purposes such that,
+     * the libGDX functionality is separate from the testable parts.
+     *
+     * @param keycode The keycode indicates which key is pressed.
+     * @param manager The manager needed if any other state needs to be instantiated.
+     */
+    public void handleInput(int keycode, GameStateManager manager) {
+        switch (keycode) {
+            case Input.Keys.Q:
+                manager.reState();
+                manager.setState(new GameOverState(manager, getScore()));
+                break;
+            case Input.Keys.P:
+                manager.reState();
+                manager.setState(new PausedState(manager, getScore()));
+                break;
+            case Input.Keys.W:
+            case Input.Keys.UP:
+                updateDirection(Direction.UP);
+                break;
+            case Input.Keys.A:
+            case Input.Keys.LEFT:
+                updateDirection(Direction.LEFT);
+                break;
+            case Input.Keys.S:
+            case Input.Keys.DOWN:
+                updateDirection(Direction.DOWN);
+                break;
+            case Input.Keys.D:
+            case Input.Keys.RIGHT:
+                updateDirection(Direction.RIGHT);
+                break;
+                /* We don't write a default in this case because if another key is
+                pressed we don't care. https://stackoverflow.com/a/5241196/11213998
+                It also increases the complexity of the code for no reason.
+                http://errorprone.info/bugpattern/UnnecessaryDefaultInEnumSwitch**/
         }
     }
 
     /**
      * Renders the current score on the screen.
+     *
      * @param batch used for drawing elements.
      */
-    public void renderScore(SpriteBatch batch) {
-        BitmapFont bitmapFont = new BitmapFont();
+    private void renderScore(SpriteBatch batch) {
+        BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal("assets/font.fnt"));
         this.renderScore(batch, bitmapFont);
     }
 
     /**
      * Mainly for testability purposes.
      * Renders the current score on the screen.
-     * @param batch The batch used for drawing elements.
+     *
+     * @param batch      The batch used for drawing elements.
      * @param bitmapFont This is used to render the value of the score.
      */
     public void renderScore(SpriteBatch batch, BitmapFont bitmapFont) {
-        bitmapFont.setColor(Color.RED);
-        bitmapFont.draw(batch, String.valueOf(score.getValue()),
-                Sizes.DEFAULT_AMOUNT_BORDER_TILES
-                        * (Sizes.TILE_PIXELS - Sizes.PADDING_TILE_PIXELS),
-                Sizes.DEFAULT_AMOUNT_BORDER_TILES
-                        * (Sizes.TILE_PIXELS - Sizes.PADDING_TILE_PIXELS));
+        bitmapFont.setColor(Color.CORAL);
+        bitmapFont.draw(batch, "Score: " + score.getValue(),
+                Sizes.DEFAULT_AMOUNT_BORDER_TILES * Sizes.TILE_PIXELS,
+                Sizes.DEFAULT_AMOUNT_BORDER_TILES * Sizes.TILE_PIXELS);
     }
 
     /**
@@ -288,8 +337,8 @@ public abstract class GameMap {
     private void updateSnake(float delta) {
         timer -= delta;
         if (timer <= 0) {
-            timer = moveTime;
-            snake.moveSnake(snake.getCurrDir());
+            timer = getMoveTime();
+            getSnake().moveSnake(getSnake().getCurrDir());
         }
     }
 
@@ -299,7 +348,7 @@ public abstract class GameMap {
      * @param newDirection - direction in which the user wants to move the snake
      */
     public void updateDirection(Direction newDirection) {
-        Direction current = snake.getCurrDir();
+        Direction current = getSnake().getCurrDir();
         if (!newDirection.equals(current)) {
             switch (current) {
                 case UP:
@@ -314,8 +363,11 @@ public abstract class GameMap {
                 case RIGHT:
                     updateIfNotOpposite(newDirection, Direction.LEFT);
                     break;
-                default:
-                    // nothing happens
+                    /* We don't write a default in this case because if another key is
+                    pressed we don't care. https://stackoverflow.com/a/5241196/11213998
+                    There are only 4 directions the snake can go to.
+                    It also increases the complexity of the code for no reason.
+                    http://errorprone.info/bugpattern/UnnecessaryDefaultInEnumSwitch**/
             }
         }
     }
@@ -335,27 +387,39 @@ public abstract class GameMap {
     }
 
     /**
-     * Checks whether the snake (head) hits the border, // TODO remove comments!!!!!!!
+     * This method is called from the update method.
+     * It's used to update private methods.
+     * This split was mainly made for testability purposes.
+     */
+    public void updatePrivateMethods() {
+        checkAppleEaten();
+        updateBadApple();
+        checkPowerUpTimeout();
+    }
+
+    /**
+     * Checks whether the snake (head) hits the border,
      * if it hits then the state changes to GameOverState.
      */
     public void checkOutOfMap() {
         Coordinate currentHead = getSnake().getHeadCoord();
         GameStateManager manager = getManager();
         Score score = getScore();
-        this.checkOutOfMap(currentHead, manager, score);
+        TileType currentTile = getTileTypeByCoordinate(getLayers(),
+                currentHead.getCoordinateX(),
+                currentHead.getCoordinateY());
+        this.checkOutOfMap(manager, score, currentTile);
     }
 
     /**
      * Checks whether the snake (head) hits the border,
      * if it hits then the state changes to GameOverState.
-     * @param currentHead The coordinate of the head.
+     *
      * @param manager The GameStateManager needed to set another state
-     * @param score Current score of your game.
+     * @param score   Current score of your game.
      */
-    public void checkOutOfMap(Coordinate currentHead, GameStateManager manager, Score score) {
-        TileType currentTile = getTileTypeByCoordinate(getLayers(),
-                currentHead.getCoordinateX(),
-                currentHead.getCoordinateY());
+    public void checkOutOfMap(GameStateManager manager, Score score,
+                              TileType currentTile) {
         if (currentTile.isCollidable()) {
             manager.setState(new GameOverState(manager, score));
         }
@@ -367,7 +431,7 @@ public abstract class GameMap {
      */
     public void checkHeadHitsBody() {
         int minLength = 3;
-        // head can touch tail only if snake has more than 2 bodyparts
+        // head can touch tail only if snake has more than 2 bodyParts
         int size = getSnake().getBodyParts().size();
         if (size > minLength) {
             for (int i = 1; i < size; i++) {
@@ -384,8 +448,8 @@ public abstract class GameMap {
      */
     private void checkAppleEaten() {
         if (getSnake().getHeadCoord().equals(getFood().getCoordinate())) {
-            getFood().actionTwo(this);
-            food = foodFactory.createFood();
+            getFood().action(this);
+            food = foodFactory.createFood(getObstacles());
             checkAppleOnSnake();
             if (foodFactory instanceof AppleFactory) {
                 activatePowerUp();
@@ -394,7 +458,7 @@ public abstract class GameMap {
     }
 
     private void activatePowerUp() {
-        if (getScore().getValue() > Sizes.DEFAULT_SCORE * 10) {
+        if (getScore().getValue() > Sizes.POWER_UP_ACTIVATION) {
             foodFactory = new PowerUpFactory();
         }
     }
@@ -405,7 +469,7 @@ public abstract class GameMap {
         }
         if (powerUpTimeout <= 0) {
             //shapeRenderer.setColor(Color.GREEN); // TODO change color
-            moveTime = DEFAULT_MOVE_TIME;
+            setMoveTime(DEFAULT_MOVE_TIME);
             int currScore = score.getValue();
             score = new Score();
             score.setValue(currScore);
@@ -420,16 +484,40 @@ public abstract class GameMap {
     private void checkAppleOnSnake() {
         for (BodyPart bp : getSnake().getBodyParts()) {
             if (bp.getCoordinate().equals(food.getCoordinate())) {
-                food = foodFactory.createFood();
+                food = foodFactory.createFood(getObstacles());
             }
         }
     }
 
+    //suppressing this warning because it thinks that badFood gets redefined.
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     private void updateBadApple() {
         LinkedList<BodyPart> all = getSnake().getBodyParts();
+        Coordinate foodCoordinate = getFood().getCoordinate();
+        boolean badFood = getTileTypeByCoordinate(getLayers(),
+                foodCoordinate.getCoordinateX(), foodCoordinate.getCoordinateY()).isCollidable();
         for (int i = 0; i < all.size(); i++) {
-            if (all.get(i).getCoordinate().equals(food.getCoordinate())) {
-                food = foodFactory.createFood();
+            if (all.get(i).getCoordinate().equals(food.getCoordinate()) || badFood) {
+                setFood(foodFactory.createFood(getObstacles()));
+                break;
+            }
+        }
+    }
+
+    /**
+     * This method is called to fill up the list with the coordinates of all the obstacles.
+     *
+     * @param list The list to fill up.
+     */
+    public void fillList(List<Coordinate> list) {
+        int start = Sizes.DEFAULT_AMOUNT_BORDER_TILES;
+        int finish = Sizes.DEFAULT_MINIMUM_MAP_TILES - Sizes.DEFAULT_AMOUNT_BORDER_TILES;
+        for (int i = start; i < finish; i++) {
+            for (int j = start; j < finish; j++) {
+                TileType currentTile = getTileTypeByCoordinate(getLayers(), i, j);
+                if (currentTile.isCollidable()) {
+                    list.add(new Coordinate(i, j));
+                }
             }
         }
     }
