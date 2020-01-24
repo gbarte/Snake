@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PausedState.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">template</a> &gt; <a href="index.source.html" class="el_package">states</a> &gt; <span class="el_source">PausedState.java</span></div><h1>PausedState.java</h1><pre class="source lang-java linenums">package states;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import models.Score;
+import states.utils.GameRulesDialog;
+import states.utils.RendererHandler;
+
+/*Suppressing this warning because we don't need getters and
+    setters for UI elements. */
+@SuppressWarnings(&quot;PMD.BeanMembersShouldSerialize&quot;)
+public class PausedState implements IState {
+
+    private GameStateManager stateManager;
+    private Stage stage;
+    private Skin skin;
+    private Texture background;
+    private Score score;
+
+    /**
+     * Constructor which creates a new Pause state within the game.
+     *
+     * @param gameManager which keeps track of the state of the game.
+     */
+<span class="nc" id="L36">    public PausedState(GameStateManager gameManager, Score score) {</span>
+<span class="nc" id="L37">        this.stateManager = gameManager;</span>
+<span class="nc" id="L38">        this.score = score;</span>
+<span class="nc" id="L39">        stage = new Stage(new ScreenViewport());</span>
+<span class="nc" id="L40">        Gdx.input.setInputProcessor(stage);</span>
+<span class="nc" id="L41">        skin = new Skin(</span>
+<span class="nc" id="L42">                Gdx.files.internal(&quot;assets/quantum-horizon/skin/quantum-horizon-ui.json&quot;));</span>
+<span class="nc" id="L43">        initTitle();</span>
+<span class="nc" id="L44">        initResumeButton();</span>
+<span class="nc" id="L45">        initRulesButton();</span>
+<span class="nc" id="L46">        initQuitButton();</span>
+<span class="nc" id="L47">        background = new Texture(&quot;assets/bg.png&quot;);</span>
+<span class="nc" id="L48">        stage.addListener(new InputListener() {</span>
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+<span class="nc" id="L51">                handleInput(keycode);</span>
+<span class="nc" id="L52">                return false;</span>
+            }
+        });
+<span class="nc" id="L55">    }</span>
+
+
+    @Override
+    public void handleInput() {
+<span class="nc" id="L60">    }</span>
+
+    /**
+     * This method is used to unpause or quit the game using keyboard input.
+     * @param keycode The keycode indicates which key is pressed.
+     */
+    public void handleInput(int keycode) {
+<span class="nc bnc" id="L67" title="All 3 branches missed.">        switch (keycode) {</span>
+            case Input.Keys.P:
+<span class="nc" id="L69">                stateManager.popState();</span>
+<span class="nc" id="L70">                break;</span>
+            case Input.Keys.Q:
+<span class="nc" id="L72">                stateManager.setState(new GameOverState(stateManager, score));</span>
+<span class="nc" id="L73">                break;</span>
+            default:
+                break;
+        }
+<span class="nc" id="L77">    }</span>
+
+    @Override
+    public void update(float dt) {
+<span class="nc" id="L81">        handleInput();</span>
+<span class="nc" id="L82">    }</span>
+
+    @Override
+    public void render(SpriteBatch batch) {
+<span class="nc" id="L86">        RendererHandler.render(batch, stage, background);</span>
+<span class="nc" id="L87">    }</span>
+
+    /**
+     * Adds &quot;Game Over&quot; to the screen.
+     */
+    private void initTitle() {
+<span class="nc" id="L93">        BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal(&quot;assets/font.fnt&quot;));</span>
+<span class="nc" id="L94">        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,</span>
+                new Color(255, 0, 255, 1));
+<span class="nc" id="L96">        Label pausedTitle = new Label(&quot;PAUSED&quot;, labelStyle);</span>
+<span class="nc" id="L97">        pausedTitle.setSize(600, 120);</span>
+<span class="nc" id="L98">        pausedTitle.setPosition(250,620);</span>
+<span class="nc" id="L99">        pausedTitle.setFontScale(2);</span>
+<span class="nc" id="L100">        stage.addActor(pausedTitle);</span>
+<span class="nc" id="L101">    }</span>
+
+    /**
+     * Creats button which resumes game.
+     */
+    private void initResumeButton() {
+<span class="nc" id="L107">        TextButton resumeButton = new TextButton(&quot;resume&quot;, skin);</span>
+<span class="nc" id="L108">        resumeButton.setPosition(330, 350);</span>
+<span class="nc" id="L109">        resumeButton.addListener(new InputListener() {</span>
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+<span class="nc" id="L112">                stateManager.popState();</span>
+<span class="nc" id="L113">            }</span>
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+<span class="nc" id="L117">                System.out.println(&quot;pressed resume...&quot;);</span>
+<span class="nc" id="L118">                return true;</span>
+            }
+        });
+<span class="nc" id="L121">        stage.addActor(resumeButton);</span>
+<span class="nc" id="L122">    }</span>
+
+    /**
+     * Creats button which shows the rules.
+     */
+    private void initRulesButton() {
+<span class="nc" id="L128">        TextButton rulesButton = new TextButton(&quot;rules&quot;, skin);</span>
+<span class="nc" id="L129">        rulesButton.setPosition(330, 250);</span>
+<span class="nc" id="L130">        rulesButton.addListener(new InputListener() {</span>
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+<span class="nc" id="L133">                GameRulesDialog.display(stage);</span>
+<span class="nc" id="L134">            }</span>
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+<span class="nc" id="L138">                System.out.println(&quot;pressed menu...&quot;);</span>
+<span class="nc" id="L139">                return true;</span>
+            }
+        });
+<span class="nc" id="L142">        stage.addActor(rulesButton);</span>
+<span class="nc" id="L143">    }</span>
+
+    /**
+     * Creats button which quits game and shows menu.
+     */
+    private void initQuitButton() {
+<span class="nc" id="L149">        TextButton quitButton = new TextButton(&quot;quit&quot;, skin);</span>
+<span class="nc" id="L150">        quitButton.setPosition(330, 150);</span>
+<span class="nc" id="L151">        quitButton.addListener(new InputListener() {</span>
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+<span class="nc" id="L154">                stateManager.setState(new GameOverState(stateManager, score));</span>
+<span class="nc" id="L155">            }</span>
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+<span class="nc" id="L159">                System.out.println(&quot;pressed menu...&quot;);</span>
+<span class="nc" id="L160">                return true;</span>
+            }
+        });
+<span class="nc" id="L163">        stage.addActor(quitButton);</span>
+<span class="nc" id="L164">    }</span>
+
+    @Override
+    public void dispose() {
+<span class="nc" id="L168">        background.dispose();</span>
+<span class="nc" id="L169">        stage.dispose();</span>
+<span class="nc" id="L170">        skin.dispose();</span>
+<span class="nc" id="L171">    }</span>
+
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

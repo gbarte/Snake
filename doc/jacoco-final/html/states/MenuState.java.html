@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MenuState.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">template</a> &gt; <a href="index.source.html" class="el_package">states</a> &gt; <span class="el_source">MenuState.java</span></div><h1>MenuState.java</h1><pre class="source lang-java linenums">package states;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import states.utils.GameRulesDialog;
+import states.utils.RendererHandler;
+import utils.Sizes;
+
+/**
+ * Creates menu screen.
+ */
+/*Suppressing this warning because we don't need getters and
+    setters for UI elements. */
+@SuppressWarnings(&quot;PMD.BeanMembersShouldSerialize&quot;)
+public class MenuState implements IState {
+    private GameStateManager stateManager;
+    private static final int BUTTON_WIDTH = 300;
+    private static final int BUTTON_HEIGHT = 60;
+    private Stage stage;
+    private Skin skin;
+    private Texture background;
+
+    /**
+     * Creates menu screen.
+     * @param gameManager which keeps track of the state of the game.
+     */
+<span class="nc" id="L38">    public MenuState(GameStateManager gameManager) {</span>
+<span class="nc" id="L39">        this.stateManager = gameManager;</span>
+<span class="nc" id="L40">        stage = new Stage(new ScreenViewport());</span>
+<span class="nc" id="L41">        Gdx.input.setInputProcessor(stage);</span>
+<span class="nc" id="L42">        skin = new Skin(Gdx.files.internal(</span>
+                &quot;assets/quantum-horizon/skin/quantum-horizon-ui.json&quot;));
+<span class="nc" id="L44">        initTitle();</span>
+<span class="nc" id="L45">        initRulesButton();</span>
+<span class="nc" id="L46">        initPlayButton();</span>
+<span class="nc" id="L47">        initLeaderboardButton();</span>
+<span class="nc" id="L48">        initSignOutButton();</span>
+<span class="nc" id="L49">        initRenderUsername();</span>
+<span class="nc" id="L50">        background = new Texture(&quot;assets/bg.png&quot;);</span>
+<span class="nc" id="L51">    }</span>
+
+    /**
+     * Adds &quot;Menu&quot; to the screen.
+     */
+    private void initTitle() {
+<span class="nc" id="L57">        BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal(&quot;assets/font.fnt&quot;));</span>
+<span class="nc" id="L58">        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,</span>
+                new Color(255, 0, 255, 1));
+<span class="nc" id="L60">        Label menuTitle = new Label(&quot;MENU&quot;, labelStyle);</span>
+<span class="nc" id="L61">        menuTitle.setSize(600, 120);</span>
+<span class="nc" id="L62">        menuTitle.setPosition(300,620);</span>
+<span class="nc" id="L63">        menuTitle.setFontScale(2);</span>
+<span class="nc" id="L64">        stage.addActor(menuTitle);</span>
+<span class="nc" id="L65">    }</span>
+
+    /**
+     * Adds the sign out button.
+     */
+    private void initSignOutButton() {
+<span class="nc" id="L71">        TextButton signOutButton = new TextButton(&quot;Sign Out&quot;, skin);</span>
+<span class="nc" id="L72">        signOutButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);</span>
+<span class="nc" id="L73">        signOutButton.setPosition(400 - (signOutButton.getWidth() / 2), 50);</span>
+<span class="nc" id="L74">        signOutButton.addListener(new InputListener() {</span>
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+<span class="nc" id="L77">                stateManager.setState(new LoginState(stateManager));</span>
+<span class="nc" id="L78">            }</span>
+
+            @Override
+            public boolean touchDown(
+                    InputEvent event, float x, float y, int pointer, int button) {
+<span class="nc" id="L83">                System.out.println(&quot;pressed signout&quot;);</span>
+<span class="nc" id="L84">                return true;</span>
+            }
+        });
+<span class="nc" id="L87">        stage.addActor(signOutButton);</span>
+<span class="nc" id="L88">    }</span>
+
+    /**
+     * Adds leaderboard button.
+     */
+    private void initLeaderboardButton() {
+<span class="nc" id="L94">        TextButton leaderboardButton = new TextButton(&quot;Leaderboard&quot;, skin);</span>
+<span class="nc" id="L95">        leaderboardButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);</span>
+<span class="nc" id="L96">        leaderboardButton.setPosition(400 - (leaderboardButton.getWidth() / 2), 150);</span>
+<span class="nc" id="L97">        leaderboardButton.addListener(new InputListener() {</span>
+            @Override
+            public void touchUp(InputEvent event, float x, float y,
+                                int pointer, int button) {
+<span class="nc" id="L101">                stateManager.setState(new LeaderboardState(stateManager));</span>
+<span class="nc" id="L102">            }</span>
+
+            @Override
+            public boolean touchDown(
+                    InputEvent event, float x, float y, int pointer, int button) {
+<span class="nc" id="L107">                System.out.println(&quot;pressed leaderboard&quot;);</span>
+<span class="nc" id="L108">                return true;</span>
+            }
+        });
+<span class="nc" id="L111">        stage.addActor(leaderboardButton);</span>
+<span class="nc" id="L112">    }</span>
+
+    /**
+     * Add rules button.
+     */
+    private void initRulesButton() {
+<span class="nc" id="L118">        TextButton rulesButton = new TextButton(&quot;Rules&quot;, skin);</span>
+<span class="nc" id="L119">        rulesButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);</span>
+<span class="nc" id="L120">        rulesButton.setPosition(400 - (rulesButton.getWidth() / 2), 250);</span>
+<span class="nc" id="L121">        rulesButton.addListener(new InputListener() {</span>
+            @Override
+            public void touchUp(InputEvent event, float x, float y,
+                                int pointer, int button) {
+<span class="nc" id="L125">                GameRulesDialog.display(stage);</span>
+<span class="nc" id="L126">            }</span>
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y,
+                                     int pointer, int button) {
+<span class="nc" id="L131">                System.out.println(&quot;pressed game rules&quot;);</span>
+<span class="nc" id="L132">                return true;</span>
+            }
+        });
+<span class="nc" id="L135">        stage.addActor(rulesButton);</span>
+<span class="nc" id="L136">    }</span>
+
+    /**
+     * Adds play button.
+     */
+    private void initPlayButton() {
+<span class="nc" id="L142">        TextButton playButton = new TextButton(&quot;Start Game&quot;, skin);</span>
+<span class="nc" id="L143">        playButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);</span>
+<span class="nc" id="L144">        playButton.setPosition(400 - (playButton.getWidth() / 2), 350);</span>
+<span class="nc" id="L145">        playButton.addListener(new InputListener() {</span>
+            @Override
+            public void touchUp(InputEvent event, float x, float y,
+                                int pointer, int button) {
+<span class="nc" id="L149">                stateManager.setState(new LevelState(stateManager));</span>
+<span class="nc" id="L150">            }</span>
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y,
+                                     int pointer, int button) {
+<span class="nc" id="L155">                System.out.println(&quot;pressed play&quot;);</span>
+<span class="nc" id="L156">                return true;</span>
+            }
+        });
+<span class="nc" id="L159">        stage.addActor(playButton);</span>
+
+<span class="nc" id="L161">    }</span>
+
+    /**
+     * Adds the username of logged in user to the screen.
+     */
+    private void initRenderUsername() {
+<span class="nc" id="L167">        BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal(&quot;assets/font.fnt&quot;));</span>
+<span class="nc" id="L168">        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,</span>
+                new Color(255, 0, 255, 1));
+<span class="nc" id="L170">        Label renderUsername = new Label(&quot;Logged in as &quot; + SnakeGame.getUsername(), labelStyle);</span>
+<span class="nc" id="L171">        renderUsername.setSize(100, 20);</span>
+<span class="nc" id="L172">        renderUsername.setPosition(5,775);</span>
+<span class="nc" id="L173">        renderUsername.setFontScale((float) 1);</span>
+<span class="nc" id="L174">        stage.addActor(renderUsername);</span>
+<span class="nc" id="L175">    }</span>
+
+    @Override
+    public void handleInput() {
+<span class="nc" id="L179">    }</span>
+
+    @Override
+    public void update(float dt) {
+
+<span class="nc" id="L184">    }</span>
+
+    @Override
+    public void render(SpriteBatch batch) {
+<span class="nc" id="L188">        RendererHandler.render(batch, stage, background);</span>
+<span class="nc" id="L189">    }</span>
+
+    @Override
+    public void dispose() {
+<span class="nc" id="L193">        background.dispose();</span>
+<span class="nc" id="L194">        skin.dispose();</span>
+<span class="nc" id="L195">        stage.dispose();</span>
+<span class="nc" id="L196">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

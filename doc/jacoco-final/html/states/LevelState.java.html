@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LevelState.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">template</a> &gt; <a href="index.source.html" class="el_package">states</a> &gt; <span class="el_source">LevelState.java</span></div><h1>LevelState.java</h1><pre class="source lang-java linenums">package states;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import states.utils.RendererHandler;
+
+public class LevelState implements IState {
+    private static final int BUTTON_WIDTH = 300;
+    private static final int BUTTON_HEIGHT = 60;
+    private GameStateManager stateManager;
+    private Stage stage;
+    private Skin skin;
+    private Texture background;
+
+    /**
+     * Creates menu screen.
+     *
+     * @param gameManager which keeps track of the state of the game.
+     */
+<span class="nc" id="L32">    public LevelState(GameStateManager gameManager) {</span>
+<span class="nc" id="L33">        this.stateManager = gameManager;</span>
+<span class="nc" id="L34">        stage = new Stage(new ScreenViewport());</span>
+<span class="nc" id="L35">        Gdx.input.setInputProcessor(stage);</span>
+<span class="nc" id="L36">        skin = new Skin(Gdx.files.internal(</span>
+                &quot;assets/quantum-horizon/skin/quantum-horizon-ui.json&quot;));
+<span class="nc" id="L38">        initTitle();</span>
+<span class="nc" id="L39">        initLevelOneButton();</span>
+<span class="nc" id="L40">        initLevelTwoButton();</span>
+<span class="nc" id="L41">        initLevelThreeButton();</span>
+<span class="nc" id="L42">        initReturnButton();</span>
+<span class="nc" id="L43">        background = new Texture(&quot;assets/bg.png&quot;);</span>
+<span class="nc" id="L44">        stage.addListener(new InputListener() {</span>
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+<span class="nc" id="L47">                handleInput(keycode);</span>
+<span class="nc" id="L48">                return false;</span>
+            }
+        });
+<span class="nc" id="L51">    }</span>
+
+    public GameStateManager getStateManager() {
+<span class="nc" id="L54">        return stateManager;</span>
+    }
+
+    public void setStateManager(GameStateManager stateManager) {
+<span class="nc" id="L58">        this.stateManager = stateManager;</span>
+<span class="nc" id="L59">    }</span>
+
+    public Stage getStage() {
+<span class="nc" id="L62">        return stage;</span>
+    }
+
+    public void setStage(Stage stage) {
+<span class="nc" id="L66">        this.stage = stage;</span>
+<span class="nc" id="L67">    }</span>
+
+    public Skin getSkin() {
+<span class="nc" id="L70">        return skin;</span>
+    }
+
+    public void setSkin(Skin skin) {
+<span class="nc" id="L74">        this.skin = skin;</span>
+<span class="nc" id="L75">    }</span>
+
+    public Texture getBackground() {
+<span class="nc" id="L78">        return background;</span>
+    }
+
+    public void setBackground(Texture background) {
+<span class="nc" id="L82">        this.background = background;</span>
+<span class="nc" id="L83">    }</span>
+
+    /**
+     * Adds &quot;Menu&quot; to the screen.
+     */
+    private void initTitle() {
+<span class="nc" id="L89">        BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal(&quot;assets/font.fnt&quot;));</span>
+<span class="nc" id="L90">        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,</span>
+                new Color(255, 0, 255, 1));
+<span class="nc" id="L92">        Label menuTitle = new Label(&quot;Select level&quot;, labelStyle);</span>
+<span class="nc" id="L93">        menuTitle.setSize(600, 120);</span>
+<span class="nc" id="L94">        menuTitle.setPosition(280, 620);</span>
+<span class="nc" id="L95">        menuTitle.setFontScale(1);</span>
+<span class="nc" id="L96">        stage.addActor(menuTitle);</span>
+<span class="nc" id="L97">    }</span>
+
+    /**
+     * Adds level one button.
+     */
+    private void initLevelOneButton() {
+<span class="nc" id="L103">        TextButton levelOneButton = new TextButton(&quot;Level one&quot;, skin);</span>
+<span class="nc" id="L104">        levelOneButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);</span>
+<span class="nc" id="L105">        levelOneButton.setPosition(400 - (levelOneButton.getWidth() / 2), 350);</span>
+<span class="nc" id="L106">        levelOneButton.addListener(new InputListener() {</span>
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+<span class="nc" id="L109">                stateManager.setState(new PlayState(stateManager, &quot;defaultID&quot;, &quot;defaultName&quot;,</span>
+                        &quot;assets/tile-set/vaporWaveSet2.png&quot;,
+                        &quot;assets/snake-texture/DefaultBody.png&quot;));
+<span class="nc" id="L112">            }</span>
+
+            @Override
+            public boolean touchDown(
+                    InputEvent event, float x, float y, int pointer, int button) {
+<span class="nc" id="L117">                System.out.println(&quot;level one&quot;);</span>
+<span class="nc" id="L118">                return true;</span>
+            }
+        });
+<span class="nc" id="L121">        stage.addActor(levelOneButton);</span>
+<span class="nc" id="L122">    }</span>
+
+    /**
+     * Adds level two button.
+     */
+    private void initLevelTwoButton() {
+<span class="nc" id="L128">        TextButton levelTwoButton = new TextButton(&quot;Level two&quot;, skin);</span>
+<span class="nc" id="L129">        levelTwoButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);</span>
+<span class="nc" id="L130">        levelTwoButton.setPosition(400 - (levelTwoButton.getWidth() / 2), 250);</span>
+<span class="nc" id="L131">        levelTwoButton.addListener(new InputListener() {</span>
+            @Override
+            public void touchUp(InputEvent event, float x, float y,
+                                int pointer, int button) {
+<span class="nc" id="L135">                stateManager.setState(new PlayState(stateManager, &quot;maps/tmx/obs.tmx&quot;,</span>
+                        &quot;assets/snake-texture/rainbowBody.png&quot;));
+<span class="nc" id="L137">            }</span>
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y,
+                                     int pointer, int button) {
+<span class="nc" id="L142">                System.out.println(&quot;level two&quot;);</span>
+<span class="nc" id="L143">                return true;</span>
+            }
+        });
+<span class="nc" id="L146">        stage.addActor(levelTwoButton);</span>
+<span class="nc" id="L147">    }</span>
+
+    /**
+     * Adds level three button.
+     */
+    private void initLevelThreeButton() {
+<span class="nc" id="L153">        TextButton levelThreeButton = new TextButton(&quot;Level three&quot;, skin);</span>
+<span class="nc" id="L154">        levelThreeButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);</span>
+<span class="nc" id="L155">        levelThreeButton.setPosition(400 - (levelThreeButton.getWidth() / 2), 150);</span>
+<span class="nc" id="L156">        levelThreeButton.addListener(new InputListener() {</span>
+            @Override
+            public void touchUp(InputEvent event, float x, float y,
+                                int pointer, int button) {
+<span class="nc" id="L160">                stateManager.setState(new PlayState(stateManager, &quot;maps/tmx/obs2.tmx&quot;,</span>
+                        &quot;assets/snake-texture/redBlueBody.png&quot;));
+<span class="nc" id="L162">            }</span>
+
+            @Override
+            public boolean touchDown(
+                    InputEvent event, float x, float y, int pointer, int button) {
+<span class="nc" id="L167">                System.out.println(&quot;pressed level three&quot;);</span>
+<span class="nc" id="L168">                return true;</span>
+            }
+        });
+<span class="nc" id="L171">        stage.addActor(levelThreeButton);</span>
+<span class="nc" id="L172">    }</span>
+
+    /**
+     * Adds return button.
+     */
+    private void initReturnButton() {
+<span class="nc" id="L178">        TextButton returnButton = new TextButton(&quot;Return&quot;, skin);</span>
+<span class="nc" id="L179">        returnButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);</span>
+<span class="nc" id="L180">        returnButton.setPosition(400 - (returnButton.getWidth() / 2), 50);</span>
+<span class="nc" id="L181">        returnButton.addListener(new InputListener() {</span>
+            @Override
+            public void touchUp(InputEvent event, float x, float y,
+                                int pointer, int button) {
+<span class="nc" id="L185">                stateManager.setState(new MenuState(stateManager));</span>
+<span class="nc" id="L186">            }</span>
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y,
+                                     int pointer, int button) {
+<span class="nc" id="L191">                System.out.println(&quot;pressed play&quot;);</span>
+<span class="nc" id="L192">                return true;</span>
+            }
+        });
+<span class="nc" id="L195">        stage.addActor(returnButton);</span>
+
+<span class="nc" id="L197">    }</span>
+
+    @Override
+    public void handleInput() {
+<span class="nc" id="L201">    }</span>
+
+    /**
+     * This method is used to choose map using keyboard input.
+     *
+     * @param keycode The keycode indicates which key is pressed.
+     */
+    public void handleInput(int keycode) {
+<span class="nc bnc" id="L209" title="All 4 branches missed.">        switch (keycode) {</span>
+            case Input.Keys.NUM_1:
+<span class="nc" id="L211">                stateManager.setState(new PlayState(stateManager, &quot;defaultID&quot;, &quot;defaultName&quot;,</span>
+                        &quot;assets/tile-set/vaporWaveSet2.png&quot;,
+                        &quot;assets/snake-texture/DefaultBody.png&quot;));
+<span class="nc" id="L214">                break;</span>
+            case Input.Keys.NUM_2:
+<span class="nc" id="L216">                stateManager.setState(new PlayState(stateManager, &quot;maps/tmx/obs.tmx&quot;,</span>
+                        &quot;assets/snake-texture/rainbowBody.png&quot;));
+<span class="nc" id="L218">                break;</span>
+            case Input.Keys.NUM_3:
+<span class="nc" id="L220">                stateManager.setState(new PlayState(stateManager, &quot;maps/tmx/obs2.tmx&quot;,</span>
+                        &quot;assets/snake-texture/redBlueBody.png&quot;));
+<span class="nc" id="L222">                break;</span>
+            default:
+                break;
+        }
+<span class="nc" id="L226">    }</span>
+
+    @Override
+    public void update(float dt) {
+
+<span class="nc" id="L231">    }</span>
+
+    @Override
+    public void render(SpriteBatch batch) {
+<span class="nc" id="L235">        RendererHandler.render(batch, stage, background);</span>
+<span class="nc" id="L236">    }</span>
+
+    @Override
+    public void dispose() {
+<span class="nc" id="L240">        background.dispose();</span>
+<span class="nc" id="L241">        skin.dispose();</span>
+<span class="nc" id="L242">        stage.dispose();</span>
+<span class="nc" id="L243">    }</span>
+
+}
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

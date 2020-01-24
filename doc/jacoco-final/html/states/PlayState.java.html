@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PlayState.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">template</a> &gt; <a href="index.source.html" class="el_package">states</a> &gt; <span class="el_source">PlayState.java</span></div><h1>PlayState.java</h1><pre class="source lang-java linenums">package states;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import entities.snake.SnakeBody;
+import utils.Sizes;
+import world.CustomGameMap;
+import world.GameMap;
+import world.TiledGameMap;
+
+public class PlayState implements IState {
+
+    private OrthographicCamera orthographicCamera;
+    private GameStateManager gameStateManager;
+    private SnakeBody snakeBody;
+    private GameMap gameMap;
+
+    /**
+     * This constructor is used to call the CustomGameMap class.
+     *
+     * @param gameManager Manager which keeps track of the state of the game.
+     * @param id          The ID of the map.
+     * @param name        The name of the map.
+     * @param tileSet     The path for the theme (or set of tiles) we want to render.
+     * @param bodyTexture Path to the body's texture.
+     */
+    public PlayState(GameStateManager gameManager, String id, String name, String tileSet,
+<span class="nc" id="L30">                     String bodyTexture) {</span>
+<span class="nc" id="L31">        orthographicCamera = new OrthographicCamera();</span>
+<span class="nc" id="L32">        orthographicCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());</span>
+<span class="nc" id="L33">        orthographicCamera.update();</span>
+
+<span class="nc" id="L35">        this.snakeBody =</span>
+                new SnakeBody(Sizes.DEFAULT_MINIMUM_MAP_TILES, Sizes.DEFAULT_MINIMUM_MAP_TILES);
+
+<span class="nc" id="L38">        this.gameMap = new CustomGameMap(id, name,</span>
+                tileSet, bodyTexture, this.snakeBody, gameManager);
+<span class="nc" id="L40">    }</span>
+
+    /**
+     * This constructor is used to call a new TiledGameMap.
+     *
+     * @param gameManager Manager which keeps track of the state of the game.
+     * @param fileName    File path to the map.
+     * @param bodyTexture Path to the body's texture.
+     */
+<span class="nc" id="L49">    public PlayState(GameStateManager gameManager, String fileName, String bodyTexture) {</span>
+<span class="nc" id="L50">        orthographicCamera = new OrthographicCamera();</span>
+<span class="nc" id="L51">        orthographicCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());</span>
+<span class="nc" id="L52">        orthographicCamera.update();</span>
+
+<span class="nc" id="L54">        this.snakeBody =</span>
+                new SnakeBody(Sizes.DEFAULT_MINIMUM_MAP_TILES, Sizes.DEFAULT_MINIMUM_MAP_TILES);
+<span class="nc" id="L56">        this.gameMap = new TiledGameMap(bodyTexture, fileName, snakeBody, gameManager);</span>
+<span class="nc" id="L57">    }</span>
+
+    /**
+     * This constructor is for testability purposes.
+     *
+     * @param gameStateManager The gameManager which keeps track of the state of the game.
+     * @param snake            The snake that'll be displayed on the map.
+     * @param gameMap          The map that gets instantiated.
+     */
+<span class="fc" id="L66">    public PlayState(GameStateManager gameStateManager, SnakeBody snake, GameMap gameMap) {</span>
+<span class="fc" id="L67">        this.gameStateManager = gameStateManager;</span>
+<span class="fc" id="L68">        this.snakeBody = snake;</span>
+<span class="fc" id="L69">        this.gameMap = gameMap;</span>
+<span class="fc" id="L70">    }</span>
+
+    @Override
+    public void handleInput() {
+<span class="fc" id="L74">        gameMap.handleInput();</span>
+<span class="fc" id="L75">    }</span>
+
+    @Override
+    public void update(float dt) {
+<span class="fc" id="L79">        gameMap.update(dt);</span>
+<span class="fc" id="L80">    }</span>
+
+    @Override
+    public void render(SpriteBatch batch) {
+<span class="nc" id="L84">        Gdx.gl.glClearColor(0, 0, 1, 1); //changes the background color, number between 0-1</span>
+<span class="nc" id="L85">        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);</span>
+
+<span class="nc" id="L87">        gameMap.render(orthographicCamera, batch, snakeBody);</span>
+<span class="nc" id="L88">    }</span>
+
+    @Override
+    public void dispose() {
+<span class="fc" id="L92">        gameMap.dispose(orthographicCamera);</span>
+<span class="fc" id="L93">    }</span>
+
+    public GameMap getGameMap() {
+<span class="fc" id="L96">        return gameMap;</span>
+    }
+
+    public void setGameMap(GameMap gameMap) {
+<span class="fc" id="L100">        this.gameMap = gameMap;</span>
+<span class="fc" id="L101">    }</span>
+
+    public OrthographicCamera getOrthographicCamera() {
+<span class="fc" id="L104">        return orthographicCamera;</span>
+    }
+
+    public void setOrthographicCamera(OrthographicCamera orthographicCamera) {
+<span class="fc" id="L108">        this.orthographicCamera = orthographicCamera;</span>
+<span class="fc" id="L109">    }</span>
+
+    public GameStateManager getGameStateManager() {
+<span class="fc" id="L112">        return gameStateManager;</span>
+    }
+
+    public void setGameStateManager(GameStateManager gameStateManager) {
+<span class="fc" id="L116">        this.gameStateManager = gameStateManager;</span>
+<span class="fc" id="L117">    }</span>
+
+    public SnakeBody getSnakeBody() {
+<span class="fc" id="L120">        return snakeBody;</span>
+    }
+
+    public void setSnakeBody(SnakeBody snakeBody) {
+<span class="fc" id="L124">        this.snakeBody = snakeBody;</span>
+<span class="fc" id="L125">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TiledGameMap.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">template</a> &gt; <a href="index.source.html" class="el_package">world</a> &gt; <span class="el_source">TiledGameMap.java</span></div><h1>TiledGameMap.java</h1><pre class="source lang-java linenums">package world;
+
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import entities.Food;
+import entities.factories.FoodFactory;
+import entities.snake.SnakeBody;
+import java.util.List;
+import models.Coordinate;
+import models.Score;
+import states.GameStateManager;
+import utils.Sizes;
+import utils.TileType;
+
+public class TiledGameMap extends GameMap {
+
+    private TiledMap tiledMap;
+    private OrthogonalTiledMapRenderer tiledMapRenderer;
+    private String fileName;
+
+    private SnakeBody snake;
+    private GameStateManager manager;
+
+    /**
+     * Default constructor that will use a pre-defined map.
+     */
+    public TiledGameMap(SnakeBody snake, GameStateManager manager) {
+<span class="nc" id="L35">        this(&quot;assets/snake-texture/redBlueBody.png&quot;, &quot;maps/tmx/def3.tmx&quot;, snake, manager);</span>
+<span class="nc" id="L36">    }</span>
+
+    /**
+     * Constructor that takes in a file name for the map.
+     *
+     * @param bodyTexture The texture path for the snake's body.
+     * @param fileName    The file's name in string format.
+     * @param snake       The snake that gets passed through.
+     * @param manager     The game's state manager that's required to manage the game.
+     */
+    public TiledGameMap(String bodyTexture, String fileName, SnakeBody snake,
+                        GameStateManager manager) {
+<span class="nc" id="L48">        super(bodyTexture);</span>
+<span class="nc" id="L49">        this.fileName = fileName;</span>
+<span class="nc" id="L50">        this.tiledMap = new TmxMapLoader().load(fileName);</span>
+<span class="nc" id="L51">        this.tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);</span>
+<span class="nc" id="L52">        this.snake = snake;</span>
+<span class="nc" id="L53">        this.manager = manager;</span>
+<span class="nc" id="L54">        super.fillList(getObstacles());</span>
+<span class="nc" id="L55">    }</span>
+
+    /**
+     * Constructor (mainly) for testing purposes.
+     *
+     * @param manager          The GameStateManager which sets the different stages in the game.
+     * @param snake            The snake for this map.
+     * @param bodyTexture      The texture path for the snake's skin.
+     * @param foodFactory      FoodFactory factory used to create food.
+     * @param food             Food object that snake consumes.
+     * @param score            Score object to keep track of your score.
+     * @param tiledMap         Takes in libGdx's TiledMap class
+     *                         which can load in a existing file map.
+     * @param tiledMapRenderer This is used to render the tiledMap.
+     * @param fileName         The string path of the file's name for the map.
+     * @param obstacles        List of all the coordinates of obstacles.
+     */
+    public TiledGameMap(GameStateManager manager, SnakeBody snake, String bodyTexture,
+                        FoodFactory foodFactory, Food food, Score score,
+                        TiledMap tiledMap, OrthogonalTiledMapRenderer tiledMapRenderer,
+                        String fileName, TextureRegion[][] bodyTextureRegion,
+                        List&lt;Coordinate&gt; obstacles) {
+<span class="fc" id="L77">        super(Sizes.MOVE_TIME, manager, snake, foodFactory, food, score,</span>
+                bodyTexture, bodyTextureRegion, obstacles);
+<span class="fc" id="L79">        this.tiledMap = tiledMap;</span>
+<span class="fc" id="L80">        this.tiledMapRenderer = tiledMapRenderer;</span>
+<span class="fc" id="L81">        this.fileName = fileName;</span>
+<span class="fc" id="L82">        this.snake = snake;</span>
+<span class="fc" id="L83">        this.manager = manager;</span>
+<span class="fc" id="L84">    }</span>
+
+    @Override
+    public void render(OrthographicCamera camera, SpriteBatch batch, SnakeBody snakeBody) {
+<span class="fc" id="L88">        tiledMapRenderer.setView(camera);</span>
+<span class="fc" id="L89">        tiledMapRenderer.render();</span>
+        //after rendering map up here^ u wanna render entities on the map
+        //which is what u do in the super class GameMap
+
+        //set projection matrix to this so it renders according to how the camera wants to render it
+<span class="fc" id="L94">        batch.setProjectionMatrix(camera.combined);</span>
+
+<span class="fc" id="L96">        batch.begin();</span>
+<span class="fc" id="L97">        renderSuper(camera, batch, snakeBody);</span>
+<span class="fc" id="L98">    }</span>
+
+    public void renderSuper(OrthographicCamera camera, SpriteBatch batch, SnakeBody snakeBody) {
+<span class="nc" id="L101">        super.render(camera, batch, this.snake);</span>
+<span class="nc" id="L102">        batch.end();</span>
+<span class="nc" id="L103">    }</span>
+
+    @Override
+    public void update(float delta) {
+<span class="nc" id="L107">        super.update(delta);</span>
+<span class="nc" id="L108">    }</span>
+
+    @Override
+    public void dispose(OrthographicCamera camera) {
+<span class="fc" id="L112">        tiledMap.dispose();</span>
+<span class="fc" id="L113">    }</span>
+
+    @Override
+    public TileType getTileTypeByCoordinate(int layer, int col, int row) {
+        //check if its out of bounds first
+<span class="fc bfc" id="L118" title="All 8 branches covered.">        if (col &lt; 0 || col &gt;= getWidth() || row &lt; 0 || row &gt;= getHeight()) {</span>
+<span class="fc" id="L119">            return null;</span>
+        }
+        //check if layer isn't out of bounds
+<span class="fc bfc" id="L122" title="All 4 branches covered.">        if (layer &gt;= getLayers() || layer &lt; 0) {</span>
+<span class="fc" id="L123">            layer = getLayers() - 1;</span>
+        }
+
+<span class="fc" id="L126">        Cell cell = ((TiledMapTileLayer) tiledMap.getLayers().get(layer)).getCell(col, row);</span>
+
+<span class="fc bfc" id="L128" title="All 2 branches covered.">        if (cell != null) {</span>
+<span class="fc" id="L129">            TiledMapTile tile = cell.getTile();</span>
+
+<span class="fc bfc" id="L131" title="All 2 branches covered.">            if (tile != null) {</span>
+<span class="fc" id="L132">                int id = tile.getId();</span>
+<span class="fc" id="L133">                return TileType.getTileTypeById(id);</span>
+            }
+        }
+<span class="fc" id="L136">        return null;</span>
+    }
+
+    @Override
+    public int getWidth() {
+<span class="fc" id="L141">        return ((TiledMapTileLayer) tiledMap.getLayers().get(0)).getWidth();</span>
+    }
+
+    @Override
+    public int getHeight() {
+<span class="fc" id="L146">        return ((TiledMapTileLayer) tiledMap.getLayers().get(0)).getHeight();</span>
+    }
+
+    @Override
+    public int getLayers() {
+<span class="fc" id="L151">        return tiledMap.getLayers().getCount();</span>
+    }
+
+    public TiledMap getTiledMap() {
+<span class="fc" id="L155">        return tiledMap;</span>
+    }
+
+    public void setTiledMap(TiledMap tiledMap) {
+<span class="fc" id="L159">        this.tiledMap = tiledMap;</span>
+<span class="fc" id="L160">    }</span>
+
+    public OrthogonalTiledMapRenderer getTiledMapRenderer() {
+<span class="fc" id="L163">        return tiledMapRenderer;</span>
+    }
+
+    public void setTiledMapRenderer(OrthogonalTiledMapRenderer tiledMapRenderer) {
+<span class="fc" id="L167">        this.tiledMapRenderer = tiledMapRenderer;</span>
+<span class="fc" id="L168">    }</span>
+
+    public String getFileName() {
+<span class="fc" id="L171">        return fileName;</span>
+    }
+
+    public void setFileName(String fileName) {
+<span class="fc" id="L175">        this.fileName = fileName;</span>
+<span class="fc" id="L176">    }</span>
+
+    public SnakeBody getSnake() {
+<span class="fc" id="L179">        return snake;</span>
+    }
+
+    public void setSnake(SnakeBody snake) {
+<span class="fc" id="L183">        this.snake = snake;</span>
+<span class="fc" id="L184">    }</span>
+
+    @Override
+    public GameStateManager getManager() {
+<span class="fc" id="L188">        return manager;</span>
+    }
+
+    public void setManager(GameStateManager manager) {
+<span class="fc" id="L192">        this.manager = manager;</span>
+<span class="fc" id="L193">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

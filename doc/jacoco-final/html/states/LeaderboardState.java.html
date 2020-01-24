@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LeaderboardState.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">template</a> &gt; <a href="index.source.html" class="el_package">states</a> &gt; <span class="el_source">LeaderboardState.java</span></div><h1>LeaderboardState.java</h1><pre class="source lang-java linenums">package states;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import java.util.List;
+import services.LeaderboardEntry;
+import services.leaderboard.LeaderboardService;
+import states.utils.RendererHandler;
+import utils.Sizes;
+
+/**
+ * LeaderBoardState class
+ * Shows a leaderboard of all players playing the gaming.
+ */
+/*Suppressing this warning because we don't need getters and
+    setters for UI elements. */
+@SuppressWarnings(&quot;PMD.BeanMembersShouldSerialize&quot;)
+public class LeaderboardState implements IState {
+    private GameStateManager stateManager;
+    private Stage stage;
+    private Skin skin;
+    private Label title;
+    private Texture background;
+    private BitmapFont bitmapFont;
+    private Label.LabelStyle labelStyle;
+
+    /**
+     * Constructor which creates a new state within the game.
+     * E.g. Play/Pause/Menu.
+     *
+     * @param gameManager which keeps track of the state of the game.
+     */
+<span class="nc" id="L44">    public LeaderboardState(GameStateManager gameManager) {</span>
+<span class="nc" id="L45">        this.stateManager = gameManager;</span>
+<span class="nc" id="L46">        stage = new Stage(new ScreenViewport());</span>
+<span class="nc" id="L47">        Gdx.input.setInputProcessor(stage);</span>
+<span class="nc" id="L48">        skin =  new Skin(Gdx.files.internal(&quot;assets/quantum-horizon/skin/quantum-horizon-ui.json&quot;));</span>
+<span class="nc" id="L49">        background = new Texture(&quot;assets/three.png&quot;);</span>
+<span class="nc" id="L50">        bitmapFont = new BitmapFont(Gdx.files.internal(&quot;assets/font.fnt&quot;));</span>
+<span class="nc" id="L51">        labelStyle = new Label.LabelStyle(bitmapFont,</span>
+                new Color(0, (float) 2.55, 0, 1));
+<span class="nc" id="L53">        initReturn();</span>
+<span class="nc" id="L54">        initTitle();</span>
+<span class="nc" id="L55">        initBoard();</span>
+<span class="nc" id="L56">    }</span>
+
+    public GameStateManager getStateManager() {
+<span class="nc" id="L59">        return stateManager;</span>
+    }
+
+    public void setStateManager(GameStateManager stateManager) {
+<span class="nc" id="L63">        this.stateManager = stateManager;</span>
+<span class="nc" id="L64">    }</span>
+
+    public Stage getStage() {
+<span class="nc" id="L67">        return stage;</span>
+    }
+
+    public void setStage(Stage stage) {
+<span class="nc" id="L71">        this.stage = stage;</span>
+<span class="nc" id="L72">    }</span>
+
+    public Skin getSkin() {
+<span class="nc" id="L75">        return skin;</span>
+    }
+
+    public void setSkin(Skin skin) {
+<span class="nc" id="L79">        this.skin = skin;</span>
+<span class="nc" id="L80">    }</span>
+
+    public Label getTitle() {
+<span class="nc" id="L83">        return title;</span>
+    }
+
+    public void setTitle(Label title) {
+<span class="nc" id="L87">        this.title = title;</span>
+<span class="nc" id="L88">    }</span>
+
+    public Texture getBackground() {
+<span class="nc" id="L91">        return background;</span>
+    }
+
+    public void setBackground(Texture background) {
+<span class="nc" id="L95">        this.background = background;</span>
+<span class="nc" id="L96">    }</span>
+
+    public BitmapFont getBitmapFont() {
+<span class="nc" id="L99">        return bitmapFont;</span>
+    }
+
+    public void setBitmapFont(BitmapFont bitmapFont) {
+<span class="nc" id="L103">        this.bitmapFont = bitmapFont;</span>
+<span class="nc" id="L104">    }</span>
+
+    public Label.LabelStyle getLabelStyle() {
+<span class="nc" id="L107">        return labelStyle;</span>
+    }
+
+    public void setLabelStyle(Label.LabelStyle labelStyle) {
+<span class="nc" id="L111">        this.labelStyle = labelStyle;</span>
+<span class="nc" id="L112">    }</span>
+
+    /**
+     * Creates return button.
+     */
+    private void initReturn() {
+<span class="nc" id="L118">        TextButton returnButton = new TextButton(&quot;return&quot;, skin);</span>
+<span class="nc" id="L119">        returnButton.setPosition(350, 50);</span>
+<span class="nc" id="L120">        returnButton.addListener(new InputListener() {</span>
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+<span class="nc" id="L123">                stateManager.setState(new MenuState(stateManager));</span>
+<span class="nc" id="L124">            }</span>
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+<span class="nc" id="L128">                System.out.println(&quot;pressed return button&quot;);</span>
+<span class="nc" id="L129">                return true;</span>
+            }
+        });
+<span class="nc" id="L132">        stage.addActor(returnButton);</span>
+<span class="nc" id="L133">    }</span>
+
+    /**
+     * Sets the leaderboard title in the middle of the screen.
+     */
+    private void initTitle() {
+<span class="nc" id="L139">        title = new Label(&quot;Leaderboard&quot;, labelStyle);</span>
+<span class="nc" id="L140">        title.setSize(400, 100);</span>
+<span class="nc" id="L141">        title.setPosition(160,650);</span>
+<span class="nc" id="L142">        title.setFontScale(2);</span>
+<span class="nc" id="L143">        stage.addActor(title);</span>
+<span class="nc" id="L144">    }</span>
+
+    /**
+     * Adds score to the player..
+     */
+    private void initBoard() {
+<span class="nc" id="L150">        LeaderboardService service = new LeaderboardService();</span>
+<span class="nc" id="L151">        List&lt;LeaderboardEntry&gt; entries = service.retrieveLeaderboard();</span>
+
+<span class="nc bnc" id="L153" title="All 2 branches missed.">        for (int i = 0; i &lt; entries.size(); i++) {</span>
+<span class="nc" id="L154">            setPlayerRank(550 - 50 * i, entries.get(i).getNickname());</span>
+<span class="nc" id="L155">            setScore(550 - 50 * i, entries.get(i).getScore());</span>
+<span class="nc" id="L156">            setNumber(550 - 50 * i, i + 1 + &quot;.&quot;);</span>
+        }
+
+<span class="nc" id="L159">    }</span>
+
+    /**
+     * Puts a given number on the stage at given position y.
+     * @param y y coordinate where the number will be placed.
+     * @param number number which will be shown.
+     */
+    private void setNumber(int y, String number) {
+<span class="nc" id="L167">        labelStyle = new Label.LabelStyle(bitmapFont,</span>
+                new Color(0, (float) 2.55, 0, 1));
+<span class="nc" id="L169">        Label one = new Label(number, labelStyle);</span>
+<span class="nc" id="L170">        one.setSize(100, 100);</span>
+<span class="nc" id="L171">        one.setPosition(200, y);</span>
+<span class="nc" id="L172">        stage.addActor(one);</span>
+<span class="nc" id="L173">    }</span>
+
+    /**
+     * Puts given player name on the rank position.
+     * @param y y coordinate where the player will be placed.
+     * @param player player which will be shown.
+     */
+    private void setPlayerRank(int y, String player) {
+<span class="nc" id="L181">        labelStyle = new Label.LabelStyle(bitmapFont,</span>
+                new Color(0, (float) 2.55, 0, 1));
+<span class="nc" id="L183">        Label one = new Label(player, labelStyle);</span>
+<span class="nc" id="L184">        one.setSize(100, 100);</span>
+<span class="nc" id="L185">        one.setPosition(250, y);</span>
+<span class="nc" id="L186">        stage.addActor(one);</span>
+<span class="nc" id="L187">    }</span>
+
+    /**
+     * Puts given player score on the score position.
+     * @param y y coordinate where the score will be placed.
+     * @param score score which will be shown.
+     */
+    private void setScore(int y, int score) {
+<span class="nc" id="L195">        labelStyle = new Label.LabelStyle(bitmapFont,</span>
+                new Color(0, (float) 2.55, 0, 1));
+<span class="nc" id="L197">        Label one = new Label(Integer.toString(score), labelStyle);</span>
+<span class="nc" id="L198">        one.setSize(100, 100);</span>
+<span class="nc" id="L199">        one.setPosition(600, y);</span>
+<span class="nc" id="L200">        stage.addActor(one);</span>
+<span class="nc" id="L201">    }</span>
+
+    @Override
+    public void handleInput() {
+
+<span class="nc" id="L206">    }</span>
+
+    @Override
+    public void update(float dt) {
+
+<span class="nc" id="L211">    }</span>
+
+    @Override
+    public void render(SpriteBatch batch) {
+<span class="nc" id="L215">        RendererHandler.render(batch, stage, background);</span>
+<span class="nc" id="L216">        Gdx.gl.glClearColor((float) 0.61, (float) 0.77, (float) 0.65, 1);</span>
+<span class="nc" id="L217">    }</span>
+
+    @Override
+    public void dispose() {
+<span class="nc" id="L221">        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);</span>
+<span class="nc" id="L222">        stateManager.update(Gdx.graphics.getDeltaTime());</span>
+<span class="nc" id="L223">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
