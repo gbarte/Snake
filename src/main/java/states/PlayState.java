@@ -3,17 +3,12 @@ package states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import entities.snake.SnakeBody;
 import utils.Sizes;
-import utils.TileType;
 import world.CustomGameMap;
 import world.GameMap;
 import world.TiledGameMap;
-import world.customgamemap.CustomGameMapData;
-import world.customgamemap.CustomGameMapLoader;
 
 public class PlayState implements IState {
 
@@ -23,12 +18,16 @@ public class PlayState implements IState {
     private GameMap gameMap;
 
     /**
-     * Constructor which creates a new state within the game.
-     * E.g. Play/Pause/Menu.
+     * This constructor is used to call the CustomGameMap class.
      *
      * @param gameManager Manager which keeps track of the state of the game.
+     * @param id          The ID of the map.
+     * @param name        The name of the map.
+     * @param tileSet     The path for the theme (or set of tiles) we want to render.
+     * @param bodyTexture Path to the body's texture.
      */
-    public PlayState(GameStateManager gameManager) {
+    public PlayState(GameStateManager gameManager, String id, String name, String tileSet,
+                     String bodyTexture) {
         orthographicCamera = new OrthographicCamera();
         orthographicCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         orthographicCamera.update();
@@ -36,13 +35,24 @@ public class PlayState implements IState {
         this.snakeBody =
                 new SnakeBody(Sizes.DEFAULT_MINIMUM_MAP_TILES, Sizes.DEFAULT_MINIMUM_MAP_TILES);
 
-        CustomGameMapLoader.loadMap("defaultID", "defaultName");
-        Texture texture = new Texture("assets/tile-set/setOfFive.png");
-        TextureRegion.split(texture, TileType.TILE_SIZE, TileType.TILE_SIZE);
-        String bodyTexture = "assets/snake-texture/redBlueBody.png";
+        this.gameMap = new CustomGameMap(id, name,
+                tileSet, bodyTexture, this.snakeBody, gameManager);
+    }
 
-        String fileName = "maps/tmx/obs2.tmx";
+    /**
+     * This constructor is used to call a new TiledGameMap.
+     *
+     * @param gameManager Manager which keeps track of the state of the game.
+     * @param fileName    File path to the map.
+     * @param bodyTexture Path to the body's texture.
+     */
+    public PlayState(GameStateManager gameManager, String fileName, String bodyTexture) {
+        orthographicCamera = new OrthographicCamera();
+        orthographicCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        orthographicCamera.update();
 
+        this.snakeBody =
+                new SnakeBody(Sizes.DEFAULT_MINIMUM_MAP_TILES, Sizes.DEFAULT_MINIMUM_MAP_TILES);
         this.gameMap = new TiledGameMap(bodyTexture, fileName, snakeBody, gameManager);
     }
 

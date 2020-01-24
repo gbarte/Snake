@@ -56,7 +56,6 @@ public class SignUpState implements IState {
 
     }
 
-
     /**
      * Sets username textfield.
      */

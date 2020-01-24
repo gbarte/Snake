@@ -41,7 +41,6 @@ public class MenuState implements IState {
         initTitle();
         initRulesButton();
         initPlayButton();
-        initSettingsButton();
         initLeaderboardButton();
         initSignOutButton();
         initRenderUsername();
@@ -68,7 +67,7 @@ public class MenuState implements IState {
     private void initSignOutButton() {
         TextButton signOutButton = new TextButton("Sign Out", skin);
         signOutButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-        signOutButton.setPosition(400 - (signOutButton.getWidth() / 2), 50);
+        signOutButton.setPosition(400 - (signOutButton.getWidth() / 2), 150);
         signOutButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
@@ -144,7 +143,7 @@ public class MenuState implements IState {
             @Override
             public void touchUp(InputEvent event, float x, float y,
                                 int pointer, int button) {
-                stateManager.setState(new PlayState(stateManager));
+                stateManager.setState(new LevelState(stateManager));
             }
 
             @Override
@@ -156,28 +155,6 @@ public class MenuState implements IState {
         });
         stage.addActor(playButton);
 
-    }
-
-    /**
-     * Adds settings button.
-     */
-    private void initSettingsButton() {
-        TextButton settingsButton = new TextButton("Settings", skin);
-        settingsButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-        settingsButton.setPosition(400 - (settingsButton.getWidth() / 2), 150);
-        settingsButton.addListener(new InputListener() {
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //TODO
-            }
-
-            @Override
-            public boolean touchDown(
-                    InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-        });
-        stage.addActor(settingsButton);
     }
 
     /**

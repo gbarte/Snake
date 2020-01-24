@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import entities.Food;
 import entities.factories.AppleFactory;
 import entities.factories.FoodFactory;
@@ -31,8 +30,9 @@ import utils.TileType;
 
 public abstract class GameMap {
 
-    private GameStateManager manager;
     public static final float DEFAULT_MOVE_TIME = Sizes.MOVE_TIME;
+    private static double powerUpTimeout = Sizes.POWER_UP_TIMEOUT;
+    private GameStateManager manager;
     private float moveTime = DEFAULT_MOVE_TIME;
     private float timer = moveTime;
     private SnakeBody snake;
@@ -42,7 +42,6 @@ public abstract class GameMap {
     private Score score;
     private String bodyTexture;
     private TextureRegion[][] bodyTextureRegion;
-    private static double powerUpTimeout = Sizes.POWER_UP_TIMEOUT;
 
     /**
      * Constructor for the GameMap that sets a default snake body texture, an apple and the snake.
@@ -61,6 +60,7 @@ public abstract class GameMap {
 
     /**
      * Constructor used to pass on a texture path for the snake's body.
+     *
      * @param bodyTexture The texture path for the snake's body.
      */
     public GameMap(String bodyTexture) {
@@ -77,12 +77,13 @@ public abstract class GameMap {
 
     /**
      * Constructor (mainly) for testing purposes.
-     * @param timer The timer for movement and updating.
-     * @param manager The GameStateManager which sets the different stages in the game.
-     * @param snake The snake for this map.
+     *
+     * @param timer       The timer for movement and updating.
+     * @param manager     The GameStateManager which sets the different stages in the game.
+     * @param snake       The snake for this map.
      * @param foodFactory FoodFactory factory used to create food.
-     * @param food Food object that snake consumes.
-     * @param score Score object to keep track of your score.
+     * @param food        Food object that snake consumes.
+     * @param score       Score object to keep track of your score.
      * @param bodyTexture The texture path for the snake's skin.
      */
     public GameMap(float timer, GameStateManager manager, SnakeBody snake,
@@ -100,11 +101,20 @@ public abstract class GameMap {
         this.obstacles = obstacles;
     }
 
+    public static double getPowerUpTimeout() {
+        return powerUpTimeout;
+    }
+
+    public static void setPowerUpTimeout(double powerUpTimeout) {
+        GameMap.powerUpTimeout = powerUpTimeout;
+    }
+
     /**
      * Render entities here after subclass renders map.
+     *
      * @param camera Camera on which to render.
-     * @param batch Batch to use.
-     * @param snake Snake that gets passed on.
+     * @param batch  Batch to use.
+     * @param snake  Snake that gets passed on.
      */
     public void render(OrthographicCamera camera, SpriteBatch batch, SnakeBody snake) {
         //render entities here
@@ -124,6 +134,7 @@ public abstract class GameMap {
 
     /**
      * Update method for the snake.
+     *
      * @param delta The delta time it takes to update the snake.
      */
     public void update(float delta) {
@@ -139,9 +150,10 @@ public abstract class GameMap {
 
     /**
      * With this you can get a tile by the pixel-position within the game's given layer.
+     *
      * @param layer The layer on which the pixel is.
-     * @param x The position of the pixel on the x-axis.
-     * @param y The position of the pixel on the y-axis.
+     * @param x     The position of the pixel on the x-axis.
+     * @param y     The position of the pixel on the y-axis.
      * @return The tile's type.
      */
     public TileType getTileTypeByLocation(int layer, float x, float y) {
@@ -225,14 +237,6 @@ public abstract class GameMap {
         this.timer = timer;
     }
 
-    public static double getPowerUpTimeout() {
-        return powerUpTimeout;
-    }
-
-    public static void setPowerUpTimeout(double powerUpTimeout) {
-        GameMap.powerUpTimeout = powerUpTimeout;
-    }
-
     public String getBodyTexture() {
         return bodyTexture;
     }
@@ -266,6 +270,7 @@ public abstract class GameMap {
      * This method handles the input and what to do with it.
      * The split was mainly made for testability purposes such that,
      * the libGDX functionality is separate from the testable parts.
+     *
      * @param keycode The keycode indicates which key is pressed.
      * @param manager The manager needed if any other state needs to be instantiated.
      */
@@ -303,6 +308,7 @@ public abstract class GameMap {
 
     /**
      * Renders the current score on the screen.
+     *
      * @param batch used for drawing elements.
      */
     public void renderScore(SpriteBatch batch) {
@@ -313,12 +319,12 @@ public abstract class GameMap {
     /**
      * Mainly for testability purposes.
      * Renders the current score on the screen.
-     * @param batch The batch used for drawing elements.
+     *
+     * @param batch      The batch used for drawing elements.
      * @param bitmapFont This is used to render the value of the score.
      */
     public void renderScore(SpriteBatch batch, BitmapFont bitmapFont) {
         bitmapFont.setColor(Color.CORAL);
-        bitmapFont.newFontCache();
         bitmapFont.draw(batch, "Score: " + score.getValue(),
                 Sizes.DEFAULT_AMOUNT_BORDER_TILES * Sizes.TILE_PIXELS,
                 Sizes.DEFAULT_AMOUNT_BORDER_TILES * Sizes.TILE_PIXELS);
@@ -390,7 +396,7 @@ public abstract class GameMap {
     }
 
     /**
-     * Checks whether the snake (head) hits the border, // TODO remove comments!!!!!!!
+     * Checks whether the snake (head) hits the border,
      * if it hits then the state changes to GameOverState.
      */
     public void checkOutOfMap() {
@@ -400,17 +406,17 @@ public abstract class GameMap {
         TileType currentTile = getTileTypeByCoordinate(getLayers(),
                 currentHead.getCoordinateX(),
                 currentHead.getCoordinateY());
-        this.checkOutOfMap(currentHead, manager, score, currentTile);
+        this.checkOutOfMap(manager, score, currentTile);
     }
 
     /**
      * Checks whether the snake (head) hits the border,
      * if it hits then the state changes to GameOverState.
-     * @param currentHead The coordinate of the head.
+     *
      * @param manager The GameStateManager needed to set another state
-     * @param score Current score of your game.
+     * @param score   Current score of your game.
      */
-    public void checkOutOfMap(Coordinate currentHead, GameStateManager manager, Score score,
+    public void checkOutOfMap(GameStateManager manager, Score score,
                               TileType currentTile) {
         if (currentTile.isCollidable()) {
             manager.setState(new GameOverState(manager, score));
@@ -498,6 +504,7 @@ public abstract class GameMap {
 
     /**
      * This method is called to fill up the list with the coordinates of all the obstacles.
+     *
      * @param list The list to fill up.
      */
     public void fillList(List<Coordinate> list) {
