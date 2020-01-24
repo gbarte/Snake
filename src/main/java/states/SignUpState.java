@@ -2,7 +2,6 @@ package states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -14,11 +13,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import services.auth.AuthService;
 import services.auth.RegistrationResponse;
-import utils.Sizes;
+import states.utils.RendererHandler;
 
 /**
  * Creates sign up screen.
@@ -50,7 +48,7 @@ public class SignUpState implements IState {
         BitmapFont bitmapFont = new BitmapFont();
         labelStyle = new Label.LabelStyle(bitmapFont,
                 new Color(255,  0, 255, 1));
-        initTitle();
+        RendererHandler.initTitle(stage);
         initSignUpUsername();
         initSignUpPassword();
         initSignUpButton();
@@ -58,21 +56,6 @@ public class SignUpState implements IState {
 
     }
 
-
-    /**
-     * Sets title of login screen.
-     */
-    private void initTitle() {
-        BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal("assets/font.fnt"));
-        Label.LabelStyle TitleLabelStyle = new Label.LabelStyle(bitmapFont,
-                new Color(0, 255, 0, 1));
-        Label title = new Label("Lil' Snake", TitleLabelStyle);
-        title.setSize(600, 120);
-        title.setPosition(100, 550);
-        title.setFontScale(3);
-        title.setAlignment(Align.center);
-        stage.addActor(title);
-    }
 
     /**
      * Sets username textfield.
@@ -163,7 +146,7 @@ public class SignUpState implements IState {
     /**
      * This dialog box is shown when the username is has already been taken.
      */
-    public void usernameTakenDialog() {
+    private void usernameTakenDialog() {
         Dialog dialog = new Dialog("Username taken", cloudSkin, "dialog") {
             public void result(Object obj) {
                 System.out.println("result " + obj);
@@ -177,7 +160,7 @@ public class SignUpState implements IState {
     /**
      * This dialog box is shown when the password has less than 8 characters.
      */
-    public void passwordTooShortDialog() {
+    private void passwordTooShortDialog() {
         Dialog dialog = new Dialog("Password too short", cloudSkin, "dialog") {
             public void result(Object obj) {
                 System.out.println("result " + obj);
@@ -201,15 +184,7 @@ public class SignUpState implements IState {
 
     @Override
     public void render(SpriteBatch batch) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.begin();
-        stage.act();
-        stage.getBatch().begin();
-        stage.getBatch().draw(background, 0, 0, Sizes.MIN_WIDTH_WINDOW, Sizes.MIN_HEIGHT_WINDOW);
-        stage.getBatch().end();
-        stage.draw();
-        batch.end();
+        RendererHandler.render(batch, stage, background);
     }
 
     @Override

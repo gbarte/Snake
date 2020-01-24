@@ -36,14 +36,11 @@ public class PlayState implements IState {
         this.snakeBody =
                 new SnakeBody(Sizes.DEFAULT_MINIMUM_MAP_TILES, Sizes.DEFAULT_MINIMUM_MAP_TILES);
 
-        // These are the 'customizable' things path you can pass in (for CustomGameMap)
-        // String id, String name, String tileSet, String bodytexture
-        CustomGameMapData mapData = CustomGameMapLoader.loadMap("defaultID", "defaultName");
+        CustomGameMapLoader.loadMap("defaultID", "defaultName");
         Texture texture = new Texture("assets/tile-set/setOfFive.png");
-        TextureRegion[][] textureRegions
-                = TextureRegion.split(texture, TileType.TILE_SIZE, TileType.TILE_SIZE);
+        TextureRegion.split(texture, TileType.TILE_SIZE, TileType.TILE_SIZE);
         String bodyTexture = "assets/snake-texture/redBlueBody.png";
-        
+
         String fileName = "maps/tmx/obs2.tmx";
 
         this.gameMap = new TiledGameMap(bodyTexture, fileName, snakeBody, gameManager);

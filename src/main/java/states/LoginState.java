@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import services.auth.AuthResponse;
 import services.auth.AuthService;
+import states.utils.RendererHandler;
 import utils.Sizes;
 
 /**
@@ -31,7 +32,7 @@ public class LoginState implements IState {
     private Label title;
     private TextField usernameField;
     private TextField passwordField;
-    private Texture backGround;
+    private Texture background;
     private BitmapFont bitmapFont;
     private Label.LabelStyle labelStyle;
 
@@ -49,12 +50,12 @@ public class LoginState implements IState {
         bitmapFont = new BitmapFont();
         labelStyle = new Label.LabelStyle(bitmapFont,
                 new Color(255,  0, 255, 1));
-        initTitle();
+        title = RendererHandler.initTitle(stage);
         initLogin();
         initPasswordField();
         initButtons();
         initSignUp();
-        backGround = new Texture("assets/bg.png");
+        background = new Texture("assets/bg.png");
     }
 
     public Stage getStage() {
@@ -81,12 +82,12 @@ public class LoginState implements IState {
         this.title = title;
     }
 
-    public Texture getBackGround() {
-        return backGround;
+    public Texture getBackground() {
+        return background;
     }
 
-    public void setBackGround(Texture backGround) {
-        this.backGround = backGround;
+    public void setBackground(Texture background) {
+        this.background = background;
     }
 
     public TextField getUsernameField() {
@@ -119,21 +120,6 @@ public class LoginState implements IState {
 
     public void setLabelStyle(Label.LabelStyle labelStyle) {
         this.labelStyle = labelStyle;
-    }
-
-    /**
-     * Sets title of login screen.
-     */
-    private void initTitle() {
-        BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal("assets/font.fnt"));
-        Label.LabelStyle labelStyle = new Label.LabelStyle(bitmapFont,
-                new Color(0, 255, 0, 1));
-        title = new Label("Lil' Snake", labelStyle);
-        title.setSize(600, 120);
-        title.setPosition(100,550);
-        title.setFontScale(3);
-        title.setAlignment(Align.center);
-        stage.addActor(title);
     }
 
     /**
@@ -185,7 +171,7 @@ public class LoginState implements IState {
                         passwordField.getText());
 
                 if (response == AuthResponse.SUCCESS) {
-                    SnakeGame.username = usernameField.getText();
+                    SnakeGame.setUsername(usernameField.getText());
                     stateManager.setState(new MenuState(stateManager));
                 } else {
                     failedAuthenticationDialog();
@@ -222,7 +208,7 @@ public class LoginState implements IState {
     /**
      * This dialog box is shown when the authentication fails.
      */
-    public void failedAuthenticationDialog() {
+    private void failedAuthenticationDialog() {
         Skin uiSkin = new Skin(Gdx.files.internal("assets/cloud-form/skin/cloud-form-ui.json"));
         Dialog dialog = new Dialog("Username taken", uiSkin, "dialog") {
             public void result(Object obj) {
@@ -247,20 +233,12 @@ public class LoginState implements IState {
 
     @Override
     public void render(SpriteBatch batch) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.begin();
-        stage.act();
-        stage.getBatch().begin();
-        stage.getBatch().draw(backGround, 0, 0, Sizes.MIN_WIDTH_WINDOW, Sizes.MIN_HEIGHT_WINDOW);
-        stage.getBatch().end();
-        stage.draw();
-        batch.end();
+        RendererHandler.render(batch, stage, background);
     }
 
     @Override
     public void dispose() {
-        backGround.dispose();
+        background.dispose();
         skin.dispose();
         stage.dispose();
     }

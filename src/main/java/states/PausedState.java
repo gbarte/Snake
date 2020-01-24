@@ -2,21 +2,20 @@ package states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import models.Score;
+import states.utils.GameRulesDialog;
+import states.utils.RendererHandler;
 
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public class PausedState implements IState {
@@ -24,7 +23,7 @@ public class PausedState implements IState {
     private GameStateManager stateManager;
     private Stage stage;
     private Skin skin;
-    private Texture backGround;
+    private Texture background;
     private Score score;
 
     /**
@@ -43,7 +42,7 @@ public class PausedState implements IState {
         initResumeButton();
         initRulesButton();
         initQuitButton();
-        backGround = new Texture("assets/bg.png");
+        background = new Texture("assets/bg.png");
         stage.addListener(new InputListener() {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
@@ -82,15 +81,7 @@ public class PausedState implements IState {
 
     @Override
     public void render(SpriteBatch batch) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.begin();
-        stage.act();
-        stage.getBatch().begin();
-        stage.getBatch().draw(backGround, 0, 0, 800, 800);
-        stage.getBatch().end();
-        stage.draw();
-        batch.end();
+        RendererHandler.render(batch, stage, background);
     }
 
     /**
@@ -137,7 +128,7 @@ public class PausedState implements IState {
         rulesButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                gameRulesDialog();
+                GameRulesDialog.display(stage);
             }
 
             @Override
@@ -170,29 +161,9 @@ public class PausedState implements IState {
         stage.addActor(quitButton);
     }
 
-    /**
-     * This dialog box is shown when the user wants to start the game.
-     */
-    public void gameRulesDialog() {
-        Skin uiSkin = new Skin(Gdx.files.internal("assets/cloud-form/skin/cloud-form-ui.json"));
-        Dialog dialog = new Dialog("Rules", uiSkin, "dialog") {
-            public void result(Object obj) {
-                System.out.println("result " + obj);
-            }
-        };
-        dialog.text("Use 'WASD' to move the snake.\n"
-                + "Eat food to grow your snake.\n"
-                + "Game will end when you either hit yourself or the wall.\n"
-                + "Press p to pause the game.\n"
-                + "Press q to quit the game.\n"
-                + "Enjoy :) ");
-        dialog.button("OK", true);
-        dialog.show(stage);
-    }
-
     @Override
     public void dispose() {
-        backGround.dispose();
+        background.dispose();
         stage.dispose();
         skin.dispose();
     }

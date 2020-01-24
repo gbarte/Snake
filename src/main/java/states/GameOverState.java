@@ -20,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import models.Score;
 import services.leaderboard.LeaderboardService;
+import states.utils.RendererHandler;
 
 /**
  * State of the game over game.
@@ -29,7 +30,7 @@ public class GameOverState implements IState {
     private GameStateManager stateManager;
     private Stage stage;
     private Skin skin;
-    private Texture backGround;
+    private Texture background;
     private CheckBox checkBox;
     private TextField nicknameField;
     private Score score;
@@ -56,7 +57,7 @@ public class GameOverState implements IState {
         initNickname();
         initSaveButton();
         initReturnButton();
-        backGround = new Texture("assets/bg.png");
+        background = new Texture("assets/bg.png");
     }
 
     public GameStateManager getStateManager() {
@@ -83,12 +84,12 @@ public class GameOverState implements IState {
         this.skin = skin;
     }
 
-    public Texture getBackGround() {
-        return backGround;
+    public Texture getBackground() {
+        return background;
     }
 
-    public void setBackGround(Texture backGround) {
-        this.backGround = backGround;
+    public void setBackground(Texture background) {
+        this.background = background;
     }
 
     public CheckBox getCheckBox() {
@@ -135,15 +136,7 @@ public class GameOverState implements IState {
 
     @Override
     public void render(SpriteBatch batch) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.begin();
-        stage.act();
-        stage.getBatch().begin();
-        stage.getBatch().draw(backGround, 0, 0, 800, 800);
-        stage.getBatch().end();
-        stage.draw();
-        batch.end();
+        RendererHandler.render(batch, stage, background);
     }
 
     /**
@@ -179,7 +172,7 @@ public class GameOverState implements IState {
      */
     private void initNickname() {
         BitmapFont bitmapFont = new BitmapFont();
-        Label.LabelStyle smallLabelStyle= new Label.LabelStyle(bitmapFont,
+        Label.LabelStyle smallLabelStyle = new Label.LabelStyle(bitmapFont,
                 new Color(255,  0, 255, 1));
         Label nicknameLabel = new Label("Enter a nickname", smallLabelStyle);
         nicknameLabel.setPosition(340, 279);
@@ -205,7 +198,7 @@ public class GameOverState implements IState {
                     scoreSavedConfirmation();
                 } else {
                     LeaderboardService ls = new LeaderboardService();
-                    ls.createEntry(SnakeGame.username, score.getValue());
+                    ls.createEntry(SnakeGame.getUsername(), score.getValue());
                     scoreSavedConfirmation();
                 }
             }
@@ -260,7 +253,7 @@ public class GameOverState implements IState {
 
     @Override
     public void dispose() {
-        backGround.dispose();
+        background.dispose();
         stage.dispose();
         skin.dispose();
     }
@@ -268,7 +261,7 @@ public class GameOverState implements IState {
     /**
      * This dialog box is shown when the user has saved the score.
      */
-    public void scoreSavedConfirmation() {
+    private void scoreSavedConfirmation() {
         Skin uiSkin = new Skin(Gdx.files.internal("assets/cloud-form/skin/cloud-form-ui.json"));
         Dialog dialog = new Dialog("Saved score", uiSkin, "dialog") {
             public void result(Object obj) {
