@@ -122,9 +122,7 @@ public abstract class GameMap {
         this.snake = snake;
         batch.setProjectionMatrix(camera.combined);
 
-        batch.draw(getFood().getTexture(),
-                getFood().getCoordinate().getCoordinateX() * Sizes.TILE_PIXELS,
-                getFood().getCoordinate().getCoordinateY() * Sizes.TILE_PIXELS);
+        food.render(batch);
 
         renderScore(batch);
 
@@ -300,9 +298,9 @@ public abstract class GameMap {
             case Input.Keys.RIGHT:
                 updateDirection(Direction.RIGHT);
                 break;
-            default:
-                //do nothing
-                break;
+                /* We don't write a default in this case because if another key is
+                pressed we don't care. https://stackoverflow.com/a/5241196/11213998
+                It also increases the complexity of the code for no reason. **/
         }
     }
 
@@ -364,8 +362,10 @@ public abstract class GameMap {
                 case RIGHT:
                     updateIfNotOpposite(newDirection, Direction.LEFT);
                     break;
-                default:
-                    // nothing happens
+                    /* We don't write a default in this case because if another key is
+                    pressed we don't care. https://stackoverflow.com/a/5241196/11213998
+                    There are only 4 directions the snake can go to.
+                    It also increases the complexity of the code for no reason. **/
             }
         }
     }
@@ -429,7 +429,7 @@ public abstract class GameMap {
      */
     public void checkHeadHitsBody() {
         int minLength = 3;
-        // head can touch tail only if snake has more than 3 bodyparts
+        // head can touch tail only if snake has more than 2 bodyParts
         int size = getSnake().getBodyParts().size();
         if (size > minLength) {
             for (int i = 1; i < size; i++) {
@@ -456,7 +456,7 @@ public abstract class GameMap {
     }
 
     private void activatePowerUp() {
-        if (getScore().getValue() > Sizes.DEFAULT_SCORE * 10) {
+        if (getScore().getValue() > Sizes.POWER_UP_ACTIVATION) {
             foodFactory = new PowerUpFactory();
         }
     }

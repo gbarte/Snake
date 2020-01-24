@@ -1,7 +1,9 @@
 package entities;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import models.Coordinate;
+import utils.Sizes;
 import world.GameMap;
 
 /**
@@ -19,15 +21,30 @@ public class MushroomPowerUp implements Food {
 
     public MushroomPowerUp(Coordinate coordinate) {
         this.coordinate = coordinate;
-        this.texture = new Texture(texturePath);
     }
 
     public MushroomPowerUp() {
 
     }
 
+    /**
+     * Method used to render this apple one the screen with
+     * a mushroom texture.
+     * @param batch to draw on
+     */
+    public void render(SpriteBatch batch) {
+        this.texture = new Texture(texturePath);
+        batch.draw(texture,
+                coordinate.getCoordinateX() * Sizes.TILE_PIXELS,
+                coordinate.getCoordinateY() * Sizes.TILE_PIXELS);
+    }
+
+    public void setTexture(Texture texture) {
+        this.texture = texture;
+    }
+
     public Texture getTexture() {
-        return texture;
+        return this.texture;
     }
 
     public Coordinate getCoordinate() {
@@ -36,10 +53,6 @@ public class MushroomPowerUp implements Food {
 
     public void setCoordinate(Coordinate coordinate) {
         this.coordinate = coordinate;
-    }
-
-    public void setTexture(Texture texture) {
-        this.texture = texture;
     }
 
     @Override

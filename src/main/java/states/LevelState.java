@@ -106,7 +106,8 @@ public class LevelState implements IState {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 stateManager.setState(new PlayState(stateManager, "defaultID", "defaultName",
-                        "assets/tile-set/vaporWaveSet2.png", "assets/snake-texture/DefaultBody.png"));
+                        "assets/tile-set/vaporWaveSet2.png"
+                        , "assets/snake-texture/DefaultBody.png"));
             }
 
             @Override

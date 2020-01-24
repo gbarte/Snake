@@ -15,19 +15,14 @@ import world.GameMap;
 
 class PlayStateTest {
 
-    private transient OrthographicCamera orthographicCamera;
-    private transient GameStateManager gameStateManager;
-    private transient SnakeBody snakeBody;
-    private transient GameMap gameMap;
     private transient PlayState playStateTwo;
 
     @BeforeEach
     void setUp() {
-        this.orthographicCamera = Mockito.mock(OrthographicCamera.class);
-        this.gameStateManager = new GameStateManager();
-        this.snakeBody =
-                new SnakeBody(Sizes.DEFAULT_MINIMUM_MAP_TILES, Sizes.DEFAULT_MINIMUM_MAP_TILES);
-        this.gameMap = Mockito.mock(GameMap.class);
+        GameStateManager gameStateManager = new GameStateManager();
+        SnakeBody snakeBody = new SnakeBody(Sizes.DEFAULT_MINIMUM_MAP_TILES,
+                Sizes.DEFAULT_MINIMUM_MAP_TILES);
+        GameMap gameMap = Mockito.mock(GameMap.class);
         this.playStateTwo = new PlayState(gameStateManager, snakeBody, gameMap);
         gameStateManager.pushState((IState) playStateTwo);
     }
