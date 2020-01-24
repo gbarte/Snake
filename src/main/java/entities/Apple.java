@@ -31,6 +31,11 @@ public class Apple implements Food {
 
     }
 
+    /**
+     * Method used to render this apple one the screen with
+     * an apple texture.
+     * @param batch to draw on
+     */
     public void render(SpriteBatch batch) {
         this.texture = new Texture(texturePath);
         batch.draw(texture,

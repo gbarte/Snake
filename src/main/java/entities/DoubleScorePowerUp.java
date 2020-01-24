@@ -27,6 +27,11 @@ public class DoubleScorePowerUp implements Food {
 
     }
 
+    /**
+     * Method used to render this apple one the screen with
+     * an powerUp texture.
+     * @param batch to draw on
+     */
     public void render(SpriteBatch batch) {
         this.texture = new Texture(texturePath);
         batch.draw(texture,

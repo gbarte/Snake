@@ -20,7 +20,8 @@ class PlayStateTest {
     @BeforeEach
     void setUp() {
         GameStateManager gameStateManager = new GameStateManager();
-        SnakeBody snakeBody = new SnakeBody(Sizes.DEFAULT_MINIMUM_MAP_TILES, Sizes.DEFAULT_MINIMUM_MAP_TILES);
+        SnakeBody snakeBody = new SnakeBody(Sizes.DEFAULT_MINIMUM_MAP_TILES,
+                Sizes.DEFAULT_MINIMUM_MAP_TILES);
         GameMap gameMap = Mockito.mock(GameMap.class);
         this.playStateTwo = new PlayState(gameStateManager, snakeBody, gameMap);
         gameStateManager.pushState((IState) playStateTwo);

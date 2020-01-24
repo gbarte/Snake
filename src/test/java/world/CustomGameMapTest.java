@@ -1,7 +1,13 @@
 package world;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyFloat;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.doNothing;
@@ -9,14 +15,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-import static world.customgamemap.CustomGameMapLoader.PATH;
 
-import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.GdxNativesLoader;
 import entities.DoubleScorePowerUp;
 import entities.Food;
 import entities.factories.AppleFactory;
@@ -36,7 +40,6 @@ import org.mockito.Mockito;
 import states.GameStateManager;
 import utils.Sizes;
 import utils.TileType;
-import world.customgamemap.CustomGameMapData;
 import world.customgamemap.CustomGameMapLoader;
 
 //Unnecessary warnings to have getters & setters for objects
@@ -288,6 +291,7 @@ public class CustomGameMapTest extends GameMapTest {
                 customGameMap.getHeight() * TileType.TILE_SIZE);
     }
 
+    // Integration tests below
     @Test
     void powerUpFactoryTimeoutTest() {
         FoodFactory foodFactory = new PowerUpFactory();
@@ -357,7 +361,7 @@ public class CustomGameMapTest extends GameMapTest {
         snake.setHeadCoord(food2.getCoordinate());
         customGameMap.updatePrivateMethods();
 
-        if(food2 instanceof DoubleScorePowerUp) {
+        if (food2 instanceof DoubleScorePowerUp) {
             assertTrue(customGameMap.getScore() instanceof DoubleScore);
         }
 

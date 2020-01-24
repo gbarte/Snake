@@ -27,6 +27,11 @@ public class MushroomPowerUp implements Food {
 
     }
 
+    /**
+     * Method used to render this apple one the screen with
+     * a mushroom texture.
+     * @param batch to draw on
+     */
     public void render(SpriteBatch batch) {
         this.texture = new Texture(texturePath);
         batch.draw(texture,

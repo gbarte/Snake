@@ -298,8 +298,9 @@ public abstract class GameMap {
             case Input.Keys.RIGHT:
                 updateDirection(Direction.RIGHT);
                 break;
-            //We don't write a default in this case because if another key is pressed you don't care.
-            //It also increases the complexity of the code for no reason.
+                /* We don't write a default in this case because if another key is
+                pressed we don't care. https://stackoverflow.com/a/5241196/11213998
+                It also increases the complexity of the code for no reason. **/
         }
     }
 
