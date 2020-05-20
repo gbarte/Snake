@@ -90,7 +90,7 @@ There is a Gitlabs CI pipeline that contains 3 stages:
 * Roman Širokov
 * Mirijam Zhang
 * Mihai Plotean
-* Gabriele Barteškaitė
+* Gabrielė Barteškaitė
 
 
 ## License
