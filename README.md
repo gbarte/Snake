@@ -96,3 +96,6 @@ There is a Gitlabs CI pipeline that contains 3 stages:
 ## License
 
 This project is licensed under the MIT License (2019) - see the [LICENSE.md](LICENSE.md) file for details
+
+
+Academic year 2018/2019
